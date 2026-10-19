@@ -260,7 +260,13 @@ Thời gian dự kiến 8 tuần. Lịch cụ thể, người phụ trách, đ�
 
 ## 7. Liên kết
 
+* [Yêu cầu dự án](REQUIREMENTS.md)
+* [Kế hoạch thực hiện](PROJECT_PLAN.md)
+* [Nguyên tắc hỗ trợ AI](AGENTS.md)
+* [Nhật ký sử dụng AI và log từng thành viên](AI_USAGE_LOG.md)
+* [Phân tích ba website tham khảo](docs/competitor-analysis.md)
+* [Vai trò và quyền người dùng](docs/user-roles.md)
+* [Quy trình nghiệp vụ](docs/business-workflow.md)
+* [Quy tắc ghi nhật ký AI](docs/ai-logging-rules.md)
 
-
-Các liên kết tài liệu, hướng dẫn chạy và website demo sẽ được bổ sung sau khi được tạo và kiểm tra.
-
+Hướng dẫn chạy và đường dẫn website demo sẽ được bổ sung khi có bản triển khai được kiểm tra.

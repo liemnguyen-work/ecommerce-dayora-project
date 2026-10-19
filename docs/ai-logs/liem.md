@@ -187,3 +187,48 @@ Codex đối chiếu FR08, FR10 đến FR13 và mục giới hạn trong REQUIRE
 Xác nhận tệp đích chưa có; kiểm tra nội dung đủ hai luồng, đăng nhập, xác nhận thay đổi, thanh toán, theo dõi và ngoại lệ. Các link nội bộ trỏ đến tệp đã có; link sơ đồ dẫn từ tài liệu nguồn, chưa xác minh lại quyền truy cập. Log giữ nguyên byte cũ. Chưa chạy test ứng dụng hoặc kiểm thử giao dịch thực tế.
 
 Tệp thay đổi: docs/business-workflow.md và docs/ai-logs/liem.md; chưa tự commit/push.
+
+---
+
+## Kết nối tài liệu dự án / LIEM-20261019-A5B97F16-005
+
+* Thời gian ghi: 2026-10-19T22:22:15+07:00.
+* Thời gian thực hiện: Đợt đọc README và kiểm tra đường dẫn được ghi nhận tại mốc trên.
+* Mã phiên nhật ký: LIEM-20261019-A5B97F16.
+* Người prompt: Liêm.
+* Loại mục: Hoạt động cập nhật tài liệu.
+* Liên quan: Tiếp nối việc Liêm báo đã hoàn thành bước quy trình nghiệp vụ; chưa có Issue được cung cấp.
+
+### Công cụ
+
+Codex; model chưa ghi nhận.
+
+### Mục đích
+
+Thay nội dung chờ bổ sung ở mục 7 README bằng các liên kết tương đối đến tài liệu thực sự đã tạo.
+
+### Prompt
+
+Tóm lược: Liêm xác nhận hoàn tất business-workflow và tiếp tục bước bổ sung liên kết README theo thứ tự làm tài liệu đã thống nhất.
+
+### Kết quả đề xuất
+
+Chuẩn bị tám liên kết đến yêu cầu, kế hoạch, AGENTS, log chung, khảo sát, vai trò, quy trình và quy tắc log. Chưa tạo link demo hoặc hướng dẫn chạy khi chưa có bản tương ứng.
+
+### Phản biện
+
+Giữ nguyên nội dung mục 1 đến 6 và chỉ thay mục 7. Dùng đường dẫn tương đối trong repository thay vì URL kho cũ; kiểm tra tệp đích tồn tại. Không coi liên kết có đích là minh chứng chức năng đã được triển khai.
+
+### Quyết định của nhóm
+
+Liêm cho phép tiếp tục tài liệu sau khi báo hoàn tất bước trước. Không suy ra xác nhận của toàn nhóm với chính sách nghiệp vụ còn mở.
+
+### Người kiểm tra
+
+Codex kiểm tra đường dẫn nội bộ và phạm vi thay đổi; Liêm đọc lại trước commit/push.
+
+### Kiểm tra và minh chứng
+
+Đã đọc README hiện tại, xác nhận không còn escape Markdown ở các ký hiệu đã kiểm tra và có đúng một mục 7. Tám tệp đích đều tồn tại. Bản chuẩn bị giữ nguyên byte trước mục 7, log giữ nguyên toàn bộ byte cũ. Chưa kiểm tra giao diện GitHub sau push hoặc website demo, chưa chạy mã ứng dụng.
+
+Tệp thay đổi: README.md và docs/ai-logs/liem.md. Không tự commit/push.
