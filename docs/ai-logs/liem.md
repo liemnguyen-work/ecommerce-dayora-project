@@ -142,3 +142,48 @@ Codex đối chiếu văn bản yêu cầu; Liêm kiểm tra trước khi commit
 Đọc quy tắc log và AGENTS trong đợt công việc liên tục; đọc trực tiếp mục Người dùng của REQUIREMENTS, xác nhận tệp đích chưa tồn tại. Kiểm tra đủ ba vai trò và quyền, link đến hai tệp gốc hiện có; giữ nguyên byte của log cũ trước phần nối. Chưa chạy ứng dụng hoặc kiểm tra quyền thực tế.
 
 Tệp: docs/user-roles.md và docs/ai-logs/liem.md. Không tự commit hoặc push trong đợt này.
+
+---
+
+## Khởi tạo quy trình nghiệp vụ / LIEM-20261019-A5B97F16-004
+
+* Thời gian ghi: 2026-10-19T22:03:18+07:00.
+* Thời gian thực hiện: Đợt đọc yêu cầu và xác nhận tệp đích được ghi nhận tại mốc trên.
+* Mã phiên nhật ký: LIEM-20261019-A5B97F16.
+* Người prompt: Liêm.
+* Loại mục: Hoạt động soạn tài liệu.
+* Liên quan: Tiếp tục sau tài liệu vai trò; chưa có Issue được cung cấp.
+
+### Công cụ
+
+Codex; không suy tên model.
+
+### Mục đích
+
+Mô tả hai quy trình chính để dùng khi thiết kế, lập trình và kiểm thử DAYORA, thống nhất yêu cầu hiện tại.
+
+### Prompt
+
+Tóm lược: Liêm báo đã hoàn thành bước user-roles; tiếp tục tạo docs/business-workflow.md theo quy trình làm từng tệp của dự án.
+
+### Kết quả đề xuất
+
+Chuẩn bị hai luồng mua lẻ, mua bằng Builder, các bước checkout/thanh toán dùng chung, công thức, ngoại lệ, nguồn sơ đồ và danh sách chính sách còn mở. Liên kết yêu cầu và vai trò; không nhắc số nhiệm vụ bài tập.
+
+### Phản biện
+
+Giữ đăng nhập trước giỏ/đặt hàng theo yêu cầu; không tự chuyển sang guest cart. Không tự chốt thời hạn giữ tồn, hủy đơn hay ghi nhận thanh toán từ chuyển hướng trình duyệt. Phân biệt không tìm được bộ trong thuật toán với chứng minh không tồn tại phương án. Chưa có phản hồi duyệt mới từ người dùng.
+
+### Quyết định của nhóm
+
+Tiếp tục phạm vi hiện tại của REQUIREMENTS; các chính sách mở vẫn chờ xác nhận. Việc soạn không được coi là cả nhóm đã duyệt mọi chi tiết hoặc chức năng đã hoạt động.
+
+### Người kiểm tra
+
+Codex đối chiếu FR08, FR10 đến FR13 và mục giới hạn trong REQUIREMENTS; Liêm cần kiểm tra trước commit/push.
+
+### Kiểm tra và minh chứng
+
+Xác nhận tệp đích chưa có; kiểm tra nội dung đủ hai luồng, đăng nhập, xác nhận thay đổi, thanh toán, theo dõi và ngoại lệ. Các link nội bộ trỏ đến tệp đã có; link sơ đồ dẫn từ tài liệu nguồn, chưa xác minh lại quyền truy cập. Log giữ nguyên byte cũ. Chưa chạy test ứng dụng hoặc kiểm thử giao dịch thực tế.
+
+Tệp thay đổi: docs/business-workflow.md và docs/ai-logs/liem.md; chưa tự commit/push.
