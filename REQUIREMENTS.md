@@ -1,8 +1,8 @@
-\# Requirements
+# Requirements
 
 
 
-\## 1. Mục tiêu dự án
+## 1. Mục tiêu dự án
 
 
 
@@ -26,11 +26,11 @@ Các lợi ích dự kiến cần được kiểm chứng qua khảo sát và th
 
 
 
-\## 2. Phạm vi
+## 2. Phạm vi
 
 
 
-\### Trong phạm vi
+### Trong phạm vi
 
 
 
@@ -50,31 +50,31 @@ FR18 về checklist và email nhắc chỉ được triển khai sau khi phần 
 
 
 
-\### Ngoài phạm vi
+### Ngoài phạm vi
 
 
 
-\* Sàn thương mại điện tử nhiều người bán.
+* Sàn thương mại điện tử nhiều người bán.
 
-\* Thực phẩm chế biến, cho thuê đồ, đặt tour, địa điểm hoặc phương tiện.
+* Thực phẩm chế biến, cho thuê đồ, đặt tour, địa điểm hoặc phương tiện.
 
-\* Chatbot, gợi ý bằng học máy, thời tiết trực tiếp và bản đồ.
+* Chatbot, gợi ý bằng học máy, thời tiết trực tiếp và bản đồ.
 
-\* Trải nghiệm 3D/AR hoặc ứng dụng di động riêng.
+* Trải nghiệm 3D/AR hoặc ứng dụng di động riêng.
 
-\* Đồng bộ tồn kho với hệ thống bên ngoài.
+* Đồng bộ tồn kho với hệ thống bên ngoài.
 
-\* Tự động chuyển tiền hoàn trả.
+* Tự động chuyển tiền hoàn trả.
 
-\* Cam kết giao hàng trong ngày hoặc trước ngày sử dụng.
-
-
-
-\## 3. Người dùng
+* Cam kết giao hàng trong ngày hoặc trước ngày sử dụng.
 
 
 
-\### Khách chưa đăng nhập
+## 3. Người dùng
+
+
+
+### Khách chưa đăng nhập
 
 
 
@@ -86,7 +86,7 @@ Cần đăng nhập trước khi sử dụng giỏ hàng và đặt hàng. Lựa
 
 
 
-\### Khách hàng
+### Khách hàng
 
 
 
@@ -102,7 +102,7 @@ Không được truy cập dữ liệu khách hàng khác hoặc chức năng qu
 
 
 
-\### Quản trị viên
+### Quản trị viên
 
 
 
@@ -118,375 +118,375 @@ Backend phải kiểm tra quyền cho từng thao tác cần bảo vệ.
 
 
 
-\## 4. Yêu cầu chức năng
+## 4. Yêu cầu chức năng
 
 
 
-\### FR01. Trang chủ và điều hướng
+### FR01. Trang chủ và điều hướng
 
 
 
-\*\*Mô tả:\*\* Hiển thị danh mục, sản phẩm nổi bật, bán chạy, ưu đãi và lối vào mua lẻ, Kit Builder.
+**Mô tả:** Hiển thị danh mục, sản phẩm nổi bật, bán chạy, ưu đãi và lối vào mua lẻ, Kit Builder.
 
 
 
-\*\*Người sử dụng:\*\* Khách chưa đăng nhập, khách hàng.
+**Người sử dụng:** Khách chưa đăng nhập, khách hàng.
 
 
 
-\*\*Mức độ ưu tiên:\*\* Bắt buộc.
+**Mức độ ưu tiên:** Bắt buộc.
 
 
 
-\*\*Tiêu chí nghiệm thu:\*\* Liên kết dẫn đúng nội dung; giá và thông tin ưu đãi đúng dữ liệu; điều hướng sử dụng được trên máy tính và điện thoại.
+**Tiêu chí nghiệm thu:** Liên kết dẫn đúng nội dung; giá và thông tin ưu đãi đúng dữ liệu; điều hướng sử dụng được trên máy tính và điện thoại.
 
 
 
-\### FR02. Tìm kiếm, lọc và sắp xếp
+### FR02. Tìm kiếm, lọc và sắp xếp
 
 
 
-\*\*Mô tả:\*\* Tìm theo từ khóa; lọc giá, nhóm hàng, tình huống, sức chứa, kích thước và chất liệu; sắp xếp theo giá.
+**Mô tả:** Tìm theo từ khóa; lọc giá, nhóm hàng, tình huống, sức chứa, kích thước và chất liệu; sắp xếp theo giá.
 
 
 
-\*\*Người sử dụng:\*\* Khách chưa đăng nhập, khách hàng.
+**Người sử dụng:** Khách chưa đăng nhập, khách hàng.
 
 
 
-\*\*Mức độ ưu tiên:\*\* Bắt buộc.
+**Mức độ ưu tiên:** Bắt buộc.
 
 
 
-\*\*Tiêu chí nghiệm thu:\*\* Có tối thiểu năm thuộc tính lọc phù hợp trên hệ thống; kết quả đúng điều kiện; có xóa bộ lọc và thông báo khi không có kết quả.
+**Tiêu chí nghiệm thu:** Có tối thiểu năm thuộc tính lọc phù hợp trên hệ thống; kết quả đúng điều kiện; có xóa bộ lọc và thông báo khi không có kết quả.
 
 
 
-\### FR03. Chi tiết sản phẩm
+### FR03. Chi tiết sản phẩm
 
 
 
-\*\*Mô tả:\*\* Hiển thị ảnh, mô tả, SKU, biến thể, giá, tồn kho, thông số và sản phẩm liên quan.
+**Mô tả:** Hiển thị ảnh, mô tả, SKU, biến thể, giá, tồn kho, thông số và sản phẩm liên quan.
 
 
 
-\*\*Người sử dụng:\*\* Khách chưa đăng nhập, khách hàng.
+**Người sử dụng:** Khách chưa đăng nhập, khách hàng.
 
 
 
-\*\*Mức độ ưu tiên:\*\* Bắt buộc.
+**Mức độ ưu tiên:** Bắt buộc.
 
 
 
-\*\*Tiêu chí nghiệm thu:\*\* Giá, SKU và tồn khớp biến thể; thông số có đơn vị; hiển thị giá giảm khi có; sức chứa sử dụng cho Builder có dữ liệu xác định.
+**Tiêu chí nghiệm thu:** Giá, SKU và tồn khớp biến thể; thông số có đơn vị; hiển thị giá giảm khi có; sức chứa sử dụng cho Builder có dữ liệu xác định.
 
 
 
-\### FR04. Tài khoản và hồ sơ
+### FR04. Tài khoản và hồ sơ
 
 
 
-\*\*Mô tả:\*\* Đăng ký, đăng nhập, đăng xuất, quản lý hồ sơ, lịch sử mua và sản phẩm đã xem.
+**Mô tả:** Đăng ký, đăng nhập, đăng xuất, quản lý hồ sơ, lịch sử mua và sản phẩm đã xem.
 
 
 
-\*\*Người sử dụng:\*\* Khách chưa đăng nhập, khách hàng.
+**Người sử dụng:** Khách chưa đăng nhập, khách hàng.
 
 
 
-\*\*Mức độ ưu tiên:\*\* Bắt buộc.
+**Mức độ ưu tiên:** Bắt buộc.
 
 
 
-\*\*Tiêu chí nghiệm thu:\*\* Kiểm tra đầu vào và tài khoản trùng; mật khẩu được băm; khách chỉ truy cập dữ liệu của mình; đăng xuất kết thúc phiên hợp lệ.
+**Tiêu chí nghiệm thu:** Kiểm tra đầu vào và tài khoản trùng; mật khẩu được băm; khách chỉ truy cập dữ liệu của mình; đăng xuất kết thúc phiên hợp lệ.
 
 
 
-\### FR05. Đánh giá sau mua
+### FR05. Đánh giá sau mua
 
 
 
-\*\*Mô tả:\*\* Khách hàng chấm điểm và nhận xét sản phẩm đã mua.
+**Mô tả:** Khách hàng chấm điểm và nhận xét sản phẩm đã mua.
 
 
 
-\*\*Người sử dụng:\*\* Khách hàng.
+**Người sử dụng:** Khách hàng.
 
 
 
-\*\*Mức độ ưu tiên:\*\* Bắt buộc.
+**Mức độ ưu tiên:** Bắt buộc.
 
 
 
-\*\*Tiêu chí nghiệm thu:\*\* Backend kiểm tra quyền từ dữ liệu mua hàng và điều kiện trạng thái đơn; nhận điểm từ 1 đến 5; hiển thị đúng đánh giá và điểm tổng hợp.
+**Tiêu chí nghiệm thu:** Backend kiểm tra quyền từ dữ liệu mua hàng và điều kiện trạng thái đơn; nhận điểm từ 1 đến 5; hiển thị đúng đánh giá và điểm tổng hợp.
 
 
 
-\### FR06. Nhập nhu cầu tạo bộ
+### FR06. Nhập nhu cầu tạo bộ
 
 
 
-\*\*Mô tả:\*\* Nhận tình huống, số người, ngân sách và số lượng hoặc sức chứa đồ đã có.
+**Mô tả:** Nhận tình huống, số người, ngân sách và số lượng hoặc sức chứa đồ đã có.
 
 
 
-\*\*Người sử dụng:\*\* Khách chưa đăng nhập, khách hàng.
+**Người sử dụng:** Khách chưa đăng nhập, khách hàng.
 
 
 
-\*\*Mức độ ưu tiên:\*\* Bắt buộc.
+**Mức độ ưu tiên:** Bắt buộc.
 
 
 
-\*\*Tiêu chí nghiệm thu:\*\* Chỉ nhận ba tình huống trong phạm vi, số người nguyên từ 1 đến 8, ngân sách dương và lượng đồ đã có không âm; báo lỗi rõ khi dữ liệu sai.
+**Tiêu chí nghiệm thu:** Chỉ nhận ba tình huống trong phạm vi, số người nguyên từ 1 đến 8, ngân sách dương và lượng đồ đã có không âm; báo lỗi rõ khi dữ liệu sai.
 
 
 
-\### FR07. Tạo và giải thích bộ
+### FR07. Tạo và giải thích bộ
 
 
 
-\*\*Mô tả:\*\* Tính phần còn thiếu theo quy tắc và đề xuất sản phẩm phù hợp.
+**Mô tả:** Tính phần còn thiếu theo quy tắc và đề xuất sản phẩm phù hợp.
 
 
 
-\*\*Người sử dụng:\*\* Khách chưa đăng nhập, khách hàng.
+**Người sử dụng:** Khách chưa đăng nhập, khách hàng.
 
 
 
-\*\*Mức độ ưu tiên:\*\* Bắt buộc.
+**Mức độ ưu tiên:** Bắt buộc.
 
 
 
-\*\*Tiêu chí nghiệm thu:\*\* Trừ đồ đã có đúng công dụng; phân biệt món theo người, dùng chung, thiết yếu và tùy chọn; chỉ chọn hàng đủ tồn; giải thích số lượng và nguyên nhân khi không tạo được bộ.
+**Tiêu chí nghiệm thu:** Trừ đồ đã có đúng công dụng; phân biệt món theo người, dùng chung, thiết yếu và tùy chọn; chỉ chọn hàng đủ tồn; giải thích số lượng và nguyên nhân khi không tạo được bộ.
 
 
 
-\### FR08. Thay món và kiểm soát ngân sách
+### FR08. Thay món và kiểm soát ngân sách
 
 
 
-\*\*Mô tả:\*\* Điều chỉnh bộ gợi ý và theo dõi chi phí.
+**Mô tả:** Điều chỉnh bộ gợi ý và theo dõi chi phí.
 
 
 
-\*\*Người sử dụng:\*\* Khách chưa đăng nhập, khách hàng.
+**Người sử dụng:** Khách chưa đăng nhập, khách hàng.
 
 
 
-\*\*Mức độ ưu tiên:\*\* Bắt buộc.
+**Mức độ ưu tiên:** Bắt buộc.
 
 
 
-\*\*Tiêu chí nghiệm thu:\*\* Tính lại số lượng theo sức chứa khi thay món; cập nhật chi phí; cảnh báo thiếu món thiết yếu hoặc vượt ngân sách; không tự tăng ngân sách hoặc hiển thị bộ thiếu là đầy đủ.
+**Tiêu chí nghiệm thu:** Tính lại số lượng theo sức chứa khi thay món; cập nhật chi phí; cảnh báo thiếu món thiết yếu hoặc vượt ngân sách; không tự tăng ngân sách hoặc hiển thị bộ thiếu là đầy đủ.
 
 
 
-\### FR09. Giỏ hàng
+### FR09. Giỏ hàng
 
 
 
-\*\*Mô tả:\*\* Quản lý sản phẩm mua lẻ và bộ từ Kit Builder.
+**Mô tả:** Quản lý sản phẩm mua lẻ và bộ từ Kit Builder.
 
 
 
-\*\*Người sử dụng:\*\* Khách hàng.
+**Người sử dụng:** Khách hàng.
 
 
 
-\*\*Mức độ ưu tiên:\*\* Bắt buộc.
+**Mức độ ưu tiên:** Bắt buộc.
 
 
 
-\*\*Tiêu chí nghiệm thu:\*\* Thêm đúng sản phẩm, biến thể, số lượng; cho sửa hoặc xóa; cập nhật tiền hàng; không tự thêm sản phẩm gợi ý; chỉ truy cập giỏ của mình.
+**Tiêu chí nghiệm thu:** Thêm đúng sản phẩm, biến thể, số lượng; cho sửa hoặc xóa; cập nhật tiền hàng; không tự thêm sản phẩm gợi ý; chỉ truy cập giỏ của mình.
 
 
 
-\### FR10. Checkout và tạo đơn
+### FR10. Checkout và tạo đơn
 
 
 
-\*\*Mô tả:\*\* Nhận thông tin giao hàng, xác nhận chi phí và tạo đơn.
+**Mô tả:** Nhận thông tin giao hàng, xác nhận chi phí và tạo đơn.
 
 
 
-\*\*Người sử dụng:\*\* Khách hàng.
+**Người sử dụng:** Khách hàng.
 
 
 
-\*\*Mức độ ưu tiên:\*\* Bắt buộc.
+**Mức độ ưu tiên:** Bắt buộc.
 
 
 
-\*\*Tiêu chí nghiệm thu:\*\* Backend kiểm tra lại giá, tồn, voucher và phí; yêu cầu xác nhận nếu thay đổi; lưu thông tin đã chốt; không tạo đơn từ giỏ trống hoặc tạo trùng do gửi lặp.
+**Tiêu chí nghiệm thu:** Backend kiểm tra lại giá, tồn, voucher và phí; yêu cầu xác nhận nếu thay đổi; lưu thông tin đã chốt; không tạo đơn từ giỏ trống hoặc tạo trùng do gửi lặp.
 
 
 
-\### FR11. Thanh toán sandbox
+### FR11. Thanh toán sandbox
 
 
 
-\*\*Mô tả:\*\* Tạo giao dịch VNPay Sandbox, tiếp nhận và xác thực kết quả.
+**Mô tả:** Tạo giao dịch VNPay Sandbox, tiếp nhận và xác thực kết quả.
 
 
 
-\*\*Người sử dụng:\*\* Khách hàng.
+**Người sử dụng:** Khách hàng.
 
 
 
-\*\*Mức độ ưu tiên:\*\* Bắt buộc.
+**Mức độ ưu tiên:** Bắt buộc.
 
 
 
-\*\*Tiêu chí nghiệm thu:\*\* Kiểm tra chữ ký, đơn, số tiền và trạng thái; xử lý thành công, thất bại, hủy; không ghi nhận tiền hoặc cập nhật tồn nhiều lần khi nhận thông báo lặp.
+**Tiêu chí nghiệm thu:** Kiểm tra chữ ký, đơn, số tiền và trạng thái; xử lý thành công, thất bại, hủy; không ghi nhận tiền hoặc cập nhật tồn nhiều lần khi nhận thông báo lặp.
 
 
 
-\### FR12. Phí và trạng thái giao hàng
+### FR12. Phí và trạng thái giao hàng
 
 
 
-\*\*Mô tả:\*\* Tính phí theo địa chỉ, bảng quy tắc; theo dõi và cập nhật giao hàng.
+**Mô tả:** Tính phí theo địa chỉ, bảng quy tắc; theo dõi và cập nhật giao hàng.
 
 
 
-\*\*Người sử dụng:\*\* Khách hàng, quản trị viên.
+**Người sử dụng:** Khách hàng, quản trị viên.
 
 
 
-\*\*Mức độ ưu tiên:\*\* Bắt buộc.
+**Mức độ ưu tiên:** Bắt buộc.
 
 
 
-\*\*Tiêu chí nghiệm thu:\*\* Phí được tính và lưu đúng vào đơn; ghi tạm tính khi thiếu địa chỉ; khách xem đơn của mình; chỉ quản trị viên được cập nhật trạng thái hợp lệ.
+**Tiêu chí nghiệm thu:** Phí được tính và lưu đúng vào đơn; ghi tạm tính khi thiếu địa chỉ; khách xem đơn của mình; chỉ quản trị viên được cập nhật trạng thái hợp lệ.
 
 
 
-\### FR13. Khuyến mãi và voucher
+### FR13. Khuyến mãi và voucher
 
 
 
-\*\*Mô tả:\*\* Quản lý giảm giá sản phẩm, voucher đơn hàng và điều kiện áp dụng.
+**Mô tả:** Quản lý giảm giá sản phẩm, voucher đơn hàng và điều kiện áp dụng.
 
 
 
-\*\*Người sử dụng:\*\* Quản trị viên, khách hàng.
+**Người sử dụng:** Quản trị viên, khách hàng.
 
 
 
-\*\*Mức độ ưu tiên:\*\* Bắt buộc.
+**Mức độ ưu tiên:** Bắt buộc.
 
 
 
-\*\*Tiêu chí nghiệm thu:\*\* Kiểm tra thời hạn, ngưỡng đơn, mức giảm, giảm trần, lượt dùng và đối tượng nếu có; tính đúng tổng theo quy tắc kết hợp ưu đãi; báo rõ mã không hợp lệ.
+**Tiêu chí nghiệm thu:** Kiểm tra thời hạn, ngưỡng đơn, mức giảm, giảm trần, lượt dùng và đối tượng nếu có; tính đúng tổng theo quy tắc kết hợp ưu đãi; báo rõ mã không hợp lệ.
 
 
 
-\### FR14. Quản trị dữ liệu cửa hàng
+### FR14. Quản trị dữ liệu cửa hàng
 
 
 
-\*\*Mô tả:\*\* Quản lý sản phẩm, danh mục, nhóm hàng và người dùng.
+**Mô tả:** Quản lý sản phẩm, danh mục, nhóm hàng và người dùng.
 
 
 
-\*\*Người sử dụng:\*\* Quản trị viên.
+**Người sử dụng:** Quản trị viên.
 
 
 
-\*\*Mức độ ưu tiên:\*\* Bắt buộc.
+**Mức độ ưu tiên:** Bắt buộc.
 
 
 
-\*\*Tiêu chí nghiệm thu:\*\* Thêm, xem, sửa, ngừng sử dụng theo quyền; kiểm tra dữ liệu bắt buộc, mã trùng, giá và tồn âm; không làm mất lịch sử đơn khi thay đổi sản phẩm.
+**Tiêu chí nghiệm thu:** Thêm, xem, sửa, ngừng sử dụng theo quyền; kiểm tra dữ liệu bắt buộc, mã trùng, giá và tồn âm; không làm mất lịch sử đơn khi thay đổi sản phẩm.
 
 
 
-\### FR15. Quản lý đơn và tồn kho
+### FR15. Quản lý đơn và tồn kho
 
 
 
-\*\*Mô tả:\*\* Xử lý trạng thái đơn và số lượng hàng khả dụng.
+**Mô tả:** Xử lý trạng thái đơn và số lượng hàng khả dụng.
 
 
 
-\*\*Người sử dụng:\*\* Quản trị viên.
+**Người sử dụng:** Quản trị viên.
 
 
 
-\*\*Mức độ ưu tiên:\*\* Bắt buộc.
+**Mức độ ưu tiên:** Bắt buộc.
 
 
 
-\*\*Tiêu chí nghiệm thu:\*\* Chỉ chuyển trạng thái hợp lệ; giữ, trừ và hoàn tồn nhất quán; hai đơn cạnh tranh sản phẩm cuối không làm vượt tồn; thao tác lặp không cập nhật tồn nhiều lần.
+**Tiêu chí nghiệm thu:** Chỉ chuyển trạng thái hợp lệ; giữ, trừ và hoàn tồn nhất quán; hai đơn cạnh tranh sản phẩm cuối không làm vượt tồn; thao tác lặp không cập nhật tồn nhiều lần.
 
 
 
-\### FR16. Quản trị quy tắc Builder
+### FR16. Quản trị quy tắc Builder
 
 
 
-\*\*Mô tả:\*\* Cấu hình nhu cầu, công dụng, sức chứa, mức ưu tiên và phiên bản quy tắc.
+**Mô tả:** Cấu hình nhu cầu, công dụng, sức chứa, mức ưu tiên và phiên bản quy tắc.
 
 
 
-\*\*Người sử dụng:\*\* Quản trị viên.
+**Người sử dụng:** Quản trị viên.
 
 
 
-\*\*Mức độ ưu tiên:\*\* Bắt buộc.
+**Mức độ ưu tiên:** Bắt buộc.
 
 
 
-\*\*Tiêu chí nghiệm thu:\*\* Kiểm tra quy tắc trước khi phát hành; lưu mã phiên bản và nhật ký thay đổi; đơn đã chốt không đổi theo phiên bản mới.
+**Tiêu chí nghiệm thu:** Kiểm tra quy tắc trước khi phát hành; lưu mã phiên bản và nhật ký thay đổi; đơn đã chốt không đổi theo phiên bản mới.
 
 
 
-\### FR17. Dashboard
+### FR17. Dashboard
 
 
 
-\*\*Mô tả:\*\* Thống kê hoạt động cửa hàng.
+**Mô tả:** Thống kê hoạt động cửa hàng.
 
 
 
-\*\*Người sử dụng:\*\* Quản trị viên.
+**Người sử dụng:** Quản trị viên.
 
 
 
-\*\*Mức độ ưu tiên:\*\* Bắt buộc.
+**Mức độ ưu tiên:** Bắt buộc.
 
 
 
-\*\*Tiêu chí nghiệm thu:\*\* Có doanh thu, số đơn, sản phẩm bán chạy, chờ giao và số khách; định nghĩa rõ trạng thái, thời gian tính; kết quả khớp dữ liệu kiểm thử.
+**Tiêu chí nghiệm thu:** Có doanh thu, số đơn, sản phẩm bán chạy, chờ giao và số khách; định nghĩa rõ trạng thái, thời gian tính; kết quả khớp dữ liệu kiểm thử.
 
 
 
-\### FR18. Checklist và email nhắc
+### FR18. Checklist và email nhắc
 
 
 
-\*\*Mô tả:\*\* Tạo danh sách chuẩn bị và gửi email theo ngày khách đăng ký.
+**Mô tả:** Tạo danh sách chuẩn bị và gửi email theo ngày khách đăng ký.
 
 
 
-\*\*Người sử dụng:\*\* Khách hàng.
+**Người sử dụng:** Khách hàng.
 
 
 
-\*\*Mức độ ưu tiên:\*\* Nâng cao có điều kiện.
+**Mức độ ưu tiên:** Nâng cao có điều kiện.
 
 
 
-\*\*Tiêu chí nghiệm thu nếu triển khai:\*\* Checklist khớp dữ liệu; chỉ gửi cho khách đăng ký; cho đổi hoặc hủy lịch; xử lý hủy đơn; không gửi trùng; không dùng lịch nhắc để cam kết thời điểm giao hàng.
+**Tiêu chí nghiệm thu nếu triển khai:** Checklist khớp dữ liệu; chỉ gửi cho khách đăng ký; cho đổi hoặc hủy lịch; xử lý hủy đơn; không gửi trùng; không dùng lịch nhắc để cam kết thời điểm giao hàng.
 
 
 
-\## 5. Yêu cầu phi chức năng
+## 5. Yêu cầu phi chức năng
 
 
 
-\### Giao diện
+### Giao diện
 
 
 
@@ -498,7 +498,7 @@ Có ít nhất ba tương tác có mục đích UX: báo lỗi đầu vào Build
 
 
 
-\### Kiến trúc và kết nối
+### Kiến trúc và kết nối
 
 
 
@@ -514,7 +514,7 @@ Không để Frontend tự quyết định giá, mức giảm, tồn kho hoặc 
 
 
 
-\### Bảo mật
+### Bảo mật
 
 
 
@@ -534,7 +534,7 @@ Hình ảnh tải lên phải được kiểm tra quyền, loại và dung lư�
 
 
 
-\### Nhất quán dữ liệu
+### Nhất quán dữ liệu
 
 
 
@@ -546,7 +546,7 @@ Không tồn âm, không ghi nhận đơn hoặc thanh toán trùng.
 
 
 
-\### Kiểm thử
+### Kiểm thử
 
 
 
@@ -562,7 +562,7 @@ Lưu kết quả mong đợi, thực tế, lỗi và minh chứng. Các mục ti
 
 
 
-\### Triển khai và bảo trì
+### Triển khai và bảo trì
 
 
 
@@ -574,7 +574,7 @@ Mã nguồn có cấu trúc, lịch sử đóng góp, nguồn tài nguyên và n
 
 
 
-\## 6. Giới hạn và giả định
+## 6. Giới hạn và giả định
 
 
 
@@ -602,21 +602,21 @@ Các chính sách cần chốt trước khi triển khai phần liên quan:
 
 
 
-\* Cách đếm SKU, biến thể và định lượng từng tình huống.
+* Cách đếm SKU, biến thể và định lượng từng tình huống.
 
-\* Cách chọn sản phẩm và xử lý thay món vượt ngân sách.
+* Cách chọn sản phẩm và xử lý thay món vượt ngân sách.
 
-\* Cơ chế đăng nhập, thời hạn phiên và giữ lựa chọn Builder.
+* Cơ chế đăng nhập, thời hạn phiên và giữ lựa chọn Builder.
 
-\* Điều kiện đánh giá sau mua và số lần chỉnh sửa.
+* Điều kiện đánh giá sau mua và số lần chỉnh sửa.
 
-\* Bảng phí, cách làm tròn và kết hợp ưu đãi.
+* Bảng phí, cách làm tròn và kết hợp ưu đãi.
 
-\* Thời điểm giữ tồn, thời hạn thanh toán, hủy đơn và kết quả thanh toán muộn.
+* Thời điểm giữ tồn, thời hạn thanh toán, hủy đơn và kết quả thanh toán muộn.
 
-\* Quy trình trạng thái đơn và công thức dashboard.
+* Quy trình trạng thái đơn và công thức dashboard.
 
-\* Cách xử lý bộ đang tạo khi quy tắc được cập nhật.
+* Cách xử lý bộ đang tạo khi quy tắc được cập nhật.
 
 
 
