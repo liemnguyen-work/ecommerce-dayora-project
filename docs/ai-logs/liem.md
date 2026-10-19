@@ -232,3 +232,95 @@ Codex kiểm tra đường dẫn nội bộ và phạm vi thay đổi; Liêm đ�
 Đã đọc README hiện tại, xác nhận không còn escape Markdown ở các ký hiệu đã kiểm tra và có đúng một mục 7. Tám tệp đích đều tồn tại. Bản chuẩn bị giữ nguyên byte trước mục 7, log giữ nguyên toàn bộ byte cũ. Chưa kiểm tra giao diện GitHub sau push hoặc website demo, chưa chạy mã ứng dụng.
 
 Tệp thay đổi: README.md và docs/ai-logs/liem.md. Không tự commit/push.
+
+---
+
+## Cấu hình tệp bỏ qua Git / LIEM-20261019-A5B97F16-006
+
+* Thời gian ghi: 2026-10-19T22:24:18+07:00.
+* Thời gian thực hiện: Đợt kiểm tra thư mục dự án được ghi nhận tại mốc trên.
+* Mã phiên nhật ký: LIEM-20261019-A5B97F16.
+* Người prompt: Liêm.
+* Loại mục: Hoạt động cấu hình repository.
+* Liên quan: Tiếp nối hoàn thiện liên kết README; chưa có Issue được cung cấp.
+
+### Công cụ
+
+Codex; model chưa ghi nhận.
+
+### Mục đích
+
+Tạo .gitignore phù hợp Node.js, NestJS, React/Vite và Supabase; bỏ thư viện, build, cache, cấu hình bí mật nhưng giữ tài liệu và nhật ký.
+
+### Prompt
+
+Tóm lược: Liêm xác nhận hoàn thành bước README và tiếp tục cấu hình .gitignore cho bộ công nghệ mới theo trình tự đã thống nhất.
+
+### Kết quả đề xuất
+
+Chuẩn bị .gitignore cho node_modules, dist/build, cache, coverage, .env, file service cục bộ và thiết lập cá nhân. Cho phép .env.example/sample/template chỉ chứa giá trị minh họa; không loại lockfile, migration, docs hoặc AI log.
+
+### Phản biện
+
+Không dùng mẫu PHP/Laravel cũ. Không loại mọi tệp SQL vì có thể mất migration/dữ liệu mẫu cần theo dõi. Không mặc định .gitignore xóa được bí mật đã commit. Chưa có phản hồi duyệt riêng từ người dùng.
+
+### Quyết định của nhóm
+
+Thực hiện cấu hình theo công nghệ hiện tại; không suy ra đã có hệ thống chạy hoặc đã quét toàn bộ lịch sử Git. Không tự tạo tài khoản, khóa hoặc thay đổi dịch vụ.
+
+### Người kiểm tra
+
+Codex kiểm tra nội dung bản chuẩn bị; Liêm rà soát trước commit/push. Kết quả thử Git thực tế, nếu có, sẽ được ghi ở mục kiểm tra tiếp nối thay vì sửa mục này.
+
+### Kiểm tra và minh chứng
+
+Xác nhận .gitignore chưa tồn tại trước khi chuẩn bị; giữ nguyên byte của log cũ. Bản chuẩn bị dùng các mẫu áp dụng được cho thư mục Frontend/Backend lồng nhau. Chưa cài dependency, chưa chạy ứng dụng; việc chuẩn bị không chứng minh đã push hoặc mọi dữ liệu bí mật đều được bảo vệ.
+
+Tệp: .gitignore và docs/ai-logs/liem.md. Không tự commit/push.
+
+---
+
+## Kiểm tra cấu hình Git / LIEM-20261019-A5B97F16-007
+
+* Thời gian ghi: 2026-10-19T22:28:00+07:00.
+* Thời gian thực hiện: Kiểm tra trực tiếp trong đợt làm việc tại mốc trên.
+* Mã phiên nhật ký: LIEM-20261019-A5B97F16.
+* Người prompt: Liêm.
+* Loại mục: Kiểm tra.
+* Liên quan: LIEM-20261019-A5B97F16-006.
+
+### Công cụ
+
+Codex và Git cục bộ.
+
+### Mục đích
+
+Xác minh tệp .gitignore đã lưu và các mẫu bỏ qua hoạt động đúng trước khi bàn giao.
+
+### Prompt
+
+Tóm lược: Người dùng xác nhận “done”; Codex kiểm tra trạng thái thực tế để hướng dẫn bước tiếp theo.
+
+### Kết quả đề xuất
+
+Hai tệp đã lưu có SHA256 khớp bản chuẩn bị. Git kiểm tra thành công 10 đường dẫn cần bỏ qua và 10 đường dẫn cần giữ khả năng theo dõi.
+
+### Phản biện
+
+Trạng thái thực tế vẫn có .gitignore chưa được theo dõi và log Liêm đã sửa. Vì vậy không suy ra lời xác nhận “done” chứng minh hai tệp này đã được commit hoặc push. Chưa quét lịch sử Git hoặc chạy ứng dụng.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới. Bàn giao kết quả kiểm tra và hướng dẫn Liêm kiểm tra, commit, push hai tệp liên quan.
+
+### Người kiểm tra
+
+Codex kiểm tra trực tiếp bằng Git; chờ Liêm rà soát nội dung trước khi commit/push.
+
+### Kiểm tra và minh chứng
+
+Git check-ignore với --no-index: bỏ qua .env, backend/.env.production, frontend/.env.local, frontend/node_modules/react/index.js, backend/dist/main.js, frontend/dist/index.html, coverage/result.json, frontend/.vite/cache.json, backend/supabase/.temp/project-ref và backend/debug.log.
+
+Các đường dẫn không bị bỏ qua: README.md, REQUIREMENTS.md, AGENTS.md, AI_USAGE_LOG.md, docs/ai-logs/liem.md, package-lock.json, backend/package-lock.json, backend/.env.example, frontend/.env.template và supabase/migrations/001_init.sql. Đây là kiểm tra mẫu đường dẫn, không khẳng định các tệp giả định đều đã tồn tại.
+
+Trạng thái Git tại thời điểm kiểm tra: main...origin/main; log Liêm có thay đổi, .gitignore là tệp mới. Chưa fetch để xác minh trạng thái mới nhất trên máy chủ. Giữ nguyên toàn bộ byte của log trước mục bổ sung này. Không tự commit/push.
