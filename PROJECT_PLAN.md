@@ -1,12 +1,12 @@
-\# Project Plan
+# Project Plan
 
 
 
-\## 1. Thành viên và vai trò
+## 1. Thành viên và vai trò
 
 
 
-\### Liêm: Trưởng nhóm kiêm BA
+### Liêm: Trưởng nhóm kiêm BA
 
 
 
@@ -22,7 +22,7 @@ Phụ trách kế hoạch, ghi nhận quyết định, thay đổi phạm vi và
 
 
 
-\### Đạt: Product Designer, UI/UX
+### Đạt: Product Designer, UI/UX
 
 
 
@@ -38,7 +38,7 @@ Chuẩn bị bộ thành phần, tài nguyên có nguồn và hỗ trợ Fronten
 
 
 
-\### Thành: Frontend khách hàng
+### Thành: Frontend khách hàng
 
 
 
@@ -54,7 +54,7 @@ Phối hợp Hoàn kết nối REST API; xử lý trạng thái tải, lỗi và
 
 
 
-\### Phúc: Frontend quản trị
+### Phúc: Frontend quản trị
 
 
 
@@ -70,7 +70,7 @@ Phối hợp Châu kết nối REST API và kiểm tra biểu mẫu, bảng dữ
 
 
 
-\### Hoàn: Backend khách hàng và giao dịch
+### Hoàn: Backend khách hàng và giao dịch
 
 
 
@@ -86,7 +86,7 @@ Phối hợp Châu thống nhất cơ sở dữ liệu, quy tắc đơn, tồn k
 
 
 
-\### Châu: Backend quản trị và dữ liệu
+### Châu: Backend quản trị và dữ liệu
 
 
 
@@ -102,7 +102,7 @@ Phát triển module NestJS cho quản trị, đơn hàng, tồn kho, ưu đãi,
 
 
 
-\### Ngọc: QA/Tester
+### Ngọc: QA/Tester
 
 
 
@@ -118,7 +118,7 @@ Ghi nhận lỗi, kiểm tra lại sau sửa và phối hợp thử nghiệm ng�
 
 
 
-\### Kiệt: DevOps Engineer
+### Kiệt: DevOps Engineer
 
 
 
@@ -138,7 +138,7 @@ Mỗi công việc có một người chịu trách nhiệm chính. Người ph�
 
 
 
-\## 2. Các giai đoạn
+## 2. Các giai đoạn
 
 
 
@@ -146,7 +146,7 @@ Thời gian dự kiến là 8 tuần. Tuần 1 tính từ ngày nhóm bắt đ�
 
 
 
-\### Giai đoạn 1: Khảo sát và xác định yêu cầu
+### Giai đoạn 1: Khảo sát và xác định yêu cầu
 
 
 
@@ -162,7 +162,7 @@ Kết quả: Yêu cầu làm căn cứ triển khai và danh sách Issues.
 
 
 
-\### Giai đoạn 2: Thiết kế giao diện
+### Giai đoạn 2: Thiết kế giao diện
 
 
 
@@ -178,7 +178,7 @@ Kết quả: Thiết kế đủ rõ để Frontend triển khai.
 
 
 
-\### Giai đoạn 3: Xây dựng Frontend
+### Giai đoạn 3: Xây dựng Frontend
 
 
 
@@ -194,7 +194,7 @@ Kết quả: Giao diện sử dụng được và kết nối dữ liệu thực
 
 
 
-\### Giai đoạn 4: Phát triển Backend và cơ sở dữ liệu
+### Giai đoạn 4: Phát triển Backend và cơ sở dữ liệu
 
 
 
@@ -214,7 +214,7 @@ Frontend và Backend thực hiện song song sau khi thống nhất cấu trúc 
 
 
 
-\### Giai đoạn 5: Tích hợp và kiểm thử
+### Giai đoạn 5: Tích hợp và kiểm thử
 
 
 
@@ -230,7 +230,7 @@ Kết quả: Kết quả kiểm thử, lỗi đã xử lý và danh sách giới
 
 
 
-\### Giai đoạn 6: Triển khai và hoàn thiện
+### Giai đoạn 6: Triển khai và hoàn thiện
 
 
 
@@ -246,7 +246,7 @@ Kết quả: Website, hướng dẫn chạy, dữ liệu demo và minh chứng t
 
 
 
-\## 3. Công việc
+## 3. Công việc
 
 
 
@@ -310,11 +310,11 @@ FR18 chưa nằm trong lịch bắt buộc. Nếu thực hiện, nhóm tạo cô
 
 
 
-\## 4. Rủi ro
+## 4. Rủi ro
 
 
 
-\### Quá tải hoặc phân công không đều
+### Quá tải hoặc phân công không đều
 
 
 
@@ -322,7 +322,7 @@ Rà soát hằng tuần, chia nhỏ công việc và điều phối hỗ trợ. 
 
 
 
-\### Chưa quen bộ công nghệ mới
+### Chưa quen bộ công nghệ mới
 
 
 
@@ -330,7 +330,7 @@ Dành thời gian đầu để chạy thử React, NestJS và Supabase; xây m�
 
 
 
-\### Frontend và Backend kết nối không thống nhất
+### Frontend và Backend kết nối không thống nhất
 
 
 
@@ -338,7 +338,7 @@ Thống nhất đường dẫn API, dữ liệu gửi nhận, quyền và lỗi 
 
 
 
-\### Quy tắc Builder sai hoặc thiếu căn cứ
+### Quy tắc Builder sai hoặc thiếu căn cứ
 
 
 
@@ -346,7 +346,7 @@ Chuẩn hóa công dụng, định lượng và sức chứa; ghi rõ dữ liệ
 
 
 
-\### Sai đơn, thanh toán, tồn kho hoặc voucher
+### Sai đơn, thanh toán, tồn kho hoặc voucher
 
 
 
@@ -354,7 +354,7 @@ Kiểm tra nghiệp vụ tại Backend; sử dụng cơ chế giao dịch và ki
 
 
 
-\### Lộ cấu hình hoặc thiếu kiểm tra quyền
+### Lộ cấu hình hoặc thiếu kiểm tra quyền
 
 
 
@@ -362,7 +362,7 @@ Không đưa khóa bí mật lên GitHub hoặc Frontend. Kiểm tra quyền t�
 
 
 
-\### Dịch vụ ngoài hoặc triển khai gặp lỗi
+### Dịch vụ ngoài hoặc triển khai gặp lỗi
 
 
 
@@ -370,7 +370,7 @@ Thử VNPay và môi trường triển khai sớm; kiểm tra kết nối, HTTPS
 
 
 
-\### Yêu cầu thay đổi hoặc tài liệu không đồng bộ
+### Yêu cầu thay đổi hoặc tài liệu không đồng bộ
 
 
 
@@ -378,7 +378,7 @@ Ghi lý do, người thống nhất và tác động trước thay đổi lớn.
 
 
 
-\### Thiếu minh chứng hoặc không giải thích được đầu ra AI
+### Thiếu minh chứng hoặc không giải thích được đầu ra AI
 
 
 
