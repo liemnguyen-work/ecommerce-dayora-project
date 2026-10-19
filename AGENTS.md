@@ -118,7 +118,7 @@ Nếu yêu cầu giao việc đã xác nhận rõ phương án và phạm vi, th
 
 5. Báo giới hạn hoặc lỗi còn tồn.
 
-6. Cập nhật tài liệu, Issue và AI_USAGE_LOG.md khi liên quan.
+6. Cập nhật tài liệu, Issue và nối thêm mục vào log cá nhân theo quy tắc ghi nhật ký AI.
 
 Không ghi công việc hoàn thành hoặc kiểm thử thành công khi chưa có kết quả xác minh.
 
@@ -126,24 +126,21 @@ Chỉ commit các tệp liên quan. Không tự force push, viết lại lịch 
 
 ### Cập nhật nhật ký sử dụng AI
 
-Sau mỗi công việc đáng kể có sử dụng AI, Codex phải chủ động cập nhật AI_USAGE_LOG.md trong cùng đợt thay đổi, trước khi báo hoàn tất. Không đợi thành viên nhắc lại.
+Trước khi làm việc, đọc [quy tắc ghi log](docs/ai-logging-rules.md), [mẫu mục log](docs/ai-logs/TEMPLATE.md) và xác nhận tên thành viên đang yêu cầu. Không suy tên thành viên từ tài khoản Git. Nếu chưa có tên đã xác nhận, hỏi trước khi gán đóng góp cá nhân.
 
-Quy tắc này áp dụng khi Codex đang làm trực tiếp trong repository và có quyền sửa tệp. Tệp log không tự thu thập lịch sử từ tài khoản, máy hoặc công cụ AI khác.
+Sau mỗi công việc đáng kể có sử dụng AI, kể cả phân tích, brainstorm, sửa tài liệu, viết mã, sửa lỗi và kiểm thử, Codex phải chủ động nối thêm mục vào docs/ai-logs/<thanh-vien>.md trong cùng đợt thay đổi, trước khi báo hoàn tất. Không đợi nhắc lại. Tệp AI_USAGE_LOG.md ở gốc là trang tổng hợp và dẫn tới log từng người.
 
-* Chia nhật ký theo giai đoạn thực tế của dự án; trong mỗi giai đoạn ghi riêng từng thành viên và công cụ đã dùng.
-* Chỉ ghi tên thành viên đã được người dùng xác nhận trong phiên làm việc. Không tự suy tên từ tài khoản Git hoặc gán công việc cho thành viên khác. Nếu chưa rõ, hỏi tên trước khi ghi đóng góp cá nhân.
-* Mỗi mục gồm: công việc hoặc Issue; hỏi AI gì; kết quả được sử dụng; phần bỏ hoặc sửa và lý do; cách kiểm tra và kết quả; tệp liên quan; phản hồi hoặc quyết định đã được xác nhận.
-* Phân biệt rõ đề xuất của AI, thay đổi đã thực hiện và kết quả được thành viên kiểm tra. Nếu chưa có phản hồi, ghi "Chờ thành viên kiểm tra", không tự ghi "Nhóm thống nhất".
-* Chỉ ghi kết quả kiểm thử đã thực sự chạy. Nếu chưa chạy hoặc chỉ kiểm tra nội dung, ghi đúng phạm vi và nguyên nhân.
-* Với thao tác thành viên tự làm bên ngoài Codex, chỉ ghi khi có thông tin hoặc minh chứng người dùng cung cấp. Không coi hướng dẫn đã gửi là thao tác đã hoàn thành.
-* Gộp các lượt trao đổi cùng một công việc, không chép từng tin nhắn hoặc suy luận nội bộ. Giữ prompt chính hoặc bản tóm lược có ghi rõ là tóm lược.
-* Có thể dẫn Issue hoặc commit đã tồn tại để đối chiếu; không bịa mã commit và không yêu cầu mã của commit chưa được tạo.
-* Chỉ thêm hoặc cập nhật mục của công việc hiện tại; giữ nguyên phần của các thành viên khác. Kiểm tra nội dung mới nhất và giải quyết xung đột có trao đổi, không ghi đè nhật ký chung.
-* Nếu AI_USAGE_LOG.md chưa có, tạo tệp với phần nguyên tắc và mục phát sinh thực tế. Không điền trước các giai đoạn, đóng góp hoặc kết quả chưa xảy ra.
-* Không ghi mật khẩu, token, khóa bí mật, dữ liệu cá nhân nhạy cảm hoặc toàn bộ hội thoại riêng tư vào log.
-* Nhắc thành viên kiểm tra mục log cùng các tệp thay đổi. Cập nhật log không đồng nghĩa được phép tự commit hoặc push.
+Mỗi mục có thời gian ghi thực tế theo Asia/Bangkok (UTC+07:00), mã phiên nhật ký, mã mục riêng, phase, loại hoạt động và đủ 7 trường: Công cụ, Mục đích, Prompt, Kết quả đề xuất, Phản biện, Quyết định của nhóm, Người kiểm tra. Thêm cách kiểm tra, tệp và Issue/commit đã tồn tại nếu có.
 
-Nếu không thể cập nhật log do thiếu quyền, xung đột hoặc thiếu dữ liệu, báo rõ trong kết quả bàn giao và cung cấp mục log để thành viên bổ sung; không tuyên bố log đã được cập nhật.
+Nhật ký chỉ được nối thêm: không sửa, xóa, sắp xếp lại hoặc viết lại mục cũ, kể cả khi mục còn chờ kiểm tra. Sai sót, phản hồi duyệt, kết quả kiểm thử mới và thay đổi quyết định phải được ghi bằng mục bổ sung có dẫn mã mục trước. Không cập nhật ngược trạng thái mục cũ.
+
+Chỉ ghi công việc, phản hồi và quyết định thực tế quan sát được hoặc được người dùng cung cấp. Không tự coi đề xuất là được nhóm duyệt. Không viết thay phần của người khác. Không điền trước các phase hoặc kết quả chưa xảy ra. Không ghi suy luận nội bộ, bí mật hay toàn bộ hội thoại riêng tư.
+
+Nếu dùng AI bên ngoài Codex, chỉ tổng hợp khi thành viên cung cấp prompt/kết quả; ghi rõ nguồn và người cung cấp. Nếu là tổng hợp hồi cứu, ghi thời gian tổng hợp thực tế và thời gian thực hiện là chưa xác minh khi không có minh chứng.
+
+Cơ chế này là quy tắc hành vi cho Codex trong repo có quyền ghi, không phải tiến trình tự theo dõi khi Codex không chạy, không tự biết các cuộc chat khác và không bảo đảm tự thu thập mọi thao tác. Nếu không ghi được do thiếu quyền, xung đột hoặc thiếu dữ liệu, báo rõ và cung cấp mục chờ ghi. Không tuyên bố đã cập nhật khi chưa ghi thành công.
+
+Cuối công việc, nêu tệp log và mã mục đã thêm, kết quả kiểm tra và trạng thái duyệt. Việc ghi log không tự cho phép commit hoặc push. Thành viên kiểm tra trước khi đưa thay đổi lên kho chung.
 
 ## 5. Security
 
@@ -185,6 +182,6 @@ Không tự quyết định chính sách nghiệp vụ chưa được nhóm th�
 
 Không bịa kết quả khảo sát, kiểm thử, triển khai hoặc đóng góp.
 
-Đầu ra AI phải được thành viên phụ trách kiểm tra và ghi nhận trung thực trong AI_USAGE_LOG.md.
+Đầu ra AI phải được thành viên phụ trách kiểm tra và ghi nhận trung thực trong log cá nhân được dẫn từ AI_USAGE_LOG.md.
 
 Cập nhật tài liệu này khi nhóm thống nhất thay đổi công nghệ, kiến trúc hoặc quy trình.
