@@ -52,3 +52,48 @@ Codex kiểm tra cấu trúc bản chuẩn bị; Liêm cần đọc lại kết 
 Đã đọc trực tiếp AGENTS.md và AI_USAGE_LOG.md trên máy, xác nhận thư mục docs chưa tồn tại. Bản chuẩn bị giữ nguyên sáu mục chính của AGENTS, giữ nguyên byte đầu của log cũ và tạo đúng các đường dẫn cá nhân. Mẫu có đủ bảy trường, không gán hoạt động cho bảy thành viên còn lại.
 
 Tệp liên quan: AGENTS.md, AI_USAGE_LOG.md, docs/ai-logging-rules.md, docs/ai-logs/TEMPLATE.md và tám log cá nhân. Chưa chạy mã ứng dụng, chưa kiểm thử việc tuân thủ quy tắc trong các phiên Codex của thành viên khác; chưa có cơ chế CI khóa sửa log. Việc chuẩn bị tệp chưa chứng minh đã push lên GitHub.
+
+---
+
+## Khởi tạo tài liệu khảo sát / LIEM-20261019-A5B97F16-002
+
+* Thời gian ghi: 2026-10-19T21:57:46+07:00.
+* Thời gian thực hiện: Đợt đọc tệp hiện tại được ghi nhận tại mốc trên; không phải thời gian thực hiện khảo sát đối thủ.
+* Mã phiên nhật ký: LIEM-20261019-A5B97F16.
+* Người prompt: Liêm.
+* Loại mục: Hoạt động soạn tài liệu.
+* Liên quan: Tiếp nối hướng dẫn tạo docs/competitor-analysis.md; chưa có Issue được cung cấp.
+
+### Công cụ
+
+Codex; không tự suy tên model.
+
+### Mục đích
+
+Chuyển kết quả khảo sát nhóm đã cung cấp thành tài liệu dự án, có bảng so sánh ba website, bài học và lý do chọn phương án cho DAYORA.
+
+### Prompt
+
+Tóm lược: Liêm đồng ý tiếp tục tạo docs/competitor-analysis.md từ FanFan, Đi Outdoor và WeTrek. Nội dung viết trực tiếp theo dự án, không nhắc số nhiệm vụ bài tập.
+
+### Kết quả đề xuất
+
+Chuẩn bị nội dung tệp khảo sát với sáu tiêu chí so sánh, nhận xét từng website, phương án áp dụng, đường dẫn và tình trạng minh chứng. Bản nguồn là kết quả ngày 18/10/2026 nhóm cung cấp; không thực hiện lại thao tác khảo sát trực tiếp trong đợt này.
+
+### Phản biện
+
+Giữ phân biệt ghi nhận đối thủ với chức năng đề xuất; không khẳng định tính độc quyền của Builder. Không thay đổi yêu cầu tối thiểu năm thuộc tính lọc theo đề xuất giảm còn bốn. Ảnh chưa được sao chép vào repo nên không tạo link ảnh giả. Chưa có phản hồi mới từ người dùng về bản soạn.
+
+### Quyết định của nhóm
+
+Liêm cho phép soạn tài liệu theo hướng đã đề xuất. Chưa có xác nhận toàn nhóm cho từng phương án triển khai hoặc duyệt nội dung cuối; không tự coi việc tạo tệp là đồng ý mọi yêu cầu.
+
+### Người kiểm tra
+
+Codex đối chiếu nội dung với thông tin nguồn đã đọc và cấu trúc bảng yêu cầu; Liêm cần đọc lại trước commit/push.
+
+### Kiểm tra và minh chứng
+
+Đã đọc AGENTS và quy tắc log; xác nhận tệp đích tồn tại nhưng trống, không ghi đè nội dung đã có. Kiểm tra bản chuẩn bị có ba website, sáu hàng tiêu chí, năm cột và không có ký tự Markdown bị thoát. Bản log mới giữ nguyên toàn bộ byte cũ. Chưa kiểm tra lại hoạt động các website hoặc cách GitHub render sau push, chưa sao chép ảnh và chưa chạy kiểm thử ứng dụng.
+
+Tệp thay đổi: docs/competitor-analysis.md và docs/ai-logs/liem.md. Nguồn: phần khảo sát trong tài liệu Working Space đã cung cấp. Bản chuẩn bị chưa phải bằng chứng đã commit/push.
