@@ -1,4 +1,4 @@
-\# DAYORA
+# DAYORA
 
 
 
@@ -6,7 +6,7 @@ Gói gọn đồ dùng, mở trọn cuộc vui.
 
 
 
-\## 1. Giới thiệu
+## 1. Giới thiệu
 
 
 
@@ -34,7 +34,7 @@ Dự án không kinh doanh thực phẩm chế biến, cho thuê đồ hoặc cu
 
 
 
-\## 2. Khách hàng mục tiêu
+## 2. Khách hàng mục tiêu
 
 
 
@@ -46,47 +46,47 @@ Khách hàng mục tiêu quan tâm đến tính tiện dụng, số lượng ph�
 
 
 
-\## 3. Chức năng chính
+## 3. Chức năng chính
 
 
 
-\### Khách hàng
+### Khách hàng
 
 
 
-\* Xem danh mục, chi tiết, biến thể và sản phẩm liên quan.
+* Xem danh mục, chi tiết, biến thể và sản phẩm liên quan.
 
-\* Tìm kiếm, lọc và sắp xếp sản phẩm.
+* Tìm kiếm, lọc và sắp xếp sản phẩm.
 
-\* Đăng ký, đăng nhập và quản lý hồ sơ.
+* Đăng ký, đăng nhập và quản lý hồ sơ.
 
-\* Sử dụng Kit Builder, xem lý do gợi ý và điều chỉnh bộ.
+* Sử dụng Kit Builder, xem lý do gợi ý và điều chỉnh bộ.
 
-\* Quản lý giỏ hàng, áp dụng voucher và đặt hàng.
+* Quản lý giỏ hàng, áp dụng voucher và đặt hàng.
 
-\* Thanh toán thử nghiệm qua VNPay Sandbox.
+* Thanh toán thử nghiệm qua VNPay Sandbox.
 
-\* Xem phí giao hàng, lịch sử và trạng thái đơn của mình.
+* Xem phí giao hàng, lịch sử và trạng thái đơn của mình.
 
-\* Xem sản phẩm đã xem và đánh giá sau mua khi đủ điều kiện.
-
-
-
-\### Quản trị viên
+* Xem sản phẩm đã xem và đánh giá sau mua khi đủ điều kiện.
 
 
 
-\* Quản lý sản phẩm, danh mục, nhóm hàng và người dùng.
-
-\* Quản lý đơn hàng, tồn kho, khuyến mãi và voucher.
-
-\* Quản lý cấu hình, phiên bản và nhật ký quy tắc Kit Builder.
-
-\* Xem dashboard doanh thu, số đơn, sản phẩm bán chạy, chờ giao và số khách hàng.
+### Quản trị viên
 
 
 
-\### Nguyên tắc của Kit Builder
+* Quản lý sản phẩm, danh mục, nhóm hàng và người dùng.
+
+* Quản lý đơn hàng, tồn kho, khuyến mãi và voucher.
+
+* Quản lý cấu hình, phiên bản và nhật ký quy tắc Kit Builder.
+
+* Xem dashboard doanh thu, số đơn, sản phẩm bán chạy, chờ giao và số khách hàng.
+
+
+
+### Nguyên tắc của Kit Builder
 
 
 
@@ -106,7 +106,7 @@ Nếu không tìm được bộ phù hợp, hệ thống thông báo nguyên nh�
 
 
 
-\### Phát triển nâng cao
+### Phát triển nâng cao
 
 
 
@@ -118,25 +118,25 @@ Các chức năng trên là phạm vi phát triển, chưa phải danh sách đ�
 
 
 
-\## 4. Thành viên
+## 4. Thành viên
 
 
 
-\* Liêm: Trưởng nhóm kiêm BA.
+* Liêm: Trưởng nhóm kiêm BA.
 
-\* Đạt: Product Designer, phụ trách UI/UX.
+* Đạt: Product Designer, phụ trách UI/UX.
 
-\* Thành: Frontend khách hàng.
+* Thành: Frontend khách hàng.
 
-\* Phúc: Frontend quản trị.
+* Phúc: Frontend quản trị.
 
-\* Hoàn: Backend khách hàng và giao dịch.
+* Hoàn: Backend khách hàng và giao dịch.
 
-\* Châu: Backend quản trị và dữ liệu.
+* Châu: Backend quản trị và dữ liệu.
 
-\* Ngọc: QA/Tester.
+* Ngọc: QA/Tester.
 
-\* Kiệt: DevOps Engineer, phụ trách tích hợp và triển khai.
+* Kiệt: DevOps Engineer, phụ trách tích hợp và triển khai.
 
 
 
@@ -144,7 +144,7 @@ Mỗi thành viên có đầu việc, đầu ra và điều kiện hoàn thành 
 
 
 
-\## 5. Công nghệ dự kiến
+## 5. Công nghệ dự kiến
 
 
 
@@ -152,7 +152,7 @@ Nhóm lựa chọn bộ công nghệ sau để triển khai DAYORA.
 
 
 
-\### Backend
+### Backend
 
 
 
@@ -164,7 +164,7 @@ Backend được chia thành các module, cung cấp REST API và xử lý nghi�
 
 
 
-\### Frontend
+### Frontend
 
 
 
@@ -180,7 +180,7 @@ Frontend kết nối Backend qua REST API.
 
 
 
-\### Database
+### Database
 
 
 
@@ -192,7 +192,7 @@ Các nghiệp vụ quan trọng về giá, voucher, đơn hàng, thanh toán và
 
 
 
-\### API / Services
+### API / Services
 
 
 
@@ -208,7 +208,7 @@ Phí giao hàng được tính theo bảng quy tắc trong Backend. Dịch vụ 
 
 
 
-\### Version Control
+### Version Control
 
 
 
@@ -220,7 +220,7 @@ GitHub Issues phục vụ phân công, theo dõi công việc và ghi nhận l�
 
 
 
-\### Công cụ bổ sung
+### Công cụ bổ sung
 
 
 
@@ -232,21 +232,21 @@ Môi trường triển khai cần hỗ trợ Frontend React, Backend Node.js, k�
 
 
 
-\## 6. Kế hoạch thực hiện
+## 6. Kế hoạch thực hiện
 
 
 
-1\. Khảo sát và thống nhất yêu cầu.
+1. Khảo sát và thống nhất yêu cầu.
 
-2\. Thiết kế giao diện.
+2. Thiết kế giao diện.
 
-3\. Phát triển Frontend.
+3. Phát triển Frontend.
 
-4\. Phát triển Backend và cơ sở dữ liệu.
+4. Phát triển Backend và cơ sở dữ liệu.
 
-5\. Tích hợp và kiểm thử.
+5. Tích hợp và kiểm thử.
 
-6\. Triển khai và hoàn thiện.
+6. Triển khai và hoàn thiện.
 
 
 
@@ -258,7 +258,7 @@ Thời gian dự kiến 8 tuần. Lịch cụ thể, người phụ trách, đ�
 
 
 
-\## 7. Liên kết
+## 7. Liên kết
 
 
 
