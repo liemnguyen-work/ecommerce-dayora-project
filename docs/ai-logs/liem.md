@@ -97,3 +97,48 @@ Codex đối chiếu nội dung với thông tin nguồn đã đọc và cấu t
 Đã đọc AGENTS và quy tắc log; xác nhận tệp đích tồn tại nhưng trống, không ghi đè nội dung đã có. Kiểm tra bản chuẩn bị có ba website, sáu hàng tiêu chí, năm cột và không có ký tự Markdown bị thoát. Bản log mới giữ nguyên toàn bộ byte cũ. Chưa kiểm tra lại hoạt động các website hoặc cách GitHub render sau push, chưa sao chép ảnh và chưa chạy kiểm thử ứng dụng.
 
 Tệp thay đổi: docs/competitor-analysis.md và docs/ai-logs/liem.md. Nguồn: phần khảo sát trong tài liệu Working Space đã cung cấp. Bản chuẩn bị chưa phải bằng chứng đã commit/push.
+
+---
+
+## Khởi tạo tài liệu phân quyền / LIEM-20261019-A5B97F16-003
+
+* Thời gian ghi: 2026-10-19T22:01:23+07:00.
+* Thời gian thực hiện: Đợt đọc yêu cầu được ghi nhận tại mốc trên; không suy thời điểm cũ.
+* Mã phiên nhật ký: LIEM-20261019-A5B97F16.
+* Người prompt: Liêm.
+* Loại mục: Hoạt động soạn tài liệu.
+* Liên quan: Tiếp nối hoàn thành tệp khảo sát, chuẩn bị docs/user-roles.md.
+
+### Công cụ
+
+Codex; model chưa ghi nhận.
+
+### Mục đích
+
+Mô tả quyền người dùng DAYORA, tách khỏi vai trò thành viên phát triển và thống nhất với yêu cầu hiện tại.
+
+### Prompt
+
+Tóm lược: Tiếp tục hoàn thiện tài liệu repository theo từng tệp sau khi Liêm báo đã hoàn thành bước khảo sát. Codex thực hiện phần vai trò người dùng theo thứ tự đã thống nhất.
+
+### Kết quả đề xuất
+
+Chuẩn bị bảng ba nhóm truy cập, quyền và giới hạn; nguyên tắc phân quyền React/NestJS/Supabase và các tình huống kiểm tra dự kiến. Không tự bổ sung guest checkout hoặc quyền hủy đơn chưa chốt.
+
+### Phản biện
+
+Đối chiếu REQUIREMENTS mục 3: giỏ và đặt hàng yêu cầu đăng nhập. Giữ bộ Builder qua đăng nhập, không chuyển theo đề xuất guest cart chưa được duyệt. Làm rõ tình huống kiểm tra chưa phải test đã chạy. Chưa có phản hồi mới từ thành viên.
+
+### Quyết định của nhóm
+
+Giữ phạm vi hiện tại trong REQUIREMENTS; các chính sách chưa rõ tiếp tục cần xác nhận. Liêm cho phép tiếp tục tài liệu, không suy ra toàn nhóm đã duyệt bản này.
+
+### Người kiểm tra
+
+Codex đối chiếu văn bản yêu cầu; Liêm kiểm tra trước khi commit/push. Chưa có kiểm thử API hoặc xác nhận duyệt riêng từ nhóm.
+
+### Kiểm tra và minh chứng
+
+Đọc quy tắc log và AGENTS trong đợt công việc liên tục; đọc trực tiếp mục Người dùng của REQUIREMENTS, xác nhận tệp đích chưa tồn tại. Kiểm tra đủ ba vai trò và quyền, link đến hai tệp gốc hiện có; giữ nguyên byte của log cũ trước phần nối. Chưa chạy ứng dụng hoặc kiểm tra quyền thực tế.
+
+Tệp: docs/user-roles.md và docs/ai-logs/liem.md. Không tự commit hoặc push trong đợt này.
