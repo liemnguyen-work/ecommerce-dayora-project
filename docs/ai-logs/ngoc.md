@@ -345,3 +345,46 @@ Codex kiểm tra đầu ra Git; Ngọc chưa review.
 ### Kiểm tra và minh chứng
 
 Git báo `could not read Username for 'https://github.com': Device not configured`, mã thoát 128. Không có bằng chứng push thành công. Mục bổ sung này ghi trong `docs/ai-logs/ngoc.md` sau commit `da1cca4`.
+
+---
+
+## P0 / ngoc-20261103-b7e2-09
+
+* Thời gian ghi: 2026-11-03T01:40:05+07:00
+* Thời gian thực hiện: Trong phiên ngày 03/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: ngoc-20261103-b7e2
+* Người prompt: Ngọc
+* Loại mục: Hoạt động
+* Liên quan: ngoc-20261103-b7e2-08; HW-P0-QA-1
+
+### Công cụ
+
+Codex, Git, GitHub Desktop.
+
+### Mục đích
+
+Hỗ trợ đăng nhập GitHub để tiếp tục đẩy nhánh của Ngọc.
+
+### Prompt
+
+Tóm lược: Ngọc yêu cầu thực hiện đăng nhập cho Git trên máy.
+
+### Kết quả đề xuất
+
+Đã kiểm tra: Git dùng credential helper `osxkeychain`; lệnh `gh` không có trong môi trường. Đã yêu cầu mở GitHub Desktop để Ngọc đăng nhập; chưa xác minh trạng thái đăng nhập hoặc quyền push, chưa thử push lại.
+
+### Phản biện
+
+Chưa có phản biện của Ngọc.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Codex kiểm tra cấu hình Git và trạng thái nhánh; Ngọc chưa xác nhận đăng nhập.
+
+### Kiểm tra và minh chứng
+
+`gh auth status` không chạy được vì không có lệnh `gh`; `git config --show-origin --get-all credential.helper` cho thấy `osxkeychain`. Lệnh mở GitHub Desktop trả mã 0, không chứng minh đăng nhập thành công. Trước khi ghi mục này, nhánh `KhanhNgoc` có 13 commit chưa đẩy.
