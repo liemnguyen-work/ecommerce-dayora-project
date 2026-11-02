@@ -1637,3 +1637,768 @@ Codex đối chiếu mã mục và kiểm tra bảo toàn phần log cũ; Liêm 
 ### Kiểm tra và minh chứng
 
 Đối chiếu 29 mã duy nhất ở nguồn không có trong đích trước khi nối. Tệp nguồn là docs/ai-logs/liem.md của repository DAYORA cũ; tệp đích là docs/ai-logs/liem.md và docs/ai-logs/AI_USAGE_LOG.md trong Setup. Không kiểm thử ứng dụng, không commit hoặc push.
+
+
+---
+
+## Học phân rã yêu cầu Buổi 2 / LIEM-20261103-C187C1CE-001
+
+* Thời gian ghi: 2026-11-03T02:46:06+07:00
+* Thời gian thực hiện: phiên hiện tại; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261103-C187C1CE
+* Người prompt: Liêm (PM).
+* Phase: P0 — bài tập Buổi 2.
+* Loại mục: Hoạt động học tập.
+* Liên quan: Không có Issue được cung cấp.
+
+### Công cụ
+
+Codex; model chưa xác minh.
+
+### Mục đích
+
+Học phân rã yêu cầu, phân công, bàn giao và bằng chứng cho vai trò PM Buổi 2.
+
+### Prompt
+
+Tóm lược: Liêm đề nghị giải thích lần lượt, dùng ví dụ sát nhiệm vụ PM, hỏi từng câu và chờ trả lời; chỉ HTML5/CSS3, không làm hộ cả bài.
+
+### Kết quả đề xuất
+
+Đọc quy tắc Session 2, hướng dẫn và sổ bài tập; chuẩn bị giải thích phân rã yêu cầu gắn bốn trang và điều kiện kiểm tra; các phần còn lại chờ tiếp tục sau câu trả lời.
+
+### Phản biện
+
+Không suy bài đã hoàn thành, đã nộp hoặc vượt phạm vi HTML5/CSS3. Chưa có phản biện của Liêm đối với phần giải thích.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Codex đối chiếu hướng dẫn; Liêm chưa đánh giá nội dung.
+
+### Kiểm tra và minh chứng
+
+Tham khảo session2/AGENTS.md, docs/SESSION2-GUIDE.md và docs/ASSIGNMENTS.md; chưa kiểm thử ứng dụng hoặc sửa bài.
+
+
+---
+
+## Lập kế hoạch giao diện Buổi 2 / LIEM-20261103-54DF5070-001
+
+* Thời gian ghi: 2026-11-03T02:47:18+07:00
+* Thời gian thực hiện: phiên trao đổi hiện tại; thời điểm bắt đầu chưa xác minh.
+* Mã phiên: LIEM-20261103-54DF5070
+* Người prompt: Liêm (PM).
+* Phase: P0 — bài tập Buổi 2.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261103-C187C1CE-001.
+
+### Công cụ
+
+Codex; model chưa xác minh.
+
+### Mục đích
+
+Lập kế hoạch giao diện kế thừa thông tin Buổi 1 cho nhóm sinh viên.
+
+### Prompt
+
+Tóm lược: Liêm cung cấp bối cảnh DAYORA, yêu cầu kế hoạch bốn trang, thành phần chung, CSS/ảnh, phân công, thứ tự, tiêu chí và rủi ro; không viết mã hay đề xuất backend.
+
+### Kết quả đề xuất
+
+Đối chiếu SESSION2-GUIDE.md, đề xuất kế hoạch và phân công theo vai trò; công nghệ giới hạn HTML5/CSS3. Các bước là kế hoạch, không xác nhận hoàn thành.
+
+### Phản biện
+
+Không suy dữ liệu, nguồn ảnh hay kết quả kiểm thử; không coi nút giao diện là chức năng hoạt động. Liêm chưa phản biện bản đề xuất.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Codex đối chiếu hướng dẫn hiện có; Liêm và nhóm chưa duyệt kế hoạch.
+
+### Kiểm tra và minh chứng
+
+Đã đọc docs/SESSION2-GUIDE.md và session2/AGENTS.md; chưa sửa mã, chưa chạy test hay kiểm tra việc nộp.
+
+
+---
+
+## Chuẩn bị tài liệu bàn giao Buổi 2 / LIEM-20261103-F32512F5-001
+
+* Thời gian ghi: 2026-11-03T02:50:18+07:00
+* Thời gian thực hiện: phiên hiện tại; mốc bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261103-F32512F5
+* Người prompt: Liêm (PM).
+* Phase: P0 — Buổi 2.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261103-54DF5070-001.
+
+### Công cụ
+
+Codex; model chưa xác minh.
+
+### Mục đích
+
+Hoàn thiện các tài liệu còn thiếu và rà soát điều kiện bàn giao Buổi 2.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu hoàn thành các phần còn thiếu theo hướng dẫn Buổi 2.
+
+### Kết quả đề xuất
+
+Tạo session2/docs/plan.md, ui-design.md, ai-usage.md và session2/README.md dựa trên tài liệu và bằng chứng sẵn có.
+
+### Phản biện
+
+Không tự viết câu trả lời cá nhân, không tự nhận kiểm thử đạt hay nhóm đã duyệt; báo cáo AI giữ giới hạn của nguồn.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Codex đối chiếu tài liệu; Liêm và thành viên phụ trách chưa duyệt.
+
+### Kiểm tra và minh chứng
+
+Đọc quy tắc Session 2, hướng dẫn, báo cáo test và log hiện có; các bước kiểm bổ sung được báo theo kết quả thực tế. Không commit hoặc push.
+
+
+---
+
+## Bổ sung danh mục và kiểm tra Buổi 2 / LIEM-20261103-F32512F5-002
+
+* Thời gian ghi: 2026-11-03T02:51:30+07:00
+* Thời gian thực hiện: phiên hiện tại.
+* Mã phiên nhật ký: LIEM-20261103-F32512F5
+* Người prompt: Liêm (PM).
+* Phase: P0 — Buổi 2.
+* Loại mục: Hoạt động và kiểm tra.
+* Liên quan: LIEM-20261103-F32512F5-001.
+
+### Công cụ
+
+Codex và Python runtime; model chưa xác minh.
+
+### Mục đích
+
+Bổ sung nội dung còn thiếu so với yêu cầu và kiểm tra điều kiện bàn giao.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu hoàn thiện các phần còn thiếu theo hướng dẫn Buổi 2.
+
+### Kết quả đề xuất
+
+Bổ sung sáu nhóm hàng trên trang chủ dùng layout CSS hiện có; chờ Thành và nhóm review.
+
+### Phản biện
+
+Không tạo câu trả lời cá nhân hoặc tuyên bố kiểm tra trình duyệt khi chưa thực hiện. Bộ kiểm chỉ cảnh báo trang chi tiết không có liên kết riêng trong menu; không tự đánh dấu sai trang.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Codex chạy kiểm tra tĩnh; Liêm và Thành chưa duyệt thay đổi.
+
+### Kiểm tra và minh chứng
+
+Lần chạy đầu validator gặp lỗi mã hóa đầu ra Windows; chạy lại với UTF-8 báo 0 lỗi, ba cảnh báo về aria-current, 0/8 bài trả lời, 0/12 ảnh. Chưa kiểm trên trình duyệt và chưa nộp bài.
+
+
+---
+
+## Hoàn thiện trang giới thiệu / LIEM-20261103-488CDFBF-001
+
+* Thời gian ghi: 2026-11-03T03:04:17+07:00
+* Thời gian thực hiện: phiên hiện tại; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261103-488CDFBF
+* Người prompt: Liêm (PM).
+* Phase: P0 — Buổi 2.
+* Loại mục: Hoạt động và kiểm tra.
+* Liên quan: Không có Issue được cung cấp.
+
+### Công cụ
+
+Codex, Chrome ẩn và Playwright; model chưa xác minh.
+
+### Mục đích
+
+Hoàn thiện trang giới thiệu DAYORA theo prompt, giữ phạm vi HTML5/CSS3.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu triển khai trang About theo prompt đính kèm, kiểm tra desktop/tablet/mobile, điều hướng và khả năng truy cập; không sửa các trang khác hoặc tự tạo thông tin liên hệ.
+
+### Kết quả đề xuất
+
+Chỉnh session2/about.html và CSS giới hạn theo .about-page; thêm nội dung cửa hàng, khách hàng, điểm nổi bật, liên hệ và header/footer theo prompt. Alt ảnh đầu mô tả gia đình vì ảnh thực tế không phải nhóm bạn; thông tin chi phí và Builder được trình bày là định hướng.
+
+### Phản biện
+
+Prompt yêu cầu header/footer mới riêng About, trong khi validator yêu cầu đồng nhất bốn trang; chưa đổi các trang khác và cần Thành/nhóm đối chiếu. Không xác nhận chức năng Builder hoạt động.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới về thay đổi header/footer hoặc duyệt trang.
+
+### Người kiểm tra
+
+Codex kiểm tra kỹ thuật, Liêm và thành viên phụ trách chưa duyệt.
+
+### Kiểm tra và minh chứng
+
+Chrome ẩn tại 1366x768, 768x1024, 390x844 không tràn ngang; ba ảnh About tải, kiểm ảnh chụp, link menu và logo, thứ tự Tab và outline. Index và products được kiểm tràn ngang mobile; ảnh products tải khi cuộn. Validator báo hai lỗi header/footer khác index và ba cảnh báo về aria-current detail, 0/8 câu trả lời và 0/12 ảnh nộp bài. Chưa kiểm screen reader, mọi trình duyệt hoặc quyền sử dụng ảnh. Không commit/push.
+
+
+---
+
+## Hoàn tác thay đổi trang giới thiệu / LIEM-20261103-3A138024-001
+
+* Thời gian ghi: 2026-11-03T03:09:52+07:00
+* Thời gian thực hiện: phiên hiện tại.
+* Mã phiên nhật ký: LIEM-20261103-3A138024
+* Người prompt: Liêm (PM).
+* Phase: P0 — Buổi 2.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261103-488CDFBF-001.
+
+### Công cụ
+
+Codex và Git đọc nội dung; model chưa xác minh.
+
+### Mục đích
+
+Trả trang About về trạng thái trước thay đổi theo prompt trước.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu quay lại trang About lúc chưa chỉnh sửa theo prompt trước.
+
+### Kết quả đề xuất
+
+Khôi phục nội dung about.html và style.css về bản trước lượt sửa; hai file không có thay đổi trước lượt đó và diff được đối chiếu trước khi khôi phục. Giữ các file và thay đổi khác.
+
+### Phản biện
+
+Không sửa hay xóa mục log lịch sử; mục này ghi nhận hoàn tác.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu hoàn tác; chưa có quyết định nhóm mới.
+
+### Người kiểm tra
+
+Codex đối chiếu diff; Liêm chưa kiểm tra lại giao diện.
+
+### Kiểm tra và minh chứng
+
+Hai file được trả về nội dung HEAD, là trạng thái đã quan sát trước lượt sửa. Không commit hoặc push.
+
+
+---
+
+## Bổ sung thông tin liên hệ trang giới thiệu / LIEM-20261103-C94EE085-001
+
+* Thời gian ghi: 2026-11-03T03:16:32+07:00
+* Thời gian thực hiện: phiên hiện tại; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261103-C94EE085
+* Người prompt: Liêm (PM).
+* Phase: P0 — Buổi 2.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261103-3A138024-001.
+
+### Công cụ
+
+Codex; model chưa xác minh.
+
+### Mục đích
+
+Thay thông tin liên hệ đang chờ cập nhật tại trang giới thiệu.
+
+### Prompt
+
+Tóm lược: Liêm cung cấp email, số điện thoại, địa chỉ và liên kết Facebook để thêm vào trang About.
+
+### Kết quả đề xuất
+
+Cập nhật nội dung liên hệ và chân trang About, thêm liên kết email, điện thoại và Facebook; thông tin theo Liêm cung cấp.
+
+### Phản biện
+
+Chưa xác minh độc lập các kênh. Chân trang About hiện có thể khác ba trang khác; cần người phụ trách phần chung phối hợp đồng bộ.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu cập nhật; chưa có quyết định nhóm mới được ghi nhận.
+
+### Người kiểm tra
+
+Codex đối chiếu nội dung được cung cấp; Liêm chưa review giao diện.
+
+### Kiểm tra và minh chứng
+
+Chỉnh session2/about.html và nối log Liêm; kết quả kiểm tra tiếp theo được báo theo thực tế. Không commit hoặc push.
+
+
+---
+
+## Cập nhật trang chủ theo thiết kế nhóm / LIEM-20261103-56793341-001
+
+* Thời gian ghi: 2026-11-03T03:21:22+07:00
+* Thời gian thực hiện: phiên hiện tại.
+* Mã phiên nhật ký: LIEM-20261103-56793341
+* Người prompt: Liêm (PM).
+* Phase: P0 — Buổi 2.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261103-C94EE085-001.
+
+### Công cụ
+
+Codex, Chrome ẩn và Playwright; model chưa xác minh.
+
+### Mục đích
+
+Điều chỉnh trang chủ theo hình thiết kế của nhóm đã cung cấp.
+
+### Prompt
+
+Tóm lược: Liêm gửi ảnh mẫu trang chủ và yêu cầu nghiên cứu, cập nhật giao diện.
+
+### Kết quả đề xuất
+
+Điều chỉnh index.html và CSS giới hạn home-page: header, banner, sản phẩm, tình huống, footer; giữ sáu nhóm hàng và thông tin liên hệ Liêm cung cấp.
+
+### Phản biện
+
+Mẫu khác nội dung hiện có; giữ sáu nhóm hàng và giới thiệu. Header/footer khác các trang khác, làm validator báo lỗi; cần nhóm thống nhất đồng bộ theo quy định chung. Không thay các trang khác.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu làm theo ảnh; chưa có duyệt nhóm đối với kết quả hoặc điều chỉnh toàn bộ trang.
+
+### Người kiểm tra
+
+Codex kiểm tra hiển thị; Thành, Liêm và nhóm chưa duyệt.
+
+### Kiểm tra và minh chứng
+
+Chrome ẩn chụp 1366, 768, 390 px; kiểm ảnh tải, bốn thẻ và không tràn ngang. Validator báo 6 lỗi header/footer không đồng nhất và 3 cảnh báo khác; git diff --check đạt. Chưa kiểm hoàn chỉnh bàn phím, thiết bị thực tế hoặc các trình duyệt khác. Không commit/push.
+
+
+---
+
+## Điều chỉnh trang sản phẩm theo mẫu / LIEM-20261103-D1F9AC88-001
+
+* Thời gian ghi: 2026-11-03T03:26:36+07:00
+* Thời gian thực hiện: phiên hiện tại.
+* Mã phiên nhật ký: LIEM-20261103-D1F9AC88
+* Người prompt: Liêm (PM).
+* Phase: P0 — Buổi 2.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261103-56793341-001.
+
+### Công cụ
+
+Codex, Chrome ẩn và Playwright; model chưa xác minh.
+
+### Mục đích
+
+Đối chiếu và điều chỉnh định dạng trang sản phẩm theo ảnh mobile do Liêm cung cấp.
+
+### Prompt
+
+Tóm lược: Liêm gửi ảnh mẫu sản phẩm 390 px và đề nghị xem định dạng tiếp theo trang chủ.
+
+### Kết quả đề xuất
+
+Cập nhật products.html và CSS phạm vi product-list-page; giữ tám sản phẩm, đồng bộ header/footer với trang chủ; sửa ảnh bị kéo cao khi kiểm thử.
+
+### Phản biện
+
+Không nhận diện việc có ảnh là xác nhận quyền sử dụng; chưa hoàn thiện đồng bộ header/footer với about và product-detail; các trang khác không tự sửa. Phúc và Thành cần review.
+
+### Quyết định của nhóm
+
+Chưa có quyết định hoặc review nhóm mới.
+
+### Người kiểm tra
+
+Codex kiểm trong Chrome ẩn; Liêm, Phúc và Thành chưa duyệt.
+
+### Kiểm tra và minh chứng
+
+Đo ở 1366, 768, 390 px không tràn, đủ tám thẻ và ảnh vuông; ảnh được tải khi cuộn. Validator trước sửa tỷ lệ ảnh báo 4 lỗi header/footer khác ở hai trang còn lại, 3 cảnh báo khác. Chưa kiểm thiết bị thật hoặc toàn bộ khả năng truy cập. Không commit/push.
+
+
+---
+
+## Chi tiết tám sản phẩm từ tài liệu nhóm / LIEM-20261103-47DE2DA4-001
+
+* Thời gian ghi: 2026-11-03T03:36:50+07:00
+* Thời gian thực hiện: phiên hiện tại.
+* Mã phiên nhật ký: LIEM-20261103-47DE2DA4
+* Người prompt: Liêm (PM).
+* Phase: P0 — Buổi 2.
+* Loại mục: Hoạt động và kiểm tra.
+* Liên quan: LIEM-20261103-D1F9AC88-001.
+
+### Công cụ
+
+Codex, Python đọc Word, Chrome ẩn và Playwright; model chưa xác minh.
+
+### Mục đích
+
+Hiển thị riêng sản phẩm được chọn và bổ sung mô tả/thông số theo Word nhóm.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu làm trang chi tiết theo ảnh mẫu, chỉ hiện sản phẩm được chọn, dò dữ liệu tám sản phẩm từ Word.
+
+### Kết quả đề xuất
+
+Cập nhật product-detail.html, index.html, products.html và CSS; dùng liên kết fragment và CSS, bổ sung dữ liệu demo từ các bảng SKU và mô tả trong Word. Header/footer chi tiết theo mẫu trang chủ; không thêm JavaScript.
+
+### Phản biện
+
+Thông số và giá theo Word là dữ liệu demo, chưa xác nhận tồn kho hay chất lượng thật; kiểu chọn dùng :has yêu cầu trình duyệt hỗ trợ, bản cũ có thể hiện mọi sản phẩm. Vẫn còn hai lỗi đồng bộ header/footer tại about.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu cập nhật; chưa có review của Phúc, Hoàn hoặc nhóm.
+
+### Người kiểm tra
+
+Codex đối chiếu tài liệu và thử Chrome ẩn; Liêm và reviewer chưa duyệt.
+
+### Kiểm tra và minh chứng
+
+Thử tám liên kết từ danh mục tại 1366, 768, 390 px: mỗi lần một mục hiển thị, ảnh tải, không tràn ngang; lần kiểm ban đầu đọc trước khi tải CSS nên chạy lại sau khi đợi tải xong. Validator báo hai lỗi đồng bộ about và hai cảnh báo thiếu answers/screenshots. Chưa kiểm thiết bị thật, screen reader hoặc trình duyệt cũ. Không commit/push.
+
+
+---
+
+## Điều chỉnh dòng điều hướng chi tiết / LIEM-20261103-45A0F995-001
+
+* Thời gian ghi: 2026-11-03T03:40:03+07:00
+* Thời gian thực hiện: phiên hiện tại.
+* Mã phiên nhật ký: LIEM-20261103-45A0F995
+* Người prompt: Liêm (PM).
+* Phase: P0 — Buổi 2.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261103-47DE2DA4-001.
+
+### Công cụ
+
+Codex; model chưa xác minh.
+
+### Mục đích
+
+Điều chỉnh trang chi tiết theo mẫu UI Liêm chọn.
+
+### Prompt
+
+Tóm lược: Bỏ dòng thông tin giá demo trên trang và in đậm liên kết quay lại danh sách.
+
+### Kết quả đề xuất
+
+Xóa dòng chú thích hiển thị trong product-detail.html, thay CSS không dùng bằng font-weight cho liên kết quay lại. Nguồn dữ liệu sản phẩm vẫn là dữ liệu demo trong tài liệu nhóm.
+
+### Phản biện
+
+Bỏ dòng hiển thị không biến giá hoặc thông số demo thành dữ liệu thật. Chưa có phản hồi review mới.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu chỉnh giao diện; chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Codex kiểm nội dung thay đổi; Liêm chưa review giao diện.
+
+### Kiểm tra và minh chứng
+
+Các file liên quan: session2/product-detail.html, session2/css/style.css; chưa chạy kiểm thử trình duyệt ở lượt này. Không commit hoặc push.
+
+
+---
+
+## Đồng bộ giao diện trang giới thiệu / LIEM-20261103-B0D6CA69-001
+
+* Thời gian ghi: 2026-11-03T03:43:15+07:00
+* Thời gian thực hiện: phiên hiện tại.
+* Mã phiên nhật ký: LIEM-20261103-B0D6CA69
+* Người prompt: Liêm (PM).
+* Phase: P0 — Buổi 2.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261103-C94EE085-001.
+
+### Công cụ
+
+Codex, Chrome ẩn và Playwright; model chưa xác minh.
+
+### Mục đích
+
+Chỉnh trang giới thiệu đồng bộ thiết kế với trang chủ và sản phẩm.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu làm đẹp trang giới thiệu theo hai trang đã chỉnh.
+
+### Kết quả đề xuất
+
+Cập nhật about.html và CSS riêng: header/footer dùng cấu trúc chung, trình bày nội dung, ảnh, ba tình huống và thông tin liên hệ đã được cung cấp.
+
+### Phản biện
+
+Giữ nội dung liên hệ và không tự nhận Builder hoạt động; Châu và Thành chưa review.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu chỉnh; chưa có xác nhận duyệt của nhóm.
+
+### Người kiểm tra
+
+Codex kiểm Chrome; Liêm và người phụ trách chưa duyệt.
+
+### Kiểm tra và minh chứng
+
+Chrome ẩn ở 1366, 768 và 390 px: ảnh tải, không tràn ngang; xem ảnh mobile. Validator báo 0 lỗi, hai cảnh báo thiếu answers/screenshots; không coi là kiểm đầy đủ khả năng truy cập hay nộp bài. Không commit/push.
+
+
+---
+
+## Học wireframe và bố cục / LIEM-20261103-5F363BA9-001
+
+* Thời gian ghi: 2026-11-03T03:47:22+07:00
+* Thời gian thực hiện: phiên trao đổi hiện tại.
+* Mã phiên nhật ký: LIEM-20261103-5F363BA9
+* Người prompt: Liêm (PM).
+* Phase: P0 — Buổi 2.
+* Loại mục: Hoạt động học tập.
+* Liên quan: LIEM-20261103-B0D6CA69-001.
+
+### Công cụ
+
+Codex; model chưa xác minh.
+
+### Mục đích
+
+Học các khái niệm giao diện Buổi 2 theo từng bước.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu lần lượt giải thích wireframe và bố cục, biến CSS và màu, hover và transition, focus và tương phản; hỏi một câu rồi chờ trả lời, không viết hộ bài.
+
+### Kết quả đề xuất
+
+Bắt đầu bằng wireframe và bố cục với ví dụ trang Giới thiệu; các phần tiếp theo chờ câu trả lời của Liêm.
+
+### Phản biện
+
+Chưa có phản hồi của Liêm về phần giải thích; không suy kết quả học tập.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Liêm chưa xác nhận mức hiểu.
+
+### Kiểm tra và minh chứng
+
+Ví dụ dựa trên trang session2/about.html đã làm trong phiên trước; không thay đổi mã, không chạy kiểm thử.
+
+
+---
+
+## Hướng dẫn hover và focus / LIEM-20261103-464BB45E-001
+
+* Thời gian ghi: 2026-11-03T03:50:04+07:00
+* Thời gian thực hiện: phiên hiện tại.
+* Mã phiên nhật ký: LIEM-20261103-464BB45E
+* Người prompt: Liêm (PM).
+* Phase: P0 — Buổi 2.
+* Loại mục: Học tập.
+* Liên quan: HW-P0-PD-2.
+
+### Công cụ
+
+Codex; model chưa xác minh.
+
+### Mục đích
+
+Giải thích để Liêm tự kiểm tra hover, transition và focus-visible.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu hướng dẫn làm và tự thử bằng chuột, Tab; giới hạn khu 8 CSS, không JavaScript.
+
+### Kết quả đề xuất
+
+Đọc khu 8 và hướng dẫn khả năng truy cập; giải thích quy tắc hiện có và cách tự kiểm. Không sửa CSS.
+
+### Phản biện
+
+Chưa kiểm bằng trình duyệt trong lượt này; không tuyên bố các trạng thái hoạt động hay Liêm đã nắm vững.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Codex đọc mã; Liêm chưa tự kiểm trong lượt này.
+
+### Kiểm tra và minh chứng
+
+Nguồn session2/css/style.css khu 8 và .claude/skills/hover-focus-a11y/SKILL.md. Chưa chạy test, không commit/push.
+
+
+---
+
+## Rà soát tiêu chí Buổi 2 / LIEM-20261103-09241937-001
+
+* Thời gian ghi: 2026-11-03T03:54:57+07:00
+* Thời gian thực hiện: phiên hiện tại.
+* Mã phiên nhật ký: LIEM-20261103-09241937
+* Người prompt: Liêm (PM).
+* Phase: P0 — Buổi 2.
+* Loại mục: Kiểm tra.
+* Liên quan: LIEM-20261103-B0D6CA69-001.
+
+### Công cụ
+
+Codex, Python, Chrome ẩn và Playwright; model chưa xác minh.
+
+### Mục đích
+
+Kiểm tra mức đáp ứng checklist Session 2 và xác định phần còn thiếu.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu kiểm tra toàn bộ bài theo tiêu chí Session 2.
+
+### Kết quả đề xuất
+
+Validator trả 0 lỗi, hai cảnh báo về 0/8 câu trả lời và 0/12 ảnh nộp. Các tài liệu plan, ui-design, test-report, ai-usage, README có trên máy.
+
+### Phản biện
+
+Kiểm tra tự động và đo không tràn không thay thế kiểm thử tương tác, review, ảnh minh chứng hoặc nộp bài. Các thay đổi ở máy chưa commit/push.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Codex kiểm tự động; Liêm, Ngọc và nhóm chưa xác nhận nghiệm thu.
+
+### Kiểm tra và minh chứng
+
+Đã chạy validator, kiểm 4 trang ở 1366/768/390 trong Chrome ẩn về tràn ngang và ảnh hiển thị; tìm script/onclick/framework và đường dẫn tuyệt đối trong HTML/CSS không thấy. git diff --check đạt, cảnh báo LF/CRLF. Chưa xác minh GitHub nhận cập nhật, câu trả lời, ảnh nộp hoặc review thủ công. Không commit/push.
+
+
+---
+
+## Đối chiếu đề giảng viên Buổi 2 / LIEM-20261103-F8C257D7-001
+
+* Thời gian ghi: 2026-11-03T03:57:30+07:00
+* Thời gian thực hiện: phiên hiện tại.
+* Mã phiên nhật ký: LIEM-20261103-F8C257D7
+* Người prompt: Liêm (PM).
+* Phase: P0 — Buổi 2.
+* Loại mục: Kiểm tra.
+* Liên quan: LIEM-20261103-09241937-001.
+
+### Công cụ
+
+Codex, pypdf; model chưa xác minh.
+
+### Mục đích
+
+Đối chiếu đề bài PDF với tài liệu và bằng chứng hiện có để đánh giá mức sẵn sàng làm báo cáo.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu rà soát bài tập của thầy và xác định đã đủ yêu cầu để làm báo cáo chưa.
+
+### Kết quả đề xuất
+
+Đọc 23 trang PDF và đối chiếu 12 mục nộp với plan, đặc tả, README, báo cáo test/AI và thư mục minh chứng. Có thể soạn khung báo cáo; phần kết quả và bàn giao còn thiếu minh chứng và xác nhận.
+
+### Phản biện
+
+Ảnh anh-thu là ảnh thử trước chỉnh sửa, không phải minh chứng kiểm lại hiện tại theo báo cáo; các ví dụ AI chưa đủ xác nhận kiểm thực tế. Không tự biến câu hỏi kiến thức thành kết quả đã hoàn thành.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới; chưa xác nhận nộp.
+
+### Người kiểm tra
+
+Codex đối chiếu tài liệu; Liêm, Ngọc và nhóm chưa duyệt.
+
+### Kiểm tra và minh chứng
+
+Nguồn BaiTap_Nhom_Buoi2 (1).pdf, trang 1–23; session2/docs và session2/README.md. Chưa kiểm repo từ tài khoản khác trong phiên này; không sửa bài, commit hoặc push.
+
+
+---
+
+## Chuẩn bị commit bài Buổi 2 / LIEM-20261103-CF2A4519-001
+
+* Thời gian ghi: 2026-11-03T04:09:02+07:00
+* Thời gian thực hiện: phiên hiện tại.
+* Mã phiên nhật ký: LIEM-20261103-CF2A4519
+* Người prompt: Liêm (PM).
+* Phase: P0 — Buổi 2.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261103-F8C257D7-001.
+
+### Công cụ
+
+Codex, Git và validator Session 2; model chưa xác minh.
+
+### Mục đích
+
+Chuẩn bị đưa các thay đổi bài Session 2 và nhật ký Liêm lên nhánh main theo yêu cầu.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu commit và push lên nhánh main.
+
+### Kết quả đề xuất
+
+Đã kiểm trạng thái trên nhánh main, chuẩn bị chỉ chọn mã, tài liệu Session 2 và nhật ký Liêm; cấu hình workspace Obsidian cá nhân không thuộc nội dung bàn giao. Kết quả commit/push chưa có tại thời điểm ghi.
+
+### Phản biện
+
+Validator có hai cảnh báo thiếu câu trả lời và ảnh; 0 lỗi tự động không chứng minh bài đã nghiệm thu. Kiểm tra chuỗi bí mật phổ biến không bảo đảm không có mọi dữ liệu nhạy cảm.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu commit/push; chưa có quyết định nghiệm thu mới của nhóm.
+
+### Người kiểm tra
+
+Codex kiểm trạng thái và chạy validator; Liêm và nhóm chưa review lần cuối.
+
+### Kiểm tra và minh chứng
+
+Validator: 0 lỗi, 2 cảnh báo; rà mẫu token trên các file dự kiến không phát hiện. Không ghi trước kết quả commit hay push.
