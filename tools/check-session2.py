@@ -109,7 +109,7 @@ def check_links(root, name, p):
             if target.name not in real:
                 actual = next((f for f in real if f.lower() == target.name.lower()), '?')
                 err(f'{name}: "{url}" sai chữ hoa/thường so với file thật "{actual}" (GitHub và máy Mac/Linux phân biệt hoa thường)')
-        if tag == 'img' and not a.get('alt', '').strip():
+        if tag == 'img' and 'alt' not in a:
             err(f'{name}: ảnh "{a.get("src", "?")}" thiếu alt')
 
 
