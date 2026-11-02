@@ -234,39 +234,20 @@ Môi trường triển khai cần hỗ trợ Frontend React, Backend Node.js, k�
 
 ## 6. Kế hoạch thực hiện
 
-
-
-1. Khảo sát và thống nhất yêu cầu.
-
-2. Thiết kế giao diện.
-
-3. Phát triển Frontend.
-
-4. Phát triển Backend và cơ sở dữ liệu.
-
-5. Tích hợp và kiểm thử.
-
-6. Triển khai và hoàn thiện.
-
-
-
-Frontend và Backend phối hợp song song, thống nhất cách kết nối và tích hợp theo từng phần. Kiểm thử được thực hiện trong quá trình phát triển.
-
-
-
-Thời gian dự kiến 8 tuần. Lịch cụ thể, người phụ trách, đầu ra và trạng thái được quản lý trong kế hoạch dự án và GitHub Issues.
-
-
+Lộ trình 8 phase (28/10 – 22/12/2026): [PHASES](phases/PHASES.md). Bảng task từng người: [ROADMAP](docs/ROADMAP.md). Bài tập trên lớp làm trước trong phase có bài tập: [ASSIGNMENTS](docs/ASSIGNMENTS.md). Mục lục toàn bộ tài liệu: [HOME](HOME.md).
 
 ## 7. Liên kết
 
 * [Yêu cầu dự án](REQUIREMENTS.md)
 * [Kế hoạch thực hiện](PROJECT_PLAN.md)
+* [Mục lục tài liệu](HOME.md)
+* [Lộ trình và bảng task](docs/ROADMAP.md)
+* [Sổ bài tập trên lớp](docs/ASSIGNMENTS.md)
 * [Nguyên tắc hỗ trợ AI](AGENTS.md)
-* [Nhật ký sử dụng AI và log từng thành viên](AI_USAGE_LOG.md)
+* [Nhật ký sử dụng AI và log từng thành viên](docs/ai-logs/AI_USAGE_LOG.md)
 * [Phân tích ba website tham khảo](docs/competitor-analysis.md)
 * [Vai trò và quyền người dùng](docs/user-roles.md)
 * [Quy trình nghiệp vụ](docs/business-workflow.md)
-* [Quy tắc ghi nhật ký AI](docs/ai-logging-rules.md)
+* [Quy tắc ghi nhật ký AI](docs/ai-logs/ai-logging-rules.md)
 
 Hướng dẫn chạy và đường dẫn website demo sẽ được bổ sung khi có bản triển khai được kiểm tra.

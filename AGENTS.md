@@ -26,6 +26,19 @@ AI hỗ trợ phân tích, giải thích, viết mã, sửa lỗi, kiểm thử 
 
 ## 2. Scope
 
+### Giai đoạn hiện tại: Bài tập nhóm Buổi 2 (HTML5 & CSS3)
+
+Đang làm giao diện tĩnh trong thư mục `session2/`. Mọi việc trong thư mục này theo `session2/AGENTS.md`: chỉ HTML5 và CSS3, không JavaScript, không framework, không React/NestJS/database. Hướng dẫn từng bước và phân công: `docs/SESSION2-GUIDE.md`. Công nghệ ở mục 1 là kế hoạch các phase sau; không cài hay tạo cấu trúc React/NestJS khi chưa có Issue giao việc.
+
+### Điều hướng tài liệu
+
+* Mục lục: `HOME.md`. Lịch phase: `phases/PHASES.md`; việc từng người trong phase: `phases/P<số>-*/<VAI>-<Tên>/`.
+* Bảng task theo phase (bài tập `HW-*` làm trước, đồ án `PRJ-*` làm sau): `docs/ROADMAP.md`. Sổ bài tập trên lớp: `docs/ASSIGNMENTS.md`.
+* Lộ trình học và bước chi tiết của từng task: `docs/learning/` (bắt đầu từ `LEARNING-PATH.md`).
+* Mẫu mô tả việc phát sinh: `tasks/TASK-TEMPLATE.md`; mẫu review: `reviews/REVIEW-TEMPLATE.md`.
+
+### Phạm vi chung
+
 Chỉ triển khai chức năng đã được nhóm thống nhất trong REQUIREMENTS.md và công việc đang được giao.
 
 Đọc PROJECT_PLAN.md và GitHub Issue liên quan để xác định người phụ trách, đầu ra và tiêu chí hoàn thành.
@@ -126,9 +139,11 @@ Chỉ commit các tệp liên quan. Không tự force push, viết lại lịch 
 
 ### Cập nhật nhật ký sử dụng AI
 
-Trước khi làm việc, đọc [quy tắc ghi log](docs/ai-logging-rules.md), [mẫu mục log](docs/ai-logs/TEMPLATE.md) và xác nhận tên thành viên đang yêu cầu. Không suy tên thành viên từ tài khoản Git. Nếu chưa có tên đã xác nhận, hỏi trước khi gán đóng góp cá nhân.
+Các quy tắc dưới đây áp dụng cho mọi trợ lý AI chạy trong repo (Codex, Claude Code). Chỗ ghi "Codex" hiểu là trợ lý AI đang chạy.
 
-Sau mỗi công việc đáng kể có sử dụng AI, kể cả phân tích, brainstorm, sửa tài liệu, viết mã, sửa lỗi và kiểm thử, Codex phải chủ động nối thêm mục vào docs/ai-logs/<thanh-vien>.md trong cùng đợt thay đổi, trước khi báo hoàn tất. Không đợi nhắc lại. Tệp AI_USAGE_LOG.md ở gốc là trang tổng hợp và dẫn tới log từng người.
+Trước khi làm việc, đọc [quy tắc ghi log](docs/ai-logs/ai-logging-rules.md), [mẫu mục log](docs/ai-logs/TEMPLATE.md) và xác nhận tên thành viên đang yêu cầu. Không suy tên thành viên từ tài khoản Git. Nếu chưa có tên đã xác nhận, hỏi trước khi gán đóng góp cá nhân.
+
+Sau mỗi công việc đáng kể có sử dụng AI, kể cả phân tích, brainstorm, sửa tài liệu, viết mã, sửa lỗi và kiểm thử, Codex phải chủ động nối thêm mục vào docs/ai-logs/<thanh-vien>.md trong cùng đợt thay đổi, trước khi báo hoàn tất. Không đợi nhắc lại. Tệp docs/ai-logs/AI_USAGE_LOG.md là trang tổng hợp và dẫn tới log từng người.
 
 Mỗi mục có thời gian ghi thực tế theo Asia/Bangkok (UTC+07:00), mã phiên nhật ký, mã mục riêng, phase, loại hoạt động và đủ 7 trường: Công cụ, Mục đích, Prompt, Kết quả đề xuất, Phản biện, Quyết định của nhóm, Người kiểm tra. Thêm cách kiểm tra, tệp và Issue/commit đã tồn tại nếu có.
 

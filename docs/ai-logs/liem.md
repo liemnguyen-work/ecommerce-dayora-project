@@ -1,6 +1,6 @@
 # Nhật ký sử dụng AI của Liêm
 
-Chỉ ghi hoạt động thực tế theo [quy tắc chung](../ai-logging-rules.md) và [mẫu mục log](TEMPLATE.md). Mục đã ghi chỉ được bổ sung bằng mục mới, không sửa hoặc xóa.
+Chỉ ghi hoạt động thực tế theo [quy tắc chung](ai-logging-rules.md) và [mẫu mục log](TEMPLATE.md). Mục đã ghi chỉ được bổ sung bằng mục mới, không sửa hoặc xóa.
 
 ---
 
@@ -324,3 +324,1316 @@ Git check-ignore với --no-index: bỏ qua .env, backend/.env.production, front
 Các đường dẫn không bị bỏ qua: README.md, REQUIREMENTS.md, AGENTS.md, AI_USAGE_LOG.md, docs/ai-logs/liem.md, package-lock.json, backend/package-lock.json, backend/.env.example, frontend/.env.template và supabase/migrations/001_init.sql. Đây là kiểm tra mẫu đường dẫn, không khẳng định các tệp giả định đều đã tồn tại.
 
 Trạng thái Git tại thời điểm kiểm tra: main...origin/main; log Liêm có thay đổi, .gitignore là tệp mới. Chưa fetch để xác minh trạng thái mới nhất trên máy chủ. Giữ nguyên toàn bộ byte của log trước mục bổ sung này. Không tự commit/push.
+
+
+---
+
+## Hồi cứu phiên đã làm ở bản DAYORA khác
+
+Các mục bên dưới được sao chép nguyên nội dung từ nhật ký Liêm ở repository DAYORA cũ, phiên LIEM-20261102-C84A29F1, theo yêu cầu Liêm. Thời gian sao chép: 2026-11-02T11:42:51+07:00. Những công việc và đường dẫn trong các mục này nói về bản cũ; không chứng minh thay đổi, kiểm thử hay triển khai tại bản Setup hiện tại. Không suy các quyết định của nhóm từ việc chuyển nhật ký.
+
+## Kiểm kê và lập kế hoạch / LIEM-20261102-C84A29F1-001
+
+* Thời gian ghi: 2026-11-02T02:08:06+07:00.
+* Thời gian thực hiện: Đợt kiểm kê trong phiên hiện tại; mốc đồng hồ đã quan sát 2026-11-02T02:04:46+07:00, không khẳng định là thời điểm bắt đầu toàn phiên.
+* Mã phiên nhật ký: LIEM-20261102-C84A29F1. Mã do dự án đặt cho đợt này, không phải session ID nội bộ.
+* Người prompt: Liêm, Trưởng nhóm kiêm Business Analyst (PM/BA), đã xác nhận trực tiếp.
+* Loại mục: Hoạt động.
+* Liên quan: Tiếp nối kiểm tra repository; tham chiếu LIEM-20261019-A5B97F16-007. Chưa có Issue mới được cung cấp.
+
+### Công cụ
+
+Codex và Git cục bộ; không ghi model chưa xác minh.
+
+### Mục đích
+
+Kiểm kê repo DAYORA, đối chiếu tài liệu/Git, phân biệt bằng chứng với đề xuất và thông tin chưa xác minh; lập kế hoạch trước khi nhóm xác nhận bước tiếp theo.
+
+### Prompt
+
+Tóm lược yêu cầu thực tế của Liêm: chỉ kiểm kê và lập kế hoạch trong repo hiện có; đọc chỉ dẫn, tài liệu và cấu trúc; kiểm tra pwd, status, branch, 5 commit; tóm tắt dự án, vai trò, stack, FR01–18, quy tắc và chính sách mở; lập inventory; tạo/cập nhật ba file plan; nối log Liêm; không code, cài package, thay đổi Git hoặc chạy Prompt 1; dừng chờ xác nhận.
+
+### Kết quả đề xuất
+
+Đã tạo plan/task_plan.md, plan/findings.md và plan/progress.md sau khi xác nhận chưa có plan/. findings ghi inventory 19 file ban đầu, mục tiêu/khách/sản phẩm, Builder, tám vai trò, stack, FR01–18, quy tắc, thiếu sót và câu hỏi theo phần phụ thuộc. Các đợt sau chỉ là đề xuất; không sửa trạng thái CV01–CV17 trong kế hoạch gốc.
+
+Không có file trùng hoàn toàn theo SHA256. Có thông tin giao nhau giữa các tài liệu và giữa log tổng hợp cũ với log Liêm. Đường dẫn log hiện thống nhất docs/ai-logs/; giữ nguyên lịch sử, không tự hợp nhất hay chuyển log. Nối mục này vào log cá nhân.
+
+### Phản biện
+
+Codex đối chiếu tài liệu, tách phạm vi dự kiến khỏi chức năng đã triển khai, không suy lợi ích khảo sát đã đạt hoặc quyết định toàn nhóm từ nội dung đề xuất. pwd mặc định của chat là mirror khác; dùng đường dẫn repo Desktop xuyên suốt. Lỗi Git status do truy cập ban đầu không được coi là repo hỏng; kiểm tra lại chỉ đọc đã thành công. Chưa có phản hồi duyệt mới từ Liêm/nhóm cho bản kiểm kê.
+
+### Quyết định của nhóm
+
+Liêm chỉ cho phép kiểm kê, lập ba file plan và ghi log trong đợt này. Không có quyết định nghiệp vụ chung mới, không tự duyệt đợt kế tiếp. Dừng chờ Liêm; chưa chạy Prompt 1.
+
+### Người kiểm tra
+
+Codex đã đối chiếu văn bản và kiểm tra file/Git cục bộ. Liêm chưa duyệt đầu ra hiện tại; chờ Liêm xem trước khi cho phép công việc tiếp theo. Không ghi thay kiểm tra của các thành viên khác.
+
+### Kiểm tra và minh chứng
+
+Đọc AGENTS.md, README.md, REQUIREMENTS.md, PROJECT_PLAN.md, AI_USAGE_LOG.md, .gitignore; toàn bộ docs gồm ba tài liệu nghiệp vụ, rule, TEMPLATE và tám log. Liệt kê cả file ẩn/ignored ngoài .git: 19 file, chưa có mã ứng dụng/manifest/schema/test trong cây hiện tại.
+
+pwd repo: C:/Users/MYPC/Desktop/DAYORA/ecommerce-dayora-project. Git status ban đầu: main...origin/main, không có thay đổi; branch: main. Năm commit đọc được: 5cd8100, ac13b47, f0618e6, 341b550, 1192cae. Chưa fetch, nên không xác minh trạng thái mới trên máy chủ. status ban đầu trong môi trường hạn chế lỗi work tree; chạy lại với quyền truy cập repo và GIT_OPTIONAL_LOCKS=0 thành công, không sửa cấu hình Git.
+
+Ba file plan đã đọc lại khớp chính xác bản ghi; 19 file gốc còn nguyên hash sau khi tạo plan. Git sau bước tạo plan chỉ có ?? plan/. Mục này nối thêm, không sửa nội dung cũ; kiểm tra bảo toàn byte log và phạm vi cuối đợt được thực hiện trước báo cáo bàn giao.
+
+Không chạy ứng dụng/test chức năng, không khảo sát lại website/link ngoài, không cài package, không viết code, không sửa tài liệu gốc, không init/remote/commit/push/reset/checkout/rebase. Không gán hoạt động AI cho bảy thành viên còn lại.
+
+Tệp: plan/task_plan.md, plan/findings.md, plan/progress.md và docs/ai-logs/liem.md. Trạng thái duyệt: chờ Liêm; không có minh chứng quyết định toàn nhóm mới.
+
+---
+## Thiết lập hiến chương và quy tắc AI / LIEM-20261102-C84A29F1-002
+
+* Thời gian ghi: 2026-11-02T02:10:59+07:00.
+* Thời gian thực hiện: phiên hiện tại; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261102-C84A29F1.
+* Người prompt: Liêm, PM/BA.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261102-C84A29F1-001; chưa có Issue được cung cấp.
+
+### Công cụ
+
+Codex và Git; không suy tên model.
+
+### Mục đích
+
+Hoàn thiện hiến chương, điều hướng tài liệu và quy tắc cho AI coding agent theo Prompt 1 của Liêm.
+
+### Prompt
+
+Tóm lược: Liêm xác nhận, yêu cầu đọc tài liệu và Git status; cập nhật AGENTS, CLAUDE, PROJECT, HOME, README, gitignore, kế hoạch và log; kiểm tra liên kết, heading, UTF-8, nội dung trùng và git diff --check; dừng chờ duyệt.
+
+### Kết quả đề xuất
+
+Đã tạo CLAUDE.md, PROJECT.md, HOME.md; bổ sung thứ tự đọc và quy tắc cho mọi agent trong AGENTS, liên kết trong README và mẫu bỏ qua chứng chỉ bí mật trong gitignore. Cập nhật plan/task_plan.md và plan/progress.md. Chỉ rõ stack dự kiến và việc chưa có bằng chứng cài đặt. Giữ nội dung gốc; scope, quyết định và chính sách chưa chốt không tự thay đổi.
+
+### Phản biện
+
+Nội dung giữa PROJECT, README và AGENTS có phần tóm tắt giao nhau để phục vụ mục đích khác nhau; PROJECT dẫn tài liệu nguồn, CLAUDE chỉ dẫn AGENTS. Không xác nhận nhóm đã thống nhất chính sách mới. Chưa có phản hồi duyệt từ Liêm.
+
+### Quyết định của nhóm
+
+Liêm xác nhận tiếp tục Prompt 1 trong phạm vi tài liệu. Chưa có quyết định nghiệp vụ chung mới. Chờ Liêm duyệt kết quả.
+
+### Người kiểm tra
+
+Codex kiểm tra tệp và cấu trúc; Liêm chưa duyệt nội dung.
+
+### Kiểm tra và minh chứng
+
+Đã đọc lại các tài liệu được yêu cầu và Git status trước sửa; trạng thái đầu có log Liêm và plan từ đợt trước. Kiểm tra UTF-8, một tiêu đề cấp một và đường dẫn Markdown tương đối trong các tài liệu chỉnh sửa: không phát hiện lỗi. Kiểm tra mẫu ignore: env, dependency, build, chứng chỉ được bỏ qua; env.example, AI log và migration không bị bỏ qua. Git diff --check trước khi nối mục này báo dòng trống cuối log từ đợt trước; cảnh báo LF/CRLF. Chưa chạy ứng dụng hoặc kiểm thử chức năng. Không commit, push hay thay đổi .git.
+
+Tệp liên quan: AGENTS.md, CLAUDE.md, PROJECT.md, HOME.md, README.md, .gitignore, plan/task_plan.md, plan/progress.md, docs/ai-logs/liem.md.
+---
+## Chuẩn hóa nhật ký AI / LIEM-20261102-C84A29F1-003
+
+* Thời gian ghi: 2026-11-02T02:12:32+07:00.
+* Thời gian thực hiện: phiên hiện tại; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261102-C84A29F1.
+* Người prompt: Liêm, PM/BA.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261102-C84A29F1-002; chưa có Issue được cung cấp.
+
+### Công cụ
+
+Codex và Git. Model không ghi vì chưa được xác minh từ giao diện người dùng.
+
+### Mục đích
+
+Thống nhất vị trí trang tổng hợp, quy tắc và mẫu AI log; bảo toàn lịch sử và phân tách log cá nhân.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu chuyển trang tổng hợp và quy tắc vào docs/ai-logs/, giữ lịch sử và log Liêm, kiểm tra link và số mục, cập nhật kế hoạch và ghi lại công việc thực tế.
+
+### Kết quả đề xuất
+
+Chuyển nội dung tổng hợp root sang docs/ai-logs/AI_USAGE_LOG.md, điều chỉnh đích link tương đối; xác minh khôi phục nội dung gốc rồi xóa bản root. Chuyển nội dung quy tắc vào docs/ai-logs/ai-logging-rules.md, cập nhật quy định áp dụng cho agent; giữ docs/ai-logging-rules.md làm trang dẫn vì log cá nhân cũ liên kết tới đó. Giữ nguyên TEMPLATE và bảy log chưa có hoạt động. Cập nhật AGENTS.md, README.md, HOME.md và plan. Không có docs/CHANGELOG.md, nên ghi việc chuyển trong plan/progress.md.
+
+### Phản biện
+
+Không sửa các mục lịch sử để đổi đường dẫn; trang dẫn duy trì liên kết. Không sao chép lặp lịch sử hoặc gán hoạt động giả cho người khác. Những tham chiếu đường dẫn dạng văn bản trong log cũ phản ánh vị trí tại thời điểm ghi, không phải chỉ dẫn hiện hành. Chưa có phản hồi duyệt từ Liêm.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu thực hiện Prompt 2 và thống nhất vị trí log theo phạm vi đã nêu. Chưa có quyết định chung khác; kết quả chờ Liêm duyệt.
+
+### Người kiểm tra
+
+Codex kiểm tra nội dung, đường dẫn và bảo toàn lịch sử. Liêm chưa duyệt kết quả.
+
+### Kiểm tra và minh chứng
+
+Đã đọc AGENTS, log tổng hợp root, quy tắc, mẫu và toàn bộ tám log cá nhân trước khi sửa. File đích chưa có. Nội dung trang tổng hợp mới khi đảo các thay đổi đường dẫn liên kết khớp toàn bộ bản cũ trước khi xóa; liên kết tương đối toàn bộ file Markdown được kiểm tra trước xóa. Số mục Liêm trước đợt: 9; kiểm tra byte lịch sử và số mục sau khi nối được thực hiện trong cùng đợt. Không chạy kiểm thử ứng dụng, không commit/push. Các nguồn bên ngoài và kết quả sử dụng AI của thành viên khác chưa xác minh.
+---
+## Vai trò và sổ bài tập / LIEM-20261102-C84A29F1-004
+
+* Thời gian ghi: 2026-11-02T02:14:05+07:00.
+* Thời gian thực hiện: phiên hiện tại; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261102-C84A29F1.
+* Người prompt: Liêm, PM/BA.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261102-C84A29F1-003; chưa có Issue được cung cấp.
+
+### Công cụ
+
+Codex và Git; không ghi model chưa xác minh từ giao diện người dùng.
+
+### Mục đích
+
+Làm rõ vai trò phát triển và lập sổ bài tập trên lớp, giữ đúng phân công hiện có.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu đối chiếu tài liệu, tạo ROLES và ASSIGNMENTS, dùng tám mã vai trò đã cung cấp, phân biệt vai trò phát triển với người dùng website, kiểm tra và cập nhật kế hoạch, log.
+
+### Kết quả đề xuất
+
+Tạo docs/ROLES.md và docs/ASSIGNMENTS.md, thêm liên kết phân biệt vai trò trong PROJECT_PLAN.md; cập nhật plan/task_plan.md và plan/progress.md. Các mã dùng theo yêu cầu Liêm, trách nhiệm dựa trên PROJECT_PLAN. Sổ bài tập chưa có dòng dữ liệu thực tế.
+
+### Phản biện
+
+Reviewer mặc định và thư mục học/phase chưa được xác minh nên ghi chờ xác nhận, không gán người hoặc liên kết giả. Bảng phân công không chứng minh đã hoàn thành; AI không thay quyền người review. Chưa có phản hồi duyệt từ Liêm.
+
+### Quyết định của nhóm
+
+Liêm cung cấp tám mã và yêu cầu lập tài liệu. Chưa có quyết định chung mới về reviewer, bài tập hoặc thư mục; chờ Liêm duyệt kết quả.
+
+### Người kiểm tra
+
+Codex đối chiếu phân công, kiểm tra link, UTF-8, tám mã và số cột bảng. Liêm chưa duyệt.
+
+### Kiểm tra và minh chứng
+
+Đã đọc PROJECT_PLAN.md, AGENTS.md, README.md, REQUIREMENTS.md, quy tắc/mẫu AI log, log Liêm, plan và docs/user-roles.md; kiểm tra trạng thái Git và cấu trúc. Không tìm thấy ROLES, ASSIGNMENTS hoặc thư mục học/phase trước khi tạo tài liệu; không có bằng chứng bài tập đã nộp được cung cấp. Kiểm tra link tương đối, số cột hai bảng và mỗi mã xuất hiện một lần: đạt. git diff --check trước khi nối log đạt; Git cảnh báo LF/CRLF. Không chạy ứng dụng, không commit/push.
+
+Tệp liên quan: docs/ROLES.md, docs/ASSIGNMENTS.md, PROJECT_PLAN.md, plan/task_plan.md, plan/progress.md, docs/ai-logs/liem.md.
+---
+## Tài liệu nghiệp vụ và catalog / LIEM-20261102-C84A29F1-005
+
+* Thời gian ghi: 2026-11-02T02:15:38+07:00.
+* Thời gian thực hiện: phiên hiện tại; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261102-C84A29F1.
+* Người prompt: Liêm, PM/BA.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261102-C84A29F1-004; chưa có Issue được cung cấp.
+
+### Công cụ
+
+Codex và Git; model chưa xác minh từ giao diện người dùng.
+
+### Mục đích
+
+Hoàn thiện tài liệu nghiệp vụ, phân quyền và catalog; phân biệt quy tắc trong repo và thông số chờ nhóm chốt.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu đọc yêu cầu, kế hoạch, vai trò, quy trình và khảo sát; cập nhật ba tài liệu nghiệp vụ, tạo bảng SKU và đề xuất R01–R07; kiểm tra bảng, mã và liên kết; cập nhật plan và log.
+
+### Kết quả đề xuất
+
+Bổ sung authorization, quyền sở hữu và ca kiểm tra trong docs/user-roles.md; bảng actor, đầu vào, bước, đầu ra và ngoại lệ cho các luồng trong docs/business-workflow.md; phân loại căn cứ và đề xuất trong docs/competitor-analysis.md. Tạo docs/catalog/SKU-INVENTORY.md và KIT-RULES-PROPOSAL.md, thêm liên kết HOME.md, cập nhật plan.
+
+### Phản biện
+
+Không tìm thấy dữ liệu từng SKU hoặc giá/tồn demo đủ căn cứ nên để trống thông tin theo nhóm, không bịa hàng thật hoặc demo. Mã R01–R07 là cách đánh số tham chiếu mới do đợt này đề xuất, không tự nhận là hệ mã đã có hoặc quyết định mới của nhóm. Không giả lập truy cập lại đối thủ; phân biệt đề xuất với FR có trong repo. Chưa có phản hồi duyệt từ Liêm.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu thực hiện Prompt 4. Không có quyết định mới của toàn nhóm về định lượng, chọn SKU, tồn, phí, voucher hay trạng thái đơn. Các phần phụ thuộc chờ xác nhận.
+
+### Người kiểm tra
+
+Codex đối chiếu tài liệu nguồn và kiểm tra cấu trúc, liên kết, mã và bảng. Liêm chưa duyệt.
+
+### Kiểm tra và minh chứng
+
+Đã đọc REQUIREMENTS.md, PROJECT_PLAN.md, docs/ROLES.md, user-roles.md, business-workflow.md, competitor-analysis.md và quy tắc log; kiểm tra cấu trúc và Git trước sửa. Kiểm tra UTF-8, liên kết tương đối, số cột bảng, mã FR01–FR18 và đúng một hàng cho mỗi R01–R07: đạt. Không tự tạo mã AC; tiêu chí nghiệm thu dẫn về REQUIREMENTS. git diff --check trước nối log đạt; Git cảnh báo LF/CRLF. Chưa kiểm thử ứng dụng, chưa truy cập lại website đối thủ hoặc xác minh nguồn bên ngoài. Không commit/push.
+
+Tệp liên quan: docs/user-roles.md, docs/business-workflow.md, docs/competitor-analysis.md, docs/catalog/SKU-INVENTORY.md, docs/catalog/KIT-RULES-PROPOSAL.md, HOME.md, plan/task_plan.md, plan/progress.md, docs/ai-logs/liem.md.
+---
+## Yêu cầu, kế hoạch và kiến trúc / LIEM-20261102-C84A29F1-006
+
+* Thời gian ghi: 2026-11-02T02:17:48+07:00.
+* Thời gian thực hiện: phiên hiện tại; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261102-C84A29F1.
+* Người prompt: Liêm, PM/BA.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261102-C84A29F1-005; chưa có Issue được cung cấp.
+
+### Công cụ
+
+Codex và Git; model chưa xác minh từ giao diện người dùng.
+
+### Mục đích
+
+Tổ chức yêu cầu, kế hoạch, quyết định, kiến trúc và design system để nhóm rà soát trước phát triển.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu đọc toàn bộ yêu cầu/kế hoạch và file liên quan; bổ sung FR01–FR18, R01–R07, NFR01–NFR09, AC01–AC10, P0–P7; tạo sổ quyết định, mẫu ADR, kiến trúc, design system và changelog; kiểm tra tính nhất quán, cập nhật plan và log, dừng chờ duyệt.
+
+### Kết quả đề xuất
+
+Giữ nội dung gốc, bổ sung ma trận FR, quy tắc Builder, NFR/AC, yêu cầu môn học và phase trong REQUIREMENTS.md, PROJECT_PLAN.md. Tạo docs/DECISIONS.md, docs/adr/_TEMPLATE.md, docs/ARCHITECTURE.md, docs/DESIGN-SYSTEM.md và docs/CHANGELOG.md; cập nhật HOME và plan.
+
+### Phản biện
+
+R01–R07, NFR/AC và P0–P7 là mã tổ chức đề xuất; không coi đã duyệt hay thêm chức năng. FR18 vẫn có điều kiện. Không bịa người/ngày xác nhận, kết quả thử, giá trị token, ERD, endpoint hay trạng thái triển khai. Tài liệu công nghệ là hướng hiện có, không chứng minh đã cài hoặc có quyết định đầy đủ. Chưa có phản hồi duyệt của Liêm.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu thực hiện Prompt 5; chưa có quyết định nhóm mới về các chính sách, mã, kiến trúc hoặc token đề xuất. Chờ Liêm và nhóm rà soát.
+
+### Người kiểm tra
+
+Codex đối chiếu tài liệu và kiểm tra UTF-8, link, bảng và mã. Liêm chưa duyệt.
+
+### Kiểm tra và minh chứng
+
+Đã đọc toàn bộ REQUIREMENTS.md và PROJECT_PLAN.md, AGENTS, workflow, quy tắc Builder và log; năm tài liệu đích chưa tồn tại. Kiểm tra link tương đối, UTF-8, số cột bảng và sự hiện diện FR01–18, R01–07, NFR01–09, AC01–10, P0–P7: đạt. git diff --check trước nối log đạt, Git cảnh báo LF/CRLF. Kiểm tra cấu trúc không thay thế duyệt nội dung nghiệp vụ hoặc kiểm thử hệ thống. Chưa chạy ứng dụng, không commit/push.
+
+Tệp: REQUIREMENTS.md, PROJECT_PLAN.md, docs/DECISIONS.md, docs/adr/_TEMPLATE.md, docs/ARCHITECTURE.md, docs/DESIGN-SYSTEM.md, docs/CHANGELOG.md, HOME.md, plan/task_plan.md, plan/progress.md, docs/ai-logs/liem.md.
+---
+## Roadmap và công cụ tiến độ / LIEM-20261102-C84A29F1-007
+
+* Thời gian ghi: 2026-11-02T02:20:47+07:00.
+* Thời gian thực hiện: phiên hiện tại; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261102-C84A29F1.
+* Người prompt: Liêm, PM/BA.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261102-C84A29F1-006; chưa có Issue được cung cấp.
+
+### Công cụ
+
+Codex, Git, Node.js 24.16.0 và npm 11.13.0; model chưa xác minh từ giao diện người dùng.
+
+### Mục đích
+
+Tổ chức roadmap, phase, phụ thuộc, minh chứng và công cụ xem trước/tổng hợp tiến độ an toàn theo yêu cầu.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu tạo ROADMAP, PHASES, PROGRESS, scripts Node, package.json; dùng ID PRJ/HW, kiểm tra dữ liệu, mặc định dry-run, không gọi GitHub hay chạy apply trong đợt này, chạy kiểm tra cục bộ và cập nhật plan/log.
+
+### Kết quả đề xuất
+
+Tạo roadmap cấp cao với 11 task PRJ đề xuất, dữ liệu scripts/roadmap-tasks.json, tám overview phase, trang tiến độ chưa đồng bộ và ba script không thêm dependency. Tạo package.json và liên kết HOME; cập nhật plan, findings và progress. Không tạo bài tập HW giả. Reviewer chờ xác nhận, phân công là kế hoạch đề xuất, FR18 có điều kiện.
+
+### Phản biện
+
+Không coi task hay issue đóng là bằng chứng done. Các ID, phase và tham chiếu chưa thay quyết định nhóm; không suy trạng thái GitHub hoặc việc nộp bài. Script chỉ tạo issue khi có --apply và cấu hình hợp lệ, report mặc định offline; --github là đọc có cấu hình, --apply của report chỉ ghi file cục bộ. Chưa có phản hồi duyệt của Liêm.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu thực hiện Prompt 6, không cho chạy apply hay gửi request GitHub trong đợt này. Không có xác nhận mới của nhóm về reviewer, thời hạn hoặc task. Chờ Liêm duyệt.
+
+### Người kiểm tra
+
+Codex kiểm tra cục bộ; Liêm và reviewer chưa duyệt nội dung hoặc kết quả.
+
+### Kiểm tra và minh chứng
+
+Đã đọc REQUIREMENTS, PROJECT_PLAN, ROLES, ASSIGNMENTS, DECISIONS, AGENTS, quy tắc và log; trước đợt chưa có phases, scripts hoặc package.json. Node --check ba script, npm run, hai lệnh preview offline, kiểm tra JSON, UTF-8 và link: đạt. Dữ liệu thử tạm cho ID trùng và phase sai bị từ chối; tham số sai và thiếu cấu hình GitHub bị từ chối trước kết nối. git diff --check trước nối log đạt; có cảnh báo LF/CRLF. Không chạy --apply, không gửi request GitHub; thao tác tạo issue, phản hồi API và lưu báo cáo thực tế chưa được kiểm thử.
+
+Tệp: docs/ROADMAP.md, docs/PROGRESS.md, phases/PHASES.md và tám overview, scripts/roadmap-lib.mjs, roadmap-issues.mjs, roadmap-report.mjs, roadmap-tasks.json, package.json, HOME.md, plan/task_plan.md, plan/findings.md, plan/progress.md và docs/ai-logs/liem.md.
+---
+## Phase P0 kickoff và nền móng / LIEM-20261102-C84A29F1-008
+
+* Thời gian ghi: 2026-11-02T02:22:48+07:00.
+* Thời gian thực hiện: phiên hiện tại; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261102-C84A29F1.
+* Người prompt: Liêm, PM/BA.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261102-C84A29F1-007; chưa có Issue được cung cấp.
+
+### Công cụ
+
+Codex và Git; model chưa xác minh từ giao diện người dùng.
+
+### Mục đích
+
+Xây tài liệu kickoff P0 và checklist theo tám vai trò, làm rõ phụ thuộc bài tập và đồ án.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu đọc yêu cầu, kế hoạch, vai trò, roadmap, quyết định, learning path và phase nếu có; tạo P0-kickoff overview và tám file cá nhân; ưu tiên bài Session 2 HTML/CSS theo lịch, tôn trọng giới hạn môn học; kiểm tra và ghi plan/log.
+
+### Kết quả đề xuất
+
+Tạo phases/P0-kickoff/P0-OVERVIEW.md và tám file vai trò; cập nhật PHASES, overview P0 cũ, ROADMAP, plan và CHANGELOG. Các checklist có mục tiêu, việc, tài liệu, kiến thức, bước, prompt gợi ý, phạm vi file, đầu ra, done, test/minh chứng, việc chờ và handoff. ID cá nhân ngoài task roadmap hiện tại là đề xuất, chưa tạo Issue hoặc thêm vào dữ liệu script.
+
+### Phản biện
+
+Thông tin Session 2 HTML/CSS và ưu tiên theo lịch do Liêm cung cấp; chưa tìm thấy đề, hạn, tiêu chí nộp hoặc quy định JS/framework trong repo, không tự suy đã có lệnh cấm hay hạn cụ thể. Đề cập không dùng JS/framework nếu hướng dẫn môn học cấm. Learning path chuyên biệt chưa có; reviewer và lịch thực tế chờ xác nhận. Không giao Liêm viết code thay thành viên, không ghi task hoàn thành hay AI prompt đã chạy.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu Prompt 7; chưa có xác nhận mới của toàn nhóm về lịch, reviewer, checklist hoặc task cá nhân. Kết quả chờ Liêm duyệt.
+
+### Người kiểm tra
+
+Codex đối chiếu tài liệu và kiểm tra cấu trúc; Liêm và reviewer chưa duyệt nội dung.
+
+### Kiểm tra và minh chứng
+
+Đã đọc REQUIREMENTS, PROJECT_PLAN, ROLES, ROADMAP, DECISIONS, ASSIGNMENTS, AGENTS, quy tắc log, plan và phase hiện có; docs/learning/LEARNING-PATH.md và phases/P0-kickoff chưa tồn tại trước đợt. Kiểm tra tám file có đủ 12 mục, ít nhất ba checklist chưa đánh dấu, UTF-8, link tương đối và số cột bảng: đạt. git diff --check trước ghi log đạt; Git cảnh báo LF/CRLF. Chưa làm bài Session 2, chạy code ứng dụng, kiểm chứng đề môn học hoặc tạo Issue; không commit/push.
+
+Tệp: phases/P0-kickoff/P0-OVERVIEW.md và tám file cá nhân, phases/PHASES.md, phases/P0/overview.md, docs/ROADMAP.md, docs/CHANGELOG.md, plan/task_plan.md, plan/findings.md, plan/progress.md, docs/ai-logs/liem.md.
+---
+## Phase P1 catalog và tài khoản / LIEM-20261102-C84A29F1-009
+
+* Thời gian ghi: 2026-11-02T02:24:36+07:00.
+* Thời gian thực hiện: phiên hiện tại; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261102-C84A29F1.
+* Người prompt: Liêm, PM/BA.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261102-C84A29F1-008; chưa có Issue được cung cấp.
+
+### Công cụ
+
+Codex và Git; model chưa xác minh từ giao diện người dùng.
+
+### Mục đích
+
+Lập tài liệu lát cắt P1 cho catalog, tài khoản, quyền và giao diện nền theo vai trò.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu đọc yêu cầu, kế hoạch, vai trò, roadmap, phase P0 và quyết định; tạo overview P1 cùng tám file thành viên; bao quát catalog, tối thiểu năm thuộc tính lọc, biến thể, tài khoản, RBAC và kết nối; không bịa dữ liệu, không phụ thuộc các phase sau chưa làm; kiểm tra, cập nhật plan/log và chờ duyệt.
+
+### Kết quả đề xuất
+
+Tạo phases/P1-catalog-accounts/P1-OVERVIEW.md và tám file theo vai trò; cập nhật PHASES, overview P1 cũ, ROADMAP, plan và CHANGELOG. Đầu vào thiết kế, API, auth và môi trường tối thiểu được mô tả là việc cần được thống nhất trong P1; task, reviewer và lịch chưa được xác nhận.
+
+### Phản biện
+
+PROJECT_PLAN/PHASES cũ đặt yêu cầu tại P1, thiết kế P2, môi trường P3 và phát triển P4/P5; lát cắt P1 theo Prompt 8 khác cách chia cũ, đã ghi rõ cần nhóm duyệt điều chỉnh trước khi đồng bộ roadmap/issue. Không yêu cầu phase P2–P7 hoàn thành, không lặp checklist kickoff P0. Khoảng 30 SKU chỉ là dự kiến; không tạo SKU, giá, tồn hoặc dữ liệu khách. Lịch sử đơn chưa có được ghi chờ tích hợp. Chưa có phản hồi duyệt từ Liêm.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu xây bộ tài liệu P1. Chưa có xác nhận toàn nhóm về thay đổi ranh giới phase, auth, schema, API, dữ liệu, lịch hoặc reviewer. Chờ Liêm/nhóm duyệt.
+
+### Người kiểm tra
+
+Codex đối chiếu FR, phase và vai trò; kiểm tra cấu trúc/link/bảng. Liêm và reviewer chưa duyệt.
+
+### Kiểm tra và minh chứng
+
+Đọc REQUIREMENTS, PROJECT_PLAN, ROLES, ROADMAP, DECISIONS, inventory, quyền, kiến trúc, PHASES, P0 overview, AGENTS, quy tắc log và plan; P1-catalog-accounts chưa tồn tại. Tám file đủ 10 mục yêu cầu, trạng thái todo; UTF-8, link và bảng đạt. Kiểm tra nội dung: mỗi task tập trung catalog/tài khoản, điều kiện P1 không yêu cầu hoàn thành P2–P7; các phụ thuộc thực tế chờ chốt. git diff --check trước nối log đạt; Git cảnh báo LF/CRLF. Chưa triển khai hay test ứng dụng, không tạo Issue, commit hoặc push.
+
+Tệp: phases/P1-catalog-accounts/P1-OVERVIEW.md và tám file cá nhân, phases/PHASES.md, phases/P1/overview.md, docs/ROADMAP.md, docs/CHANGELOG.md, plan/task_plan.md, plan/findings.md, plan/progress.md, docs/ai-logs/liem.md.
+---
+## Phase P2 giỏ hàng và checkout / LIEM-20261102-C84A29F1-010
+
+* Thời gian ghi: 2026-11-02T02:26:19+07:00.
+* Thời gian thực hiện: phiên hiện tại; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261102-C84A29F1.
+* Người prompt: Liêm, PM/BA.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261102-C84A29F1-009; chưa có Issue được cung cấp.
+
+### Công cụ
+
+Codex và Git; model chưa xác minh từ giao diện người dùng.
+
+### Mục đích
+
+Lập tài liệu P2 cho giỏ, voucher, phí giao và checkout theo vai trò, bảo toàn quy tắc kiểm soát server-side.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu đọc yêu cầu, R01–R07, workflow, quyền, quyết định, roadmap, phase và P1; tạo overview và tám file cá nhân P2, mô tả logic giao dịch, phân công, điểm chặn, kiểm tra và cập nhật plan/log.
+
+### Kết quả đề xuất
+
+Tạo phases/P2-cart-checkout/P2-OVERVIEW.md và tám checklist vai trò; cập nhật PHASES, P2 overview cũ, ROADMAP, plan và CHANGELOG. Tài liệu nêu đăng nhập trước giỏ/checkout, tính và kiểm lại tại Backend, tổng tiền, phí tạm tính, xác nhận thay đổi, hết hàng và snapshot; không tự ghi đã thanh toán.
+
+### Phản biện
+
+Không bịa bảng phí demo, chính sách voucher/tồn hay dữ liệu khách; đánh dấu phần phụ thuộc chờ nhóm chốt. P1 chưa có bằng chứng hoàn thành, tích hợp cần đầu ra P1 tương ứng. P2 giao dịch theo Prompt 9 khác phân phase cũ, cần nhóm duyệt trước đồng bộ task. PM tập trung BA/điều phối, không giao viết logic dev; reviewer là người thực tế, không coi đã duyệt.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu xây tài liệu P2; chưa có quyết định chung mới về phí, voucher, tồn, trạng thái đơn, lịch hoặc reviewer. Kết quả chờ Liêm/nhóm duyệt.
+
+### Người kiểm tra
+
+Codex đối chiếu yêu cầu/P1 và kiểm tra cấu trúc, link, bảng. Liêm và reviewer chưa duyệt.
+
+### Kiểm tra và minh chứng
+
+Đã đọc REQUIREMENTS, R01–R07, workflow, user-roles, DECISIONS, ROADMAP, PHASES, P1, AGENTS, quy tắc log và plan. P2-cart-checkout chưa có trước đợt. Tám file đủ tám mục, ít nhất ba checklist chưa đánh dấu; kiểm UTF-8, link, bảng và nội dung giao dịch chính đạt. Kiểm từ khóa lần đầu báo thiếu do phân biệt chữ hoa/thường; kiểm lại không phân biệt hoa/thường thành công. git diff --check trước nối log đạt; Git cảnh báo LF/CRLF. Chưa triển khai/test ứng dụng hoặc tạo Issue; không commit/push.
+
+Tệp: phases/P2-cart-checkout/P2-OVERVIEW.md và tám file cá nhân, phases/PHASES.md, phases/P2/overview.md, docs/ROADMAP.md, docs/CHANGELOG.md, plan/task_plan.md, plan/findings.md, plan/progress.md, docs/ai-logs/liem.md.
+---
+## Phase P3 thanh toán, đơn hàng và đánh giá / LIEM-20261102-C84A29F1-011
+
+* Thời gian ghi: 2026-11-02T02:28:12+07:00.
+* Thời gian thực hiện: phiên hiện tại; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261102-C84A29F1.
+* Người prompt: Liêm, PM/BA.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261102-C84A29F1-010; chưa có Issue được cung cấp.
+
+### Công cụ
+
+Codex và Git; model chưa xác minh từ giao diện người dùng.
+
+### Mục đích
+
+Lập tài liệu P3 cho thanh toán VNPay Sandbox, đơn hàng, giao hàng và đánh giá theo tám vai trò.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu đọc yêu cầu, workflow, kiến trúc, quyết định, roadmap và P0–P2; tạo overview và tám file P3; phân biệt trạng thái, Return URL/IPN, xác minh chữ ký, callback lặp/trễ, đối soát, đánh giá và chính sách mở; kiểm tra, ghi plan/log, dừng.
+
+### Kết quả đề xuất
+
+Tạo phases/P3-payment-orders/P3-OVERVIEW.md và tám file cá nhân; cập nhật PHASES, overview P3 cũ, ROADMAP, plan và CHANGELOG. Tài liệu tách trạng thái đơn/thanh toán/vận chuyển, yêu cầu Backend xác minh và không coi return từ browser là bằng chứng duy nhất.
+
+### Phản biện
+
+Không bịa endpoint, tham số, secret, API đối soát hay cách xử lý callback trễ; các mục cần nhóm xác nhận trước triển khai. Email checklist chỉ thuộc FR18 có điều kiện; thông báo kênh mới chưa được duyệt. Không tự động chuyển tiền hoàn trả. P1/P2 chưa có minh chứng hoàn thành; ranh giới P3 theo Prompt 10 khác phase cũ và cần nhóm duyệt.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu lập tài liệu P3; chưa có quyết định chung mới về trạng thái, tồn, thanh toán muộn, đối soát, đánh giá hoặc lịch. Chờ Liêm/nhóm duyệt.
+
+### Người kiểm tra
+
+Codex đối chiếu tài liệu và kiểm tra cấu trúc/link/bảng. Liêm và reviewer chưa duyệt.
+
+### Kiểm tra và minh chứng
+
+Đã đọc REQUIREMENTS, workflow, kiến trúc, quyết định, roadmap, vai trò, PHASES, overview P0–P2, AGENTS, quy tắc log và plan; P3-payment-orders chưa tồn tại. Tám file đủ chín mục và checklist todo; UTF-8, link, bảng và nội dung Return URL/IPN, chữ ký, lặp/trễ, ba trạng thái, FR05/FR11–FR15 và AC08/AC09 đạt kiểm tra hiện diện. git diff --check trước nối log đạt; Git cảnh báo LF/CRLF. Chưa xác minh tài liệu VNPay bên ngoài, chưa kết nối sandbox, triển khai hay test ứng dụng; không tạo Issue, commit hoặc push.
+
+Tệp: phases/P3-payment-orders/P3-OVERVIEW.md và tám file cá nhân, phases/PHASES.md, phases/P3/overview.md, docs/ROADMAP.md, docs/CHANGELOG.md, plan/task_plan.md, plan/findings.md, plan/progress.md, docs/ai-logs/liem.md.
+---
+## Phase P4 Kit Builder / LIEM-20261102-C84A29F1-012
+
+* Thời gian ghi: 2026-11-02T02:30:14+07:00.
+* Thời gian thực hiện: phiên hiện tại; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261102-C84A29F1.
+* Người prompt: Liêm, PM/BA.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261102-C84A29F1-011; chưa có Issue được cung cấp.
+
+### Công cụ
+
+Codex và Git; model chưa xác minh từ giao diện người dùng.
+
+### Mục đích
+
+Tổ chức tài liệu P4 cho Kit Builder, cụ thể hóa R01–R07 và phân công theo tám vai trò.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu đọc R01–R07, catalog, workflow, kiến trúc, quyết định và P0–P3; tạo overview P4 và tám file vai trò; nêu đầu vào, logic, đầu ra, ví dụ, ranh giới FE/BE và test cho từng quy tắc; cập nhật plan/log và dừng.
+
+### Kết quả đề xuất
+
+Tạo phases/P4-kit-builder/P4-OVERVIEW.md và tám file cá nhân; cập nhật PHASES, overview P4 cũ, ROADMAP, plan và CHANGELOG. Ma trận R01–R07 bao phủ nhu cầu, đồ có, công dụng/sức chứa, thiết yếu/tùy chọn, tồn, thay món, ngân sách, tạm tính, version/snapshot và kiểm lại checkout; ví dụ số được ghi là giả định.
+
+### Phản biện
+
+R01–R07 là mã tham chiếu đề xuất; dữ liệu SKU/giá/tồn và định lượng chưa được xác minh. Không gợi ý bỏ thiết yếu hay tăng ngân sách, không suy thuật toán không tìm được là không có phương án. Đã làm rõ đủ món thiết yếu khác phù hợp ngân sách khi phí chưa biết. Lát cắt P4 xuyên FE/BE khác ranh giới phase cũ và cần nhóm duyệt; P0–P3 chưa có minh chứng hoàn thành.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu lập tài liệu P4; chưa có quyết định chung mới về định lượng, chọn SKU, nhãn, phí, nháp, version hoặc reviewer. Chờ Liêm/nhóm duyệt.
+
+### Người kiểm tra
+
+Codex đối chiếu tài liệu và kiểm tra cấu trúc/link/bảng/mã. Liêm và reviewer chưa duyệt.
+
+### Kiểm tra và minh chứng
+
+Đã đọc REQUIREMENTS, R01–R07, SKU inventory, workflow, kiến trúc, quyết định, roadmap, vai trò, PHASES, overview P0–P3, AGENTS, quy tắc log và plan; P4-kit-builder chưa tồn tại. Tám file đủ chín mục và checklist todo; kiểm UTF-8, link, bảng, mỗi R01–R07 một hàng và nội dung chính đạt. git diff --check trước nối log đạt; Git cảnh báo LF/CRLF. Chưa triển khai, test ứng dụng, xác nhận dữ liệu hoặc tạo Issue; không commit/push.
+
+Tệp: phases/P4-kit-builder/P4-OVERVIEW.md và tám file cá nhân, phases/PHASES.md, phases/P4/overview.md, docs/ROADMAP.md, docs/CHANGELOG.md, plan/task_plan.md, plan/findings.md, plan/progress.md, docs/ai-logs/liem.md.
+---
+## Phase P5 quản trị và bảo mật / LIEM-20261102-C84A29F1-013
+
+* Thời gian ghi: 2026-11-02T02:31:48+07:00.
+* Thời gian thực hiện: phiên hiện tại; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261102-C84A29F1.
+* Người prompt: Liêm, PM/BA.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261102-C84A29F1-012; chưa có Issue được cung cấp.
+
+### Công cụ
+
+Codex và Git; model chưa xác minh từ giao diện người dùng.
+
+### Mục đích
+
+Lập tài liệu P5 quản trị, quản lý rule và bảo mật theo tám vai trò.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu đọc FR14–FR17, NFR bảo mật, quyền, kiến trúc, quyết định, roadmap và P0–P4; tạo overview và tám file P5; bao quát admin, version/audit, quyền, Storage, secrets, rate limiting; kiểm tra, ghi plan/log và dừng.
+
+### Kết quả đề xuất
+
+Tạo phases/P5-admin-security/P5-OVERVIEW.md và tám file cá nhân; cập nhật PHASES, P5 overview cũ, ROADMAP, plan và CHANGELOG. Nêu Backend kiểm quyền/ownership/validation; rule thay đổi cần version, người, thời điểm và ảnh hưởng; đơn cũ giữ snapshot. Phân biệt UI ẩn nút với kiểm tra quyền Backend.
+
+### Phản biện
+
+Rate limiting, phạm vi audit mở rộng, ngưỡng, lưu giữ, quyền xem, công thức dashboard và auth còn chờ nhóm chốt; không tạo cấu hình hay kết luận đã triển khai. Không đưa service-role key hoặc secret vào frontend/repo. P0–P4 chưa có minh chứng hoàn thành; lát cắt P5 xuyên FE/BE khác ranh giới phase cũ, chờ nhóm duyệt.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu lập tài liệu P5 và ghi nhận người/thời điểm/ảnh hưởng cho thay đổi rule. Chưa có xác nhận chung mới về auth, audit, rate limit, dashboard, lịch hoặc reviewer. Chờ Liêm/nhóm duyệt.
+
+### Người kiểm tra
+
+Codex đối chiếu yêu cầu và kiểm tra cấu trúc/link/bảng/mã. Liêm và reviewer chưa duyệt.
+
+### Kiểm tra và minh chứng
+
+Đã đọc REQUIREMENTS, PROJECT_PLAN, user-roles, kiến trúc, quyết định, roadmap, vai trò, PHASES, overview P0–P4, AGENTS, quy tắc log và plan; P5-admin-security chưa tồn tại. Tám file đủ chín mục và checklist todo; UTF-8, link, bảng và hiện diện FR14–FR17, NFR04–NFR06, AC02/AC08/AC09 cùng nội dung bảo mật đạt. git diff --check trước nối log đạt; Git cảnh báo LF/CRLF. Chưa triển khai/test ứng dụng hoặc cấu hình dịch vụ; không tạo Issue, commit hoặc push.
+
+Tệp: phases/P5-admin-security/P5-OVERVIEW.md và tám file cá nhân, phases/PHASES.md, phases/P5/overview.md, docs/ROADMAP.md, docs/CHANGELOG.md, plan/task_plan.md, plan/findings.md, plan/progress.md, docs/ai-logs/liem.md.
+---
+## Phase P6 kiểm thử và Innovation / LIEM-20261102-C84A29F1-014
+
+* Thời gian ghi: 2026-11-02T02:33:52+07:00.
+* Thời gian thực hiện: phiên hiện tại; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261102-C84A29F1.
+* Người prompt: Liêm, PM/BA.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261102-C84A29F1-013; chưa có Issue được cung cấp.
+
+### Công cụ
+
+Codex và Git; model chưa xác minh từ giao diện người dùng.
+
+### Mục đích
+
+Lập chiến lược kiểm thử tổng và đánh giá Innovation có điều kiện theo vai trò.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu đọc requirements, AC, test docs, roadmap, kiến trúc, quyết định, PITFALLS và overview P0–P5; tạo overview P6 và tám file cá nhân; phân biệt test scenario/result, chỉ Pass có bằng chứng, đề xuất Innovation không ảnh hưởng core; kiểm tra và ghi plan/log.
+
+### Kết quả đề xuất
+
+Tạo phases/P6-testing-innovation/P6-OVERVIEW.md và tám file cá nhân; cập nhật PHASES, overview P6 cũ, ROADMAP, plan và CHANGELOG. Strategy bao gồm unit, integration, e2e, manual, regression, API, quyền, dữ liệu, VNPay/IPN, Builder, tồn cạnh tranh, voucher, UI, browser, hiệu năng, lỗi, dữ liệu thử và triage. FR18 và cải tiến giải thích Builder chỉ là đề xuất có điều kiện.
+
+### Phản biện
+
+Không tìm thấy PITFALLS hoặc bộ test chuyên biệt trong repo. Không bịa kết quả Pass, số người thử, ngưỡng hiệu năng, trình duyệt mục tiêu hay chính sách chưa được duyệt. Tối thiểu 24 ca Builder và tám người thử là mục tiêu, chưa chứng minh đạt. PM điều phối, QA chủ trì test/triage, dev sửa theo module, PD kiểm UI và DO hỗ trợ môi trường. P0–P5 chưa có minh chứng hoàn thành.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu lập tài liệu P6; chưa có quyết định chung mới về tiêu chí thoát, browser, ngưỡng hiệu năng, Innovation hoặc reviewer. Chờ Liêm/nhóm duyệt.
+
+### Người kiểm tra
+
+Codex đối chiếu yêu cầu và kiểm tra cấu trúc/link/bảng. Liêm và reviewer chưa duyệt.
+
+### Kiểm tra và minh chứng
+
+Đã đọc REQUIREMENTS, AC, roadmap, kiến trúc, quyết định, vai trò, PHASES, overview P0–P5, AGENTS, quy tắc log và plan; PITFALLS.md, bộ test chuyên biệt và P6-testing-innovation chưa tồn tại theo kiểm kê. Tám file đủ tám mục và checklist todo; UTF-8, link, bảng và nội dung test/Innovation đạt kiểm tra hiện diện. git diff --check trước nối log đạt; Git cảnh báo LF/CRLF. Chưa chạy test ứng dụng hoặc khảo sát người dùng, chưa tạo Issue; không commit/push.
+
+Tệp: phases/P6-testing-innovation/P6-OVERVIEW.md và tám file cá nhân, phases/PHASES.md, phases/P6/overview.md, docs/ROADMAP.md, docs/CHANGELOG.md, plan/task_plan.md, plan/findings.md, plan/progress.md, docs/ai-logs/liem.md.
+---
+## Phase P7 release, báo cáo và bảo vệ / LIEM-20261102-C84A29F1-015
+
+* Thời gian ghi: 2026-11-02T02:35:17+07:00.
+* Thời gian thực hiện: phiên hiện tại; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261102-C84A29F1.
+* Người prompt: Liêm, PM/BA.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261102-C84A29F1-014; chưa có Issue được cung cấp.
+
+### Công cụ
+
+Codex và Git; model chưa xác minh từ giao diện người dùng.
+
+### Mục đích
+
+Lập tài liệu P7 cho release, báo cáo và bảo vệ có bằng chứng, phân công theo vai trò.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu đọc roadmap, requirements, project plan, tài liệu release/report/demo nếu có, progress và P0–P6; tạo overview P7 và tám file cá nhân, nêu release/freeze/regression/deploy/URL/health/data/backup/rollback/secrets/smoke/report/defense, không gán tỷ lệ đóng góp, cập nhật plan/log và dừng.
+
+### Kết quả đề xuất
+
+Tạo phases/P7-release-defense/P7-OVERVIEW.md và tám file cá nhân; cập nhật PHASES, overview P7 cũ, ROADMAP, plan và CHANGELOG. Nêu các điều kiện release, khung report/demo và bằng chứng cần có; phân công QA xác nhận test, Kiệt deploy, dev module, Đạt UX và Liêm điều phối.
+
+### Phản biện
+
+Không tìm thấy RELEASE-CHECKLIST, REPORT-OUTLINE hoặc DEMO-SCRIPT chuyên biệt ở root/docs. Chưa có minh chứng deploy, URL demo, freeze hay test release; không tạo URL giả, số liệu test hoặc phần trăm đóng góp. Git/task/log chỉ là nguồn có giới hạn, cần thành viên xác nhận. Backup/rollback chỉ xét khi khả thi và được phép; không giả định đã thử.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu lập tài liệu P7; chưa có quyết định chung mới về deadline, rubric, freeze, tiêu chí release, hosting, reviewer hoặc cách đánh giá đóng góp. Chờ Liêm/nhóm duyệt.
+
+### Người kiểm tra
+
+Codex đối chiếu tài liệu và kiểm tra cấu trúc/link/bảng. Liêm và reviewer chưa duyệt.
+
+### Kiểm tra và minh chứng
+
+Đã đọc ROADMAP, REQUIREMENTS, PROJECT_PLAN, progress, PHASES, overview P0–P6, ROLES, AGENTS, quy tắc log và plan; các tài liệu release/report/demo chuyên biệt và P7-release-defense chưa tìm thấy trước đợt. Tám file đủ tám mục và checklist todo; UTF-8, link, bảng và nội dung release chính đạt kiểm tra hiện diện. git diff --check trước nối log đạt; Git cảnh báo LF/CRLF. Chưa deploy, kiểm URL hoặc test ứng dụng; không tạo Issue, commit, push hay release tag.
+
+Tệp: phases/P7-release-defense/P7-OVERVIEW.md và tám file cá nhân, phases/PHASES.md, phases/P7/overview.md, docs/ROADMAP.md, docs/CHANGELOG.md, plan/task_plan.md, plan/findings.md, plan/progress.md, docs/ai-logs/liem.md.
+---
+## Hướng dẫn Session 2 HTML5/CSS3 / LIEM-20261102-C84A29F1-016
+
+* Thời gian ghi: 2026-11-02T02:37:08+07:00.
+* Thời gian thực hiện: phiên hiện tại; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261102-C84A29F1.
+* Người prompt: Liêm, PM/BA.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261102-C84A29F1-015; chưa có Issue được cung cấp.
+
+### Công cụ
+
+Codex và Git; model chưa xác minh từ giao diện người dùng.
+
+### Mục đích
+
+Hoàn thiện hướng dẫn và phạm vi bài nhóm Session 2, phân biệt yêu cầu môn học có căn cứ với thông tin chưa xác minh.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu đọc tài liệu môn học và dự án, tạo docs/SESSION2-GUIDE.md, session2/AGENTS.md và CLAUDE.md; cập nhật ASSIGNMENTS, deadline và task ID; phân công tám người, kiểm tra, ghi log/plan và dừng.
+
+### Kết quả đề xuất
+
+Tạo hướng dẫn Session 2 và hai file chỉ dẫn trong session2/; cập nhật ASSIGNMENTS, HOME, plan và CHANGELOG. Ghi tám task HW đề xuất với phạm vi, phụ thuộc, kiểm tra và tiêu chí; deadline/reviewer chưa xác minh, phần phụ thuộc đề blocked. Không tạo file bài làm, không nộp bài.
+
+### Phản biện
+
+Thông tin Buổi 2 HTML/CSS và ưu tiên theo lịch do Liêm cung cấp; repo chưa có đề gốc, hạn, rubric, cách nộp hoặc danh sách công nghệ cho phép. Tạm thời không thêm JavaScript/framework khi chưa có đề; không tự khẳng định giảng viên đã cấm cụ thể. Không gán thành viên đã nhận việc hay đã nộp; không giao Liêm code thay dev.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu lập tài liệu Session 2 và tuân thủ công nghệ giảng viên cho phép. Chưa có xác nhận chung về deadline, phân công chi tiết, reviewer hay nội dung đề. Chờ Liêm/nhóm duyệt và cung cấp nguồn môn học.
+
+### Người kiểm tra
+
+Codex đối chiếu tài liệu và kiểm tra link/bảng/mã. Liêm và reviewer chưa duyệt.
+
+### Kiểm tra và minh chứng
+
+Đã đọc PROJECT_PLAN, ROLES, ASSIGNMENTS, AGENTS, DESIGN-SYSTEM, P0 overview, ROADMAP, quy tắc log và plan; tìm nguồn Session 2 trong repo và sources của mirror, chưa tìm thấy đề gốc. session2 và SESSION2-GUIDE chưa tồn tại trước đợt. Kiểm UTF-8, link tương đối, số cột, dòng bảng và tám ID trong guide/sổ đạt; git diff --check trước nối log đạt, Git cảnh báo LF/CRLF. Chưa làm bài, chạy test bài hoặc nộp; không tạo Issue, commit hay push.
+
+Tệp: docs/SESSION2-GUIDE.md, session2/AGENTS.md, session2/CLAUDE.md, docs/ASSIGNMENTS.md, HOME.md, docs/CHANGELOG.md, plan/task_plan.md, plan/findings.md, plan/progress.md, docs/ai-logs/liem.md.
+---
+## Learning path chung và lỗi thường gặp / LIEM-20261102-C84A29F1-017
+
+* Thời gian ghi: 2026-11-02T02:42:11+07:00.
+* Thời gian thực hiện: phiên hiện tại; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261102-C84A29F1.
+* Người prompt: Liêm, PM/BA.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261102-C84A29F1-016; chưa có Issue được cung cấp.
+
+### Công cụ
+
+Codex và Git; model chưa xác minh từ giao diện người dùng.
+
+### Mục đích
+
+Xây tài liệu học chung và thư viện lỗi gắn với stack, quy trình và nghiệp vụ DAYORA.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu đọc ROLES, PHASES, ROADMAP, AGENTS, REQUIREMENTS, overview và file học; tạo learning path, PITFALLS và mapping tám đường dẫn cá nhân; giải thích lỗi cụ thể, kiểm link, cập nhật plan/log và dừng.
+
+### Kết quả đề xuất
+
+Tạo docs/learning/LEARNING-PATH.md và PITFALLS.md; cập nhật HOME, plan và CHANGELOG. Learning path có thứ tự đọc, học theo phase, bảy bước dùng AI, Git/review/evidence và yêu cầu hiểu phần mình nộp. PITFALLS nêu dấu hiệu, nguyên nhân/nguy cơ, phòng tránh, kiểm tra và lúc cần reviewer theo từng nhóm.
+
+### Phản biện
+
+Tám đường dẫn học cá nhân chỉ là dự kiến chưa tồn tại, ghi dạng văn bản và dẫn tới checklist P0 hiện có; không tạo link chết hoặc đánh giá mức thành thạo. Phân biệt bài Session 2 theo đề với stack đồ án. Không coi ví dụ lỗi là sự cố đã xảy ra, không bịa chính sách thanh toán/tồn, không yêu cầu học công nghệ ngoài stack. Các file .obsidian chưa theo dõi đã có ở đầu đợt được giữ nguyên.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu tạo tài liệu học chung và mapping; chưa có xác nhận nhóm về learning path cá nhân, mức kỹ năng hay chính sách nghiệp vụ còn mở. Chờ Liêm/nhóm duyệt.
+
+### Người kiểm tra
+
+Codex đối chiếu tài liệu, kiểm UTF-8, link, bảng, mapping và bảy bước. Liêm và reviewer chưa duyệt.
+
+### Kiểm tra và minh chứng
+
+Đã đọc ROLES, PHASES, ROADMAP, AGENTS, REQUIREMENTS, overview P0–P7, Session 2, quy tắc log và plan; docs/learning chưa tồn tại. Kiểm UTF-8, link tương đối, bảng, tám mapping và bảy bước AI đạt. git diff --check trước nối log đạt; Git cảnh báo LF/CRLF. Chưa đánh giá kỹ năng, kiểm thử ứng dụng hay tạo Issue; không commit/push.
+
+Tệp: docs/learning/LEARNING-PATH.md, docs/learning/PITFALLS.md, HOME.md, docs/CHANGELOG.md, plan/task_plan.md, plan/findings.md, plan/progress.md, docs/ai-logs/liem.md.
+---
+## Learning path riêng PM-Liem / LIEM-20261102-C84A29F1-018
+
+* Thời gian ghi: 2026-11-02T02:44:04+07:00.
+* Thời gian thực hiện: phiên hiện tại; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261102-C84A29F1.
+* Người prompt: Liêm, PM/BA.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261102-C84A29F1-017; chưa có Issue được cung cấp.
+
+### Công cụ
+
+Codex và Git; model chưa xác minh từ giao diện người dùng.
+
+### Mục đích
+
+Xây lộ trình học thực hành cho Liêm theo vai trò PM/BA, tập trung yêu cầu, điều phối, quyết định, nghiệm thu và báo cáo.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu đọc tài liệu dự án, log và learning path chung; tạo tổng quan PM-Liem và năm phần P1–P5 có kiến thức, ví dụ, bài thực hành, prompt, output, tự đánh giá và tiêu chí; liên kết learning path chung, task PM, kiểm tra, cập nhật plan/log và dừng.
+
+### Kết quả đề xuất
+
+Tạo docs/learning/PM-Liem/LP-PM-Liem.md và năm file LP-PM-Liem-P1.md đến P5.md; cập nhật mapping trong learning path chung và thêm liên kết trong task PM phase P1–P5. Bổ sung plan và CHANGELOG.
+
+### Phản biện
+
+Năm P là phần học tăng dần, không mặc định trùng phase dự án; ví dụ/story/AC/change là đề xuất, không suy quyết định đã duyệt. Liêm học đọc diff và đặt câu hỏi ở mức quản lý, không nhận code thay dev hay thay reviewer QA/DevOps. Không ghi bài học tương lai đã thực hiện, không đánh giá kỹ năng; các đường dẫn cá nhân còn lại chưa tồn tại.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu tạo lộ trình riêng PM/BA. Chưa có xác nhận reviewer hoặc đánh giá năng lực/hoàn thành từng bài; kết quả chờ Liêm duyệt.
+
+### Người kiểm tra
+
+Codex đối chiếu tài liệu và kiểm cấu trúc, link, bảng. Liêm và reviewer chưa duyệt.
+
+### Kiểm tra và minh chứng
+
+Đã đọc REQUIREMENTS, PROJECT_PLAN, ROLES, ROADMAP, PHASES, SESSION2-GUIDE, DECISIONS, log Liêm, learning path chung, AGENTS, quy tắc log và các task PM P1–P5; thư mục PM-Liem chưa có. Năm file đủ mười mục và checklist chưa đánh dấu; UTF-8, link, bảng và link từ năm task phase đạt. git diff --check trước nối log đạt; Git cảnh báo LF/CRLF. Chưa thực hiện bài học, tạo Issue hay kiểm thử ứng dụng; không commit/push.
+
+Tệp: docs/learning/PM-Liem/LP-PM-Liem.md và năm file P1–P5, docs/learning/LEARNING-PATH.md, năm task PM P1–P5, docs/CHANGELOG.md, plan/task_plan.md, plan/findings.md, plan/progress.md và docs/ai-logs/liem.md.
+---
+## Điều phối learning path Backend — ghi hồi cứu / LIEM-20261102-C84A29F1-019
+
+* Thời gian ghi: 2026-11-02T09:55:14+07:00.
+* Thời gian thực hiện: Prompt 18 trong phiên này; mốc kiểm tra 2026-11-02T02:45:44+07:00. Mục được ghi hồi cứu do lần ghi trước bị giới hạn kiểm duyệt tự động.
+* Mã phiên nhật ký: LIEM-20261102-C84A29F1.
+* Người prompt: Liêm, PM/BA.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261102-C84A29F1-018; chưa có Issue được cung cấp.
+
+### Công cụ
+
+Codex và Git; model chưa xác minh từ giao diện người dùng.
+
+### Mục đích
+
+Theo yêu cầu điều phối của Liêm, tạo tài liệu học Backend cho Hoàn và Châu theo vai trò.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu tạo tổng quan và sáu phần BD1-Hoan, tổng quan và năm phần BD2-Chau; có lab/prompt/test/evidence và bảo mật; không tự tạo schema hoặc quy tắc, cập nhật plan/log.
+
+### Kết quả đề xuất
+
+Đã tạo hai tổng quan và 11 phần học, cập nhật mapping và plan. Nội dung chia theo API khách/giao dịch của Hoàn và dữ liệu/quản trị của Châu.
+
+### Phản biện
+
+Lab/prompt chỉ là đề xuất; không có bằng chứng hai thành viên đã học hoặc chạy test. Không tạo schema, giá, SKU, chính sách hay lệnh test ứng dụng giả; không ghi thay log cá nhân.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu tạo tài liệu; chưa có xác nhận của Hoàn, Châu hoặc reviewer về nội dung hay quyết định nghiệp vụ mới.
+
+### Người kiểm tra
+
+Codex kiểm tài liệu; Liêm, Hoàn, Châu và reviewer chưa duyệt.
+
+### Kiểm tra và minh chứng
+
+Đã đọc tài liệu được yêu cầu; kiểm 13 file, cấu trúc, UTF-8, link và bảng đạt, git diff --check đạt trước khi ghi log; cảnh báo LF/CRLF. Lần nối log ban đầu không thực hiện được vì kiểm duyệt tự động báo giới hạn sử dụng; mục này ghi hồi cứu sau khi quyền chạy lại. Chưa chạy lab/test ứng dụng, chưa tạo Issue, không commit/push.
+
+Tệp: docs/learning/BD1-Hoan/, docs/learning/BD2-Chau/, docs/learning/LEARNING-PATH.md, docs/CHANGELOG.md, plan/task_plan.md, plan/findings.md, plan/progress.md và docs/ai-logs/liem.md.
+
+---
+## Điều phối learning path QA, DevOps và thiết kế / LIEM-20261102-C84A29F1-020
+
+* Thời gian ghi: 2026-11-02T09:55:14+07:00.
+* Thời gian thực hiện: phiên hiện tại; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261102-C84A29F1.
+* Người prompt: Liêm, PM/BA.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261102-C84A29F1-019; chưa có Issue được cung cấp.
+
+### Công cụ
+
+Codex và Git; model chưa xác minh từ giao diện người dùng.
+
+### Mục đích
+
+Theo yêu cầu của Liêm, tạo lộ trình học theo vai trò QA-Ngọc, DO-Kiệt và PD-Đạt.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu đọc vai trò, yêu cầu, kiến trúc, design system, roadmap, phase và learning path; tạo tổng quan cùng sáu phần QA, sáu phần DevOps, năm phần thiết kế; liên kết task phase, kiểm tra và ghi log/plan.
+
+### Kết quả đề xuất
+
+Tạo ba tổng quan và 17 phần học; cập nhật mapping learning path chung, 17 task phase, plan và CHANGELOG. QA tập trung test/triage, Kiệt môi trường/release, Đạt research/UX/handoff.
+
+### Phản biện
+
+Mọi lab/prompt là đề xuất chưa chạy; không ghi thay hoạt động thành viên, không suy kết quả test, deploy, khảo sát, license hoặc mức thành thạo. Không tự tạo URL, quyền dịch vụ hoặc ngưỡng kỹ thuật.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu soạn tài liệu. Chưa có xác nhận của Ngọc, Kiệt, Đạt hoặc reviewer về lộ trình hay quyết định mới; chờ duyệt.
+
+### Người kiểm tra
+
+Codex kiểm tên, cấu trúc và link; Liêm, các thành viên và reviewer chưa duyệt.
+
+### Kiểm tra và minh chứng
+
+Đã đọc ROLES, REQUIREMENTS, ARCHITECTURE, DESIGN-SYSTEM, ROADMAP, PHASES, AGENTS, learning path, log và plan. Kiểm ba tổng quan, 17 phần, liên kết phase, trạng thái, UTF-8 và link đạt; git diff --check trước nối log đạt với cảnh báo LF/CRLF. Chưa chạy lab, test ứng dụng hay deploy; chưa tạo Issue, không commit/push.
+
+Tệp: docs/learning/QA-Ngoc/, docs/learning/DO-Kiet/, docs/learning/PD-Dat/, docs/learning/LEARNING-PATH.md, các task phase liên quan, docs/CHANGELOG.md, plan/task_plan.md, plan/findings.md, plan/progress.md và docs/ai-logs/liem.md.
+---
+## Điều phối learning path Frontend / LIEM-20261102-C84A29F1-021
+
+* Thời gian ghi: 2026-11-02T09:57:51+07:00.
+* Thời gian thực hiện: phiên hiện tại; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261102-C84A29F1.
+* Người prompt: Liêm, PM/BA.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261102-C84A29F1-020; chưa có Issue được cung cấp.
+
+### Công cụ
+
+Codex và Git; model chưa xác minh từ giao diện người dùng.
+
+### Mục đích
+
+Theo yêu cầu điều phối của Liêm, xây lộ trình học frontend khách hàng cho Thành và quản trị cho Phúc.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu đọc vai trò, requirements, kiến trúc, design system, Session 2, roadmap, phase và learning path; tạo hai tổng quan và sáu phần cho mỗi người, kèm mục tiêu, lab, responsive, accessibility, test/evidence và handoff; cập nhật index, phase, plan/log và dừng.
+
+### Kết quả đề xuất
+
+Tạo hai tổng quan và 12 phần học tại docs/learning/FD1-Thanh và FD2-Phuc; cập nhật learning index, 12 task phase, plan và CHANGELOG. Nội dung tách UI khách và admin, đề cập React/TypeScript/Vite/Tailwind theo stack dự kiến, xử lý API/state, quyền và regression.
+
+### Phản biện
+
+API contract, frontend và test runner chưa có minh chứng; lab và lệnh kiểm thử thực tế chờ được giao và xác minh. Backend quyết định giá, giảm, quyền và trạng thái đáng tin; route guard/validation UI không thay kiểm Backend. Session 2 theo đề, chưa trộn framework. Không thêm library, không ghi thay hoạt động hoặc đánh giá kỹ năng Thành/Phúc.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu soạn tài liệu; chưa có xác nhận của Thành, Phúc hoặc reviewer về lộ trình, design token hay API contract. Chờ duyệt.
+
+### Người kiểm tra
+
+Codex kiểm tên, cấu trúc và liên kết; Liêm, Thành, Phúc và reviewer chưa duyệt.
+
+### Kiểm tra và minh chứng
+
+Đã đọc ROLES, REQUIREMENTS, ARCHITECTURE, DESIGN-SYSTEM, SESSION2-GUIDE, ROADMAP, PHASES, learning path chung, AGENTS, quy tắc log và plan. Hai thư mục đích chưa có. Kiểm hai tổng quan, 12 phần, 12 link phase, đủ 14 mục mỗi phần, trạng thái, UTF-8 và link đạt; git diff --check trước nối log đạt với cảnh báo LF/CRLF. Chưa chạy lab/test ứng dụng, chưa tạo Issue; không commit/push.
+
+Tệp: docs/learning/FD1-Thanh/, docs/learning/FD2-Phuc/, docs/learning/LEARNING-PATH.md, 12 task phase liên quan, docs/CHANGELOG.md, plan/task_plan.md, plan/findings.md, plan/progress.md và docs/ai-logs/liem.md.
+---
+## Hướng dẫn AI, Claude commands và skills / LIEM-20261102-C84A29F1-022
+
+* Thời gian ghi: 2026-11-02T10:01:46+07:00.
+* Thời gian thực hiện: phiên hiện tại; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261102-C84A29F1.
+* Người prompt: Liêm, PM/BA.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261102-C84A29F1-021; chưa có Issue được cung cấp.
+
+### Công cụ
+
+Codex, Git và tra cứu tài liệu chính thức OpenAI/Claude; model chưa xác minh từ giao diện người dùng.
+
+### Mục đích
+
+Thiết lập hướng dẫn làm việc với AI, command và skill Claude phù hợp quy tắc DAYORA và Session 2.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu đọc chỉ dẫn AI và Session 2; tạo docs/AI-SETUP.md, sáu command và bốn skill Claude, kiểm frontmatter/argument/link, cập nhật plan/log và dừng.
+
+### Kết quả đề xuất
+
+Tạo AI-SETUP, commands start/new-task/review/check-s2/log/handoff và skills ui-design/responsive-css/hover-focus-a11y/review-session2; cập nhật HOME, plan và CHANGELOG. Start/review/check-s2 chỉ đọc; log chỉ yêu cầu xác nhận khi quy tắc hoặc người dùng thực sự yêu cầu.
+
+### Phản biện
+
+Command chỉ đọc có thể không ghi được log bắt buộc, nên yêu cầu báo mục chờ ghi thay vì tự nhận đã cập nhật. Không tự tạo Issue, commit/push/merge hay đổi branch. Đề Session 2 chưa xác minh, không tự tuyên bố giảng viên đã cấm cụ thể. Chưa kiểm thử nạp command/skill trong Claude Code, không suy đã hoạt động.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu xây bộ hướng dẫn và công cụ; chưa có xác nhận reviewer hoặc quyết định mới về công nghệ/nghiệp vụ. Chờ Liêm/nhóm duyệt.
+
+### Người kiểm tra
+
+Codex kiểm định dạng và liên kết; Liêm và reviewer chưa duyệt. Chưa kiểm thực thi Claude Code.
+
+### Kiểm tra và minh chứng
+
+Đã đọc AGENTS, CLAUDE, quy tắc log, Session 2 và tài liệu liên quan; .claude và AI-SETUP chưa tồn tại. Tra tài liệu chính thức OpenAI về AGENTS và Claude Code về commands/skills. Kiểm sáu command có description, argument-hint, placeholder $ARGUMENTS; bốn skill có name/description và mục phạm vi/quy trình/tiêu chí/xác minh; UTF-8, liên kết tương đối và đường dẫn được tham chiếu đạt. git diff --check trước nối log đạt với cảnh báo LF/CRLF. Chưa chạy Claude Code, chưa test ứng dụng; không tạo Issue, commit/push/merge hay đổi branch.
+
+Tệp: docs/AI-SETUP.md, .claude/commands/ và .claude/skills/, HOME.md, docs/CHANGELOG.md, plan/task_plan.md, plan/findings.md, plan/progress.md, docs/ai-logs/liem.md.
+---
+## Kiểm thử, template và validator Session 2 / LIEM-20261102-C84A29F1-023
+
+* Thời gian ghi: 2026-11-02T10:08:53+07:00.
+* Thời gian thực hiện: phiên hiện tại; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261102-C84A29F1.
+* Người prompt: Liêm, PM/BA.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261102-C84A29F1-022; chưa có Issue được cung cấp.
+
+### Công cụ
+
+Codex, Git và Python 3.12.14 đi kèm runtime; model chưa xác minh từ giao diện người dùng.
+
+### Mục đích
+
+Tạo test case, kế hoạch usability, template vận hành và validator tĩnh Session 2, giữ phân biệt test dự kiến với kết quả thực.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu đọc tài liệu dự án/bài lớp, tạo ba tài liệu testing, task/review/PR template, checker Python bốn trang và workflow GitHub Actions, kiểm fixture/cú pháp/YAML/Markdown, cập nhật plan/log và dừng.
+
+### Kết quả đề xuất
+
+Tạo docs/testing/TEST-CASES.md, USABILITY.md, AC02-KIT-CASES.md; tasks/TASK-TEMPLATE.md, reviews/REVIEW-TEMPLATE.md; tools/check-session2.py; .github/pull_request_template.md và .github/workflows/check-session2.yml. Cập nhật hướng dẫn Session 2, HOME, plan và CHANGELOG. Bộ Builder có 26 scenario dự kiến, không ghi Pass giả.
+
+### Phản biện
+
+AC02 trong REQUIREMENTS là tài khoản/ownership; Builder truy vết AC03–AC05, giữ tên file được yêu cầu nhưng giải thích rõ. Đề gốc chưa có tên bốn trang/deliverables nên checker cần config hoặc đối số đã xác minh, không tự bịa; config thiếu trả exit 2, workflow sẽ blocked/thất bại rõ cho tới khi có config. Các kiểm responsive/focus/content là heuristic cần review trình duyệt; CSS import không phân tích đệ quy. Chưa có phản hồi duyệt của Liêm.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu tạo công cụ/tài liệu. Chưa có quyết định mới về đề Session 2, tên trang, deliverable, rubric hay workflow production; chờ Liêm/nhóm duyệt và nguồn giảng viên.
+
+### Người kiểm tra
+
+Codex kiểm cú pháp, fixture, link/bảng và cấu trúc văn bản workflow; Liêm/QA/reviewer chưa duyệt. Không xác nhận bài tập đã nộp hay test ứng dụng.
+
+### Kiểm tra và minh chứng
+
+Đã đọc REQUIREMENTS, ROADMAP, SESSION2-GUIDE, AGENTS, PROJECT, P0 overview, quy tắc log và plan; các thư mục đích chưa có. Python trên PATH không chạy được; Python runtime 3.12.14 chạy py_compile đạt. Fixture tạm: hợp lệ exit 0; thiếu config exit 2; thiếu trang, JS/link lỗi và CSS import bị cấm exit 1; đường dẫn ra ngoài exit 2; hash fixture trước/sau không đổi. session2 hiện tại báo thiếu config exit 2, không phải lỗi bài đã được xác minh. UTF-8/Markdown link/bảng và 26 scenario Builder đạt kiểm tra; workflow được rà văn bản trigger/path/contents read, nhưng không có YAML parser/actionlint nên chưa parse YAML hay chạy GitHub Actions. git diff --check trước nối log đạt, có cảnh báo LF/CRLF. Không sửa bài Session 2, không gọi GitHub, cài package, commit/push hoặc deploy.
+
+Tệp: docs/testing/, tasks/TASK-TEMPLATE.md, reviews/REVIEW-TEMPLATE.md, tools/check-session2.py, .github/pull_request_template.md, .github/workflows/check-session2.yml, docs/SESSION2-GUIDE.md, HOME.md, docs/CHANGELOG.md, plan/task_plan.md, plan/findings.md, plan/progress.md, docs/ai-logs/liem.md.
+---
+## Báo cáo, demo, release và Session 2 / LIEM-20261102-C84A29F1-024
+
+* Thời gian ghi: 2026-11-02T10:10:52+07:00.
+* Thời gian thực hiện: phiên hiện tại; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261102-C84A29F1.
+* Người prompt: Liêm, PM/BA.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261102-C84A29F1-023; chưa có Issue được cung cấp.
+
+### Công cụ
+
+Codex và Git; model chưa xác minh từ giao diện người dùng.
+
+### Mục đích
+
+Chuẩn bị khung báo cáo, demo, release và checklist Session 2 theo bằng chứng thực tế và vai trò nhóm.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu đọc yêu cầu, kế hoạch, roadmap, vai trò, Session 2, test, P7 và progress; tạo report outline, demo script, release checklist; cập nhật Session 2, liên kết P7, kiểm Markdown và ghi log/plan.
+
+### Kết quả đề xuất
+
+Tạo docs/REPORT-OUTLINE.md, DEMO-SCRIPT.md, RELEASE-CHECKLIST.md; cập nhật SESSION2-GUIDE, P7 overview và tám file vai trò P7, HOME, plan và CHANGELOG. Demo dự kiến 10 phút, người trình bày theo vai trò là đề xuất, chưa được xác nhận. URL và tình trạng release để chưa xác minh/chưa deploy.
+
+### Phản biện
+
+Không có đề gốc xác nhận 12 mục, nên bảng Session 2 liệt kê sáu bước chuẩn bị đã có dưới nhãn đề xuất, không coi là yêu cầu giảng viên. Không bịa deadline, giảng viên, URL, kết quả test, bằng chứng nộp hay tỷ lệ đóng góp; bảng tham gia để chờ từng người đối chiếu. Fallback chỉ dùng tư liệu có thật, không giả lập thanh toán live.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu lập tài liệu bàn giao; chưa có xác nhận nhóm/giảng viên về rubric, lịch, phân công nói, URL, kết quả test hay release. Chờ duyệt.
+
+### Người kiểm tra
+
+Codex kiểm UTF-8, Markdown, bảng và liên kết chéo; Liêm, thành viên và reviewer chưa duyệt.
+
+### Kiểm tra và minh chứng
+
+Đã đọc REQUIREMENTS, PROJECT_PLAN, ROADMAP, ROLES, SESSION2-GUIDE, ba tài liệu test, P7, progress, AGENTS và quy tắc log; ba file đích chưa tồn tại. Kiểm UTF-8, link tương đối, số cột bảng và liên kết chéo P7/report/demo/release đạt; tám file P7 cập nhật link. git diff --check trước nối log đạt, Git cảnh báo LF/CRLF. Chưa xác minh đề môn học, URL, deploy, test release hoặc đóng góp từng người; không tạo Issue, commit/push hay release.
+
+Tệp: docs/REPORT-OUTLINE.md, docs/DEMO-SCRIPT.md, docs/RELEASE-CHECKLIST.md, docs/SESSION2-GUIDE.md, P7 overview và tám file vai trò, HOME.md, docs/CHANGELOG.md, plan/task_plan.md, plan/findings.md, plan/progress.md, docs/ai-logs/liem.md.
+---
+## Kiểm toán workspace và nghiệm thu tài liệu / LIEM-20261102-C84A29F1-025
+
+* Thời gian ghi: 2026-11-02T10:15:57+07:00.
+* Thời gian thực hiện: phiên hiện tại; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261102-C84A29F1.
+* Người prompt: Liêm, PM/BA.
+* Loại mục: Kiểm tra.
+* Liên quan: LIEM-20261102-C84A29F1-024; chưa có Issue được cung cấp.
+
+### Công cụ
+
+Codex, Git, Node/npm và Python runtime 3.12.14; model chưa xác minh từ giao diện người dùng.
+
+### Mục đích
+
+Kiểm kê và đối chiếu toàn workspace DAYORA, cấu trúc, link, quy tắc, log, scripts, asset và bằng chứng; sửa lỗi nhỏ có căn cứ, báo việc cần nhóm quyết định.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu kiểm toán repo, Obsidian, phase/learning paths, Markdown, FR/R/NFR/AC/task/reviewer, log, script/config/secrets, asset, source inventory, changelog và plan; không tự sửa lỗi lớn, không commit/push/reset/checkout/rebase, báo PASS/FAIL/NEEDS HUMAN CHECK và dừng.
+
+### Kết quả đề xuất
+
+Tạo docs/SOURCE-INVENTORY.md với 12 asset pending; gắn nhãn link Gemini trong quy tắc log mà giữ đích; cập nhật HOME, CHANGELOG và ba file plan. Báo cáo chi tiết theo nhóm và giới hạn tại plan/findings.md. PROGRESS.md giữ trạng thái chưa đồng bộ vì không có dữ liệu Issue thực.
+
+### Phản biện
+
+Phát hiện bảy ID trùng giữa roadmap tự động và overview phase với phạm vi mô tả khác; chưa tự đổi mã vì cần nhóm chốt task cha/con và lịch phase. Các lát cắt P1–P5 khác lịch gốc đã được ghi nhưng chưa duyệt. Không bịa asset, nguồn/quyền, link demo hay kết quả ứng dụng; không coi quét mẫu là bằng chứng toàn bộ repo/historic không chứa secret. Không sửa bốn file Obsidian đã có.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu kiểm toán và sửa lỗi nhỏ; chưa có quyết định chung mới về ID, phase, Session 2, nghiệp vụ, asset, reviewer hay triển khai. Chờ Liêm/nhóm duyệt báo cáo.
+
+### Người kiểm tra
+
+Codex kiểm kê và chạy kiểm tra cục bộ như dưới; Liêm và reviewer chưa duyệt. Không gán đánh giá hay hoạt động mới cho các thành viên khác.
+
+### Kiểm tra và minh chứng
+
+Kiểm kê 207 file trước khi tạo source inventory; P0–P7 đủ overview và tám vai trò, tám learning path đủ số file. Bốn JSON Obsidian parse được; kiểm chuỗi không phát hiện đường dẫn tuyệt đối hoặc email, giữ nguyên file. Trước mục này, log Liêm có 31 mục đủ bảy trường, ID duy nhất; bản commit HEAD là prefix byte của log hiện tại; bảy log khác chỉ có phần giới thiệu. Root log tổng hợp cũ không còn, nguồn tổng hợp hiện ở docs/ai-logs.
+
+Quét link Markdown/ảnh cục bộ và chữ hoa/thường, bảng: không phát hiện link chết; gắn nhãn một URL Gemini. FR01–FR18, R01–R07, NFR01–NFR09, AC01–AC10 và P0–P7 hiện diện. Manifest có 11 ID duy nhất nội bộ, nhưng bảy ID trùng phase với phạm vi cần nhóm xác nhận. Không truy cập GitHub, không chạy --apply.
+
+Node --check ba script và hai preview offline đạt. Python py_compile đạt; fixture hợp lệ exit 0, script bị cấm exit 1, thiếu config exit 2, checker không đổi fixture. Session 2 hiện tại exit 2 vì thiếu config đề. JSON parse; mẫu gitignore bỏ env/dependency/build, giữ env.example, log và migration. Workflow rà trigger/path/contents read nhưng chưa parse YAML/actionlint hoặc chạy Actions. Quét mẫu secret, env thật và key file không phát hiện; không quét toàn lịch sử hoặc xác minh tuyệt đối.
+
+Thiếu assets/images và 12 ảnh dự kiến, chưa kiểm định dạng/nguồn/quyền; source inventory ghi pending. Không tạo ảnh. git diff --check trước nối log đạt; Git cảnh báo LF/CRLF. Chưa chạy test ứng dụng, xác minh URL ngoài, kết nối GitHub hay deploy; không commit/push/reset/checkout/rebase.
+
+Tệp: docs/SOURCE-INVENTORY.md, docs/ai-logs/ai-logging-rules.md, HOME.md, docs/CHANGELOG.md, plan/task_plan.md, plan/findings.md, plan/progress.md và docs/ai-logs/liem.md.
+
+---
+## Kiểm kê và kế hoạch hoàn thiện / LIEM-20261102-C84A29F1-026
+
+* Thời gian ghi: 2026-11-02T11:31:59+07:00.
+* Thời gian thực hiện: Phiên hiện tại, thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261102-C84A29F1.
+* Người prompt: Liêm, PM/BA.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261102-C84A29F1-025; chưa có Issue.
+
+### Công cụ
+
+Codex, Git và Python; không suy model từ công cụ.
+
+### Mục đích
+
+Kiểm kê an toàn và lập kế hoạch hoàn thiện workspace DAYORA theo yêu cầu Liêm.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu kiểm kê repository, bảo toàn Git/log, đồng bộ phase/R/quyết định, backlog, phase, học, test, tài nguyên và bàn giao theo giai đoạn.
+
+### Kết quả đề xuất
+
+Tạo docs/WORKSPACE-AUDIT.md và docs/FINALIZATION-PLAN.md; ghi trạng thái Git ban đầu, inventory và công việc theo ưu tiên. Các giai đoạn sau chưa được ghi hoàn thành.
+
+### Phản biện
+
+Branch và các thay đổi có sẵn được giữ lại; không đoán đề Session 2, chính sách, reviewer hoặc dữ liệu. Bản log cá nhân hiện có được bảo toàn, các mục mới chỉ phản ánh việc đã thực hiện.
+
+### Quyết định của nhóm
+
+Liêm cung cấp quy ước phase và mã R để chuẩn hóa tài liệu; các chính sách cụ thể và phê duyệt của nhóm vẫn cần xác nhận.
+
+### Người kiểm tra
+
+Codex kiểm tra trạng thái và tạo inventory; Liêm/nhóm chưa duyệt.
+
+### Kiểm tra và minh chứng
+
+Git branch main, HEAD 5cd8100e6f36e2169acba947852c4ef2d5b20463; đã đọc status, staged/unstaged và remote. Không commit, push, đổi branch/remote hay sửa .git. Inventory 208 file trước khi tạo hai tài liệu. Nội dung kiểm kê và giới hạn tại docs/WORKSPACE-AUDIT.md; các giai đoạn tiếp theo chưa được kiểm tra.
+
+Tệp: docs/WORKSPACE-AUDIT.md, docs/FINALIZATION-PLAN.md, docs/ai-logs/liem.md.
+
+---
+## Test, học tập và tài nguyên độc lập / LIEM-20261102-C84A29F1-027
+
+* Thời gian ghi: 2026-11-02T11:33:55+07:00.
+* Thời gian thực hiện: phiên hiện tại; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261102-C84A29F1.
+* Người prompt: Liêm, PM/BA.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261102-C84A29F1-026; chưa có Issue.
+
+### Công cụ
+
+Codex và Python cục bộ; không suy model.
+
+### Mục đích
+
+Tiếp tục các phần test, học tập và asset không phụ thuộc quyết định/migration mã đang bị chặn.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu tối thiểu 24 ca Builder, mục tiêu 30 ca, tách actual/status/evidence/người thực hiện; bổ sung quy trình học bảy bước, pitfalls và thư mục asset không tạo ảnh giả.
+
+### Kết quả đề xuất
+
+Bổ sung KB27–KB30, actual NOT RUN và người thực hiện chưa xác minh cho 30 ca; thêm mẫu usability, bảy bước học, bốn tình huống pitfalls và README asset. Cập nhật WORKSPACE-AUDIT và FINALIZATION-PLAN.
+
+### Phản biện
+
+Không coi scenario là test đạt, không tạo dữ liệu/ảnh hay đóng góp của người khác. Hệ mã R mới chưa được ghi đồng bộ do kiểm duyệt tự động từ chối thao tác thay nghĩa nhiều file; test hiện giữ nhãn theo hệ cũ và cảnh báo trạng thái chuyển đổi.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu hướng chuẩn hóa; chưa có quyết định nhóm mới về dữ liệu, reviewer hoặc chính sách. Việc triển khai mã R còn bị chặn bởi kiểm duyệt tự động.
+
+### Người kiểm tra
+
+Codex kiểm cấu trúc sau thay đổi; Liêm và reviewer chưa duyệt. Chưa có test ứng dụng được chạy.
+
+### Kiểm tra và minh chứng
+
+Thay đổi thực tế tại docs/testing/AC02-KIT-CASES.md, docs/testing/USABILITY.md, docs/learning/LEARNING-PATH.md, docs/learning/PITFALLS.md, assets/images/README.md và tài liệu kế hoạch/audit. Mục log cũ được giữ nguyên byte; kết quả kiểm định dạng bổ sung sẽ ghi riêng theo thực tế. Không cài dependency, tạo Issue, commit, push hoặc triển khai.
+
+---
+## Dự thảo hồ sơ quyết định / LIEM-20261102-C84A29F1-028
+
+* Thời gian ghi: 2026-11-02T11:34:30+07:00.
+* Thời gian thực hiện: phiên hiện tại; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261102-C84A29F1.
+* Người prompt: Liêm, PM/BA.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261102-C84A29F1-027; chưa có Issue.
+
+### Công cụ
+
+Codex; không suy model từ công cụ.
+
+### Mục đích
+
+Chuẩn bị các câu hỏi quyết định kỹ thuật và nghiệp vụ để nhóm xem xét mà không ghi nhận quyết định giả.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu K01–K07 và D01–D11 có câu hỏi, bối cảnh, phương án, rủi ro, tác động, người cần xác nhận, trạng thái, ngày và bằng chứng.
+
+### Kết quả đề xuất
+
+Tạo bảng dự thảo 18 hồ sơ trong FINALIZATION-PLAN.md với trạng thái NEEDS_CONFIRMATION, ngày/bằng chứng chưa có; ghi chú sổ DECISIONS hiện dùng D01–D07 theo nghĩa cũ.
+
+### Phản biện
+
+Không coi phương án là quyết định hoặc người cần xác nhận là người đã duyệt. Chưa thay sổ chính/mã cũ vì cần migration đồng bộ; các tác động R trong bảng chỉ tham chiếu hệ mã Liêm đề xuất, chưa thay định nghĩa hiện hành.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu chuẩn bị register; chưa có quyết định kỹ thuật/nghiệp vụ mới của nhóm.
+
+### Người kiểm tra
+
+Codex chuẩn bị và đối chiếu tài liệu; Liêm và các thành viên chưa duyệt.
+
+### Kiểm tra và minh chứng
+
+Dự thảo gồm bảy câu hỏi kỹ thuật, mười một nghiệp vụ, các trường trạng thái/ngày/evidence; chưa kiểm bằng nhóm hoặc sửa sổ chính. Mục log cũ được giữ nguyên. Không commit/push, không gọi dịch vụ.
+
+Tệp: docs/FINALIZATION-PLAN.md, docs/WORKSPACE-AUDIT.md, docs/ai-logs/liem.md.
+
+---
+## Kiểm toán và báo cáo bàn giao / LIEM-20261102-C84A29F1-029
+
+* Thời gian ghi: 2026-11-02T11:37:03+07:00.
+* Thời gian thực hiện: phiên hiện tại; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261102-C84A29F1.
+* Người prompt: Liêm, PM/BA.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261102-C84A29F1-026 đến 028; chưa có Issue.
+
+### Công cụ
+
+Codex; model chưa xác minh.
+
+### Mục đích
+
+Tổng hợp kết quả kiểm toán, tài liệu học dựa trên code có thật và các điểm bị chặn.
+
+### Prompt
+
+Liêm yêu cầu kiểm toán và hoàn thiện workspace, bảo toàn lịch sử, minh bạch trạng thái và không tự tạo kết quả.
+
+### Kết quả đề xuất
+
+Tạo FINALIZATION-REPORT, CODE-EXERCISES; cập nhật source inventory, plan, changelog và tổng hợp kiểm tra.
+
+### Phản biện
+
+Không coi tài liệu, scenario hay dry-run là triển khai hoặc test sản phẩm. Mapping R/phase vẫn chưa áp dụng sau khi kiểm duyệt tự động từ chối thao tác đồng bộ nhiều file.
+
+### Quyết định của nhóm
+
+Chưa có quyết định mới; 18 hồ sơ là dự thảo cần nhóm xác nhận.
+
+### Người kiểm tra
+
+Codex kiểm tra tĩnh; Liêm và reviewer chưa duyệt.
+
+### Kiểm tra và minh chứng
+
+Ba script Node qua syntax check, Python validator qua compile, Issue script dry-run; chưa chạy test ứng dụng hoặc report GitHub. Báo cáo tại docs/FINALIZATION-REPORT.md; không commit, push hoặc triển khai.
+
+
+---
+
+## Hồi cứu và chuyển nhật ký / LIEM-20261102-1BCB88C7-001
+
+* Thời gian ghi: 2026-11-02T11:42:51+07:00.
+* Thời gian thực hiện: 2026-11-02T11:42:51+07:00; thời điểm thực hiện các hoạt động cũ giữ như trong từng mục nguồn.
+* Mã phiên nhật ký: LIEM-20261102-1BCB88C7.
+* Người prompt: Liêm, PM/BA.
+* Phase: quản lý tài liệu, hồi cứu; không gán phase phát triển.
+* Loại mục: Hoạt động hồi cứu.
+* Liên quan: LIEM-20261102-C84A29F1-001 đến 029.
+
+### Công cụ
+
+Codex; model chưa xác minh.
+
+### Mục đích
+
+Đưa lịch sử làm việc với AI từ phiên DAYORA trước vào bản dự án Liêm chỉ định, giữ nguyên lịch sử có sẵn.
+
+### Prompt
+
+Tóm lược: Liêm cho biết đã hoàn thành trong folder khác và yêu cầu cập nhật AI log toàn bộ quá trình trao đổi; cung cấp đường dẫn tới folder Setup.
+
+### Kết quả đề xuất
+
+Nối nguyên văn 29 mục trong phiên có mã LIEM-20261102-C84A29F1 từ nhật ký repository DAYORA cũ; bổ sung ghi chú nguồn và giới hạn, cùng một dòng dẫn trong trang tổng hợp. Không chép lại bảy mục đã có tại đích.
+
+### Phản biện
+
+Nhật ký nguồn phản ánh công việc trên bản cũ, không xác nhận trạng thái bản Setup. Các yêu cầu trong hội thoại không tự chứng minh đã được thực hiện; nội dung ngoài phần hội thoại và nhật ký tiếp cận được chưa thể xác minh.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu cập nhật log vào folder đã chỉ định; không có quyết định mới của toàn nhóm về nghiệp vụ hoặc triển khai.
+
+### Người kiểm tra
+
+Codex đối chiếu mã mục và kiểm tra bảo toàn phần log cũ; Liêm cần xem lại nội dung hồi cứu.
+
+### Kiểm tra và minh chứng
+
+Đối chiếu 29 mã duy nhất ở nguồn không có trong đích trước khi nối. Tệp nguồn là docs/ai-logs/liem.md của repository DAYORA cũ; tệp đích là docs/ai-logs/liem.md và docs/ai-logs/AI_USAGE_LOG.md trong Setup. Không kiểm thử ứng dụng, không commit hoặc push.

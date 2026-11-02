@@ -1,0 +1,8 @@
+{
+  "name": "dayora",
+  "private": true,
+  "scripts": {
+    "roadmap:issues": "node scripts/roadmap-issues.mjs",
+    "roadmap:report": "node scripts/roadmap-report.mjs"
+  }
+}
