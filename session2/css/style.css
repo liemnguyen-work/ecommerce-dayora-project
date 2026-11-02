@@ -1,34 +1,48 @@
 /* 1. BIẾN VÀ NỀN — Đạt */
 
 /* 2. HEADER, MENU, FOOTER — Thành */
+body { margin: 0; color: var(--mau-chu, #23412e); background: var(--mau-nen, #fffdf7); font-family: 'Be Vietnam Pro', sans-serif; line-height: 1.6; }
+.site-header { background: var(--mau-nen, #fffdf7); }
+.header-inner, .footer-inner { width: min(100% - 32px, 1200px); margin-inline: auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 24px; }
+.header-inner { padding-block: 16px; }
+.brand img { display: block; width: 120px; max-width: 100%; height: auto; }
+.site-header nav, .site-footer nav { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+.site-header a, .site-footer a { color: inherit; }
+.site-header nav a { padding-block: 8px; text-decoration: none; }
+.site-header [aria-current="page"] { font-weight: 700; text-decoration: underline; text-underline-offset: 6px; }
+.search-box { display: flex; flex-direction: column; font-size: 0.8rem; }
+.search-box input { box-sizing: border-box; max-width: 100%; min-height: 44px; padding: 8px 12px; border: 1px solid currentColor; border-radius: 8px; font: inherit; }
+.site-footer { background: var(--mau-chu, #23412e); color: var(--mau-nen, #fffdf7); }
+.footer-inner { align-items: flex-start; padding-block: 40px; }
+.footer-inner p { margin: 8px 0; }
+.site-footer nav { flex-direction: column; }
 
 /* 3. TRANG CHỦ — Thành */
+.banner { position: relative; display: flex; align-items: center; min-height: 420px; overflow: hidden; color: #fff; background: var(--mau-chu, #23412e); }
+.banner-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.banner::after { position: absolute; inset: 0; content: ''; background: linear-gradient(90deg, rgba(20, 39, 27, .88), rgba(20, 39, 27, .35)); }
+.banner-content { position: relative; z-index: 1; width: min(100% - 32px, 1200px); margin-inline: auto; padding-block: 48px; }
+.banner-content h1, .banner-content > p:not(.eyebrow) { max-width: 560px; }
+h1 { font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.15; margin-block: 16px; }
+h2 { font-size: clamp(1.6rem, 3vw, 2.25rem); line-height: 1.25; margin-block: 8px 24px; }
+.eyebrow { font-size: .8rem; font-weight: 700; letter-spacing: .09em; }
+.primary-link { display: inline-block; padding: 12px 24px; margin-top: 16px; border-radius: 8px; background: var(--mau-nhan, #c8483c); color: #fff; font-weight: 700; text-decoration: none; }
+.home-section { width: min(100% - 32px, 1200px); margin: 56px auto; }
+.section-heading { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
+.section-heading h2 { margin-bottom: 0; }
+.section-heading a, .about-preview a, .product-info a { color: inherit; }
+.featured-grid, .occasions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 24px; }
+.product-card { overflow: hidden; border: 1px solid var(--mau-la, #dde8c9); border-radius: 12px; }
+.product-card img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; }
+.product-info { padding: 16px; }
+.product-info h3 { font-size: 1rem; margin: 0; }
+.product-info p { font-weight: 700; }
+.occasions-grid article { padding: 24px; border-radius: 12px; background: var(--mau-la, #dde8c9); }
+.occasions-grid h3 { margin-block: 8px; }
+.occasions-grid p { margin-bottom: 0; }
+.about-preview { max-width: 760px; text-align: center; }
 
 /* 4. DANH SÁCH SẢN PHẨM — Phúc */
-.products-section { width: min(100% - 32px, 1200px); margin: 40px auto 56px; }
-.products-section h1 { margin-block: 0 32px; }
-.product-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: stretch; gap: 24px; margin: 0; padding: 0; list-style: none; }
-.product-grid-item { display: flex; min-width: 0; }
-.product-grid .product-card { display: flex; flex: 1; flex-direction: column; min-width: 0; overflow: hidden; border: 1px solid var(--mau-la, #dde8c9); border-radius: 12px; background: var(--mau-nen, #fffdf7); }
-.product-grid .product-card > img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; }
-.product-grid .product-info { display: flex; flex: 1; flex-direction: column; align-items: flex-start; gap: 12px; padding: 16px; }
-.product-grid .product-info h2 { min-height: 3.2em; margin: 0; color: var(--mau-chu, #23412e); font-size: 1rem; line-height: 1.6; }
-.product-grid .product-price { margin: 0; color: var(--mau-nhan, #c8483c); font-weight: 700; }
-.product-detail-link { display: inline-flex; min-height: 44px; align-items: center; margin-top: auto; color: var(--mau-chu, #23412e); font-weight: 600; text-underline-offset: 4px; }
-
-@media (max-width: 900px) {
-  .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
-}
-
-@media (max-width: 520px) {
-  .products-section { margin-block: 32px 48px; }
-  .products-section h1 { margin-block-end: 24px; }
-  .product-grid { grid-template-columns: 1fr; gap: 16px; }
-  .product-grid .product-card { display: grid; grid-template-columns: minmax(0, 38%) minmax(0, 1fr); }
-  .product-grid .product-card > img { align-self: start; }
-  .product-grid .product-info { gap: 8px; padding: 12px; }
-  .product-grid .product-info h2 { min-height: 0; }
-}
 
 /* 5. CHI TIẾT SẢN PHẨM — Hoàn */
 
@@ -37,3 +51,53 @@
 /* 7. RESPONSIVE — Ngọc */
 
 /* 8. HOVER, FOCUS — Đạt */
+
+.site-header nav a,
+.product-info a,
+.primary-link,
+button,
+.product-card {
+  transition: color 0.2s ease, background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.site-header nav a:hover,
+.product-info a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.product-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgb(35 65 46 / 18%);
+}
+
+.primary-link:hover,
+button:hover {
+  filter: brightness(0.9);
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid var(--mau-chu, #23412e);
+  outline-offset: 3px;
+}
+
+.site-footer a:focus-visible,
+.banner a:focus-visible {
+  outline-color: var(--mau-nen, #fffdf7);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header nav a,
+  .product-info a,
+  .primary-link,
+  button,
+  .product-card {
+    transition: none;
+  }
+
+  .product-card:hover {
+    transform: none;
+  }
+}
