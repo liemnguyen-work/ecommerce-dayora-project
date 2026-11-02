@@ -70,6 +70,11 @@ h2 { font-size: clamp(1.6rem, 3vw, 2.25rem); line-height: 1.25; margin-block: 8p
 }
 
 /* 6. GIỚI THIỆU — Châu */
+.about-wrap { width: min(100% - 32px, 1200px); margin: 32px auto 56px; }
+.about-section { margin-top: 48px; }
+.about-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 32px; align-items: center; }
+.about-grid img { display: block; width: 100%; height: auto; border-radius: 12px; }
+.about-grid p { max-width: 60ch; }
 
 /* 7. RESPONSIVE — Ngọc */
 
