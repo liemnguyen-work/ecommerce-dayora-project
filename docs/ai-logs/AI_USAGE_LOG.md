@@ -75,3 +75,5 @@ Phân tích ChatGPT và phản biện Gemini cần được bổ sung hồi cứ
 ## Hồi cứu phiên DAYORA tại bản khác
 
 - 2026-11-02T11:42:51+07:00 — Theo yêu cầu Liêm, nối 29 mục LIEM-20261102-C84A29F1-001 đến 029 và ghi chú nguồn trong [nhật ký Liêm](liem.md). Các hoạt động thuộc repository cũ; không xác nhận trạng thái bản Setup. Mục chuyển: LIEM-20261102-1BCB88C7-001.
+
+- 2026-11-02T23:42:00+07:00 — Phúc: dựng lại task HW-P0-FD2-1 vì page/CSS và các mục log trước không còn sau pull main; 8 ảnh còn ở assets/images; [mục PHUC-20261102-C6B827-001](phuc.md#buổi-2--khôi-phục-hw-p0-fd2-1-sau-pull-main--phuc-20261102-c6b827-001). Chờ Phúc review; chưa chạy kiểm thử/trình duyệt.

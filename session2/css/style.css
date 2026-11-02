@@ -1,0 +1,39 @@
+/* 1. BIẾN VÀ NỀN — Đạt */
+
+/* 2. HEADER, MENU, FOOTER — Thành */
+
+/* 3. TRANG CHỦ — Thành */
+
+/* 4. DANH SÁCH SẢN PHẨM — Phúc */
+.products-section { width: min(100% - 32px, 1200px); margin: 40px auto 56px; }
+.products-section h1 { margin-block: 0 32px; }
+.product-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: stretch; gap: 24px; margin: 0; padding: 0; list-style: none; }
+.product-grid-item { display: flex; min-width: 0; }
+.product-grid .product-card { display: flex; flex: 1; flex-direction: column; min-width: 0; overflow: hidden; border: 1px solid var(--mau-la, #dde8c9); border-radius: 12px; background: var(--mau-nen, #fffdf7); }
+.product-grid .product-card > img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; }
+.product-grid .product-info { display: flex; flex: 1; flex-direction: column; align-items: flex-start; gap: 12px; padding: 16px; }
+.product-grid .product-info h2 { min-height: 3.2em; margin: 0; color: var(--mau-chu, #23412e); font-size: 1rem; line-height: 1.6; }
+.product-grid .product-price { margin: 0; color: var(--mau-nhan, #c8483c); font-weight: 700; }
+.product-detail-link { display: inline-flex; min-height: 44px; align-items: center; margin-top: auto; color: var(--mau-chu, #23412e); font-weight: 600; text-underline-offset: 4px; }
+
+@media (max-width: 900px) {
+  .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+}
+
+@media (max-width: 520px) {
+  .products-section { margin-block: 32px 48px; }
+  .products-section h1 { margin-block-end: 24px; }
+  .product-grid { grid-template-columns: 1fr; gap: 16px; }
+  .product-grid .product-card { display: grid; grid-template-columns: minmax(0, 38%) minmax(0, 1fr); }
+  .product-grid .product-card > img { align-self: start; }
+  .product-grid .product-info { gap: 8px; padding: 12px; }
+  .product-grid .product-info h2 { min-height: 0; }
+}
+
+/* 5. CHI TIẾT SẢN PHẨM — Hoàn */
+
+/* 6. GIỚI THIỆU — Châu */
+
+/* 7. RESPONSIVE — Ngọc */
+
+/* 8. HOVER, FOCUS — Đạt */
