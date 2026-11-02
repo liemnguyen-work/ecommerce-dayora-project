@@ -45,6 +45,29 @@ h2 { font-size: clamp(1.6rem, 3vw, 2.25rem); line-height: 1.25; margin-block: 8p
 /* 4. DANH SÁCH SẢN PHẨM — Phúc */
 
 /* 5. CHI TIẾT SẢN PHẨM — Hoàn */
+.detail-wrap { width: min(100% - 32px, 1200px); margin: 32px auto 56px; }
+.detail-back { display: inline-block; margin-bottom: 24px; color: inherit; }
+.detail-index { margin: 24px 0 48px; }
+.detail-index ul { display: flex; flex-wrap: wrap; gap: 8px 24px; padding-left: 24px; }
+.detail-index a { color: inherit; }
+.detail-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: start; }
+.detail-grid + .detail-grid { margin-top: 56px; padding-top: 48px; border-top: 1px solid var(--mau-la, currentColor); }
+.detail-image img { display: block; width: 100%; height: auto; border-radius: 12px; }
+.detail-label { margin: 0; font-weight: 700; }
+.detail-info h2 { margin: 16px 0; font-size: clamp(2rem, 4vw, 2.75rem); }
+.detail-info h3 { margin: 32px 0 16px; font-size: 1.25rem; }
+.detail-price { margin: 16px 0; color: var(--mau-nhan, firebrick); font-size: 1.5rem; font-weight: 700; }
+.detail-specs { margin: 0; }
+.detail-specs div { display: grid; grid-template-columns: minmax(110px, 1fr) 2fr; gap: 16px; padding: 8px 0; border-bottom: 1px solid var(--mau-la, currentColor); }
+.detail-specs dt { font-weight: 700; }
+.detail-specs dd { margin: 0; }
+.detail-actions { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 32px; }
+.detail-button { min-height: 44px; padding: 12px 24px; border: 1px solid var(--mau-nhan, firebrick); border-radius: 8px; font: inherit; font-weight: 700; cursor: pointer; }
+.detail-button-primary { background: var(--mau-nhan, firebrick); color: white; }
+.detail-button-secondary { background: transparent; color: var(--mau-nhan, firebrick); }
+@media (max-width: 768px) {
+  .detail-grid { grid-template-columns: 1fr; gap: 24px; }
+}
 
 /* 6. GIỚI THIỆU — Châu */
 

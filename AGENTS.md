@@ -143,6 +143,8 @@ Các quy tắc dưới đây áp dụng cho mọi trợ lý AI chạy trong repo
 
 Trước khi làm việc, đọc [quy tắc ghi log](docs/ai-logs/ai-logging-rules.md), [mẫu mục log](docs/ai-logs/TEMPLATE.md) và xác nhận tên thành viên đang yêu cầu. Không suy tên thành viên từ tài khoản Git. Nếu chưa có tên đã xác nhận, hỏi trước khi gán đóng góp cá nhân.
 
+Khi người yêu cầu đã xác nhận là Hoàn, ghi các hoạt động AI đáng kể của Hoàn vào `docs/ai-logs/hoan.md` theo quy tắc nối thêm; tiếp tục dùng danh tính đó trong cuộc trao đổi hiện tại, và xác nhận lại nếu người dùng thay đổi hoặc danh tính không rõ. Khi làm Buổi 2, đối chiếu thêm ngữ cảnh và phạm vi của Hoàn trong `session2/AGENTS.md` và bảng phân công hiện hành; không suy ra trạng thái hoàn thành từ phân công.
+
 Sau mỗi công việc đáng kể có sử dụng AI, kể cả phân tích, brainstorm, sửa tài liệu, viết mã, sửa lỗi và kiểm thử, Codex phải chủ động nối thêm mục vào docs/ai-logs/<thanh-vien>.md trong cùng đợt thay đổi, trước khi báo hoàn tất. Không đợi nhắc lại. Tệp docs/ai-logs/AI_USAGE_LOG.md là trang tổng hợp và dẫn tới log từng người.
 
 Mỗi mục có thời gian ghi thực tế theo Asia/Bangkok (UTC+07:00), mã phiên nhật ký, mã mục riêng, phase, loại hoạt động và đủ 7 trường: Công cụ, Mục đích, Prompt, Kết quả đề xuất, Phản biện, Quyết định của nhóm, Người kiểm tra. Thêm cách kiểm tra, tệp và Issue/commit đã tồn tại nếu có.

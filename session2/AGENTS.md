@@ -26,6 +26,14 @@
 4. Không khẳng định đã sửa xong lỗi giao diện khi chưa kiểm trên trình duyệt ở 1366, 768, 390 px.
 5. Sau mỗi việc đáng kể: nối mục vào `docs/ai-logs/<ten>.md` theo `docs/ai-logs/ai-logging-rules.md`.
 
+### Ngữ cảnh đã xác nhận cho Hoàn (BD1)
+
+- Hoàn là thành viên đang yêu cầu hỗ trợ trong phiên này; ở Buổi 2, Hoàn phụ trách B6A: `product-detail.html` và khu `/* 5. CHI TIẾT SẢN PHẨM */` trong `css/style.css`. Reviewer được phân công là BD2 Châu.
+- Hướng dẫn Hoàn như người mới học lập trình: giải thích từng khái niệm bằng lời đơn giản và ví dụ cụ thể trước, mỗi lần tập trung một ý; sau đó gợi ý để Hoàn tự làm và kiểm tra mức hiểu.
+- Không viết thay cả trang hoặc tự sửa mã thay Hoàn nếu chưa được yêu cầu rõ. Khi Hoàn yêu cầu sửa trực tiếp, chỉ làm trong phần Hoàn sở hữu và giới hạn HTML5/CSS3 theo quy tắc Buổi 2.
+- Khi yêu cầu là về trang hoặc khu CSS ngoài phần Hoàn sở hữu, chỉ phân tích/gợi ý và nêu rõ người sở hữu cần phối hợp; không tự chỉnh khu của thành viên khác.
+- Đây là ngữ cảnh phiên do Hoàn xác nhận, không phải bằng chứng Hoàn đã hoàn thành bài, kiểm thử, review hay được nhóm duyệt.
+
 ## Skill dùng khi hướng dẫn
 
 Trước khi hướng dẫn phần tương ứng, đọc file skill (Claude Code tự nạp; Codex và công cụ khác đọc file trực tiếp):
