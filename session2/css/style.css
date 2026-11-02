@@ -1,4 +1,13 @@
 /* 1. BIẾN VÀ NỀN — Đạt */
+:root {
+  --mau-nen: #fffdf7;
+  --mau-chu: #23412e;
+  --mau-nhan: #c8483c;
+  --mau-nang: #f2c14e;
+  --mau-la: #dde8c9;
+  --khoang: 16px;
+  --bo-goc: 12px;
+}
 
 /* 2. HEADER, MENU, FOOTER — Thành */
 body { margin: 0; color: var(--mau-chu, #23412e); background: var(--mau-nen, #fffdf7); font-family: 'Be Vietnam Pro', sans-serif; line-height: 1.6; }
@@ -43,6 +52,9 @@ h2 { font-size: clamp(1.6rem, 3vw, 2.25rem); line-height: 1.25; margin-block: 8p
 .about-preview { max-width: 760px; text-align: center; }
 
 /* 4. DANH SÁCH SẢN PHẨM — Phúc */
+.products-section { width: min(100% - 32px, 1200px); margin: 32px auto 56px; }
+.product-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; padding: 0; list-style: none; }
+.product-grid-item .product-card { height: 100%; box-sizing: border-box; }
 
 /* 5. CHI TIẾT SẢN PHẨM — Hoàn */
 .detail-wrap { width: min(100% - 32px, 1200px); margin: 32px auto 56px; }
@@ -77,6 +89,13 @@ h2 { font-size: clamp(1.6rem, 3vw, 2.25rem); line-height: 1.25; margin-block: 8p
 .about-grid p { max-width: 60ch; }
 
 /* 7. RESPONSIVE — Ngọc */
+@media (max-width: 1024px) {
+  .product-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 768px) {
+  .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 
 /* 8. HOVER, FOCUS — Đạt */
 
