@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "docs/SESSION2-GUIDE.md",
+                "file": "docs/ai-logs/liem.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "SESSION2-GUIDE"
+              "title": "liem"
             }
           }
         ]
@@ -46,7 +46,7 @@
                 "searchQuery": ""
               },
               "icon": "lucide-folder-closed",
-              "title": "Trình duyệt tệp"
+              "title": "Files"
             }
           },
           {
@@ -179,17 +179,51 @@
   },
   "left-ribbon": {
     "hiddenItems": {
-      "switcher:Mở bộ chuyển đổi nhanh": false,
-      "graph:Mở xem biểu đồ": false,
-      "canvas:Tạo bảng mới": false,
-      "daily-notes:Mở ghi chú hôm nay": false,
-      "templates:Chèn mẫu": false,
-      "command-palette:Mở khay lệnh": false,
-      "bases:Tạo cơ sở mới": false
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
     }
   },
   "active": "bb184efea2f62b87",
   "lastOpenFiles": [
+    "session2/product-detail.html",
+    "session2/products.html",
+    "session2/index.html",
+    "session2/docs/ai-usage.md",
+    "session2/docs/ui-design.md",
+    "session2/README.md",
+    "session2/docs/plan.md",
+    "session2/images/product-8.jpg",
+    "session2/images/product-7.jpg",
+    "session2/images/product-6.jpg",
+    "session2/images/product-5.jpg",
+    "session2/images/product-4.jpg",
+    "session2/images/product-3.jpg",
+    "session2/images/product-1.jpg",
+    "session2/images/product-2.jpg",
+    "session2/images/logo.png",
+    "session2/images/banner.jpg",
+    "session2/images",
+    "session2/docs/test-report.md",
+    "session2/docs/anh-thu",
+    "session2/docs",
+    "session2/css/style.css",
+    "session2/css",
+    "session2/about.html",
+    "phases/P0-kickoff/FD1-Thanh/P0-FD1-Thanh.md",
+    "phases/P0-kickoff/P0-OVERVIEW.md",
+    "phases/P0-kickoff/BD1-Hoan/P0-BD1-Hoan.md",
+    "plan/findings.md",
+    "plan/progress.md",
+    "plan/task_plan.md",
+    "tasks/TASK-TEMPLATE.md",
+    "session2/AGENTS.md",
+    "AGENTS.md",
+    "docs/SESSION2-GUIDE.md",
     "docs/ASSIGNMENTS.md",
     "docs/ARCHITECTURE.md",
     "docs/AI-SETUP.md",
@@ -200,41 +234,7 @@
     "docs/ai-logs/thanh.md",
     "docs/ai-logs/TEMPLATE.md",
     "docs/ai-logs/phuc.md",
-    "docs/ai-logs/ngoc.md",
-    "docs/ai-logs/liem.md",
-    "docs/ai-logs/kiet.md",
-    "docs/ai-logs/hoan.md",
-    "docs/ai-logs/dat.md",
-    "docs/ai-logs/chau.md",
-    "docs/ai-logs/ai-logging-rules.md",
-    "HOME.md",
-    "docs/business-workflow.md",
-    "REQUIREMENTS.md",
-    "docs/PROGRESS.md",
-    "docs/ROADMAP.md",
-    "docs/ai-logs/AI_USAGE_LOG.md",
     "phases/P3-payment-orders/QA-Ngoc/sed2zT9jm",
-    "phases/P3-payment-orders/PM-Liem/sedlvTjoX",
-    "phases/P3-payment-orders/BD1-Hoan/sedJ3YGJp",
-    "docs/learning/BD1-Hoan/sede5gvdU",
-    "phases/P7-release-defense/FD2-Phuc/sed4277hm",
-    "phases/P7-release-defense/FD1-Thanh/sed74GMNy",
-    "phases/P7-release-defense/DO-Kiet/sedJWB6fh",
-    "phases/P7-release-defense/BD2-Chau/sedjQseN1",
-    "phases/P7-release-defense/BD1-Hoan/sed2bZH1V",
-    "phases/P5-admin-security/QA-Ngoc/sedYdiv4O",
-    "phases/P7-release-defense/QA-Ngoc/P7-QA-Ngoc.md",
-    "phases/P7-release-defense/PM-Liem/P7-PM-Liem.md",
-    "phases/P7-release-defense/PD-Dat/P7-PD-Dat.md",
-    "assets/images/product-8.jpg",
-    "assets/images/product-7.jpg",
-    "assets/images/product-6.jpg",
-    "assets/images/product-5.jpg",
-    "assets/images/product-4.jpg",
-    "assets/images/product-3.jpg",
-    "assets/images/product-2.jpg",
-    "assets/images/product-1.jpg",
-    "assets/images/logo.png",
-    "assets/images/banner.jpg"
+    "phases/P3-payment-orders/PM-Liem/sedlvTjoX"
   ]
 }

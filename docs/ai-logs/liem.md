@@ -2402,3 +2402,408 @@ Codex kiểm trạng thái và chạy validator; Liêm và nhóm chưa review l�
 ### Kiểm tra và minh chứng
 
 Validator: 0 lỗi, 2 cảnh báo; rà mẫu token trên các file dự kiến không phát hiện. Không ghi trước kết quả commit hay push.
+
+
+---
+
+## Chụp minh họa báo cáo / LIEM-20261103-0C00D75F-001
+
+* Thời gian ghi: 2026-11-03T04:41:05+07:00
+* Thời gian thực hiện: phiên hiện tại.
+* Mã phiên nhật ký: LIEM-20261103-0C00D75F
+* Người prompt: Liêm (PM).
+* Phase: P0 — Buổi 2.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261103-F8C257D7-001.
+
+### Công cụ
+
+Codex, Chrome ẩn và Playwright; model chưa xác minh.
+
+### Mục đích
+
+Chuẩn bị ảnh minh họa chương 4 cho báo cáo DAYORA.
+
+### Prompt
+
+Tóm lược: Liêm đề nghị dựa trên bài đã làm và giúp chọn/chụp trực tiếp các khu vực cần minh họa.
+
+### Kết quả đề xuất
+
+Chụp ảnh thực tế header/banner, footer, tám thẻ danh sách và chi tiết thảm bốn người; lưu vào folder đầu ra của phiên, không sửa mã nguồn.
+
+### Phản biện
+
+Ảnh minh họa một kích thước không thay cho bộ kiểm thử responsive ba kích thước; chưa chụp cấu trúc VS Code và đoạn mã.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Codex kiểm ảnh danh sách và chi tiết; Liêm chưa duyệt báo cáo.
+
+### Kiểm tra và minh chứng
+
+Chrome ẩn mở các trang cục bộ ở chiều rộng 1366 px và lưu bốn PNG; không commit hoặc push.
+
+
+---
+
+## Chụp ảnh responsive cho báo cáo / LIEM-20261103-8D885224-001
+
+* Thời gian ghi: 2026-11-03T04:54:13+07:00
+* Thời gian thực hiện: phiên hiện tại.
+* Mã phiên nhật ký: LIEM-20261103-8D885224
+* Người prompt: Liêm (PM).
+* Phase: P0 — Buổi 2.
+* Loại mục: Hoạt động và kiểm tra.
+* Liên quan: LIEM-20261103-0C00D75F-001.
+
+### Công cụ
+
+Codex, Chrome ẩn và Playwright; model chưa xác minh.
+
+### Mục đích
+
+Chụp minh chứng bốn trang ở ba độ rộng để hỗ trợ báo cáo.
+
+### Prompt
+
+Tóm lược: Liêm đề nghị hướng dẫn lấy ảnh hoặc chụp giúp ảnh chương responsive.
+
+### Kết quả đề xuất
+
+Chụp 12 ảnh toàn trang tại session2/docs/screenshots; trang chi tiết chọn thảm bốn người.
+
+### Phản biện
+
+Ảnh tự động và kiểm tràn không thay thế kiểm thử thao tác, review và đối chiếu toàn bộ bằng mắt; chỉ xem thủ công ảnh chi tiết 390 và trang chủ 768 trong lượt này.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới về nghiệm thu.
+
+### Người kiểm tra
+
+Codex kiểm tải ảnh, độ rộng và không tràn; Liêm và Ngọc chưa duyệt.
+
+### Kiểm tra và minh chứng
+
+Chrome ẩn tại 1366x768, 768x1024, 390x844; 12 ảnh có bề rộng tương ứng, các ảnh hiển thị tải và không phát hiện tràn ngang. Validator: 0 lỗi, một cảnh báo thiếu 8 câu trả lời cá nhân. Không commit/push.
+
+
+---
+
+## Chuẩn bị mẫu câu hỏi kiến thức / LIEM-20261103-5A6CCD06-001
+
+* Thời gian ghi: 2026-11-03T05:34:27+07:00
+* Thời gian thực hiện: phiên hiện tại.
+* Mã phiên nhật ký: LIEM-20261103-5A6CCD06
+* Người prompt: Liêm (PM).
+* Phase: P0 — Buổi 2.
+* Loại mục: Hoạt động.
+* Liên quan: Không có Issue được cung cấp.
+
+### Công cụ
+
+Codex; model chưa xác minh.
+
+### Mục đích
+
+Chuẩn bị bản nháp hướng dẫn tám thành viên tự hoàn thiện câu hỏi kiến thức.
+
+### Prompt
+
+Tóm lược: Liêm đề nghị AI làm và cập nhật phần câu hỏi cho từng thành viên.
+
+### Kết quả đề xuất
+
+Tạo tám mẫu trong session2/docs/answers, gợi ý theo vai trò và để trống trải nghiệm, mã đã tham gia, kết quả kiểm tra và phản biện AI cá nhân; tất cả ghi NHÁP.
+
+### Phản biện
+
+Theo đề mỗi thành viên tự trả lời; mẫu do AI tạo không chứng minh năng lực hay hoạt động của thành viên và không phải câu trả lời đã nộp. Không tự tạo log dưới tên người khác.
+
+### Quyết định của nhóm
+
+Liêm đề nghị chuẩn bị; chưa có xác nhận của từng thành viên hoặc nhóm.
+
+### Người kiểm tra
+
+Codex kiểm cấu trúc; từng thành viên chưa xác nhận.
+
+### Kiểm tra và minh chứng
+
+Đối chiếu docs/SESSION2-GUIDE.md và session2/AGENTS.md; tạo tám file mới, không sửa log thành viên khác; không commit/push.
+
+
+---
+
+## Rà mức độ CSS Buổi 2 / LIEM-20261104-6A1C4BE2-001
+
+* Thời gian ghi: 2026-11-04T17:32:52+07:00
+* Thời gian thực hiện: phiên hiện tại.
+* Mã phiên nhật ký: LIEM-20261104-6A1C4BE2
+* Người prompt: Liêm (PM).
+* Phase: P0 — Buổi 2.
+* Loại mục: Rà soát.
+* Liên quan: LIEM-20261103-09241937-001.
+
+### Công cụ
+
+Codex; model chưa xác minh.
+
+### Mục đích
+
+Đánh giá độ khó CSS hiện có so với yêu cầu Buổi 2.
+
+### Prompt
+
+Tóm lược: Liêm hỏi CSS nhóm đã làm có nâng cao so với nội dung sẽ học hay không.
+
+### Kết quả đề xuất
+
+Đọc CSS hiện tại, chỉ ra Grid/Flexbox/media query/hover/focus theo yêu cầu bài và các cấu trúc CSS phức tạp hơn như :has, clamp, minmax; đề xuất nhóm tìm hiểu và chuẩn bị giải thích.
+
+### Phản biện
+
+Ảnh người dùng cung cấp không thể hiện giáo trình CSS chi tiết; chưa có căn cứ kết luận các cú pháp hiện tại được hoặc không được giảng viên cho phép. Không sửa mã.
+
+### Quyết định của nhóm
+
+Chưa có quyết định nhóm mới.
+
+### Người kiểm tra
+
+Codex rà mã tĩnh; Liêm và nhóm chưa xác nhận đánh giá.
+
+### Kiểm tra và minh chứng
+
+Đọc session2/css/style.css, đối chiếu nội dung đề PDF đã đọc trước đó; chưa kiểm thêm trên trình duyệt hay so sánh slide khóa học. Không commit/push.
+
+
+---
+
+## Bổ sung biểu tượng tab DAYORA / LIEM-20261104-17039A21-001
+
+* Thời gian ghi: 2026-11-04T18:00:51+07:00
+* Thời gian thực hiện: phiên hiện tại.
+* Mã phiên nhật ký: LIEM-20261104-17039A21
+* Người prompt: Liêm (PM).
+* Phase: P0 — Buổi 2.
+* Loại mục: Hoạt động.
+* Liên quan: Không có Issue được cung cấp.
+
+### Công cụ
+
+Codex; model chưa xác minh.
+
+### Mục đích
+
+Hiển thị logo DAYORA trên tab trình duyệt của bốn trang HTML.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu thêm logo tab như đã trao đổi, dùng HTML trong phạm vi Buổi 2.
+
+### Kết quả đề xuất
+
+Thêm liên kết favicon tới images/logo.png trong phần head của index.html, products.html, product-detail.html và about.html; sử dụng ảnh hiện có.
+
+### Phản biện
+
+Ảnh thu nhỏ có thể khó đọc; cần kiểm tra hiển thị thực tế và làm mới bộ nhớ đệm trình duyệt. Không tự tạo logo khác.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu thêm logo; chưa có phản hồi duyệt của toàn nhóm.
+
+### Người kiểm tra
+
+Codex kiểm đường dẫn và cấu trúc; Liêm chưa kiểm hiển thị tab.
+
+### Kiểm tra và minh chứng
+
+Tệp logo hiện tồn tại; các kiểm tra bổ sung được báo theo kết quả thực tế. Không commit/push.
+
+
+---
+
+## Điều chỉnh ảnh banner trang chủ / LIEM-20261104-BFC00035-001
+
+* Thời gian ghi: 2026-11-04T18:44:38+07:00
+* Thời gian thực hiện: phiên hiện tại.
+* Mã phiên nhật ký: LIEM-20261104-BFC00035
+* Người prompt: Liêm (PM).
+* Phase: P0 — Buổi 2.
+* Loại mục: Hoạt động và kiểm tra.
+* Liên quan: LIEM-20261104-17039A21-001.
+
+### Công cụ
+
+Codex, Chrome ẩn và Playwright; model chưa xác minh.
+
+### Mục đích
+
+Hiển thị trọn ảnh banner thay vì cắt mất phần đầu người.
+
+### Prompt
+
+Tóm lược: Liêm cung cấp ảnh giao diện hiện tại và ảnh mẫu, yêu cầu hình banner toàn vẹn.
+
+### Kết quả đề xuất
+
+Điều chỉnh CSS banner theo tỉ lệ ảnh; điện thoại đặt ảnh trên phần chữ. Không thay ảnh gốc.
+
+### Phản biện
+
+Banner desktop cao hơn để giữ nguyên khung hình; tại điện thoại chữ xếp dưới ảnh. Lượt kiểm tra đầu phát hiện tràn ở 768 px, đã điều chỉnh và kiểm lại.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu chỉnh ảnh; Thành và nhóm chưa review.
+
+### Người kiểm tra
+
+Codex kiểm Chrome ẩn; Liêm chưa xác nhận giao diện.
+
+### Kiểm tra và minh chứng
+
+Chrome ẩn tại 1366, 768, 390 px: ảnh tải, đo không tràn ngang; xem ảnh desktop và mobile. Chưa kiểm trên thiết bị thật hoặc trình duyệt khác. Không commit/push.
+
+
+---
+
+## Thu gọn banner trang chủ / LIEM-20261104-9065174E-001
+
+* Thời gian ghi: 2026-11-04T19:12:05+07:00
+* Thời gian thực hiện: phiên hiện tại.
+* Mã phiên nhật ký: LIEM-20261104-9065174E
+* Người prompt: Liêm (PM).
+* Phase: P0 — Buổi 2.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261104-BFC00035-001.
+
+### Công cụ
+
+Codex, Chrome ẩn và Playwright; model chưa xác minh.
+
+### Mục đích
+
+Thu gọn banner để người xem nhìn thấy phần tiếp theo mà không cần cuộn nhiều.
+
+### Prompt
+
+Tóm lược: Liêm gửi mẫu và yêu cầu banner thấp hơn.
+
+### Kết quả đề xuất
+
+Điều chỉnh CSS chiều cao banner desktop/tablet và vị trí ảnh theo mẫu, giữ bố cục mobile xếp dọc.
+
+### Phản biện
+
+Ảnh desktop được cắt một phần phía dưới để vừa khung thấp, đổi lại thấy phần tiếp theo; chưa có review của Thành hoặc Liêm.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu chỉnh; chưa có quyết định chung khác.
+
+### Người kiểm tra
+
+Codex kiểm tra Chrome; Liêm và nhóm chưa duyệt.
+
+### Kiểm tra và minh chứng
+
+Ở 1366x768 banner cao 520px, đáy 592px; 768 và 390 không tràn ngang, ảnh tải. Đã xem ảnh desktop; chưa kiểm thiết bị thật hoặc trình duyệt khác. Không commit/push.
+
+
+---
+
+## Hoàn tác điều chỉnh banner / LIEM-20261104-1C2FA6CA-001
+
+* Thời gian ghi: 2026-11-04T19:32:15+07:00
+* Thời gian thực hiện: phiên hiện tại.
+* Mã phiên nhật ký: LIEM-20261104-1C2FA6CA
+* Người prompt: Liêm (PM).
+* Phase: P0 — Buổi 2.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261104-BFC00035-001, LIEM-20261104-9065174E-001.
+
+### Công cụ
+
+Codex; model chưa xác minh.
+
+### Mục đích
+
+Đưa banner về trạng thái ngay sau khi thêm biểu tượng tab.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu hoàn tác toàn bộ hai lượt chỉnh banner, giữ lại logo tab.
+
+### Kết quả đề xuất
+
+Khôi phục riêng các quy tắc banner trong style.css về nội dung trước hai lượt sửa; giữ các thay đổi khác và favicon.
+
+### Phản biện
+
+Giữ lịch sử log cũ, ghi nhận hoàn tác bằng mục mới; chưa quan sát lại giao diện bằng trình duyệt.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu hoàn tác; chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Codex đối chiếu các quy tắc; Liêm chưa review.
+
+### Kiểm tra và minh chứng
+
+Đã đối chiếu các đoạn CSS trước khi sửa; không commit/push, không thay các file trang.
+
+
+---
+
+## Chuẩn bị cập nhật toàn bộ lên main / LIEM-20261104-505F9833-001
+
+* Thời gian ghi: 2026-11-04T20:15:18+07:00
+* Thời gian thực hiện: phiên hiện tại.
+* Mã phiên nhật ký: LIEM-20261104-505F9833
+* Người prompt: Liêm (PM).
+* Phase: P0 — Buổi 2.
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261104-17039A21-001 và LIEM-20261104-1C2FA6CA-001.
+
+### Công cụ
+
+Codex và Git; model chưa xác minh.
+
+### Mục đích
+
+Chuẩn bị cập nhật toàn bộ thay đổi trên máy lên nhánh main theo yêu cầu Liêm.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu commit và push toàn bộ lên nhánh main.
+
+### Kết quả đề xuất
+
+Kiểm tra trạng thái: bốn file favicon, log Liêm, ảnh responsive, bản nháp câu trả lời và cấu hình Obsidian. Chuẩn bị commit; kết quả commit/push chưa có tại thời điểm ghi.
+
+### Phản biện
+
+Tám file answers là bản nháp, chưa chứng minh các thành viên đã hoàn thành; ảnh cần review trước khi nộp. Rà một số mẫu bí mật không bảo đảm phát hiện tất cả dữ liệu nhạy cảm.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu cập nhật toàn bộ; chưa có quyết định nghiệm thu mới của nhóm.
+
+### Người kiểm tra
+
+Codex kiểm tra trạng thái và nội dung cơ bản; Liêm và nhóm chưa duyệt nội dung cá nhân.
+
+### Kiểm tra và minh chứng
+
+Kiểm tra Git trước commit; chưa thấy mẫu token phổ biến trong file văn bản đã quét, chưa thấy đường dẫn tuyệt đối trong cấu hình Obsidian. Không ghi trước kết quả push.
