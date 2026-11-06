@@ -202,3 +202,90 @@ Codex đọc mã và diff; chờ Kiệt tự kiểm trên trình duyệt và rev
 ### Kiểm tra và minh chứng
 
 Đọc .claude/skills/review-session2/SKILL.md, ROADMAP, SESSION2-GUIDE, tools/check-session2.py, tệp HTML/CSS và git status/diff; git diff --check không báo lỗi. Chưa chạy script Python hoặc kiểm trình duyệt. Không truy cập được issue GitHub riêng trong phiên trước và chưa xác minh trực tiếp nội dung issue; không khẳng định pass CI. Chỉ nối docs/ai-logs/kiet.md.
+## P0 / KIET-20261106-DO1-API-001
+
+- Thời gian ghi: 22:23
+- Mã phiên nhật ký: KIET-20261106-DO1
+- Người prompt: Mã Tuấn Kiệt
+- Loại mục: Hoạt động và kiểm tra
+- Liên quan: PRJ-P0-DO-1
+
+### Công cụ
+ChatGPT, VS Code, Git Bash, npm, NestJS và Vitest.
+
+### Mục đích
+Cấu hình workspace và dựng API tối thiểu có health endpoint.
+
+### Prompt
+Kiệt yêu cầu ChatGPT hướng dẫn từng bước thực hiện task PRJ-P0-DO-1 tại repo nhóm
+của Liêm, bằng tài khoản TuanKiet-coder1.
+
+Các yêu cầu và trao đổi chính:
+- Xác định đúng repo làm việc, kiểm tra trạng thái Git và tạo nhánh
+  prj/p0-do-1.
+- Hướng dẫn cài Node.js, kiểm tra npm và mở dự án trong VS Code.
+- Hướng dẫn viết test nghiệm thu health trước khi viết controller,
+  giải thích nội dung test và commit test riêng.
+- Nhắc Kiệt báo Liêm preview sau khi push nhánh lên GitHub.
+- Cấu hình npm workspaces, package API, TypeScript, Nest CLI và Vitest.
+- Giải thích vị trí, vai trò của từng file; xử lý việc tạo nhầm file
+  trong docs.
+- Hướng dẫn viết AppController, AppModule và main.ts, thiết lập
+  prefix api và CORS theo WEB_ORIGIN.
+- Phân tích lỗi TypeScript, điều chỉnh cấu hình và hướng dẫn kiểm tra
+  bằng build, test, trình duyệt và curl.
+- Tổng hợp hoạt động thực tế vào nhật ký AI, không ghi toàn bộ task
+  hoàn thành khi còn thiếu đầu việc.
+
+### Kết quả đề xuất
+Đã tạo cấu hình API, AppModule, AppController và main.ts.
+Cấu hình prefix api và CORS theo WEB_ORIGIN.
+Điều chỉnh TypeScript sang Node16 và nạp types node.
+
+### Phản biện
+
+Các ý kiến và kiểm tra thực tế trong phiên:
+
+1.Kiệt hỏi ChatGPT có đang theo đúng prompt và quy trình 
+   hay không
+   ChatGPT thừa nhận chưa đọc được sub-issue
+
+2.Kiệt yêu cầu tiếp tục đúng quy trình và xác nhận QA đã duyệt test.
+   Test được giữ nguyên trong quá trình viết phần xử lý;
+   không sửa kỳ vọng để làm test đạt.
+
+3.Kiệt phát hiện package.json xuất hiện ở nhiều vị trí và yêu cầu
+   giải thích. Hai file ở gốc repo và apps/api có vai trò khác nhau;
+   file trong docs/apps/api được xác định là tạo nhầm.
+   Chưa có minh chứng trực tiếp xác nhận file nhầm đã được xóa.
+
+4.Kiệt cung cấp lỗi thực tế trong VS Code. Cấu hình ban đầu do
+   ChatGPT đề xuất cần điều chỉnh từ moduleResolution node sang
+   Node16, đồng thời thêm types node. Kiệt sau đó xác nhận hết lỗi.
+
+5.Đầu ra npm audit cho thấy các dependency đã cài có 13 lỗ hổng.
+   ChatGPT hướng dẫn chưa dùng npm audit fix --force vì npm đề nghị
+   nâng phiên bản lớn. Các lỗ hổng chưa được xác nhận đã xử lý.
+
+6.Kiệt chạy và cung cấp minh chứng: test health đạt 1/1, build
+   kết thúc không báo lỗi, trình duyệt và curl trả đúng JSON.
+   Kết quả này xác nhận phần health; chưa chứng minh database,
+   CORS hoặc toàn bộ task đã hoạt động đúng.
+
+
+### Quyết định của nhóm
+Theo phản hồi của Kiệt trong cuộc trò chuyện, QA đã duyệt ca test.
+Chưa có xác nhận duyệt hoặc merge toàn bộ task.
+
+### Người kiểm tra
+Kiệt chạy lệnh trên máy và cung cấp kết quả;
+ChatGPT đối chiếu đầu ra.
+
+### Kiểm tra và minh chứng
+-npm run build -w api: kết thúc không báo lỗi.
+-npm test -w api -- app.controller: 1 test passed.
+-curl http://localhost:3000/api/health:
+  {"status":"ok","service":"dayora-api"}
+-Còn cảnh báo cấu hình Vitest CommonJS/ESM.
+-npm audit trước đó báo 13 lỗ hổng, chưa xử lý.
+-Chưa hoàn thành PrismaService, web và toàn bộ task.
