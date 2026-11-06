@@ -204,7 +204,7 @@ Codex đọc mã và diff; chờ Kiệt tự kiểm trên trình duyệt và rev
 Đọc .claude/skills/review-session2/SKILL.md, ROADMAP, SESSION2-GUIDE, tools/check-session2.py, tệp HTML/CSS và git status/diff; git diff --check không báo lỗi. Chưa chạy script Python hoặc kiểm trình duyệt. Không truy cập được issue GitHub riêng trong phiên trước và chưa xác minh trực tiếp nội dung issue; không khẳng định pass CI. Chỉ nối docs/ai-logs/kiet.md.
 ## P0 / KIET-20261106-DO1-API-001
 
-- Thời gian ghi: 22:23
+- Thời gian ghi: 2026-11-07T01:15+07:00
 - Mã phiên nhật ký: KIET-20261106-DO1
 - Người prompt: Mã Tuấn Kiệt
 - Loại mục: Hoạt động và kiểm tra
@@ -369,3 +369,45 @@ Kiệt chạy lệnh và cung cấp kết quả; ChatGPT đối chiếu đầu r
 - npm test -w api -- app.controller: 1 test passed.
 - Chưa kiểm chứng kết nối database thật; chưa chạy migration.
 - Còn cảnh báo cấu hình Vitest đã ghi nhận ở bước trước.
+## P0 / KIET-20261107-DO1-WEB-001
+
+- Thời gian ghi: 
+- Mã phiên nhật ký: KIET-20261106-DO1
+- Người prompt: Mã Tuấn Kiệt
+- Loại mục: Hoạt động và kiểm tra
+- Liên quan: PRJ-P0-DO-1.6
+
+### Công cụ
+ChatGPT, VS Code, Git Bash, npm, Vite và Chrome DevTools.
+
+### Mục đích
+Dựng web Vite + React + TypeScript, hiển thị trang trống.
+
+### Prompt
+Tóm lược: Kiệt cung cấp sub-issue 1.6 và yêu cầu hướng dẫn
+tạo web, thay nội dung mẫu, chạy và kiểm tra trước khi commit.
+
+### Kết quả đề xuất
+Tạo apps/web bằng template react-ts, chọn ESLint.
+App.tsx trả null; main.tsx gắn App vào phần tử root.
+Workspace web chạy bằng npm run dev:web từ thư mục gốc.
+
+### Phản biện
+Kiệt hỏi vì sao package vẫn có name api.
+Đã phân biệt package backend với apps/web/package.json.
+Kiệt yêu cầu hướng dẫn thay giao diện mẫu bằng trang trống.
+Trang trắng được đối chiếu cùng Console để tránh nhầm với lỗi chạy.
+
+### Quyết định của nhóm
+Thực hiện theo phạm vi sub-issue: bộ khung web và trang trống.
+Chưa có phản hồi review hoặc xác nhận merge phần web.
+
+### Người kiểm tra
+Kiệt chạy lệnh, cung cấp ảnh và xác nhận Console không lỗi;
+ChatGPT đối chiếu kết quả.
+
+### Kiểm tra và minh chứng
+- npm run dev:web: chạy tại http://localhost:5173.
+- Trang hiển thị trống; Kiệt xác nhận Console không lỗi.
+- npm run build -w web: thành công.
+- npm run lint -w web: không báo lỗi; mã thoát được cung cấp là 0.
