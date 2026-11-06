@@ -3,16 +3,19 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start:dev": "nest start --watch",
-    "build": "nest build",
-    "start": "node dist/main.js",
-    "test": "vitest run",
-    "lint": "eslint \"src/**/*.ts\""
-  },
+  "start:dev": "nest start --watch",
+  "build": "nest build",
+  "start": "node dist/main.js",
+  "test": "vitest run",
+  "lint": "eslint \"src/**/*.ts\"",
+  "prisma:generate": "prisma generate --schema prisma/schema.prisma --allow-no-models",
+  "prisma:validate": "prisma validate --schema prisma/schema.prisma"
+},
   "dependencies": {
     "@nestjs/common": "^11.2.8",
     "@nestjs/core": "^11.2.8",
     "@nestjs/platform-express": "^11.2.8",
+    "@prisma/client": "6.19.3",
     "dotenv": "^18.0.9",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2"
@@ -21,6 +24,7 @@
     "@nestjs/cli": "^11.0.24",
     "@types/node": "^24.19.2",
     "eslint": "^9.39.5",
+    "prisma": "6.19.3",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.72.1",
     "vitest": "^4.1.12"

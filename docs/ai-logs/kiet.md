@@ -289,3 +289,83 @@ ChatGPT đối chiếu đầu ra.
 -Còn cảnh báo cấu hình Vitest CommonJS/ESM.
 -npm audit trước đó báo 13 lỗ hổng, chưa xử lý.
 -Chưa hoàn thành PrismaService, web và toàn bộ task.
+## P0 / KIET-20261106-DO1-PRISMA-001
+
+- Thời gian ghi: <điền thời gian thực tế, kèm ngày và +07:00>
+- Mã phiên nhật ký: KIET-20261106-DO1
+- Người prompt: Mã Tuấn Kiệt
+- Loại mục: Hoạt động và kiểm tra
+- Liên quan: PRJ-P0-DO-1.5
+
+### Công cụ
+ChatGPT, VS Code, Git Bash, npm, Prisma và Vitest.
+
+### Mục đích
+Thêm PrismaService dùng chung, kết nối khi module khởi tạo.
+
+### Prompt
+Tóm lược: Kiệt cung cấp prompt sub-issue, sau đó yêu cầu
+ChatGPT viết đầy đủ PrismaService và schema tối thiểu.
+“Tôi đang tự làm bước ‘apps/api/src/prisma/prisma.service.ts:
+PrismaService dùng chung (kết nối khi module khởi động)’ của task
+PRJ-P0-DO-1 ‘Bộ khung chạy được trong repo nhóm’ trong dự án DAYORA.
+
+Bước này xong khi: build vẫn xanh.
+Kết quả hiện tại: <dán lỗi test hoặc output>.
+Code tôi đã viết: <dán đoạn code>.
+
+1) Giải thích ngắn yêu cầu của bước này.
+2) Chỉ chỗ sai trong code tôi dán và vì sao.
+3) Gợi ý hướng sửa.
+
+Không viết code hoàn chỉnh thay tôi. Chờ tôi sửa rồi dán lại.”
+
+Sau đó, Kiệt yêu cầu bổ sung:
+“hãy tự tạo prisma và schema vì tôi là DO”.
+
+ChatGPT đã cung cấp code đầy đủ theo yêu cầu bổ sung này;
+không ghi nhận quá trình là chỉ gợi ý theo prompt ban đầu.
+
+### Kết quả đề xuất
+Cài Prisma 6; tạo schema PostgreSQL chưa có model nghiệp vụ.
+Thêm script generate và validate; tạo PrismaService với
+$connect khi khởi tạo, $disconnect khi module được hủy.
+Đăng ký service trong AppModule.
+
+### Phản biện
+Đối chiếu với yêu cầu sub-issue:
+- PrismaService cần dùng chung và gọi $connect() khi module khởi tạo.
+  Service được đăng ký trong providers của AppModule.
+- Tiêu chí nghiệm thu của bước là build vẫn xanh; không đồng nhất
+  build thành công với kết nối database thật thành công.
+
+Các vấn đề được phát hiện qua trao đổi và kiểm tra:
+- Kiệt hỏi lại vì hướng dẫn schema nằm ngoài src dễ gây nhầm với
+  vị trí service. Đã phân biệt schema tại apps/api/prisma/schema.prisma
+  và service tại apps/api/src/prisma/prisma.service.ts.
+- Lệnh generate ban đầu lỗi vì thiếu script prisma:generate.
+  Đã hướng dẫn bổ sung script vào package.json của API.
+- Build báo không tìm thấy PrismaService. Kiểm tra đường dẫn phát hiện
+  service và schema đặt sai chỗ; hai đường dẫn tên prisma thực tế
+  là file rỗng, không phải thư mục.
+- Đã đổi tên giữ lại các file rỗng, tạo đúng thư mục và chuyển file.
+- Kiệt cung cấp kết quả generate Prisma Client 6.19.3 thành công,
+  build không báo lỗi và test health đạt 1/1.
+
+Giới hạn: schema chưa có model nghiệp vụ; chưa chạy migration,
+chưa xác nhận kết nối database thật và chưa có phản hồi review
+của nhóm cho phần Prisma trong cuộc trò chuyện.
+
+### Quyết định của nhóm
+Kiệt yêu cầu thực hiện schema tối thiểu cho bước DO.
+Chưa có xác nhận duyệt schema nghiệp vụ từ cả nhóm.
+
+### Người kiểm tra
+Kiệt chạy lệnh và cung cấp kết quả; ChatGPT đối chiếu đầu ra.
+
+### Kiểm tra và minh chứng
+- Generate Prisma Client 6.19.3 thành công.
+- npm run build -w api: kết thúc không báo lỗi.
+- npm test -w api -- app.controller: 1 test passed.
+- Chưa kiểm chứng kết nối database thật; chưa chạy migration.
+- Còn cảnh báo cấu hình Vitest đã ghi nhận ở bước trước.
