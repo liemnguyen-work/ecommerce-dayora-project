@@ -1,0 +1,268 @@
+/* 1. BIẾN VÀ NỀN — Đạt */
+:root {
+  --mau-nen: #fffdf7;
+  --mau-chu: #23412e;
+  --mau-nhan: #c8483c;
+  --mau-nang: #f2c14e;
+  --mau-la: #dde8c9;
+  --khoang: 16px;
+  --bo-goc: 12px;
+}
+
+/* 2. HEADER, MENU, FOOTER — Thành */
+body { margin: 0; color: var(--mau-chu, #23412e); background: var(--mau-nen, #fffdf7); font-family: 'Be Vietnam Pro', sans-serif; line-height: 1.6; }
+.site-header { background: var(--mau-nen, #fffdf7); }
+.header-inner, .footer-inner { width: min(100% - 32px, 1200px); margin-inline: auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 24px; }
+.header-inner { padding-block: 16px; }
+.brand img { display: block; width: 120px; max-width: 100%; height: auto; }
+.site-header nav, .site-footer nav { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+.site-header a, .site-footer a { color: inherit; }
+.site-header nav a { padding-block: 8px; text-decoration: none; }
+.site-header [aria-current="page"] { font-weight: 700; text-decoration: underline; text-underline-offset: 6px; }
+.search-box { display: flex; flex-direction: column; font-size: 0.8rem; }
+.search-box input { box-sizing: border-box; max-width: 100%; min-height: 44px; padding: 8px 12px; border: 1px solid currentColor; border-radius: 8px; font: inherit; }
+.site-footer { background: var(--mau-chu, #23412e); color: var(--mau-nen, #fffdf7); }
+.footer-inner { align-items: flex-start; padding-block: 40px; }
+.footer-inner p { margin: 8px 0; }
+.site-footer nav { flex-direction: column; }
+
+/* 3. TRANG CHỦ — Thành */
+.banner { position: relative; display: flex; align-items: center; min-height: 420px; overflow: hidden; color: #fff; background: var(--mau-chu, #23412e); }
+.banner-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.banner::after { position: absolute; inset: 0; content: ''; background: linear-gradient(90deg, rgba(20, 39, 27, .88), rgba(20, 39, 27, .35)); }
+.banner-content { position: relative; z-index: 1; width: min(100% - 32px, 1200px); margin-inline: auto; padding-block: 48px; }
+.banner-content h1, .banner-content > p:not(.eyebrow) { max-width: 560px; }
+h1 { font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.15; margin-block: 16px; }
+h2 { font-size: clamp(1.6rem, 3vw, 2.25rem); line-height: 1.25; margin-block: 8px 24px; }
+.eyebrow { font-size: .8rem; font-weight: 700; letter-spacing: .09em; }
+.primary-link { display: inline-block; padding: 12px 24px; margin-top: 16px; border-radius: 8px; background: var(--mau-nhan, #c8483c); color: #fff; font-weight: 700; text-decoration: none; }
+.home-section { width: min(100% - 32px, 1200px); margin: 56px auto; }
+.section-heading { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
+.section-heading h2 { margin-bottom: 0; }
+.section-heading a, .about-preview a, .product-info a { color: inherit; }
+.featured-grid, .occasions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 24px; }
+.product-card { overflow: hidden; border: 1px solid var(--mau-la, #dde8c9); border-radius: 12px; }
+.product-card img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; }
+.product-info { padding: 16px; }
+.product-info h3 { font-size: 1rem; margin: 0; }
+.product-info p { font-weight: 700; }
+.occasions-grid article { padding: 24px; border-radius: 12px; background: var(--mau-la, #dde8c9); }
+.occasions-grid h3 { margin-block: 8px; }
+.occasions-grid p { margin-bottom: 0; }
+.about-preview { max-width: 760px; text-align: center; }
+
+
+/* Giao diện trang chủ theo mẫu DAYORA */
+.home-page .header-inner { min-height: 72px; box-sizing: border-box; padding-block: 8px; }
+.home-page .brand { display: inline-flex; align-items: center; gap: 12px; color: var(--mau-chu); font-size: 1.25rem; font-weight: 800; text-decoration: none; }
+.home-page .brand img { width: 40px; height: 40px; object-fit: contain; }
+.home-page .site-header nav { gap: 4px; }
+.home-page .site-header nav a { padding: 10px 16px; font-weight: 600; border-radius: 999px; }
+.home-page .site-header [aria-current="page"] { background: var(--mau-la); text-decoration: none; }
+.home-page .home-search-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
+.home-page .search-box input { width: 220px; padding-inline: 16px; border: 1px solid var(--mau-la); border-radius: 999px; font-size: 1rem; }
+.home-page .banner { min-height: 520px; }
+.home-page .banner::after { background: linear-gradient(0deg, rgb(20 39 27 / 85%), rgb(20 39 27 / 12%)); }
+.home-page .banner-content h1 { max-width: 650px; font-size: clamp(2.4rem, 5vw, 4rem); line-height: 1.1; }
+.home-page .banner-content > p:not(.eyebrow) { max-width: 640px; font-size: 1.125rem; }
+.home-page .banner .eyebrow { color: var(--mau-nang); font-size: 1.125rem; }
+.home-page .primary-link { border-radius: 999px; }
+.home-page .home-section { margin-block: 64px 96px; }
+.home-page .home-section .eyebrow, .home-page .section-heading > a { color: var(--mau-nhan); }
+.home-page .section-heading > a { font-weight: 700; }
+.home-page .featured-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.home-page .product-card { background: white; }
+.home-page .product-info { display: flex; min-height: 136px; box-sizing: border-box; flex-direction: column; gap: 8px; }
+.home-page .product-info p { margin: auto 0 0; color: var(--mau-nhan); font-size: 1.125rem; }
+.home-page .product-info a { font-weight: 600; }
+.home-page .home-section[aria-labelledby="categories-title"] .occasions-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.home-page .home-section[aria-labelledby="categories-title"] > p a { color: var(--mau-chu); font-weight: 600; }
+.home-page .occasions-grid h3 { margin: 0 0 8px; }
+.home-page .footer-inner { display: grid; grid-template-columns: 2fr 1fr 1fr; }
+.home-page .site-footer nav { gap: 8px; }
+@media (max-width: 768px) {
+  .home-page .featured-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .home-page .footer-inner { grid-template-columns: 1fr 1fr; }
+  .home-page .banner { min-height: 460px; }
+}
+@media (max-width: 480px) {
+  .home-page .header-inner { gap: 8px 16px; }
+  .home-page .site-header nav { order: 3; width: 100%; }
+  .home-page .site-header nav a { padding: 8px 12px; }
+  .home-page .search-box input { width: 160px; }
+  .home-page .featured-grid { gap: 12px; }
+  .home-page .home-section[aria-labelledby="categories-title"] .occasions-grid { grid-template-columns: 1fr; }
+  .home-page .product-info { min-height: 160px; padding: 12px; }
+  .home-page .footer-inner { grid-template-columns: 1fr; }
+  .home-page .home-section { margin-block: 48px 64px; }
+}
+
+/* 4. DANH SÁCH SẢN PHẨM — Phúc */
+.products-section { width: min(100% - 32px, 1200px); margin: 32px auto 56px; }
+.product-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; padding: 0; list-style: none; }
+.product-grid-item .product-card { height: 100%; box-sizing: border-box; }
+
+
+/* Trang sản phẩm theo mẫu nhóm */
+.product-list-page .header-inner { min-height: 72px; box-sizing: border-box; padding-block: 8px; }
+.product-list-page .brand { display: inline-flex; align-items: center; gap: 12px; color: var(--mau-chu); font-size: 1.25rem; font-weight: 800; text-decoration: none; }
+.product-list-page .brand img { width: 40px; height: 40px; object-fit: contain; }
+.product-list-page .site-header nav { gap: 4px; }
+.product-list-page .site-header nav a { padding: 10px 16px; font-weight: 600; border-radius: 999px; }
+.product-list-page .site-header [aria-current="page"] { background: var(--mau-la); text-decoration: none; }
+.product-list-page .home-search-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
+.product-list-page .search-box input { width: 220px; padding-inline: 16px; border: 1px solid var(--mau-la); border-radius: 999px; font-size: 1rem; }
+.product-list-page .products-intro { margin: 0 0 48px; }
+.product-list-page .product-card { background: white; }
+.product-list-page .product-card img { height: auto; aspect-ratio: 1; object-fit: cover; }
+.product-list-page .product-info { display: flex; min-height: 140px; box-sizing: border-box; flex-direction: column; gap: 8px; }
+.product-list-page .product-info h2 { margin: 0; font-size: 1rem; line-height: 1.35; }
+.product-list-page .product-info p { margin: auto 0 0; color: var(--mau-nhan); font-size: 1.125rem; }
+.product-list-page .product-info a { font-weight: 600; }
+.product-list-page .footer-inner { display: grid; grid-template-columns: 2fr 1fr 1fr; }
+.product-list-page .site-footer nav { gap: 8px; }
+@media (max-width: 768px) {
+  .product-list-page .footer-inner { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) {
+  .product-list-page .header-inner { gap: 8px; }
+  .product-list-page .brand { width: 100%; }
+  .product-list-page .brand span { display: none; }
+  .product-list-page .site-header nav { order: 2; width: 100%; }
+  .product-list-page .site-header nav a { padding: 8px 12px; }
+  .product-list-page .search-box { order: 3; width: 100%; }
+  .product-list-page .search-box input { width: 100%; }
+  .product-list-page .product-grid { gap: 12px; }
+  .product-list-page .product-info { min-height: 150px; padding: 12px; }
+  .product-list-page .footer-inner { grid-template-columns: 1fr; }
+}
+
+/* 5. CHI TIẾT SẢN PHẨM — Hoàn */
+.detail-wrap { width: min(100% - 32px, 1200px); margin: 32px auto 56px; }
+.detail-back { display: inline-block; margin-bottom: 24px; color: inherit; }
+.detail-index { margin: 24px 0 48px; }
+.detail-index ul { display: flex; flex-wrap: wrap; gap: 8px 24px; padding-left: 24px; }
+.detail-index a { color: inherit; }
+.detail-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: start; }
+.detail-grid + .detail-grid { margin-top: 56px; padding-top: 48px; border-top: 1px solid var(--mau-la, currentColor); }
+.detail-image img { display: block; width: 100%; height: auto; border-radius: 12px; }
+.detail-label { margin: 0; font-weight: 700; }
+.detail-info h2 { margin: 16px 0; font-size: clamp(2rem, 4vw, 2.75rem); }
+.detail-info h3 { margin: 32px 0 16px; font-size: 1.25rem; }
+.detail-price { margin: 16px 0; color: var(--mau-nhan, firebrick); font-size: 1.5rem; font-weight: 700; }
+.detail-specs { margin: 0; }
+.detail-specs div { display: grid; grid-template-columns: minmax(110px, 1fr) 2fr; gap: 16px; padding: 8px 0; border-bottom: 1px solid var(--mau-la, currentColor); }
+.detail-specs dt { font-weight: 700; }
+.detail-specs dd { margin: 0; }
+.detail-actions { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 32px; }
+.detail-button { min-height: 44px; padding: 12px 24px; border: 1px solid var(--mau-nhan, firebrick); border-radius: 8px; font: inherit; font-weight: 700; cursor: pointer; }
+.detail-button-primary { background: var(--mau-nhan, firebrick); color: white; }
+.detail-button-secondary { background: transparent; color: var(--mau-nhan, firebrick); }
+@media (max-width: 768px) {
+  .detail-grid { grid-template-columns: 1fr; gap: 24px; }
+}
+
+/* Trang chi tiết: mỗi liên kết chọn một sản phẩm bằng fragment */
+.detail-page .detail-label { color: var(--mau-nhan); text-transform: uppercase; font-size: .85rem; letter-spacing: .05em; }
+.detail-page .detail-info h1 { margin: 8px 0 16px; font-size: clamp(2rem, 4vw, 2.75rem); }
+.detail-page .detail-info .detail-price { margin: 16px 0; }
+.detail-page .detail-specs { margin-top: 24px; }
+.detail-page .detail-button { border-radius: 999px; }
+.detail-page .detail-back { font-weight: 700; }
+@supports selector(:has(*)) {
+  .detail-page .detail-grid { display: none; }
+  .detail-page .detail-grid:target,
+  .detail-page .detail-wrap:not(:has(.detail-grid:target)) #san-pham-1 { display: grid; }
+  .detail-page .detail-grid + .detail-grid { margin-top: 0; padding-top: 0; border-top: 0; }
+}
+
+/* 6. GIỚI THIỆU — Châu */
+.about-wrap { width: min(100% - 32px, 1200px); margin: 32px auto 56px; }
+.about-section { margin-top: 48px; }
+.about-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 32px; align-items: center; }
+.about-grid img { display: block; width: 100%; height: auto; border-radius: 12px; }
+.about-grid p { max-width: 60ch; }
+
+
+/* Giới thiệu đồng bộ phong cách DAYORA */
+.about-page .about-wrap { margin-block: 64px 96px; }
+.about-page .about-intro { max-width: 760px; margin-bottom: 64px; }
+.about-page .about-intro h1 { margin-block: 8px 16px; }
+.about-page .about-intro > p:last-child { font-size: 1.125rem; }
+.about-page .about-wrap .eyebrow { color: var(--mau-nhan); }
+.about-page .about-section { margin-top: 64px; }
+.about-page .about-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px; }
+.about-page .about-grid img { aspect-ratio: 16 / 10; object-fit: cover; }
+.about-page .about-grid ul { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; list-style: none; }
+.about-page .about-grid li { padding: 8px 16px; background: var(--mau-la); border-radius: 999px; font-weight: 600; }
+.about-page .about-contact { padding: 32px; background: var(--mau-la); border-radius: var(--bo-goc); }
+.about-page .about-contact address { font-style: normal; overflow-wrap: anywhere; }
+.about-page .about-contact a { color: inherit; font-weight: 600; }
+@media (max-width: 768px) {
+  .about-page .about-wrap { margin-block: 40px 64px; }
+  .about-page .about-intro { margin-bottom: 40px; }
+  .about-page .about-section { margin-top: 48px; }
+  .about-page .about-grid { grid-template-columns: 1fr; gap: 24px; }
+  .about-page .about-contact { padding: 24px; }
+}
+
+/* 7. RESPONSIVE — Ngọc */
+@media (max-width: 1024px) {
+  .product-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 768px) {
+  .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* 8. HOVER, FOCUS — Đạt */
+
+.site-header nav a,
+.product-info a,
+.primary-link,
+button,
+.product-card {
+  transition: color 0.2s ease, background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.site-header nav a:hover,
+.product-info a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.product-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgb(35 65 46 / 18%);
+}
+
+.primary-link:hover,
+button:hover {
+  filter: brightness(0.9);
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid var(--mau-chu, #23412e);
+  outline-offset: 3px;
+}
+
+.site-footer a:focus-visible,
+.banner a:focus-visible {
+  outline-color: var(--mau-nen, #fffdf7);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header nav a,
+  .product-info a,
+  .primary-link,
+  button,
+  .product-card {
+    transition: none;
+  }
+
+  .product-card:hover {
+    transform: none;
+  }
+}
