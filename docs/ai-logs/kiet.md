@@ -411,3 +411,57 @@ ChatGPT đối chiếu kết quả.
 - Trang hiển thị trống; Kiệt xác nhận Console không lỗi.
 - npm run build -w web: thành công.
 - npm run lint -w web: không báo lỗi; mã thoát được cung cấp là 0.
+## P0 / KIET-20261107-DO1-ENV-ASSETS-001
+
+- Thời gian ghi:2026-11-07T19:04:10+07:00
+- Mã phiên nhật ký: KIET-20261106-DO1
+- Người prompt: Mã Tuấn Kiệt
+- Loại mục: Hoạt động và kiểm tra
+- Liên quan: PRJ-P0-DO-1.7
+
+### Công cụ
+ChatGPT, VS Code, Git Bash, Git và npm.
+
+### Mục đích
+Tạo file môi trường mẫu, kiểm tra Git ignore và chép tài sản
+nguyên bản.
+
+### Prompt
+Tóm lược: Kiệt cung cấp sub-issue 1.7, yêu cầu tạm dừng
+chờ nguồn public, sau đó gửi ảnh xác nhận nguồn và tiếp tục.
+
+ChatGPT hướng dẫn:
+- Trở lại nhánh prj/p0-do-1, khôi phục stash đang dở.
+- Chép nội dung apps/web/public và so sánh bằng diff -qr.
+- Tạo hai file .env.example chỉ chứa tên biến.
+- Kiểm tra .env thật được Git bỏ qua.
+- Giữ hai file prisma-empty.bak ngoài commit.
+
+### Kết quả đề xuất
+Tạo apps/api/.env.example với DATABASE_URL, WEB_ORIGIN, PORT;
+apps/web/.env.example với VITE_API_URL, các giá trị đều để trống.
+Chép nguyên tài sản public từ repo Minh.
+Chuyển icons.svg thừa sang thư mục dự phòng ngoài repo.
+
+### Phản biện
+Kiệt yêu cầu làm rõ phần nào tự tạo, phần nào chép từ đáp án.
+Đã xác định file môi trường tự tạo, tài sản public phải chép nguyên.
+diff phát hiện icons.svg thừa; git grep không thấy tham chiếu
+trong code được theo dõi nên chuyển ra ngoài repo.
+cat phát hiện file mẫu API còn trống; đã bổ sung và kiểm tra lại.
+
+### Quyết định của nhóm
+Thực hiện theo sub-issue 1.7 và nguồn public Kiệt cung cấp.
+Chưa có xác nhận reviewer duyệt hoặc merge bước này.
+
+### Người kiểm tra
+Kiệt chạy lệnh và cung cấp kết quả;
+ChatGPT đối chiếu đầu ra.
+
+### Kiểm tra và minh chứng
+- diff -qr giữa public nguồn và đích: không có đầu ra.
+- git check-ignore -v: cả hai .env bị ignore.
+- git status không liệt kê hai .env thật.
+- Hai .env.example chỉ có tên biến, không có giá trị thật.
+- npm run build -w web: thành công.
+- Không chỉnh sửa repo Minh; chưa xác nhận commit/push bước 1.7.
