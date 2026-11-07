@@ -1,8 +1,16 @@
 {
   "name": "dayora",
   "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
   "scripts": {
     "roadmap:issues": "node scripts/roadmap-issues.mjs",
-    "roadmap:report": "node scripts/roadmap-report.mjs"
+    "roadmap:report": "node scripts/roadmap-report.mjs",
+    "dev:web": "npm run dev -w web",
+    "dev:api": "npm run start:dev -w api",
+    "build": "npm run build --workspaces",
+    "test": "npm run test -w api",
+    "lint": "npm run lint --workspaces"
   }
 }
