@@ -311,7 +311,7 @@ Kiệt phản hồi “đã oke”.
 - Chưa xác nhận commit/push của bước HW-P1-DO-1.1.
 ## Bài tập Buổi 3 / KIET-20261107-HW3-002
 
-- Thời gian ghi: <thời gian thực tế, kèm +07:00>
+- Thời gian ghi: 2026-11-07T17:35:30+07:00
 - Mã phiên nhật ký: KIET-20261107-HW3
 - Người prompt: Mã Tuấn Kiệt
 - Loại mục: Hoạt động và kiểm tra
@@ -365,3 +365,212 @@ ChatGPT đối chiếu danh sách file và phạm vi thay đổi.
 - git status: bốn file HTML session3 được sửa và js/ được tạo.
 - git diff --name-only HEAD -- session2: không có đầu ra.
 - Chưa xác nhận commit/push bước 1.2.
+## P0 / KIET-20261106-DO1-API-001
+
+- Thời gian ghi: 2026-11-07T01:15+07:00
+- Mã phiên nhật ký: KIET-20261106-DO1
+- Người prompt: Mã Tuấn Kiệt
+- Loại mục: Hoạt động và kiểm tra
+- Liên quan: PRJ-P0-DO-1
+
+### Công cụ
+ChatGPT, VS Code, Git Bash, npm, NestJS và Vitest.
+
+### Mục đích
+Cấu hình workspace và dựng API tối thiểu có health endpoint.
+
+### Prompt
+Kiệt yêu cầu ChatGPT hướng dẫn từng bước thực hiện task PRJ-P0-DO-1 tại repo nhóm
+của Liêm, bằng tài khoản TuanKiet-coder1.
+
+Các yêu cầu và trao đổi chính:
+- Xác định đúng repo làm việc, kiểm tra trạng thái Git và tạo nhánh
+  prj/p0-do-1.
+- Hướng dẫn cài Node.js, kiểm tra npm và mở dự án trong VS Code.
+- Hướng dẫn viết test nghiệm thu health trước khi viết controller,
+  giải thích nội dung test và commit test riêng.
+- Nhắc Kiệt báo Liêm preview sau khi push nhánh lên GitHub.
+- Cấu hình npm workspaces, package API, TypeScript, Nest CLI và Vitest.
+- Giải thích vị trí, vai trò của từng file; xử lý việc tạo nhầm file
+  trong docs.
+- Hướng dẫn viết AppController, AppModule và main.ts, thiết lập
+  prefix api và CORS theo WEB_ORIGIN.
+- Phân tích lỗi TypeScript, điều chỉnh cấu hình và hướng dẫn kiểm tra
+  bằng build, test, trình duyệt và curl.
+- Tổng hợp hoạt động thực tế vào nhật ký AI, không ghi toàn bộ task
+  hoàn thành khi còn thiếu đầu việc.
+
+### Kết quả đề xuất
+Đã tạo cấu hình API, AppModule, AppController và main.ts.
+Cấu hình prefix api và CORS theo WEB_ORIGIN.
+Điều chỉnh TypeScript sang Node16 và nạp types node.
+
+### Phản biện
+
+Các ý kiến và kiểm tra thực tế trong phiên:
+
+1.Kiệt hỏi ChatGPT có đang theo đúng prompt và quy trình 
+   hay không
+   ChatGPT thừa nhận chưa đọc được sub-issue
+
+2.Kiệt yêu cầu tiếp tục đúng quy trình và xác nhận QA đã duyệt test.
+   Test được giữ nguyên trong quá trình viết phần xử lý;
+   không sửa kỳ vọng để làm test đạt.
+
+3.Kiệt phát hiện package.json xuất hiện ở nhiều vị trí và yêu cầu
+   giải thích. Hai file ở gốc repo và apps/api có vai trò khác nhau;
+   file trong docs/apps/api được xác định là tạo nhầm.
+   Chưa có minh chứng trực tiếp xác nhận file nhầm đã được xóa.
+
+4.Kiệt cung cấp lỗi thực tế trong VS Code. Cấu hình ban đầu do
+   ChatGPT đề xuất cần điều chỉnh từ moduleResolution node sang
+   Node16, đồng thời thêm types node. Kiệt sau đó xác nhận hết lỗi.
+
+5.Đầu ra npm audit cho thấy các dependency đã cài có 13 lỗ hổng.
+   ChatGPT hướng dẫn chưa dùng npm audit fix --force vì npm đề nghị
+   nâng phiên bản lớn. Các lỗ hổng chưa được xác nhận đã xử lý.
+
+6.Kiệt chạy và cung cấp minh chứng: test health đạt 1/1, build
+   kết thúc không báo lỗi, trình duyệt và curl trả đúng JSON.
+   Kết quả này xác nhận phần health; chưa chứng minh database,
+   CORS hoặc toàn bộ task đã hoạt động đúng.
+
+
+### Quyết định của nhóm
+Theo phản hồi của Kiệt trong cuộc trò chuyện, QA đã duyệt ca test.
+Chưa có xác nhận duyệt hoặc merge toàn bộ task.
+
+### Người kiểm tra
+Kiệt chạy lệnh trên máy và cung cấp kết quả;
+ChatGPT đối chiếu đầu ra.
+
+### Kiểm tra và minh chứng
+-npm run build -w api: kết thúc không báo lỗi.
+-npm test -w api -- app.controller: 1 test passed.
+-curl http://localhost:3000/api/health:
+  {"status":"ok","service":"dayora-api"}
+-Còn cảnh báo cấu hình Vitest CommonJS/ESM.
+-npm audit trước đó báo 13 lỗ hổng, chưa xử lý.
+-Chưa hoàn thành PrismaService, web và toàn bộ task.
+## P0 / KIET-20261106-DO1-PRISMA-001
+
+- Thời gian ghi: <điền thời gian thực tế, kèm ngày và +07:00>
+- Mã phiên nhật ký: KIET-20261106-DO1
+- Người prompt: Mã Tuấn Kiệt
+- Loại mục: Hoạt động và kiểm tra
+- Liên quan: PRJ-P0-DO-1.5
+
+### Công cụ
+ChatGPT, VS Code, Git Bash, npm, Prisma và Vitest.
+
+### Mục đích
+Thêm PrismaService dùng chung, kết nối khi module khởi tạo.
+
+### Prompt
+Tóm lược: Kiệt cung cấp prompt sub-issue, sau đó yêu cầu
+ChatGPT viết đầy đủ PrismaService và schema tối thiểu.
+“Tôi đang tự làm bước ‘apps/api/src/prisma/prisma.service.ts:
+PrismaService dùng chung (kết nối khi module khởi động)’ của task
+PRJ-P0-DO-1 ‘Bộ khung chạy được trong repo nhóm’ trong dự án DAYORA.
+
+Bước này xong khi: build vẫn xanh.
+Kết quả hiện tại: <dán lỗi test hoặc output>.
+Code tôi đã viết: <dán đoạn code>.
+
+1) Giải thích ngắn yêu cầu của bước này.
+2) Chỉ chỗ sai trong code tôi dán và vì sao.
+3) Gợi ý hướng sửa.
+
+Không viết code hoàn chỉnh thay tôi. Chờ tôi sửa rồi dán lại.”
+
+Sau đó, Kiệt yêu cầu bổ sung:
+“hãy tự tạo prisma và schema vì tôi là DO”.
+
+ChatGPT đã cung cấp code đầy đủ theo yêu cầu bổ sung này;
+không ghi nhận quá trình là chỉ gợi ý theo prompt ban đầu.
+
+### Kết quả đề xuất
+Cài Prisma 6; tạo schema PostgreSQL chưa có model nghiệp vụ.
+Thêm script generate và validate; tạo PrismaService với
+$connect khi khởi tạo, $disconnect khi module được hủy.
+Đăng ký service trong AppModule.
+
+### Phản biện
+Đối chiếu với yêu cầu sub-issue:
+- PrismaService cần dùng chung và gọi $connect() khi module khởi tạo.
+  Service được đăng ký trong providers của AppModule.
+- Tiêu chí nghiệm thu của bước là build vẫn xanh; không đồng nhất
+  build thành công với kết nối database thật thành công.
+
+Các vấn đề được phát hiện qua trao đổi và kiểm tra:
+- Kiệt hỏi lại vì hướng dẫn schema nằm ngoài src dễ gây nhầm với
+  vị trí service. Đã phân biệt schema tại apps/api/prisma/schema.prisma
+  và service tại apps/api/src/prisma/prisma.service.ts.
+- Lệnh generate ban đầu lỗi vì thiếu script prisma:generate.
+  Đã hướng dẫn bổ sung script vào package.json của API.
+- Build báo không tìm thấy PrismaService. Kiểm tra đường dẫn phát hiện
+  service và schema đặt sai chỗ; hai đường dẫn tên prisma thực tế
+  là file rỗng, không phải thư mục.
+- Đã đổi tên giữ lại các file rỗng, tạo đúng thư mục và chuyển file.
+- Kiệt cung cấp kết quả generate Prisma Client 6.19.3 thành công,
+  build không báo lỗi và test health đạt 1/1.
+
+Giới hạn: schema chưa có model nghiệp vụ; chưa chạy migration,
+chưa xác nhận kết nối database thật và chưa có phản hồi review
+của nhóm cho phần Prisma trong cuộc trò chuyện.
+
+### Quyết định của nhóm
+Kiệt yêu cầu thực hiện schema tối thiểu cho bước DO.
+Chưa có xác nhận duyệt schema nghiệp vụ từ cả nhóm.
+
+### Người kiểm tra
+Kiệt chạy lệnh và cung cấp kết quả; ChatGPT đối chiếu đầu ra.
+
+### Kiểm tra và minh chứng
+- Generate Prisma Client 6.19.3 thành công.
+- npm run build -w api: kết thúc không báo lỗi.
+- npm test -w api -- app.controller: 1 test passed.
+- Chưa kiểm chứng kết nối database thật; chưa chạy migration.
+- Còn cảnh báo cấu hình Vitest đã ghi nhận ở bước trước.
+## P0 / KIET-20261107-DO1-WEB-001
+
+- Thời gian ghi: 
+- Mã phiên nhật ký: KIET-20261106-DO1
+- Người prompt: Mã Tuấn Kiệt
+- Loại mục: Hoạt động và kiểm tra
+- Liên quan: PRJ-P0-DO-1.6
+
+### Công cụ
+ChatGPT, VS Code, Git Bash, npm, Vite và Chrome DevTools.
+
+### Mục đích
+Dựng web Vite + React + TypeScript, hiển thị trang trống.
+
+### Prompt
+Tóm lược: Kiệt cung cấp sub-issue 1.6 và yêu cầu hướng dẫn
+tạo web, thay nội dung mẫu, chạy và kiểm tra trước khi commit.
+
+### Kết quả đề xuất
+Tạo apps/web bằng template react-ts, chọn ESLint.
+App.tsx trả null; main.tsx gắn App vào phần tử root.
+Workspace web chạy bằng npm run dev:web từ thư mục gốc.
+
+### Phản biện
+Kiệt hỏi vì sao package vẫn có name api.
+Đã phân biệt package backend với apps/web/package.json.
+Kiệt yêu cầu hướng dẫn thay giao diện mẫu bằng trang trống.
+Trang trắng được đối chiếu cùng Console để tránh nhầm với lỗi chạy.
+
+### Quyết định của nhóm
+Thực hiện theo phạm vi sub-issue: bộ khung web và trang trống.
+Chưa có phản hồi review hoặc xác nhận merge phần web.
+
+### Người kiểm tra
+Kiệt chạy lệnh, cung cấp ảnh và xác nhận Console không lỗi;
+ChatGPT đối chiếu kết quả.
+
+### Kiểm tra và minh chứng
+- npm run dev:web: chạy tại http://localhost:5173.
+- Trang hiển thị trống; Kiệt xác nhận Console không lỗi.
+- npm run build -w web: thành công.
+- npm run lint -w web: không báo lỗi; mã thoát được cung cấp là 0.
