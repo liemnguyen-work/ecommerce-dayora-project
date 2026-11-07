@@ -309,3 +309,59 @@ Kiệt phản hồi “đã oke”.
 - Chưa nhận ảnh riêng của từng trang hoặc đầu ra riêng
   của lệnh git diff --name-only HEAD -- session2.
 - Chưa xác nhận commit/push của bước HW-P1-DO-1.1.
+## Bài tập Buổi 3 / KIET-20261107-HW3-002
+
+- Thời gian ghi: <thời gian thực tế, kèm +07:00>
+- Mã phiên nhật ký: KIET-20261107-HW3
+- Người prompt: Mã Tuấn Kiệt
+- Loại mục: Hoạt động và kiểm tra
+- Liên quan: HW-P1-DO-1.2 — issue #517
+
+### Công cụ
+ChatGPT, VS Code, Git Bash và Chrome DevTools.
+
+### Mục đích
+Tạo khung JavaScript dùng chung và gắn script vào bốn trang session3.
+
+### Prompt
+Kiệt cung cấp sub-issue #517, lộ trình cá nhân và BUOI3-GUIDE,
+yêu cầu hướng dẫn tiếp tục bước 1.2.
+
+Các hướng dẫn chính của ChatGPT:
+- Tạo products.js và năm file module theo đúng phân công.
+- Mỗi file chỉ có một dòng chú thích chủ sở hữu.
+- Đặt script sau footer, trước thẻ đóng body.
+- Nạp dữ liệu trước, logic giỏ hàng tiếp theo, module trang sau cùng;
+  render-products đứng trước search-filter.
+- Kiểm tra Network, Console và vị trí file bằng lệnh find.
+- Không viết chức năng thay các thành viên khác.
+
+### Kết quả đề xuất
+Tạo products.js, cart.js, render-products.js, search-filter.js,
+product-detail.js và cart-page.js.
+Gắn script có defer vào index.html, products.html,
+product-detail.html và about.html trong session3.
+
+### Phản biện
+Kiệt hỏi việc tạo file của các thành viên khác có thuộc task mình không.
+Đã đối chiếu sub-issue: Kiệt tạo khung, người sở hữu viết chức năng.
+
+Console ban đầu báo ERR_FILE_NOT_FOUND; lệnh find chưa liệt kê file JS.
+Sau khi tạo và lưu file đúng chỗ, Kiệt xác nhận các trang không báo lỗi.
+Khi VS Code báo products.js đã tồn tại, hướng dẫn mở file hiện có,
+không tạo tên khác hoặc ghi đè nội dung đã có.
+
+### Quyết định của nhóm
+Thực hiện đúng phạm vi tạo khung và gắn script của sub-issue #517.
+Chưa có phản hồi review bước này của PM Liêm.
+
+### Người kiểm tra
+Kiệt trực tiếp kiểm tra trình duyệt và cung cấp kết quả Terminal.
+ChatGPT đối chiếu danh sách file và phạm vi thay đổi.
+
+### Kiểm tra và minh chứng
+- find liệt kê đủ sáu file JS tại đúng đường dẫn.
+- Kiệt xác nhận bốn trang không báo lỗi.
+- git status: bốn file HTML session3 được sửa và js/ được tạo.
+- git diff --name-only HEAD -- session2: không có đầu ra.
+- Chưa xác nhận commit/push bước 1.2.
