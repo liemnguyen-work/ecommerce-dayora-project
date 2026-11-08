@@ -43,3 +43,13 @@ Ngay sau khi chạy lệnh, dùng `echo $?` trên macOS hoặc Bash, hay `$LASTE
 1. Lấy file test từ mốc đã chọn theo phần 1. Chạy lệnh đối chiếu và kiểm tra mã thoát `0`.
 2. Sửa một dòng, lưu file rồi chạy lại. Giữ phần diff và mã thoát `1` làm minh chứng.
 3. Giữ chỉnh sửa thử ở trạng thái chưa stage. Chạy `git checkout -- <spec>` để khôi phục file về bản đã lấy, rồi đối chiếu lại để xác nhận mã thoát trở về `0`.
+
+## 3. Checklist kiểm tra khi review Pull Request
+
+Reviewer và QA kiểm tra các mục dưới đây trước khi Approve. Nếu một mục không áp dụng, ghi rõ lý do trong nhận xét review. Khi merge, dùng phương thức nhóm đã thống nhất. Phương thức đề xuất cho quy trình này là **Rebase and merge**, chờ PM Liêm xác nhận.
+
+- [ ] **Toàn vẹn của test nghiệm thu.** Xác nhận đang ở đúng commit của PR, thư mục làm việc sạch và file test tồn tại ở cả nhánh PR lẫn mốc đã chốt. Chạy `git diff --exit-code <ref> -- <spec>` theo phần 2. Kết quả đạt khi lệnh không in diff và trả mã `0`. Ghi mốc Git, đường dẫn file test và mã thoát vào nhận xét review.
+- [ ] **Chạy lại test.** Chạy lệnh kiểm tra phù hợp với task trên máy reviewer và ghi kết quả thực tế. Với task API có test tự động, dùng `npm test -w api -- <tên_test>` khi workspace `api` đã được cấu hình. Nếu task không có test tự động, ghi rõ lý do và kết quả kiểm tra thủ công tương ứng.
+- [ ] **CI.** Kiểm tra các check bắt buộc của PR trong GitHub Actions và xác nhận chúng đều thành công. Đối chiếu kết quả lint, test và build theo pipeline của dự án. Nếu thiếu bước bắt buộc, ghi rõ để PM xác nhận trước khi duyệt.
+- [ ] **Giao diện, nếu PR có thay đổi web.** Kiểm tra ảnh ở chiều rộng **1366 px** trên máy tính và **390 px** trên điện thoại. Đối chiếu giao diện với [Design System](DESIGN-SYSTEM.md) và yêu cầu của task.
+- [ ] **Truy vết task và AI Usage Log.** Theo quy ước của `PRJ-P0-QA-1`, mỗi sub-issue có một commit riêng kèm dòng `Task: PRJ-...`. Mô tả PR dẫn đến đúng mục nhật ký trong `docs/ai-logs/`. Nếu PR về nhánh mặc định dùng để đóng một issue trong cùng repo, kiểm tra `Closes #<số issue>` trỏ đúng issue.
