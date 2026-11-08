@@ -31,11 +31,18 @@ function renderProducts(list) {
 
           <a
             class="product-detail-link"
-            href="product-detail.html#san-pham-${product.id}"
+            href="product-detail.html?id=${product.id}"
             aria-label="Xem chi tiết ${product.name}"
           >
             Xem chi tiết
           </a>
+          <button
+            class="detail-button detail-button-secondary btn-add-cart"
+            type="button"
+            data-id="${product.id}"
+          >
+            Thêm vào giỏ
+          </button>
         </div>
       </article>
     </li>
