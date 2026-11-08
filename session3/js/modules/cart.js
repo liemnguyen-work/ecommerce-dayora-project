@@ -27,3 +27,29 @@ function loadCart() {
     return [];
   }
 }
+// Thêm sản phẩm vào giỏ hàng
+function addToCart(id, qty = 1) {
+  // Chuyển ID và số lượng thành số
+  const productId = Number(id);
+  const quantity = Math.max(1, Number(qty) || 1);
+
+  // Lấy giỏ hàng hiện tại
+  const cart = loadCart();
+
+  // Tìm sản phẩm trong giỏ hàng
+  const index = cart.findIndex(item => item.id === productId);
+
+  if (index !== -1) {
+    // Sản phẩm đã tồn tại: cộng dồn số lượng
+    cart[index].quantity += quantity;
+  } else {
+    // Sản phẩm chưa tồn tại: thêm mới
+    cart.push({
+      id: productId,
+      quantity: quantity
+    });
+  }
+
+  // Lưu giỏ hàng đã cập nhật
+  saveCart(cart);
+}
