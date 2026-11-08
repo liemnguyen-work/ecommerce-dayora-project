@@ -1,0 +1,79 @@
+# Quy ước chung — DAYORA Buổi 3
+
+Các file JavaScript trong `session3/` dùng chung tên dữ liệu, hàm và sự kiện dưới đây. Mỗi thành viên kiểm tra quy ước trước khi tích hợp phần việc của mình.
+
+## 1. Mảng sản phẩm `products`
+
+Dữ liệu sản phẩm được lưu trong mảng đối tượng `products`. Mỗi sản phẩm có các trường `id`, `name`, `price`, `category`, `image`, `description`. `id` là số nguyên từ 1 đến 8; `price` là số nguyên tính bằng đồng Việt Nam.
+
+Ví dụ một phần tử trong mảng:
+
+```js
+{ id: 1, name: "Sản phẩm mẫu", price: 149000, category: "Picnic", image: "images/example.jpg", description: "Mô tả mẫu" }
+```
+
+Tên và đường dẫn trên chỉ dùng để minh họa cấu trúc.
+
+## 2. Định dạng giá: `formatPrice(number)`
+
+Hàm `formatPrice` nhận giá dạng số và trả về chuỗi tiền Việt Nam để hiển thị. Dữ liệu giá trong mảng vẫn được lưu dưới dạng số.
+
+```js
+formatPrice(149000); // Ví dụ kết quả: "149.000 ₫"
+```
+
+## 3. Tìm sản phẩm: `getProductById(id)`
+
+Hàm `getProductById` tìm sản phẩm theo ID và trả về đối tượng tương ứng. Nếu không tìm thấy, hàm trả về `undefined`; ID được chuyển sang kiểu số khi tìm.
+
+```js
+getProductById(1);   // Sản phẩm có id là 1, nếu có
+getProductById(999); // undefined, nếu không tồn tại
+```
+
+## 4. Cấu trúc giỏ hàng
+
+Giỏ hàng là mảng các đối tượng chỉ gồm `id` và `quantity`. Tên và giá được lấy từ dữ liệu sản phẩm khi cần hiển thị hoặc tính tiền.
+
+```js
+[{ id: 1, quantity: 2 }]
+```
+
+Ví dụ trên biểu thị sản phẩm ID 1 có số lượng 2.
+
+## 5. Khóa lưu trữ `"cart"`
+
+Mọi trang sử dụng đúng khóa `"cart"` trong `localStorage` để lưu và đọc giỏ hàng. Không tự đặt khóa khác như `"gioHang"`.
+
+```js
+localStorage.getItem("cart"); // Đọc dữ liệu đã lưu dưới khóa cart
+```
+
+## 6. Các hàm dùng chung trong `cart.js`
+
+| Hàm | Mục đích |
+|---|---|
+| `loadCart()` | Đọc dữ liệu giỏ hàng đã lưu. |
+| `saveCart(cart)` | Lưu giỏ hàng và phát sự kiện đồng bộ sau khi lưu thành công. |
+| `addToCart(id, qty)` | Thêm sản phẩm vào giỏ hoặc tăng số lượng nếu đã có. |
+| `updateQuantity(id, qty)` | Cập nhật số lượng của sản phẩm trong giỏ. |
+| `removeFromCart(id)` | Xóa sản phẩm khỏi giỏ. |
+| `getCartTotals()` | Lấy tổng số lượng và tổng tiền của giỏ. |
+
+Ví dụ gọi hàm:
+
+```js
+addToCart(1, 2); // Yêu cầu thêm 2 sản phẩm có ID 1
+```
+
+## 7. Sự kiện đồng bộ `"cart:changed"`
+
+Chỉ `saveCart(cart)` phát sự kiện `"cart:changed"` **sau khi lưu vào `localStorage` thành công**. Các hàm `addToCart`, `updateQuantity` và `removeFromCart` gọi `saveCart`; chúng không tự phát lại sự kiện để tránh thông báo trùng.
+
+Ví dụ lệnh phát sự kiện trong `saveCart`, sau bước lưu thành công:
+
+```js
+document.dispatchEvent(new CustomEvent("cart:changed"));
+```
+
+Các phần giao diện cần cập nhật, như số lượng trên biểu tượng giỏ, có thể lắng nghe sự kiện này.

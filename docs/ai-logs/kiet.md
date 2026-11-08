@@ -202,6 +202,169 @@ Codex đọc mã và diff; chờ Kiệt tự kiểm trên trình duyệt và rev
 ### Kiểm tra và minh chứng
 
 Đọc .claude/skills/review-session2/SKILL.md, ROADMAP, SESSION2-GUIDE, tools/check-session2.py, tệp HTML/CSS và git status/diff; git diff --check không báo lỗi. Chưa chạy script Python hoặc kiểm trình duyệt. Không truy cập được issue GitHub riêng trong phiên trước và chưa xác minh trực tiếp nội dung issue; không khẳng định pass CI. Chỉ nối docs/ai-logs/kiet.md.
+## Bài tập Buổi 3 / KIET-20261107-HW3-001
+
+- Thời gian ghi: 2026-11-07T17:33:30+07:00
+- Mã phiên nhật ký: KIET-20261107-HW3
+- Người prompt: Mã Tuấn Kiệt
+- Loại mục: Hoạt động và kiểm tra
+- Liên quan: HW-P1-DO-1.1 — issue #516
+
+### Công cụ
+
+ChatGPT, VS Code, Git Bash và trình duyệt trên máy Kiệt.
+
+### Mục đích
+
+Chép nguyên session2 sang session3 để làm nền cho bài tập Buổi 3.
+Giữ nguyên session2; kiểm tra bốn trang trong session3 không lỗi ảnh.
+
+### Prompt
+
+Yêu cầu thực tế của Kiệt:
+- Kiệt cung cấp sub-issue HW-P1-DO-1.1 với yêu cầu:
+  chép nguyên session2/ sang session3/ gồm bốn trang, css/ và images/;
+  mở bốn trang không lỗi ảnh và session2/ không đổi.
+- Kiệt hỏi vì sao Terminal vẫn hiển thị nhánh prj/p0-do-1,
+  sau đó yêu cầu tiếp tục.
+
+Các câu hướng dẫn ChatGPT đã gửi
+
+
+1. “Trước tiên cần giữ lại phần 1.7 đồ án đang dở,
+   tránh mang sang nhánh bài tập.”
+
+2. “Vì git stash chỉ cất thay đổi, không chuyển nhánh.”
+
+3. “Giờ chạy từng lệnh, chờ xong mới chạy lệnh tiếp.”
+
+4. “Nếu session3 đã tồn tại, gửi kết quả cho tôi trước,
+   tránh chép lồng hoặc ghi đè.”
+
+5. “Không có đầu ra nghĩa là nội dung hai thư mục giống nhau.”
+
+6. “Kiểm tra ảnh hiển thị đầy đủ và thanh địa chỉ vẫn nằm
+   trong session3 khi chuyển trang.”
+
+Các lệnh chính ChatGPT đã hướng dẫn:
+- git status --short
+- git branch --show-current
+- git stash push -u -m "Pause PRJ-P0-DO-1.7 before homework"
+- git switch main
+- git pull --ff-only origin main
+- git switch -c hw/p1-do-1
+- ls -ld session2 session3
+- cp -R session2 session3
+- diff -qr session2 session3
+- git diff --name-only HEAD -- session2
+
+ChatGPT hướng dẫn mở index.html, products.html,
+product-detail.html và about.html trong session3 để kiểm tra.
+
+### Kết quả đề xuất
+
+Đã cất các thay đổi đang dở của đồ án bằng Git stash.
+Chuyển về main, cập nhật từ origin/main và tạo nhánh hw/p1-do-1.
+Xác nhận session3 chưa tồn tại trước khi chép.
+Chép toàn bộ session2 sang session3 bằng cp -R.
+Không chủ động sửa nội dung HTML, CSS hoặc ảnh trong bước này.
+
+### Phản biện
+
+Kiệt hỏi lại vì sao tên nhánh vẫn là prj/p0-do-1 sau khi stash.
+ChatGPT giải thích stash không chuyển nhánh, rồi hướng dẫn
+chuyển sang nhánh bài tập đúng yêu cầu sub-issue.
+
+Kiểm tra sự tồn tại của session3 trước khi chép để tránh
+chép lồng thư mục hoặc ghi đè nội dung hiện có.
+
+Phân biệt kiểm tra bằng diff với kiểm tra trên trình duyệt:
+hai thư mục giống nhau chưa tự chứng minh ảnh hiển thị đúng.
+
+### Quyết định của nhóm
+
+Kiệt yêu cầu tạm dừng đồ án ở bước 1.7 để chờ Minh gửi public,
+chuyển sang bài tập Buổi 3.
+
+Theo thứ tự Kiệt cung cấp: làm bước 1 và 2 trước,
+chờ Liêm hoàn thành phần phụ thuộc rồi mới làm bước 3 và 4.
+Chưa có xác nhận review hoặc merge bước 1.1.
+
+### Người kiểm tra
+
+Kiệt trực tiếp chạy lệnh và kiểm tra trên máy.
+ChatGPT đối chiếu ảnh Terminal.
+Sau hướng dẫn kiểm tra bốn trang và session2,
+Kiệt phản hồi “đã oke”.
+
+### Kiểm tra và minh chứng
+
+- Ảnh Terminal xác nhận main đã cập nhật và nhánh hw/p1-do-1
+  được tạo thành công.
+- Trước khi chép: session2 tồn tại, session3 chưa tồn tại.
+- cp -R session2 session3: không báo lỗi.
+- diff -qr session2 session3: không có đầu ra.
+- Kiệt xác nhận đã kiểm tra ổn sau hướng dẫn mở bốn trang
+  và kiểm tra session2 không thay đổi.
+- Chưa nhận ảnh riêng của từng trang hoặc đầu ra riêng
+  của lệnh git diff --name-only HEAD -- session2.
+- Chưa xác nhận commit/push của bước HW-P1-DO-1.1.
+## Bài tập Buổi 3 / KIET-20261107-HW3-002
+
+- Thời gian ghi: 2026-11-07T17:35:30+07:00
+- Mã phiên nhật ký: KIET-20261107-HW3
+- Người prompt: Mã Tuấn Kiệt
+- Loại mục: Hoạt động và kiểm tra
+- Liên quan: HW-P1-DO-1.2 — issue #517
+
+### Công cụ
+ChatGPT, VS Code, Git Bash và Chrome DevTools.
+
+### Mục đích
+Tạo khung JavaScript dùng chung và gắn script vào bốn trang session3.
+
+### Prompt
+Kiệt cung cấp sub-issue #517, lộ trình cá nhân và BUOI3-GUIDE,
+yêu cầu hướng dẫn tiếp tục bước 1.2.
+
+Các hướng dẫn chính của ChatGPT:
+- Tạo products.js và năm file module theo đúng phân công.
+- Mỗi file chỉ có một dòng chú thích chủ sở hữu.
+- Đặt script sau footer, trước thẻ đóng body.
+- Nạp dữ liệu trước, logic giỏ hàng tiếp theo, module trang sau cùng;
+  render-products đứng trước search-filter.
+- Kiểm tra Network, Console và vị trí file bằng lệnh find.
+- Không viết chức năng thay các thành viên khác.
+
+### Kết quả đề xuất
+Tạo products.js, cart.js, render-products.js, search-filter.js,
+product-detail.js và cart-page.js.
+Gắn script có defer vào index.html, products.html,
+product-detail.html và about.html trong session3.
+
+### Phản biện
+Kiệt hỏi việc tạo file của các thành viên khác có thuộc task mình không.
+Đã đối chiếu sub-issue: Kiệt tạo khung, người sở hữu viết chức năng.
+
+Console ban đầu báo ERR_FILE_NOT_FOUND; lệnh find chưa liệt kê file JS.
+Sau khi tạo và lưu file đúng chỗ, Kiệt xác nhận các trang không báo lỗi.
+Khi VS Code báo products.js đã tồn tại, hướng dẫn mở file hiện có,
+không tạo tên khác hoặc ghi đè nội dung đã có.
+
+### Quyết định của nhóm
+Thực hiện đúng phạm vi tạo khung và gắn script của sub-issue #517.
+Chưa có phản hồi review bước này của PM Liêm.
+
+### Người kiểm tra
+Kiệt trực tiếp kiểm tra trình duyệt và cung cấp kết quả Terminal.
+ChatGPT đối chiếu danh sách file và phạm vi thay đổi.
+
+### Kiểm tra và minh chứng
+- find liệt kê đủ sáu file JS tại đúng đường dẫn.
+- Kiệt xác nhận bốn trang không báo lỗi.
+- git status: bốn file HTML session3 được sửa và js/ được tạo.
+- git diff --name-only HEAD -- session2: không có đầu ra.
+- Chưa xác nhận commit/push bước 1.2.
 ## P0 / KIET-20261106-DO1-API-001
 
 - Thời gian ghi: 2026-11-07T01:15+07:00
