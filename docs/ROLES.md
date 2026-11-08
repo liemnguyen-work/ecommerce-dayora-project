@@ -16,6 +16,8 @@ Mỗi module có 1 người chính + 1 người review. Kế hoạch theo phase:
 | QA | QA/Tester | Ngọc | `ngocnguyen31241024603` | Test plan, ca kiểm thử (≥ 24 ca Kit Builder), bug list, kiểm thử bảo mật | PM |
 | DO | DevOps | Kiệt | `TuanKiet-coder1` | Repo, env, CI, deploy Vercel/Render/Supabase, setup guide, checklist demo | BD2 |
 
+Đã xác nhận username GitHub với cả 8 thành viên vào ngày 07/11/2026.
+
 ## Thư mục cá nhân theo phase
 `phases/P<số>-<tên>/<MÃ>-<Tên>/` gồm:
 - `P<số>-<MÃ>-<Tên>.md` — việc cần làm, kiến thức cần học, prompt mẫu, minh chứng.

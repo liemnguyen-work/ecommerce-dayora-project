@@ -242,3 +242,28 @@ Codex kiểm tra tĩnh; chờ Đạt tự kiểm trên trình duyệt và review
 ### Kiểm tra và minh chứng
 
 Đọc git status/diff, session2/index.html, session2/css/style.css, tools/check-session2.py, docs/ROADMAP.md và docs/SESSION2-GUIDE.md; kiểm tra các đích href/src của index tồn tại và tìm mã cấm, không có kết quả. git diff --check không báo lỗi; css và HTML chưa được theo dõi nên không xuất hiện trong git diff thường. Chưa chạy script Python, chưa kiểm trình duyệt; chưa truy cập được issue GitHub riêng, gh không có. Chỉ nối docs/ai-logs/dat.md.
+## PRJ-P0-PD-1.1 — Tìm hiểu Design System
+
+Ngày thực hiện: 08/11/2026
+
+### Nội dung đã học
+Đã đọc design/DESIGN-SYSTEM.md của dự án DAYORA.
+
+- Paper (#FFFDF7): Nền chính của website.
+- Ink (#23412E): Chữ chính và đường nét.
+- Berry (#C8483C): Nút CTA và điểm nhấn chính.
+- Butter (#F2C14E): Highlight và trang trí.
+- Leaf (#DDE8C9): Mảng nền phụ mang cảm giác thiên nhiên.
+
+Font sử dụng: Be Vietnam Pro.
+- 400: Nội dung thường.
+- 600: Nội dung cần nhấn mạnh.
+- 800: Tiêu đề lớn.
+
+### Hỗ trợ AI
+Sử dụng ChatGPT để giải thích vai trò của 5 màu
+và kiểm tra kiến thức. Đã sửa nhầm lẫn giữa
+màu Butter và Berry.
+
+### Kết quả
+Đã đọc tài liệu và ghi lại vai trò của 5 màu.

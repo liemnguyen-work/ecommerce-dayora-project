@@ -40,3 +40,9 @@ Thumbs.db
 # Keep source, lockfiles, migrations, docs and AI logs tracked.
 # Example environment files must contain placeholders only.
 # Ignore rules do not remove files that Git already tracks.
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+coverage/

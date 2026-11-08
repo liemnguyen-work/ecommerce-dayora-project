@@ -202,3 +202,429 @@ Codex đọc mã và diff; chờ Kiệt tự kiểm trên trình duyệt và rev
 ### Kiểm tra và minh chứng
 
 Đọc .claude/skills/review-session2/SKILL.md, ROADMAP, SESSION2-GUIDE, tools/check-session2.py, tệp HTML/CSS và git status/diff; git diff --check không báo lỗi. Chưa chạy script Python hoặc kiểm trình duyệt. Không truy cập được issue GitHub riêng trong phiên trước và chưa xác minh trực tiếp nội dung issue; không khẳng định pass CI. Chỉ nối docs/ai-logs/kiet.md.
+## Bài tập Buổi 3 / KIET-20261107-HW3-001
+
+- Thời gian ghi: 2026-11-07T17:33:30+07:00
+- Mã phiên nhật ký: KIET-20261107-HW3
+- Người prompt: Mã Tuấn Kiệt
+- Loại mục: Hoạt động và kiểm tra
+- Liên quan: HW-P1-DO-1.1 — issue #516
+
+### Công cụ
+
+ChatGPT, VS Code, Git Bash và trình duyệt trên máy Kiệt.
+
+### Mục đích
+
+Chép nguyên session2 sang session3 để làm nền cho bài tập Buổi 3.
+Giữ nguyên session2; kiểm tra bốn trang trong session3 không lỗi ảnh.
+
+### Prompt
+
+Yêu cầu thực tế của Kiệt:
+- Kiệt cung cấp sub-issue HW-P1-DO-1.1 với yêu cầu:
+  chép nguyên session2/ sang session3/ gồm bốn trang, css/ và images/;
+  mở bốn trang không lỗi ảnh và session2/ không đổi.
+- Kiệt hỏi vì sao Terminal vẫn hiển thị nhánh prj/p0-do-1,
+  sau đó yêu cầu tiếp tục.
+
+Các câu hướng dẫn ChatGPT đã gửi
+
+
+1. “Trước tiên cần giữ lại phần 1.7 đồ án đang dở,
+   tránh mang sang nhánh bài tập.”
+
+2. “Vì git stash chỉ cất thay đổi, không chuyển nhánh.”
+
+3. “Giờ chạy từng lệnh, chờ xong mới chạy lệnh tiếp.”
+
+4. “Nếu session3 đã tồn tại, gửi kết quả cho tôi trước,
+   tránh chép lồng hoặc ghi đè.”
+
+5. “Không có đầu ra nghĩa là nội dung hai thư mục giống nhau.”
+
+6. “Kiểm tra ảnh hiển thị đầy đủ và thanh địa chỉ vẫn nằm
+   trong session3 khi chuyển trang.”
+
+Các lệnh chính ChatGPT đã hướng dẫn:
+- git status --short
+- git branch --show-current
+- git stash push -u -m "Pause PRJ-P0-DO-1.7 before homework"
+- git switch main
+- git pull --ff-only origin main
+- git switch -c hw/p1-do-1
+- ls -ld session2 session3
+- cp -R session2 session3
+- diff -qr session2 session3
+- git diff --name-only HEAD -- session2
+
+ChatGPT hướng dẫn mở index.html, products.html,
+product-detail.html và about.html trong session3 để kiểm tra.
+
+### Kết quả đề xuất
+
+Đã cất các thay đổi đang dở của đồ án bằng Git stash.
+Chuyển về main, cập nhật từ origin/main và tạo nhánh hw/p1-do-1.
+Xác nhận session3 chưa tồn tại trước khi chép.
+Chép toàn bộ session2 sang session3 bằng cp -R.
+Không chủ động sửa nội dung HTML, CSS hoặc ảnh trong bước này.
+
+### Phản biện
+
+Kiệt hỏi lại vì sao tên nhánh vẫn là prj/p0-do-1 sau khi stash.
+ChatGPT giải thích stash không chuyển nhánh, rồi hướng dẫn
+chuyển sang nhánh bài tập đúng yêu cầu sub-issue.
+
+Kiểm tra sự tồn tại của session3 trước khi chép để tránh
+chép lồng thư mục hoặc ghi đè nội dung hiện có.
+
+Phân biệt kiểm tra bằng diff với kiểm tra trên trình duyệt:
+hai thư mục giống nhau chưa tự chứng minh ảnh hiển thị đúng.
+
+### Quyết định của nhóm
+
+Kiệt yêu cầu tạm dừng đồ án ở bước 1.7 để chờ Minh gửi public,
+chuyển sang bài tập Buổi 3.
+
+Theo thứ tự Kiệt cung cấp: làm bước 1 và 2 trước,
+chờ Liêm hoàn thành phần phụ thuộc rồi mới làm bước 3 và 4.
+Chưa có xác nhận review hoặc merge bước 1.1.
+
+### Người kiểm tra
+
+Kiệt trực tiếp chạy lệnh và kiểm tra trên máy.
+ChatGPT đối chiếu ảnh Terminal.
+Sau hướng dẫn kiểm tra bốn trang và session2,
+Kiệt phản hồi “đã oke”.
+
+### Kiểm tra và minh chứng
+
+- Ảnh Terminal xác nhận main đã cập nhật và nhánh hw/p1-do-1
+  được tạo thành công.
+- Trước khi chép: session2 tồn tại, session3 chưa tồn tại.
+- cp -R session2 session3: không báo lỗi.
+- diff -qr session2 session3: không có đầu ra.
+- Kiệt xác nhận đã kiểm tra ổn sau hướng dẫn mở bốn trang
+  và kiểm tra session2 không thay đổi.
+- Chưa nhận ảnh riêng của từng trang hoặc đầu ra riêng
+  của lệnh git diff --name-only HEAD -- session2.
+- Chưa xác nhận commit/push của bước HW-P1-DO-1.1.
+## Bài tập Buổi 3 / KIET-20261107-HW3-002
+
+- Thời gian ghi: 2026-11-07T17:35:30+07:00
+- Mã phiên nhật ký: KIET-20261107-HW3
+- Người prompt: Mã Tuấn Kiệt
+- Loại mục: Hoạt động và kiểm tra
+- Liên quan: HW-P1-DO-1.2 — issue #517
+
+### Công cụ
+ChatGPT, VS Code, Git Bash và Chrome DevTools.
+
+### Mục đích
+Tạo khung JavaScript dùng chung và gắn script vào bốn trang session3.
+
+### Prompt
+Kiệt cung cấp sub-issue #517, lộ trình cá nhân và BUOI3-GUIDE,
+yêu cầu hướng dẫn tiếp tục bước 1.2.
+
+Các hướng dẫn chính của ChatGPT:
+- Tạo products.js và năm file module theo đúng phân công.
+- Mỗi file chỉ có một dòng chú thích chủ sở hữu.
+- Đặt script sau footer, trước thẻ đóng body.
+- Nạp dữ liệu trước, logic giỏ hàng tiếp theo, module trang sau cùng;
+  render-products đứng trước search-filter.
+- Kiểm tra Network, Console và vị trí file bằng lệnh find.
+- Không viết chức năng thay các thành viên khác.
+
+### Kết quả đề xuất
+Tạo products.js, cart.js, render-products.js, search-filter.js,
+product-detail.js và cart-page.js.
+Gắn script có defer vào index.html, products.html,
+product-detail.html và about.html trong session3.
+
+### Phản biện
+Kiệt hỏi việc tạo file của các thành viên khác có thuộc task mình không.
+Đã đối chiếu sub-issue: Kiệt tạo khung, người sở hữu viết chức năng.
+
+Console ban đầu báo ERR_FILE_NOT_FOUND; lệnh find chưa liệt kê file JS.
+Sau khi tạo và lưu file đúng chỗ, Kiệt xác nhận các trang không báo lỗi.
+Khi VS Code báo products.js đã tồn tại, hướng dẫn mở file hiện có,
+không tạo tên khác hoặc ghi đè nội dung đã có.
+
+### Quyết định của nhóm
+Thực hiện đúng phạm vi tạo khung và gắn script của sub-issue #517.
+Chưa có phản hồi review bước này của PM Liêm.
+
+### Người kiểm tra
+Kiệt trực tiếp kiểm tra trình duyệt và cung cấp kết quả Terminal.
+ChatGPT đối chiếu danh sách file và phạm vi thay đổi.
+
+### Kiểm tra và minh chứng
+- find liệt kê đủ sáu file JS tại đúng đường dẫn.
+- Kiệt xác nhận bốn trang không báo lỗi.
+- git status: bốn file HTML session3 được sửa và js/ được tạo.
+- git diff --name-only HEAD -- session2: không có đầu ra.
+- Chưa xác nhận commit/push bước 1.2.
+## P0 / KIET-20261106-DO1-API-001
+
+- Thời gian ghi: 2026-11-07T01:15+07:00
+- Mã phiên nhật ký: KIET-20261106-DO1
+- Người prompt: Mã Tuấn Kiệt
+- Loại mục: Hoạt động và kiểm tra
+- Liên quan: PRJ-P0-DO-1
+
+### Công cụ
+ChatGPT, VS Code, Git Bash, npm, NestJS và Vitest.
+
+### Mục đích
+Cấu hình workspace và dựng API tối thiểu có health endpoint.
+
+### Prompt
+Kiệt yêu cầu ChatGPT hướng dẫn từng bước thực hiện task PRJ-P0-DO-1 tại repo nhóm
+của Liêm, bằng tài khoản TuanKiet-coder1.
+
+Các yêu cầu và trao đổi chính:
+- Xác định đúng repo làm việc, kiểm tra trạng thái Git và tạo nhánh
+  prj/p0-do-1.
+- Hướng dẫn cài Node.js, kiểm tra npm và mở dự án trong VS Code.
+- Hướng dẫn viết test nghiệm thu health trước khi viết controller,
+  giải thích nội dung test và commit test riêng.
+- Nhắc Kiệt báo Liêm preview sau khi push nhánh lên GitHub.
+- Cấu hình npm workspaces, package API, TypeScript, Nest CLI và Vitest.
+- Giải thích vị trí, vai trò của từng file; xử lý việc tạo nhầm file
+  trong docs.
+- Hướng dẫn viết AppController, AppModule và main.ts, thiết lập
+  prefix api và CORS theo WEB_ORIGIN.
+- Phân tích lỗi TypeScript, điều chỉnh cấu hình và hướng dẫn kiểm tra
+  bằng build, test, trình duyệt và curl.
+- Tổng hợp hoạt động thực tế vào nhật ký AI, không ghi toàn bộ task
+  hoàn thành khi còn thiếu đầu việc.
+
+### Kết quả đề xuất
+Đã tạo cấu hình API, AppModule, AppController và main.ts.
+Cấu hình prefix api và CORS theo WEB_ORIGIN.
+Điều chỉnh TypeScript sang Node16 và nạp types node.
+
+### Phản biện
+
+Các ý kiến và kiểm tra thực tế trong phiên:
+
+1.Kiệt hỏi ChatGPT có đang theo đúng prompt và quy trình 
+   hay không
+   ChatGPT thừa nhận chưa đọc được sub-issue
+
+2.Kiệt yêu cầu tiếp tục đúng quy trình và xác nhận QA đã duyệt test.
+   Test được giữ nguyên trong quá trình viết phần xử lý;
+   không sửa kỳ vọng để làm test đạt.
+
+3.Kiệt phát hiện package.json xuất hiện ở nhiều vị trí và yêu cầu
+   giải thích. Hai file ở gốc repo và apps/api có vai trò khác nhau;
+   file trong docs/apps/api được xác định là tạo nhầm.
+   Chưa có minh chứng trực tiếp xác nhận file nhầm đã được xóa.
+
+4.Kiệt cung cấp lỗi thực tế trong VS Code. Cấu hình ban đầu do
+   ChatGPT đề xuất cần điều chỉnh từ moduleResolution node sang
+   Node16, đồng thời thêm types node. Kiệt sau đó xác nhận hết lỗi.
+
+5.Đầu ra npm audit cho thấy các dependency đã cài có 13 lỗ hổng.
+   ChatGPT hướng dẫn chưa dùng npm audit fix --force vì npm đề nghị
+   nâng phiên bản lớn. Các lỗ hổng chưa được xác nhận đã xử lý.
+
+6.Kiệt chạy và cung cấp minh chứng: test health đạt 1/1, build
+   kết thúc không báo lỗi, trình duyệt và curl trả đúng JSON.
+   Kết quả này xác nhận phần health; chưa chứng minh database,
+   CORS hoặc toàn bộ task đã hoạt động đúng.
+
+
+### Quyết định của nhóm
+Theo phản hồi của Kiệt trong cuộc trò chuyện, QA đã duyệt ca test.
+Chưa có xác nhận duyệt hoặc merge toàn bộ task.
+
+### Người kiểm tra
+Kiệt chạy lệnh trên máy và cung cấp kết quả;
+ChatGPT đối chiếu đầu ra.
+
+### Kiểm tra và minh chứng
+-npm run build -w api: kết thúc không báo lỗi.
+-npm test -w api -- app.controller: 1 test passed.
+-curl http://localhost:3000/api/health:
+  {"status":"ok","service":"dayora-api"}
+-Còn cảnh báo cấu hình Vitest CommonJS/ESM.
+-npm audit trước đó báo 13 lỗ hổng, chưa xử lý.
+-Chưa hoàn thành PrismaService, web và toàn bộ task.
+## P0 / KIET-20261106-DO1-PRISMA-001
+
+- Thời gian ghi: <điền thời gian thực tế, kèm ngày và +07:00>
+- Mã phiên nhật ký: KIET-20261106-DO1
+- Người prompt: Mã Tuấn Kiệt
+- Loại mục: Hoạt động và kiểm tra
+- Liên quan: PRJ-P0-DO-1.5
+
+### Công cụ
+ChatGPT, VS Code, Git Bash, npm, Prisma và Vitest.
+
+### Mục đích
+Thêm PrismaService dùng chung, kết nối khi module khởi tạo.
+
+### Prompt
+Tóm lược: Kiệt cung cấp prompt sub-issue, sau đó yêu cầu
+ChatGPT viết đầy đủ PrismaService và schema tối thiểu.
+“Tôi đang tự làm bước ‘apps/api/src/prisma/prisma.service.ts:
+PrismaService dùng chung (kết nối khi module khởi động)’ của task
+PRJ-P0-DO-1 ‘Bộ khung chạy được trong repo nhóm’ trong dự án DAYORA.
+
+Bước này xong khi: build vẫn xanh.
+Kết quả hiện tại: <dán lỗi test hoặc output>.
+Code tôi đã viết: <dán đoạn code>.
+
+1) Giải thích ngắn yêu cầu của bước này.
+2) Chỉ chỗ sai trong code tôi dán và vì sao.
+3) Gợi ý hướng sửa.
+
+Không viết code hoàn chỉnh thay tôi. Chờ tôi sửa rồi dán lại.”
+
+Sau đó, Kiệt yêu cầu bổ sung:
+“hãy tự tạo prisma và schema vì tôi là DO”.
+
+ChatGPT đã cung cấp code đầy đủ theo yêu cầu bổ sung này;
+không ghi nhận quá trình là chỉ gợi ý theo prompt ban đầu.
+
+### Kết quả đề xuất
+Cài Prisma 6; tạo schema PostgreSQL chưa có model nghiệp vụ.
+Thêm script generate và validate; tạo PrismaService với
+$connect khi khởi tạo, $disconnect khi module được hủy.
+Đăng ký service trong AppModule.
+
+### Phản biện
+Đối chiếu với yêu cầu sub-issue:
+- PrismaService cần dùng chung và gọi $connect() khi module khởi tạo.
+  Service được đăng ký trong providers của AppModule.
+- Tiêu chí nghiệm thu của bước là build vẫn xanh; không đồng nhất
+  build thành công với kết nối database thật thành công.
+
+Các vấn đề được phát hiện qua trao đổi và kiểm tra:
+- Kiệt hỏi lại vì hướng dẫn schema nằm ngoài src dễ gây nhầm với
+  vị trí service. Đã phân biệt schema tại apps/api/prisma/schema.prisma
+  và service tại apps/api/src/prisma/prisma.service.ts.
+- Lệnh generate ban đầu lỗi vì thiếu script prisma:generate.
+  Đã hướng dẫn bổ sung script vào package.json của API.
+- Build báo không tìm thấy PrismaService. Kiểm tra đường dẫn phát hiện
+  service và schema đặt sai chỗ; hai đường dẫn tên prisma thực tế
+  là file rỗng, không phải thư mục.
+- Đã đổi tên giữ lại các file rỗng, tạo đúng thư mục và chuyển file.
+- Kiệt cung cấp kết quả generate Prisma Client 6.19.3 thành công,
+  build không báo lỗi và test health đạt 1/1.
+
+Giới hạn: schema chưa có model nghiệp vụ; chưa chạy migration,
+chưa xác nhận kết nối database thật và chưa có phản hồi review
+của nhóm cho phần Prisma trong cuộc trò chuyện.
+
+### Quyết định của nhóm
+Kiệt yêu cầu thực hiện schema tối thiểu cho bước DO.
+Chưa có xác nhận duyệt schema nghiệp vụ từ cả nhóm.
+
+### Người kiểm tra
+Kiệt chạy lệnh và cung cấp kết quả; ChatGPT đối chiếu đầu ra.
+
+### Kiểm tra và minh chứng
+- Generate Prisma Client 6.19.3 thành công.
+- npm run build -w api: kết thúc không báo lỗi.
+- npm test -w api -- app.controller: 1 test passed.
+- Chưa kiểm chứng kết nối database thật; chưa chạy migration.
+- Còn cảnh báo cấu hình Vitest đã ghi nhận ở bước trước.
+## P0 / KIET-20261107-DO1-WEB-001
+
+- Thời gian ghi: 
+- Mã phiên nhật ký: KIET-20261106-DO1
+- Người prompt: Mã Tuấn Kiệt
+- Loại mục: Hoạt động và kiểm tra
+- Liên quan: PRJ-P0-DO-1.6
+
+### Công cụ
+ChatGPT, VS Code, Git Bash, npm, Vite và Chrome DevTools.
+
+### Mục đích
+Dựng web Vite + React + TypeScript, hiển thị trang trống.
+
+### Prompt
+Tóm lược: Kiệt cung cấp sub-issue 1.6 và yêu cầu hướng dẫn
+tạo web, thay nội dung mẫu, chạy và kiểm tra trước khi commit.
+
+### Kết quả đề xuất
+Tạo apps/web bằng template react-ts, chọn ESLint.
+App.tsx trả null; main.tsx gắn App vào phần tử root.
+Workspace web chạy bằng npm run dev:web từ thư mục gốc.
+
+### Phản biện
+Kiệt hỏi vì sao package vẫn có name api.
+Đã phân biệt package backend với apps/web/package.json.
+Kiệt yêu cầu hướng dẫn thay giao diện mẫu bằng trang trống.
+Trang trắng được đối chiếu cùng Console để tránh nhầm với lỗi chạy.
+
+### Quyết định của nhóm
+Thực hiện theo phạm vi sub-issue: bộ khung web và trang trống.
+Chưa có phản hồi review hoặc xác nhận merge phần web.
+
+### Người kiểm tra
+Kiệt chạy lệnh, cung cấp ảnh và xác nhận Console không lỗi;
+ChatGPT đối chiếu kết quả.
+
+### Kiểm tra và minh chứng
+- npm run dev:web: chạy tại http://localhost:5173.
+- Trang hiển thị trống; Kiệt xác nhận Console không lỗi.
+- npm run build -w web: thành công.
+- npm run lint -w web: không báo lỗi; mã thoát được cung cấp là 0.
+## P0 / KIET-20261107-DO1-ENV-ASSETS-001
+
+- Thời gian ghi:2026-11-07T19:04:10+07:00
+- Mã phiên nhật ký: KIET-20261106-DO1
+- Người prompt: Mã Tuấn Kiệt
+- Loại mục: Hoạt động và kiểm tra
+- Liên quan: PRJ-P0-DO-1.7
+
+### Công cụ
+ChatGPT, VS Code, Git Bash, Git và npm.
+
+### Mục đích
+Tạo file môi trường mẫu, kiểm tra Git ignore và chép tài sản
+nguyên bản.
+
+### Prompt
+Tóm lược: Kiệt cung cấp sub-issue 1.7, yêu cầu tạm dừng
+chờ nguồn public, sau đó gửi ảnh xác nhận nguồn và tiếp tục.
+
+ChatGPT hướng dẫn:
+- Trở lại nhánh prj/p0-do-1, khôi phục stash đang dở.
+- Chép nội dung apps/web/public và so sánh bằng diff -qr.
+- Tạo hai file .env.example chỉ chứa tên biến.
+- Kiểm tra .env thật được Git bỏ qua.
+- Giữ hai file prisma-empty.bak ngoài commit.
+
+### Kết quả đề xuất
+Tạo apps/api/.env.example với DATABASE_URL, WEB_ORIGIN, PORT;
+apps/web/.env.example với VITE_API_URL, các giá trị đều để trống.
+Chép nguyên tài sản public từ repo Minh.
+Chuyển icons.svg thừa sang thư mục dự phòng ngoài repo.
+
+### Phản biện
+Kiệt yêu cầu làm rõ phần nào tự tạo, phần nào chép từ đáp án.
+Đã xác định file môi trường tự tạo, tài sản public phải chép nguyên.
+diff phát hiện icons.svg thừa; git grep không thấy tham chiếu
+trong code được theo dõi nên chuyển ra ngoài repo.
+cat phát hiện file mẫu API còn trống; đã bổ sung và kiểm tra lại.
+
+### Quyết định của nhóm
+Thực hiện theo sub-issue 1.7 và nguồn public Kiệt cung cấp.
+Chưa có xác nhận reviewer duyệt hoặc merge bước này.
+
+### Người kiểm tra
+Kiệt chạy lệnh và cung cấp kết quả;
+ChatGPT đối chiếu đầu ra.
+
+### Kiểm tra và minh chứng
+- diff -qr giữa public nguồn và đích: không có đầu ra.
+- git check-ignore -v: cả hai .env bị ignore.
+- git status không liệt kê hai .env thật.
+- Hai .env.example chỉ có tên biến, không có giá trị thật.
+- npm run build -w web: thành công.
+- Không chỉnh sửa repo Minh; chưa xác nhận commit/push bước 1.7.
