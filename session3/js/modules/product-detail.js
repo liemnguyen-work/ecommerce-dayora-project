@@ -16,6 +16,14 @@ function renderProductDetail() {
   const product = id === null ? undefined : getProductById(id);
 
   if (!product) {
+    const detailWrap = document.querySelector(".detail-wrap");
+    detailWrap.innerHTML = `
+      <div class="product-not-found">
+        <h1>Sản phẩm không tồn tại</h1>
+        <a href="products.html" class="primary-link">← Quay lại danh sách sản phẩm</a>
+      </div>
+    `;
+    document.title = "Không tìm thấy sản phẩm — DAYORA";
     return;
   }
 
