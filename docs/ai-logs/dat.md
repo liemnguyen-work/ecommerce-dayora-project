@@ -267,3 +267,52 @@ màu Butter và Berry.
 
 ### Kết quả
 Đã đọc tài liệu và ghi lại vai trò của 5 màu.
+---
+
+## P0 — Khởi động và nền móng / DAT-20261108-C7A42F19-001
+
+* Thời gian ghi: 2026-11-08T14:06:31+07:00
+* Thời gian thực hiện: Trong phiên review hiện tại ngày 2026-11-08; không xác minh mốc bắt đầu/kết thúc phát triển trước đây.
+* Mã phiên nhật ký: DAT-20261108-C7A42F19
+* Người prompt: Đạt (tự xác nhận trong yêu cầu).
+* Loại mục: Kiểm tra
+* Liên quan: PRJ-P0-PD-1; PRJ-P0-PD-1.2; commit 5ba0d0443ed65d19045d494bd328167bee43b669; mục PRJ-P0-PD-1.1 đã có trong log.
+
+### Công cụ
+
+Codex review trực tiếp repository; tham khảo tài liệu Tailwind CSS chính thức. ChatGPT hỗ trợ quá trình phát triển trước đó theo thông tin Đạt cung cấp; Codex không trực tiếp thực hiện phần code đó.
+
+### Mục đích
+
+Review và phản biện Sub-issue 1.2: kiểm tra cấu hình Tailwind v4, design token, Git/commit, giải thích cơ chế và ghi nhật ký; giữ nguyên mã ứng dụng.
+
+### Prompt
+
+Tóm lược yêu cầu thực tế của Đạt: đọc AGENTS.md, quy tắc/mẫu log và tài liệu liên quan; đối chiếu index.css, main.tsx, vite.config.ts, package.json và package-lock.json với Sub-issue 1.2; giải thích @theme/:root, class thêm từ Console, trang trống; kiểm tra Git/build khi có thể; chỉ nối log, không sửa ứng dụng, commit, push hoặc tạo PR.
+
+### Kết quả đề xuất
+
+Code đáp ứng phần khai báo của bước 2 trong docs/learning/PD-Dat/LP-PD-Dat.md: import Tailwind, 5 màu, 2 font token, biến phụ trợ :root, body dùng Paper/Ink/font-sans; plugin Vite và dependency/lockfile có Tailwind 4.3.5. Giải thích @theme đăng ký token cho utility, :root chứa biến CSS thường; scanner đọc source nên class chỉ được thêm trong Console có thể chưa có CSS; App.tsx trả null nên không có nội dung dù Vite hoạt động.
+
+Đề xuất cho Đạt review tiếp: CSS mẫu còn h1/h2 dùng --heading và --text-h thay vì token DAYORA; dark mode đổi --text-h sang màu sáng trong khi body vẫn Paper; các style thường nằm ngoài layer có thể thắng utility trong layer. Nếu được giao chỉnh sau này, dùng font/màu DAYORA cho heading, đưa style nền tảng vào @layer base và thống nhất chế độ màu. Không thực hiện các đề xuất này. Chỉ nối docs/ai-logs/dat.md.
+
+### Phản biện
+
+Codex phản biện kỹ thuật: khai báo tên Be Vietnam Pro chưa tải font; main.tsx/package.json chưa có @fontsource/be-vietnam-pro, nhưng việc tải font thuộc bước 3 (1.3), không dùng điều đó để kết luận riêng 1.2 chưa đạt. App trả null phù hợp trạng thái đã khôi phục sau thử nghiệm, không chứng minh Tailwind lỗi. Hai font token cùng trỏ một họ font là hợp lệ. docs/DESIGN-SYSTEM.md còn là khung; design/DESIGN-SYSTEM.md được nhắc trong log cũ không tồn tại ở checkout hiện tại, nên chưa có tài liệu thiết kế hoàn chỉnh để đối chiếu độc lập bảng màu. Chưa có phản hồi review mới của Đạt hoặc nhóm.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới hoặc phê duyệt nghiệm thu. Đạt đã xác nhận phạm vi phiên này: review, chỉ nối log, giữ nguyên mã ứng dụng và không commit/push/PR. Chờ Đạt rà soát kết quả.
+
+### Người kiểm tra
+
+Codex đọc mã, tài liệu, Git và chạy build trong phiên này. Chờ Đạt kiểm tra nội dung nhật ký và nhận xét; chưa có xác nhận reviewer FD1 Thành hoặc QA.
+
+### Kiểm tra và minh chứng
+
+* Đã đọc AGENTS.md, docs/ai-logs/ai-logging-rules.md, TEMPLATE.md, dat.md, PROJECT_PLAN.md, tài liệu P0 của Đạt, learning path và docs/DESIGN-SYSTEM.md; không có AGENTS.md con trong apps/docs qua tìm kiếm.
+* Đã đọc 5 file được yêu cầu và App.tsx; xem git show 5ba0d04. Commit thay đổi đúng 5 file: apps/web/package.json, apps/web/src/index.css, apps/web/src/main.tsx, apps/web/vite.config.ts, package-lock.json. Lockfile ghi tailwindcss và @tailwindcss/vite 4.3.5 cùng dependency nền tảng Windows; không thấy fontsource trong nguồn web/lockfile.
+* Git ban đầu sạch, nhánh prj/p0-pd-1, origin đúng liemnguyen-work/ecommerce-dayora-project. HEAD và remote-tracking origin/prj/p0-pd-1 cùng là 5ba0d0443ed65d19045d494bd328167bee43b669. Không fetch nên không xác nhận trạng thái máy chủ mới nhất. Tìm issue bằng connector GitHub không trả kết quả; đối chiếu theo yêu cầu Đạt và learning path trong repo, chưa đọc được mô tả issue gốc.
+* Codex trực tiếp chạy build: npm ban đầu không có trong PATH; tìm thấy C:/Program Files/nodejs/npm.cmd và thêm thư mục Node vào PATH của tiến trình. Lần build trong sandbox lỗi tải dependency native và spawn EPERM. Chạy lại ngoài sandbox được cấp phép: npm run build -w web thành công (TypeScript + Vite 8.3.6, 16 modules). git diff --check trước khi nối log không báo lỗi. Chưa kiểm tra trình duyệt hoặc computed style.
+* Hồi cứu theo lời Đạt cung cấp: Đạt phát triển 1.2 với ChatGPT, từng thử class từ Console, thử trực tiếp trong React rồi khôi phục App.tsx; ghi nhận nền rgb(255, 253, 247), chữ rgb(35, 65, 46), build và diff-check thành công trước phiên này. Không có prompt ChatGPT nguyên văn hoặc thời gian thực hiện được xác minh; đây là lời Đạt cung cấp, không phải kết quả quan sát trình duyệt của Codex.
+* Nguồn tham khảo: https://tailwindcss.com/docs/theme và https://tailwindcss.com/docs/detecting-classes-in-source-files .
