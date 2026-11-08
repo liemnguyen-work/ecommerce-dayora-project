@@ -53,3 +53,43 @@ function addToCart(id, qty = 1) {
   // Lưu giỏ hàng đã cập nhật
   saveCart(cart);
 }
+// Cập nhật số lượng sản phẩm trong giỏ hàng
+function updateQuantity(id, qty) {
+  const productId = Number(id);
+  const newQty = Math.max(1, Number(qty) || 1);
+
+  const cart = loadCart();
+  const item = cart.find(item => item.id === productId);
+
+  if (item) {
+    item.quantity = newQty;
+  }
+
+  saveCart(cart);
+}
+
+// Xóa sản phẩm khỏi giỏ hàng
+function removeFromCart(id) {
+  const cart = loadCart().filter(item => item.id !== Number(id));
+
+  saveCart(cart);
+}
+
+// Tính tổng số lượng và tổng tiền giỏ hàng
+function getCartTotals() {
+  let totalItems = 0;
+  let totalPrice = 0;
+
+  const cart = loadCart();
+
+  cart.forEach(item => {
+    const product = getProductById(item.id);
+
+    if (product) {
+      totalItems += item.quantity;
+      totalPrice += product.price * item.quantity;
+    }
+  });
+
+  return { totalItems, totalPrice };
+}
