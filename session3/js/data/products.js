@@ -25,7 +25,7 @@ const products = [
   },
 {
     id: 4,
-    name: "Ly picnic có nắp 350 m",
+    name: "Ly picnic có nắp 350 ml",
     price: 79000,
     category: "Bình nước và ly",
     image: "images/product-4.jpg",
@@ -64,3 +64,15 @@ const products = [
     description: "Khăn giấy dùng để lau tay và phục vụ vệ sinh thông thường."
   }
 ];
+// Format product price to Vietnamese Dong
+function formatPrice(number) {
+  return new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND"
+  }).format(number);
+}
+// Find product by ID
+function getProductById(id) {
+  const numId = Number(id);
+  return products.find(item => item.id === numId);
+}
