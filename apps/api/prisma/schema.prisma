@@ -1,8 +1,137 @@
 generator client {
-  provider = "prisma-client-js"
+  provider            = "prisma-client"
+  output              = "../src/generated/prisma"
+  moduleFormat        = "esm"
+  importFileExtension = "js"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = env("DATABASE_URL")
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+}
+
+enum ProductStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum Scenario {
+  PICNIC
+  DATE
+  BEACH
+}
+
+enum OrderStatus {
+  PENDING_PAYMENT
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+enum PaymentStatus {
+  UNPAID
+  PAID
+  FAILED
+  EXPIRED
+}
+
+enum ShippingStatus {
+  NOT_SHIPPED
+  PREPARING
+  SHIPPING
+  DELIVERED
+  RETURNED
+}
+
+enum RuleSetStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+model User {
+  id           String          @id @default(uuid())
+  email        String          @unique
+  passwordHash String
+  fullName     String
+  phone        String?
+  role         Role            @default(CUSTOMER)
+  isActive     Boolean         @default(true)
+  createdAt    DateTime        @default(now())
+
+  viewedProducts ViewedProduct[]
+}
+
+model Category {
+  id        String    @id @default(uuid())
+  code      String    @unique
+  name      String
+  sortOrder Int       @default(0)
+
+  products Product[]
+}
+
+model Product {
+  id          String          @id @default(uuid())
+  slug        String          @unique
+  name        String
+  description String?
+  guide       String?
+  categoryId  String
+  scenarios   Scenario[]
+  material    String?
+  status      ProductStatus   @default(ACTIVE)
+  isFeatured  Boolean         @default(false)
+
+  category       Category        @relation(fields: [categoryId], references: [id])
+  skus           Sku[]
+  viewedProducts ViewedProduct[]
+}
+
+model Sku {
+  id             String        @id @default(uuid())
+  code           String        @unique
+  productId      String
+  product        Product       @relation(fields: [productId], references: [id])
+
+  color          String
+  price          Int
+  salePrice      Int?
+  stock          Int           @default(0)
+  reserved       Int           @default(0)
+
+  unit           String
+  unitQty        Int           @default(1)
+
+  lengthCm       Decimal?      @db.Decimal(6, 1)
+  widthCm        Decimal?      @db.Decimal(6, 1)
+  heightCm       Decimal?      @db.Decimal(6, 1)
+
+  volumeMl       Int?
+  capacityPeople Int?
+  useType        String
+
+  imageUrl       String?
+  imageSource    String?
+
+  status         ProductStatus @default(ACTIVE)
+
+  // Bổ sung khi CartItem và OrderItem được định nghĩa:
+  // cartItems  CartItem[]
+  // orderItems OrderItem[]
+}
+
+model ViewedProduct {
+  userId    String
+  productId String
+  viewedAt  DateTime @default(now())
+
+  user      User    @relation(fields: [userId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@id([userId, productId])
 }
