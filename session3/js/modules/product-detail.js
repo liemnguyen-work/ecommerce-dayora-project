@@ -47,6 +47,22 @@ function renderProductDetail() {
   `;
 
   document.title = `${product.name} — DAYORA`;
+
+  const addBtn = document.getElementById("btn-add-detail");
+  const qtyInput = document.getElementById("detail-qty");
+
+  if (addBtn && qtyInput) {
+    function getQuantity() {
+      const qty = Math.min(99, Math.max(1, parseInt(qtyInput.value, 10) || 1));
+      qtyInput.value = qty;
+      return qty;
+    }
+
+    qtyInput.addEventListener("change", getQuantity);
+    addBtn.addEventListener("click", () => {
+      addToCart(product.id, getQuantity());
+    });
+  }
 }
 
 renderProductDetail();
