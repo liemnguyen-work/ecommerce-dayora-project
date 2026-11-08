@@ -78,3 +78,5 @@ Phân tích ChatGPT và phản biện Gemini cần được bổ sung hồi cứ
 
 - 2026-11-02T23:42:00+07:00 — Phúc: dựng lại task HW-P0-FD2-1 vì page/CSS và các mục log trước không còn sau pull main; 8 ảnh còn ở assets/images; [mục PHUC-20261102-C6B827-001](phuc.md#buổi-2--khôi-phục-hw-p0-fd2-1-sau-pull-main--phuc-20261102-c6b827-001). Chờ Phúc review; chưa chạy kiểm thử/trình duyệt.
 - 2026-11-02T23:51:09+07:00 — Phúc: hồi cứu các yêu cầu hướng dẫn HTML/CSS, phát triển và review HW-P0-FD2-1, đồng thời ghi nhận commit ebc9a23 đã push lên HongPhuc; thời điểm trao đổi trước pull chưa xác minh. [Mục PHUC-20261102-C6B827-002](phuc.md#buổi-2--bổ-sung-hồi-cứu-trao-đổi-và-đồng-bộ-nhánh--phuc-20261102-c6b827-002).
+
+- 2026-11-08T15:56:28+07:00 — Phúc: hồi cứu HW-P1-FD2-1.1 đến .5, hướng dẫn và sửa mã có AI hỗ trợ, kiểm tra mô phỏng, phản hồi lỗi giỏ và năm commit đã push. Mục `PHUC-20261108-A7D392-001` trong [nhật ký Phúc](phuc.md). Chờ Phúc kiểm tra; chưa xác minh đầy đủ trình duyệt, kiến thức cá nhân hoặc reviewer duyệt.
