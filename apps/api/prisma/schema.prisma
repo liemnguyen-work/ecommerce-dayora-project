@@ -1,8 +1,54 @@
 generator client {
-  provider = "prisma-client-js"
+  provider            = "prisma-client"
+  output              = "../src/generated/prisma"
+  moduleFormat        = "esm"
+  importFileExtension = "js"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+}
+
+enum ProductStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum Scenario {
+  PICNIC
+  DATE
+  BEACH
+}
+
+enum OrderStatus {
+  PENDING_PAYMENT
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+enum PaymentStatus {
+  UNPAID
+  PAID
+  FAILED
+  EXPIRED
+}
+
+enum ShippingStatus {
+  NOT_SHIPPED
+  PREPARING
+  SHIPPING
+  DELIVERED
+  RETURNED
+}
+
+enum RuleSetStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
 }
