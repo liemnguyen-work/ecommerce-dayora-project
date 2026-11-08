@@ -6,7 +6,7 @@ describe('AppController', () => {
     const controller = new AppController();
 
     expect(controller.health()).toEqual({
-      status: 'ok',
+      status: 'wrong-status',
       service: 'dayora-api',
     });
   });
