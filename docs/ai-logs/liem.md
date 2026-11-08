@@ -3112,3 +3112,48 @@ Theo Liêm, Ngọc xác nhận đã mở được bảng; chưa có xác nhận 
 ### Kiểm tra và minh chứng
 
 Đã đọc AGENTS.md, quy tắc, mẫu và log Liêm; không thấy mã task hoặc commit trong log trước khi nối. Commit 14ed124 lúc 2026-11-08T17:23:59+07:00 cập nhật docs/learning/PM-Liem/LP-PM-Liem.md, ghi 88 issue, bốn cột trạng thái, hàng milestone P0–P6, quyền Write cho bảy thành viên và Ngọc đã mở được bảng. Link Project do Liêm cung cấp: https://github.com/users/liemnguyen-work/projects/1. Tham chiếu origin/prj/p0-pm-1 trên máy có chứa commit; chưa truy vấn Project hoặc GitHub trực tiếp để xác minh độc lập nội dung, quyền, số thẻ hay thời điểm push. Không tạo Project, sửa quyền, commit hoặc push trong phiên ghi log này.
+
+---
+
+## P0 — Báo cáo tiến độ roadmap / LIEM-20261109-4A28C5F0-001
+
+* Thời gian ghi: 2026-11-09T02:29:07+07:00
+* Thời gian thực hiện: Hồi cứu ngày 09/11/2026; báo cáo sinh lại lúc 02:21:45 UTC+07:00 theo nội dung báo cáo; thời điểm các bước khác chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261109-4A28C5F0
+* Người prompt: Liêm (PM).
+* Loại mục: Hoạt động.
+* Liên quan: PRJ-P0-PM-1.5; LIEM-20261108-7D2C4A19-006 và LIEM-20261108-7D2C4A19-007.
+
+### Công cụ
+
+AI hướng dẫn theo thông tin Liêm cung cấp; tên công cụ và model của phiên trước chưa xác minh. Codex, Node.js, npm.cmd, GitHub CLI và Git được sử dụng hoặc đối chiếu trong quá trình sửa và ghi log; model chưa xác minh.
+
+### Mục đích
+
+Ghi nhận quá trình sinh báo cáo tiến độ tám thành viên và chỉnh link ROADMAP phù hợp với vị trí báo cáo.
+
+### Prompt
+
+Tóm lược theo thông tin Liêm cung cấp: nhờ AI kiểm tra script, hướng dẫn cập nhật nhánh và sinh báo cáo tại docs/learning/TIEN-DO.md; Liêm sau đó yêu cầu Codex sửa link ROADMAP theo vị trí file đầu ra và sinh lại báo cáo, rồi ghi nhật ký.
+
+### Kết quả đề xuất
+
+Theo Liêm, AI xác định script hiện tại là roadmap:report, khác với tên xl:report trong task; đầu ra mặc định docs/PROGRESS.md đã tồn tại. AI hướng dẫn kiểm tra nhánh và cập nhật prj/p0-pm-1 từ main bằng fast-forward. Liêm tự chạy npm.cmd run roadmap:report với tùy chọn --out docs/learning/TIEN-DO.md và báo sinh thành công.
+
+Theo yêu cầu tiếp theo của Liêm, Codex sửa scripts/roadmap-report.mjs để tính link ROADMAP tương đối theo vị trí file đầu ra, giữ nguyên cách tính số liệu; Codex tự chạy lại lệnh để sinh báo cáo. Lần chạy đầu không tìm thấy GitHub CLI trong PATH; Codex dùng bản đã cài sẵn trong PATH của tiến trình và chạy lại thành công.
+
+### Phản biện
+
+Link ROADMAP cố định chỉ đúng khi báo cáo nằm trong docs; đầu ra ở docs/learning cần dùng ../ROADMAP.md. Số task hoàn thành dựa trên trạng thái issue cha trong repo nhóm, không trực tiếp đếm sub-issue ở repo Minh hoặc repo khác; do đó 0/10 và 0/78 không đủ để kết luận nhóm chưa làm việc. Không suy trạng thái đóng issue hoặc nghiệm thu từ việc sinh báo cáo.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu sửa script và sinh báo cáo tại đường dẫn trên; chưa có quyết định hay xác nhận nghiệm thu mới của toàn nhóm.
+
+### Người kiểm tra
+
+Theo Liêm, Liêm đã chạy lệnh báo cáo ban đầu. Codex kiểm tra cú pháp script, hai trường hợp đường dẫn và bảng thành viên; Liêm và reviewer chưa xác nhận duyệt mục log này.
+
+### Kiểm tra và minh chứng
+
+Đã đọc AGENTS.md, quy tắc, mẫu và log Liêm; không thấy mục chứa mã task PRJ-P0-PM-1.5 trước khi nối. Bản báo cáo sinh lại ngày 09/11/2026 có tám dòng thành viên, hiển thị 0/10 bài tập và 0/78 đồ án, link ../ROADMAP.md trỏ tới docs/ROADMAP.md. Kiểm tra đường dẫn tính cho docs/PROGRESS.md là ROADMAP.md, cho docs/learning/TIEN-DO.md là ../ROADMAP.md; cả hai đích tồn tại. node --check và git diff --check đạt sau khi sửa script, trước khi thêm log. Chưa xác nhận commit cho task, chưa xác nhận issue đã đóng; không tự commit hoặc push trong phiên này.

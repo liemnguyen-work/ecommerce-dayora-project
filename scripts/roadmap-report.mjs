@@ -2,11 +2,13 @@
 // Chạy: npm run roadmap:report -- --repo owner/repo  (ghi docs/PROGRESS.md; thêm --out <file> để ghi chỗ khác)
 // Issue đóng = task xong (PR ghi "Closes #n" rồi merge). File sinh tự động, đừng sửa tay.
 import { writeFileSync } from 'node:fs';
+import path from 'node:path';
 import { ORDER, members, xlTasks, gh, ghJson, option } from './roadmap-lib.mjs';
 
 const repo = option('repo');
 if (!repo) { console.error('Thiếu --repo owner/repo'); process.exit(1); }
 const out = option('out') ?? 'docs/PROGRESS.md';
+const roadmapLink = path.relative(path.dirname(path.resolve(out)), path.resolve('docs/ROADMAP.md')).split(path.sep).join('/');
 
 const people = members();
 const tasks = xlTasks();
@@ -32,7 +34,7 @@ const missing = tasks.filter(t => !issues.has(t.id)).length;
 const lines = [
   '---', 'tags: [progress, generated]', '---',
   '# Tiến độ repo chung (sinh tự động)', '',
-  `> Sinh bởi \`npm run roadmap:report\` từ \`${repo}\` lúc ${new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })}. Đừng sửa tay. Bảng task: [ROADMAP](ROADMAP.md).`,
+  `> Sinh bởi \`npm run roadmap:report\` từ \`${repo}\` lúc ${new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })}. Đừng sửa tay. Bảng task: [ROADMAP](${roadmapLink}).`,
   ...(missing ? ['', `> [!WARNING] ${missing} task chưa có issue. Chạy \`npm run roadmap:issues -- --repo ${repo} --apply\`.`] : []),
   '', '## Tổng quan', '',
   `Bài tập: ${ratio(tasks.filter(t => t.kind === 'homework'))} · Đồ án: ${ratio(tasks.filter(t => t.kind === 'project'))}`, '',
