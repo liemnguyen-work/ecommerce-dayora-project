@@ -1,4 +1,26 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-ink: #23412E;
+  --color-paper: #FFFDF7;
+  --color-butter: #F2C14E;
+  --color-berry: #C8483C;
+  --color-leaf: #DDE8C9;
+
+  --font-display: 'Be Vietnam Pro', system-ui, sans-serif;
+  --font-sans: 'Be Vietnam Pro', system-ui, sans-serif;
+}
+
 :root {
+
+  --gutter: clamp(24px, 5vw, 80px);
+  --section-gap: clamp(112px, 9vw, 152px);
+  --ink-deep: #17291D;
+  --ink-soft: #4A5F51;
+  --surface: #F5F2E8;
+  --berry-deep: #A93A30;
+  --radius: 24px;
+
   --text: #6b6375;
   --text-h: #08060d;
   --bg: #fff;
@@ -62,9 +84,14 @@
   box-sizing: border-box;
 }
 
+
 body {
   margin: 0;
+  @apply bg-paper font-sans text-ink antialiased;
+  font-size: 17px;
+  line-height: 1.6;
 }
+
 
 h1,
 h2 {
