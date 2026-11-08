@@ -628,3 +628,69 @@ ChatGPT đối chiếu đầu ra.
 - Hai .env.example chỉ có tên biến, không có giá trị thật.
 - npm run build -w web: thành công.
 - Không chỉnh sửa repo Minh; chưa xác nhận commit/push bước 1.7.
+## P0 — CI / KIET-20261108-CI7F2A-001
+
+- Thời gian ghi: 2026-11-08T14:00:06+07:00
+- Thời gian thực hiện: Hồi cứu phiên ngày 08/11/2026; chưa xác minh giờ bắt đầu.
+- Mã phiên nhật ký: KIET-20261108-CI7F2A
+- Người prompt: Mã Tuấn Kiệt
+- Loại mục: Hoạt động, phản biện và kiểm tra
+- Liên quan: PRJ-P0-DO-2.1; chuẩn bị PRJ-P0-DO-2.2
+
+### Công cụ
+ChatGPT/Codex, GitHub plugin, VS Code, Git Bash và npm.
+Kiệt trực tiếp thao tác và chạy kiểm tra trên máy Windows.
+
+### Mục đích
+Tạo CI chạy lint, test và build cho push vào main và PR hướng vào main.
+
+### Prompt
+Tóm lược các yêu cầu thực tế:
+- Tiếp tục task PRJ-P0-DO-2 theo năm sub-issue.
+- Cập nhật main mới nhất trước khi tạo nhánh làm việc.
+- Giải thích npm ci chạy lâu và lỗi ESLint thiếu cấu hình.
+- Kiểm tra kết quả lint, test, build và các thay đổi Git.
+- Hướng dẫn tạo workflow, xử lý thiếu file và commit thiếu nội dung.
+- Bổ sung AI Usage Log cùng thời gian thực.
+
+### Kết quả đề xuất
+- Bổ sung apps/api/eslint.config.mjs với quy tắc TypeScript recommended.
+- Đổi vitest.config.ts thành vitest.config.mts để xử lý cảnh báo module.
+- Tạo .github/workflows/ci.yml với job check trên ubuntu-latest.
+- Workflow dùng Node 24.16.0, chạy npm ci, lint, test, build.
+- Stash riêng thay đổi cart.html và nhật ký bài tập Buổi 3.
+- Commit b06f0ae đã push lên nhánh prj/p0-do-2.
+
+### Phản biện
+- Lint API lỗi do thiếu cấu hình: bổ sung cấu hình, không bỏ bước lint.
+- Test pass nhưng có cảnh báo module: đổi config sang .mts,
+  không thay đổi kỳ vọng kiểm thử.
+- AI đưa lệnh git add có đường dẫn config cũ sau khi đổi tên.
+  Staging không đầy đủ; commit ban đầu chỉ chứa đổi tên Vitest.
+- ci.yml chưa được lưu đúng vị trí; tạo lại trực tiếp bằng Git Bash.
+- Kiểm tra staged, amend và push --force-with-lease để bổ sung
+  hai file còn thiếu vào cùng commit bước 2.1.
+- Máy dùng Node 24.22.2; CI ghim 24.16.0 theo yêu cầu.
+  Kết quả cục bộ chưa chứng minh CI sẽ pass.
+- Chưa mở code mẫu ci.yml để đối chiếu.
+- Thay đổi khung giỏ hàng đang được giữ trong stash,
+  chưa đưa lại vào nhánh bài tập.
+
+### Quyết định của nhóm
+Kiệt yêu cầu cập nhật main trước khi làm và ghi log với giờ thực.
+Chưa có quyết định chung hoặc xác nhận reviewer duyệt P0-DO-2.
+
+### Người kiểm tra
+Kiệt chạy lệnh và cung cấp ảnh/đầu ra.
+ChatGPT/Codex đối chiếu kết quả.
+Reviewer BD2 Châu: chưa có minh chứng đã review.
+
+### Kiểm tra và minh chứng
+- PR #22 đã merge trước khi bắt đầu task.
+- npm run lint: API và Web đạt, mã thoát 0.
+- npm test: 1/1 test health pass sau khi đổi cấu hình.
+- npm run build: API và Web thành công, mã thoát 0.
+- Commit cuối có workflow, ESLint config và đổi tên Vitest config.
+- Commit: https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/b06f0ae
+- Chưa xác nhận CI xanh trên GitHub; chưa thử CI đỏ,
+  chưa cấu hình required check và chưa hoàn thành kiểm tra kiến thức.
