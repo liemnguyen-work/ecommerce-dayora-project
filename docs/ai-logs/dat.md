@@ -316,3 +316,49 @@ Codex đọc mã, tài liệu, Git và chạy build trong phiên này. Chờ Đ�
 * Codex trực tiếp chạy build: npm ban đầu không có trong PATH; tìm thấy C:/Program Files/nodejs/npm.cmd và thêm thư mục Node vào PATH của tiến trình. Lần build trong sandbox lỗi tải dependency native và spawn EPERM. Chạy lại ngoài sandbox được cấp phép: npm run build -w web thành công (TypeScript + Vite 8.3.6, 16 modules). git diff --check trước khi nối log không báo lỗi. Chưa kiểm tra trình duyệt hoặc computed style.
 * Hồi cứu theo lời Đạt cung cấp: Đạt phát triển 1.2 với ChatGPT, từng thử class từ Console, thử trực tiếp trong React rồi khôi phục App.tsx; ghi nhận nền rgb(255, 253, 247), chữ rgb(35, 65, 46), build và diff-check thành công trước phiên này. Không có prompt ChatGPT nguyên văn hoặc thời gian thực hiện được xác minh; đây là lời Đạt cung cấp, không phải kết quả quan sát trình duyệt của Codex.
 * Nguồn tham khảo: https://tailwindcss.com/docs/theme và https://tailwindcss.com/docs/detecting-classes-in-source-files .
+---
+
+## P0 — Khởi động và nền móng / DAT-20261108-C7A42F19-002
+
+* Thời gian ghi: 2026-11-08T14:43:50+07:00
+* Thời gian thực hiện: Review trong phiên trao đổi hiện tại; quá trình triển khai với ChatGPT được tổng hợp hồi cứu theo lời Đạt, chưa xác minh mốc bắt đầu/kết thúc.
+* Mã phiên nhật ký: DAT-20261108-C7A42F19
+* Người prompt: Đạt (tự xác nhận).
+* Loại mục: Kiểm tra
+* Liên quan: PRJ-P0-PD-1; PRJ-P0-PD-1.3; DAT-20261108-C7A42F19-001. HEAD khi review: ae96126; chưa có commit cho 1.3 theo lời Đạt và trạng thái diff.
+
+### Công cụ
+
+ChatGPT hướng dẫn Đạt từng bước triển khai 1.3 theo thông tin Đạt cung cấp. Codex tham gia review và ghi nhật ký trong phiên hiện tại; không trực tiếp viết phần code 1.3 trước đó.
+
+### Mục đích
+
+Review ba file đã stage cho việc cài font Be Vietnam Pro, đối chiếu weight 400/600/800 và ghi nhận trung thực hoạt động hỗ trợ AI; không sửa mã ứng dụng hoặc thao tác stage/commit/push/PR.
+
+### Prompt
+
+Tóm lược yêu cầu thực tế hiện tại: Đạt yêu cầu xác nhận thư mục ecommerce-dayora-project và nhánh prj/p0-pd-1; đọc quy định và log; review apps/web/package.json, apps/web/src/main.tsx, package-lock.json đã stage; chỉ ra lỗi/rủi ro và nối log. Đạt cho biết đã tự cài font, import ba weight và kiểm thử theo hướng dẫn ChatGPT. Chưa cung cấp prompt ChatGPT nguyên văn; không tái tạo prompt đó.
+
+### Kết quả đề xuất
+
+Codex xác nhận đúng thư mục và nhánh. Diff staged gồm 3 file, 14 dòng thêm: apps/web/package.json thêm dependency @fontsource/be-vietnam-pro ^5.3.0; package-lock.json ghi dependency của workspace web và package đã khóa 5.3.0, nguồn npm, integrity và giấy phép OFL-1.1; main.tsx import đúng 400.css, 600.css, 800.css trước index.css. Đối chiếu bước 3 trong docs/learning/PD-Dat/LP-PD-Dat.md: đáp ứng yêu cầu cài đặt/import. Không phát hiện lỗi cần sửa trong ba file staged. Chỉ nối docs/ai-logs/dat.md; chưa kết luận đã được nghiệm thu bởi reviewer.
+
+### Phản biện
+
+Codex lưu ý giới hạn minh chứng: Computed font-family thể hiện danh sách font được khai báo, chưa tự chứng minh font thực tế dùng cho mọi ký tự hoặc cả ba weight; có thể kiểm tra thêm Firefox Fonts với văn bản tiếng Việt ở 400/600/800. CSS hiện có tại apps/web/src/index.css:37 và :96–100 vẫn cho h1/h2 dùng --heading là font hệ thống, weight 500; đây là vấn đề đã nêu ở review 1.2, không phải lỗi mới của diff cài font 1.3. Nếu được giao chỉnh sau này, thống nhất heading với token DAYORA và weight theo thiết kế. Codex không sửa CSS. Chưa có phản hồi review mới từ Đạt hoặc FD1 Thành.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung hoặc xác nhận phê duyệt từ reviewer FD1 Thành. Phạm vi do Đạt xác nhận là review và chỉ nối log, giữ nguyên mã ứng dụng và index Git, không commit/push/PR; chờ Đạt rà soát trước khi tự tạo commit.
+
+### Người kiểm tra
+
+Đạt báo đã kiểm thử build, Firefox Computed và git diff --check trước phiên review. Codex trực tiếp kiểm tra tĩnh mã, staged diff, lockfile, CSS/font assets cài trên máy và whitespace trong phiên hiện tại. Chờ Đạt kiểm tra nhật ký; FD1 Thành chưa xác nhận.
+
+### Kiểm tra và minh chứng
+
+* Codex đã đọc AGENTS.md, docs/ai-logs/ai-logging-rules.md, TEMPLATE.md, dat.md và learning path của Đạt; tìm kiếm không thấy AGENTS.md con trong apps/docs.
+* git status ban đầu: đúng 3 file staged như Đạt cung cấp; git diff của ba file so với index không có thay đổi chưa stage. git log -1 ghi ae96126. Codex không git add/commit/push, không tạo PR hoặc đổi lịch sử.
+* Codex đọc các CSS 400/600/800 trong node_modules/@fontsource/be-vietnam-pro: có @font-face tên Be Vietnam Pro, weight tương ứng, kiểu normal, font-display swap và subset vietnamese. Kiểm tra toàn bộ URL asset trong ba CSS: không có tệp tham chiếu bị thiếu. Font được cung cấp từ package cài tại máy, không cần Google Fonts CDN trong mã import này.
+* Codex trực tiếp chạy git diff --cached --check và git diff --check trước khi nối log: không báo lỗi. Không chạy lại build trong phiên review 1.3 và không mở trình duyệt.
+* Hồi cứu theo thông tin Đạt cung cấp: Đạt tự thao tác dưới hướng dẫn ChatGPT, npm run build -w web thành công; Firefox DevTools → Computed hiển thị Be Vietnam Pro, system-ui, sans-serif; git diff --check không báo lỗi; đã stage ba file. Kết quả build và trình duyệt này chưa được Codex trực tiếp quan sát trong phiên 1.3; mốc thời gian kiểm thử trước đây chưa xác minh.
