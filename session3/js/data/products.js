@@ -25,7 +25,7 @@ const products = [
   },
 {
     id: 4,
-    name: "Ly picnic có nắp 350 m",
+    name: "Ly picnic có nắp 350 ml",
     price: 79000,
     category: "Bình nước và ly",
     image: "images/product-4.jpg",
