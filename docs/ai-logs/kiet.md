@@ -704,3 +704,73 @@ Reviewer BD2 Châu: chưa có minh chứng đã review.
   https://github.com/liemnguyen-work/ecommerce-dayora-project/actions/runs/42457901247/job/128660747266
 - Kết quả này xác nhận CI chạy thành công trên PR.
   Chưa xác nhận các bước thử CI đỏ, bảo vệ main và kiểm tra kiến thức.
+  ## P0 — Thử CI đỏ / KIET-20261108-CI7F2A-002
+
+- Thời gian ghi: 2026-11-08T15:22:05+07:00
+- Thời gian thực hiện: CI chạy ngày 08/11/2026, khoảng 15:17 giờ Việt Nam.
+- Mã phiên nhật ký: KIET-20261108-CI7F2A
+- Người prompt: Mã Tuấn Kiệt
+- Loại mục: Hoạt động và kiểm tra
+- Liên quan: PRJ-P0-DO-2.3; KIET-20261108-CI7F2A-001
+
+### Công cụ
+ChatGPT/Codex, GitHub plugin, VS Code, Git Bash và GitHub Actions.
+Kiệt trực tiếp thao tác trên máy và cung cấp ảnh minh chứng.
+
+### Mục đích
+Cố tình sửa sai kỳ vọng test trên nhánh nháp để kiểm tra
+CI phát hiện lỗi ở bước Test và bỏ qua bước Build.
+
+### Prompt
+Tóm lược: Kiệt cung cấp yêu cầu sub-issue PRJ-P0-DO-2.3,
+yêu cầu hướng dẫn thử CI đỏ và bổ sung nhật ký sử dụng AI.
+Kiệt gửi ảnh PR #127 và log job check để kiểm tra kết quả.
+
+### Kết quả đề xuất
+AI hướng dẫn tạo nhánh test-ci-fail từ nhánh làm việc,
+đổi giá trị status kỳ vọng từ 'ok' thành 'wrong-status'
+trong apps/api/src/app.controller.spec.ts.
+Giữ nguyên controller và workflow.
+Kiệt push commit thử nghiệm 38b14b1 và mở Draft PR #127.
+AI hướng dẫn lưu ảnh, đóng PR không merge, sau đó xóa nhánh nháp.
+
+### Phản biện
+- Chỉ push nhánh nháp chưa kích hoạt workflow vì push chỉ lọc main.
+  Cần mở PR hướng vào main để kích hoạt sự kiện pull_request.
+- Job đỏ chưa đủ chứng minh đúng nguyên nhân; phải kiểm tra
+  bước Test thất bại và Build được bỏ qua.
+- GitHub Checks không hiển thị log chi tiết trong ảnh ban đầu;
+  AI cung cấp đường dẫn trực tiếp tới job.
+- Lỗi được đưa vào giá trị kỳ vọng của test trên nhánh nháp,
+  không sửa code chức năng hoặc làm hỏng nhánh làm việc thật.
+
+### Quyết định của nhóm
+Kiệt thực hiện thử nghiệm theo sub-issue đã giao.
+Chưa có phản hồi reviewer hoặc quyết định chung mới.
+PR thử nghiệm không được dùng để merge mã lỗi vào main.
+
+### Người kiểm tra
+Kiệt cung cấp ảnh PR và log Test.
+ChatGPT/Codex đối chiếu ảnh và dùng GitHub plugin kiểm tra
+trạng thái từng bước trong job.
+Chưa có xác nhận reviewer BD2 Châu đã kiểm tra.
+
+### Kiểm tra và minh chứng
+- PR nháp: https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/127
+- Commit thử nghiệm: 38b14b18f60223f38f3f66cbc796cb374e16cb3d
+- Job:
+  https://github.com/liemnguyen-work/ecommerce-dayora-project/actions/runs/42462257420/job/128673872219
+- Install dependencies và Lint: success.
+- Test: failure; ảnh log chỉ vị trí app.controller.spec.ts:8:33,
+  lệnh vitest run kết thúc với mã thoát 1.
+- Build: skipped.
+- Ảnh đã cung cấp thể hiện Test đỏ và Build bị bỏ qua;
+  chưa có ảnh riêng phần so sánh 'wrong-status' và 'ok'.
+- Chưa xác nhận PR #127 đã đóng hoặc nhánh test-ci-fail đã xóa.
+  Chưa kết luận toàn bộ bước 2.3 hoàn tất.
+  ### Bổ sung kết quả dọn dẹp PRJ-P0-DO-2.3
+
+- Kiệt xác nhận đã lưu ảnh minh chứng.
+- Đã đóng PR nháp #127, không merge.
+- Đã xóa nhánh test-ci-fail ở máy và trên GitHub.
+- Giữ nguyên test đúng trên nhánh prj/p0-do-2.
