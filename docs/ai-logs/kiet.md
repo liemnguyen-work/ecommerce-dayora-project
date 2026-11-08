@@ -694,3 +694,13 @@ Reviewer BD2 Châu: chưa có minh chứng đã review.
 - Commit: https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/b06f0ae
 - Chưa xác nhận CI xanh trên GitHub; chưa thử CI đỏ,
   chưa cấu hình required check và chưa hoàn thành kiểm tra kiến thức.
+  ### Bổ sung minh chứng PRJ-P0-DO-2.2
+
+- PR #122 đã merge:
+  https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/122
+- Job check đã pass toàn bộ các bước:
+  Setup Node, Install dependencies, Lint, Test và Build.
+- Minh chứng:
+  https://github.com/liemnguyen-work/ecommerce-dayora-project/actions/runs/42457901247/job/128660747266
+- Kết quả này xác nhận CI chạy thành công trên PR.
+  Chưa xác nhận các bước thử CI đỏ, bảo vệ main và kiểm tra kiến thức.
