@@ -66,3 +66,17 @@ function renderProducts(list) {
 
 // 5. Hiển thị danh sách sản phẩm ban đầu
 renderProducts(products);
+
+// Gắn sự kiện một lần trên vùng chứa để vẫn hoạt động sau khi vẽ lại
+const gridContainer = document.querySelector(".product-grid");
+
+if (gridContainer) {
+  gridContainer.addEventListener("click", function(event) {
+    const btn = event.target.closest(".btn-add-cart");
+
+    if (!btn) return;
+
+    const productId = Number(btn.dataset.id);
+    addToCart(productId, 1);
+  });
+}
