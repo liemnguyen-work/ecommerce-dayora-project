@@ -10,6 +10,18 @@ function renderProducts(list) {
     return;
   }
 
+  // Hiển thị thông báo và dừng khi không có sản phẩm
+  if (!list || list.length === 0) {
+    container.innerHTML = `
+      <li class="no-products"
+          style="grid-column: 1 / -1; text-align: center; padding: 48px 16px;">
+        <h2>Không tìm thấy sản phẩm nào phù hợp.</h2>
+        <p>Bạn hãy thử tìm kiếm bằng từ khóa khác.</p>
+      </li>
+    `;
+    return;
+  }
+
   // 3. Chuyển danh sách sản phẩm thành các thẻ HTML
   const html = list.map(product => `
     <li class="product-grid-item">
