@@ -10,3 +10,59 @@ function getProductIdFromUrl() {
   const numId = Number(id);
   return Number.isNaN(numId) ? null : numId;
 }
+
+function renderProductDetail() {
+  const id = getProductIdFromUrl();
+  const product = id === null ? undefined : getProductById(id);
+
+  if (!product) {
+    const detailWrap = document.querySelector(".detail-wrap");
+    detailWrap.innerHTML = `
+      <div class="product-not-found">
+        <h1>Sản phẩm không tồn tại</h1>
+        <a href="products.html" class="primary-link">← Quay lại danh sách sản phẩm</a>
+      </div>
+    `;
+    document.title = "Không tìm thấy sản phẩm — DAYORA";
+    return;
+  }
+
+  const detailCard = document.getElementById("detail-card");
+  detailCard.innerHTML = `
+    <div class="detail-image">
+      <img src="${product.image}" alt="${product.name}" width="900" height="900">
+    </div>
+    <div class="detail-info">
+      <p class="detail-label">${product.category}</p>
+      <h1>${product.name}</h1>
+      <p class="detail-price">${formatPrice(product.price)}</p>
+      <p class="detail-desc">${product.description}</p>
+      <label for="detail-qty">Số lượng</label>
+      <input id="detail-qty" type="number" min="1" max="99" value="1">
+      <div class="detail-actions">
+        <button id="btn-add-detail" class="detail-button detail-button-secondary" type="button">Thêm vào giỏ</button>
+        <a class="detail-button detail-button-primary" href="cart.html">Xem giỏ hàng</a>
+      </div>
+    </div>
+  `;
+
+  document.title = `${product.name} — DAYORA`;
+
+  const addBtn = document.getElementById("btn-add-detail");
+  const qtyInput = document.getElementById("detail-qty");
+
+  if (addBtn && qtyInput) {
+    function getQuantity() {
+      const qty = Math.min(99, Math.max(1, parseInt(qtyInput.value, 10) || 1));
+      qtyInput.value = qty;
+      return qty;
+    }
+
+    qtyInput.addEventListener("change", getQuantity);
+    addBtn.addEventListener("click", () => {
+      addToCart(product.id, getQuantity());
+    });
+  }
+}
+
+renderProductDetail();
