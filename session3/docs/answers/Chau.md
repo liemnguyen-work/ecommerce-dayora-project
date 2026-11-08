@@ -1,48 +1,45 @@
-# Bản nháp tham khảo — Châu
+HW-P1-BD2-1.6 — Checklist kiến thức
 
-**AI soạn theo phân công dự kiến; chưa phải câu trả lời cá nhân, chưa được Châu xác nhận.** Đề yêu cầu mỗi người tự trả lời và hiểu phần của mình. Hãy thay nội dung gợi ý bằng cách diễn đạt, ví dụ, kết quả kiểm tra và bằng chứng thực tế của bạn; không nhận phần việc chưa làm.
+Người thực hiện: Châu
+Ngày thực hiện: 08/11/2026
+Chủ đề: Buổi 3 — Dữ liệu sản phẩm, logic giỏ hàng và localStorage
 
-Vai trò theo kế hoạch: Backend / HTML-CSS. Gợi ý khu vực để đối chiếu: about.html: các section và bố cục giới thiệu.
+## Câu 1. Nhóm tổ chức dữ liệu sản phẩm thế nào để các trang cùng dùng?
 
-## Câu 1 — Giải thích mã nguồn
+Nhóm tập trung danh sách sản phẩm trong file js/data/products.js. Các trang có thể sử dụng chung dữ liệu này, giúp tránh khai báo trùng lặp và dễ cập nhật thông tin sản phẩm.
 
-- Đoạn HTML thực sự tham gia: [dẫn file và đoạn mã]. Thẻ [tên thẻ] có vai trò [tự giải thích].
-- Đoạn CSS thực sự tham gia: [dẫn file và đoạn mã]. Ba thuộc tính cần giải thích: [1], [2], [3]; tác động lên giao diện: [tự mô tả].
-- Nếu bạn chưa trực tiếp làm phần mã, hãy chọn phần bạn thực sự tham gia hoặc hỏi giảng viên/người phụ trách cách trình bày; không tự nhận mã của người khác.
+## Câu 2. Thêm một sản phẩm đã có trong giỏ thì hàm xử lý thế nào?
 
-## Câu 2 — Dự đoán thay đổi Grid
+Hàm addToCart() kiểm tra ID sản phẩm trong giỏ. Nếu sản phẩm đã tồn tại, hàm cộng thêm số lượng vào sản phẩm đó thay vì tạo một phần tử mới.
 
-Gợi ý: `repeat(4, 1fr)` tạo bốn cột bằng nhau; đổi thành `repeat(2, 1fr)` làm còn hai cột, mỗi cột có thêm không gian và thẻ chuyển xuống các hàng tiếp theo.
+## Câu 3. Vì sao lưu giỏ bằng localStorage? Dữ liệu được khôi phục thế nào, dữ liệu hỏng thì sao?
 
-- Dự đoán bằng lời của bạn: [tự viết trước khi thử].
-- Cách thử và ảnh trước/sau: [tự thực hiện trên bản thử, ghi bằng chứng].
-- Kết quả quan sát và so với dự đoán: [chưa thực hiện/chờ bổ sung].
+localStorage giúp lưu giỏ hàng ngay trên trình duyệt để dữ liệu không mất khi tải lại trang. Hàm loadCart() đọc và chuyển dữ liệu JSON thành mảng; nếu dữ liệu bị lỗi hoặc không hợp lệ thì trả về mảng rỗng.
 
-## Câu 3 — Ảnh bị kéo giãn
+## Câu 4. Vì sao giỏ chỉ lưu id và quantity, không lưu tên và giá?
 
-Gợi ý: kiểm tra tỉ lệ thực của ảnh và kích thước khung. `object-fit: cover` có thể giữ tỉ lệ khi lấp đầy khung nhưng sẽ cắt phần ảnh; `contain` giữ toàn ảnh nhưng có thể để trống. Có thể cân nhắc chiều cao tự động tùy thiết kế.
+Giỏ hàng chỉ cần lưu ID để xác định sản phẩm và quantity để biết số lượng mua. Tên và giá được lấy từ products.js, giúp tránh lưu dữ liệu trùng lặp và hạn chế sai lệch khi thông tin sản phẩm thay đổi.
 
-- Phương án bạn chọn và lý do: [tự viết].
-- Cách xác minh ảnh không bị méo: [tự thử, ghi kết quả].
+## Câu 5. Bước 1 (js/data/products.js): làm vậy để làm gì? Bỏ đi thì chức năng nào hỏng?
 
-## Câu 4 — Quyết định Grid hay Flexbox
+Bước 1 tạo danh sách sản phẩm làm nguồn dữ liệu chung cho website. Nếu bỏ file này, các chức năng cần thông tin sản phẩm như hiển thị danh sách, tra cứu sản phẩm và tính tiền sẽ không hoạt động đúng.
 
-- Khu vực bạn thực sự tham gia: [tên file và thành phần].
-- Kỹ thuật đang dùng và lý do: [tự đối chiếu CSS].
-- Trường hợp kỹ thuật còn lại phù hợp hơn: [tự nêu ví dụ].
+## Câu 6. Bước 2 (formatPrice): làm vậy để làm gì? Bỏ đi thì chức năng nào hỏng?
 
-## Câu 5 — Kiểm tra responsive 390 px
+Hàm formatPrice() chuyển giá tiền thành định dạng tiền Việt Nam để người dùng dễ đọc. Nếu bỏ hàm này, các vị trí giao diện gọi formatPrice() có thể báo lỗi hoặc không hiển thị giá theo định dạng VND.
 
-Gợi ý: mở DevTools, đặt viewport 390 px; kiểm tra phần tử rộng cố định, menu, ảnh, lưới và nội dung dài; xem phần tử nào vượt mép.
+## Câu 7. Bước 3 (js/modules/cart.js): làm vậy để làm gì? Bỏ đi thì chức năng nào hỏng?
 
-- Cách bạn kiểm tra: [tự mô tả].
-- Trường hợp thực tế và kết quả: [chưa xác minh/chờ bổ sung].
+Bước 3 xây dựng saveCart() và loadCart() để lưu và đọc dữ liệu giỏ hàng bằng localStorage. Nếu bỏ các hàm này, những chức năng giỏ hàng phụ thuộc vào chúng sẽ không thể lưu hoặc khôi phục dữ liệu.
 
-## Câu 6 — Đánh giá AI
+## Câu 8. Bước 4 (addToCart): làm vậy để làm gì? Bỏ đi thì chức năng nào hỏng?
 
-- Đề xuất AI thực sự liên quan công việc của bạn: [mô tả và dẫn mã mục trong log cá nhân].
-- Bạn đã sử dụng, điều chỉnh hay loại bỏ? [tự xác nhận và giải thích].
-- Bạn đã kiểm như thế nào, kết quả ra sao? [tự bổ sung minh chứng].
-- Bài học rút ra: [tự viết].
+Hàm addToCart() dùng để thêm sản phẩm mới vào giỏ hoặc cộng dồn số lượng nếu sản phẩm đã tồn tại. Nếu bỏ hàm này, chức năng thêm sản phẩm vào giỏ hàng sẽ không hoạt động.
 
-Trạng thái: **NHÁP — chờ Châu tự hoàn thiện, xác nhận và giải thích**.
+## Câu 9. Bước 5 (updateQuantity): làm vậy để làm gì? Bỏ đi thì chức năng nào hỏng?
+
+Hàm updateQuantity() dùng để thay đổi số lượng sản phẩm trong giỏ và đảm bảo số lượng tối thiểu là 1. Nếu bỏ hàm này, chức năng chỉnh sửa số lượng sản phẩm trong giỏ hàng sẽ không hoạt động.
+
+## Câu 10. Chọn 1 lỗi bạn gặp trong bài: nguyên nhân là gì, sửa thế nào?
+
+Khi kiểm tra trên Safari Console, tôi gặp lỗi SyntaxError: Unexpected token '.' do nhập thừa dấu chấm ở cuối lệnh addToCart(). Tôi xóa dấu chấm thừa và chạy lại lệnh đúng cú pháp để tiếp tục kiểm tra.
