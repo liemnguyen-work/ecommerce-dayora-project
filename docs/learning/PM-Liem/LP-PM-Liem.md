@@ -48,7 +48,8 @@ Bạn tự xây phần này trong repo nhóm. Quy trình: [ROADMAP](../../ROADMA
     + Đã xác nhận username GitHub với cả 8 thành viên vào ngày 07/11/2026.
   - [x] 2. Chạy thử `npm run roadmap:issues` (chỉ in, không tạo) — Xong khi: thấy đủ 88 task (10 bài tập + 78 đồ án), không task nào gán `@?`
     + Kết quả: chạy `npm.cmd run roadmap:issues`, in 88 task (10 bài tập + 78 đồ án), không có `@?`; dry run, chưa tạo issue.
-  - [ ] 3. Tạo thật: `npm run roadmap:issues -- --repo <owner>/<repo-nhom> --apply` (cần `gh auth login` tài khoản có quyền ghi) — Xong khi: tab Issues có 88 issue, 7 milestone, label `roadmap`, `homework`, `project`, `phase/P*`, `role/*`
+  - [x] 3. Tạo thật: `npm run roadmap:issues -- --repo <owner>/<repo-nhom> --apply` (cần `gh auth login` tài khoản có quyền ghi) — Xong khi: tab Issues có 88 issue, 7 milestone, label `roadmap`, `homework`, `project`, `phase/P*`, `role/*`
+    + Kết quả: đã tạo 88 issue (10 bài tập, 78 đồ án) và 7 milestone P0–P6. Đã kiểm tra các issue đều có người phụ trách và milestone. Script tạo checklist trong issue, không tạo sub-issue liên kết.
   - [ ] 4. Projects → New project (Board), thêm mọi issue `label:roadmap`, nhóm theo Milestone — Xong khi: cả nhóm mở được bảng
   - [ ] 5. Sinh báo cáo lần đầu: `npm run roadmap:report -- --repo <owner>/<repo-nhom>`, commit `docs/PROGRESS.md` — Xong khi: báo cáo ra 8 dòng thành viên
 
