@@ -2807,3 +2807,263 @@ Codex kiểm tra trạng thái và nội dung cơ bản; Liêm và nhóm chưa d
 ### Kiểm tra và minh chứng
 
 Kiểm tra Git trước commit; chưa thấy mẫu token phổ biến trong file văn bản đã quét, chưa thấy đường dẫn tuyệt đối trong cấu hình Obsidian. Không ghi trước kết quả push.
+
+---
+
+## P0 — Xác nhận tài khoản GitHub / LIEM-20261108-7D2C4A19-001
+
+* Thời gian ghi: 2026-11-08T11:37:31+07:00
+* Thời gian thực hiện: Hồi cứu ngày 07/11/2026; commit lúc 18:55:24+07:00; giờ trao đổi và push chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261108-7D2C4A19
+* Người prompt: Liêm (PM).
+* Loại mục: Hoạt động.
+* Liên quan: PRJ-P0-PM-1.1; commit 418bbf9.
+
+### Công cụ
+
+AI trợ giúp theo thông tin Liêm cung cấp; tên công cụ và model của phiên trước chưa xác minh. Phiên ghi hồi cứu: Codex và Git; model chưa xác minh.
+
+### Mục đích
+
+Ghi nhận việc xác nhận username GitHub của tám thành viên và cập nhật danh sách vai trò cho task PRJ-P0-PM-1.1.
+
+### Prompt
+
+Tóm lược theo thông tin Liêm cung cấp: nhờ AI hướng dẫn kiểm tra username, ghi nhận vào docs/ROLES.md và hướng dẫn commit, push; yêu cầu hiện tại là ghi lại quá trình vào log.
+
+### Kết quả đề xuất
+
+Theo Liêm, AI hướng dẫn kiểm tra, cập nhật danh sách và thực hiện commit/push; Liêm cho biết cả tám thành viên đã xác nhận username và tự thực hiện các thao tác. Không có nguyên văn hội thoại trước hoặc minh chứng riêng cho từng bước để đối chiếu.
+
+### Phản biện
+
+Chưa có phản hồi phản biện cụ thể được cung cấp; không suy ra nội dung khác ngoài xác nhận username.
+
+### Quyết định của nhóm
+
+Theo Liêm, cả tám thành viên đã xác nhận username GitHub của mình; docs/ROLES.md ghi ngày xác nhận 07/11/2026. Chưa có biên bản hoặc xác nhận độc lập từng người trong phạm vi kiểm tra này.
+
+### Người kiểm tra
+
+Liêm cung cấp xác nhận về quá trình; Codex đối chiếu commit và tài liệu trong phiên hồi cứu. Chưa có thông tin reviewer riêng.
+
+### Kiểm tra và minh chứng
+
+Đã đọc AGENTS.md, quy tắc, mẫu và log Liêm; không thấy mã task hoặc commit này trong log trước khi nối. Commit 418bbf9 ghi task PRJ-P0-PM-1.1, thời gian 2026-11-07T18:55:24+07:00 và thay đổi docs/ROLES.md; file hiện ghi đã xác nhận cả tám username ngày 07/11/2026. Tham chiếu theo dõi từ xa origin/main và origin/prj/p0-pm-1 trên máy có chứa commit; chưa truy vấn GitHub trực tiếp nên không xác minh thời điểm push. Không commit hoặc push trong phiên ghi log này.
+
+---
+
+## P0 — Chạy thử danh sách task / LIEM-20261108-7D2C4A19-002
+
+* Thời gian ghi: 2026-11-08T11:39:00+07:00
+* Thời gian thực hiện: Hồi cứu ngày 07/11/2026; commit lúc 19:06:47+07:00; giờ trao đổi, chạy thử và push chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261108-7D2C4A19
+* Người prompt: Liêm (PM).
+* Loại mục: Hoạt động.
+* Liên quan: PRJ-P0-PM-1.2; commit 5e550ed.
+
+### Công cụ
+
+AI trợ giúp theo thông tin Liêm cung cấp; tên công cụ và model của phiên trước chưa xác minh. Phiên ghi hồi cứu: Codex và Git; model chưa xác minh.
+
+### Mục đích
+
+Ghi nhận quá trình xử lý lỗi PowerShell và chạy thử danh sách task roadmap cho PRJ-P0-PM-1.2.
+
+### Prompt
+
+Tóm lược theo thông tin Liêm cung cấp: nhờ AI hướng dẫn xử lý lỗi PowerShell, xác định script tạo danh sách task và kiểm tra kết quả chạy thử; yêu cầu hiện tại là ghi lại hoạt động vào log.
+
+### Kết quả đề xuất
+
+Theo Liêm, AI hướng dẫn dùng 
+pm.cmd và xác định script 
+oadmap:issues. Liêm tự chạy thử, kiểm tra kết quả, ghi nhận vào docs/learning/PM-Liem/LP-PM-Liem.md, sau đó commit và push. Không có nguyên văn hội thoại trước hoặc minh chứng riêng của từng thao tác để đối chiếu.
+
+### Phản biện
+
+Chưa có phản hồi phản biện cụ thể được cung cấp. Kết quả chạy thử chỉ là danh sách xem trước; không suy ra đã tạo issue.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới được cung cấp; không suy ra nhóm đã duyệt hoặc hoàn thành toàn bộ task.
+
+### Người kiểm tra
+
+Theo Liêm, Liêm đã kiểm tra kết quả chạy thử. Codex đối chiếu nội dung commit trong phiên hồi cứu; chưa có thông tin reviewer riêng.
+
+### Kiểm tra và minh chứng
+
+Đã đọc AGENTS.md, quy tắc, mẫu và log Liêm; không thấy mã task hoặc commit này trong log trước khi nối. Commit 5e550ed ghi task PRJ-P0-PM-1.2, thời gian 2026-11-07T19:06:47+07:00; tài liệu trong commit ghi lệnh npm.cmd run roadmap:issues chạy dry run, in 88 task gồm 10 bài tập và 78 đồ án, không có @?, chưa tạo issue. Trong phiên hồi cứu không chạy lại script, không xác minh độc lập kết quả chạy cũ. Tham chiếu theo dõi từ xa origin/main và origin/prj/p0-pm-1 trên máy có chứa commit; chưa truy vấn GitHub trực tiếp nên không xác minh thời điểm push. Không commit hoặc push trong phiên ghi log này.
+
+---
+
+## P0 — Đính chính tên lệnh / LIEM-20261108-7D2C4A19-003
+
+* Thời gian ghi: 2026-11-08T11:39:22+07:00
+* Thời gian thực hiện: Phiên ghi hồi cứu hiện tại.
+* Mã phiên nhật ký: LIEM-20261108-7D2C4A19
+* Người prompt: Liêm (PM).
+* Loại mục: Đính chính.
+* Liên quan: LIEM-20261108-7D2C4A19-002.
+
+### Công cụ
+
+Codex và Git; model chưa xác minh.
+
+### Mục đích
+
+Đính chính lỗi định dạng khi ghi tên lệnh trong mục ngay trước.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu ghi log trung thực cho task PRJ-P0-PM-1.2.
+
+### Kết quả đề xuất
+
+Tại mục liên quan, phần Kết quả đề xuất bị lỗi ký tự xuống dòng khi ghi tên lệnh. Nội dung đúng: theo Liêm, AI hướng dẫn dùng `npm.cmd` và xác định script `roadmap:issues`; Liêm tự thực hiện các bước đã nêu. Lệnh được tài liệu trong commit ghi nhận là `npm.cmd run roadmap:issues`.
+
+### Phản biện
+
+Codex phát hiện lỗi ngay sau khi ghi; mục này giữ nguyên lịch sử và bổ sung nội dung đúng.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Codex đối chiếu nội dung commit và mục đính chính; chờ Liêm kiểm tra.
+
+### Kiểm tra và minh chứng
+
+Đối chiếu commit 5e550ed và tài liệu docs/learning/PM-Liem/LP-PM-Liem.md. Chưa chạy lại script; không commit hoặc push trong phiên này.
+
+---
+
+## P1 — Lập kế hoạch Buổi 3 / LIEM-20261108-7D2C4A19-004
+
+* Thời gian ghi: 2026-11-08T11:40:54+07:00
+* Thời gian thực hiện: Hồi cứu ngày 08/11/2026; commit hướng dẫn lúc 00:48:58 và commit kế hoạch lúc 01:05:21 UTC+07:00; giờ trao đổi và push chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261108-7D2C4A19
+* Người prompt: Liêm (PM).
+* Loại mục: Hoạt động.
+* Liên quan: HW-P1-PM-1.1; commit b48d8c2 và 9b9287e.
+
+### Công cụ
+
+AI trợ giúp theo thông tin Liêm cung cấp; tên công cụ và model của phiên trước chưa xác minh. Phiên ghi hồi cứu: Codex và Git; model chưa xác minh.
+
+### Mục đích
+
+Ghi nhận việc sử dụng AI để soạn kế hoạch phân công và lịch làm bài tập Buổi 3 của nhóm DAYORA.
+
+### Prompt
+
+Tóm lược theo thông tin Liêm cung cấp: nhờ AI đọc hướng dẫn Buổi 3, soạn bảng phân công tám người và lịch 05/11–11/11, đồng thời hướng dẫn đưa tài liệu vào repo; yêu cầu hiện tại là ghi hồi cứu vào log.
+
+### Kết quả đề xuất
+
+Theo Liêm, AI đọc hướng dẫn và soạn nội dung kế hoạch; AI cũng hướng dẫn đưa tài liệu hướng dẫn Buổi 3 vào repo. Liêm sao chép nội dung AI soạn vào session3/docs/ke-hoach.md, tự lưu, commit và push; tài liệu hướng dẫn được đưa vào bằng commit riêng. Không có nguyên văn hội thoại trước hoặc minh chứng độc lập cho từng thao tác để đối chiếu.
+
+### Phản biện
+
+Chưa có phản hồi phản biện cụ thể được cung cấp. Bảng phân công và lịch là kế hoạch, không chứng minh các thành viên đã thực hiện hoặc hoàn thành công việc.
+
+### Quyết định của nhóm
+
+Liêm sử dụng bản kế hoạch do AI soạn theo thông tin Liêm cung cấp; chưa có bằng chứng nhóm đã duyệt toàn bộ phân công hoặc lịch.
+
+### Người kiểm tra
+
+Codex đối chiếu hai commit và nội dung kế hoạch trong phiên hồi cứu; chưa có thông tin reviewer đã duyệt kế hoạch. Chờ Liêm kiểm tra mục log này.
+
+### Kiểm tra và minh chứng
+
+Đã đọc AGENTS.md, quy tắc, mẫu và log Liêm; không thấy mã task hoặc hai commit trong log trước khi nối. Commit b48d8c2 lúc 2026-11-08T00:48:58+07:00 thêm session3/HUONG-DAN-BUOI-3.md; commit 9b9287e lúc 2026-11-08T01:05:21+07:00 thêm session3/docs/ke-hoach.md và ghi task HW-P1-PM-1.1. Kế hoạch có bảng tám thành viên và lịch dự kiến 05/11–11/11/2026. Tham chiếu theo dõi từ xa trên máy có chứa hai commit; chưa truy vấn GitHub trực tiếp nên không xác minh thời điểm push. Không commit hoặc push trong phiên ghi log này.
+
+---
+
+## P1 — Quy ước JavaScript Buổi 3 / LIEM-20261108-7D2C4A19-005
+
+* Thời gian ghi: 2026-11-08T11:42:31+07:00
+* Thời gian thực hiện: Hồi cứu ngày 08/11/2026; commit lúc 01:09:10 UTC+07:00; giờ trao đổi và push chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261108-7D2C4A19
+* Người prompt: Liêm (PM).
+* Loại mục: Hoạt động.
+* Liên quan: HW-P1-PM-1.2; commit 0d08e7e.
+
+### Công cụ
+
+AI trợ giúp theo thông tin Liêm cung cấp; tên công cụ và model của phiên trước chưa xác minh. Phiên ghi hồi cứu: Codex và Git; model chưa xác minh.
+
+### Mục đích
+
+Ghi nhận việc dùng AI soạn nội dung quy ước JavaScript chung cho bài tập Buổi 3 của DAYORA.
+
+### Prompt
+
+Tóm lược theo thông tin Liêm cung cấp: nhờ AI soạn bảy quy ước JavaScript cùng ví dụ ngắn và hướng dẫn các thao tác Git; yêu cầu hiện tại là ghi hồi cứu vào log.
+
+### Kết quả đề xuất
+
+Theo Liêm, AI soạn nội dung bảy quy ước và ví dụ ngắn. Liêm sao chép nội dung vào session3/docs/quy-uoc.md, tự lưu, commit và push theo hướng dẫn. Không có nguyên văn hội thoại trước hoặc minh chứng độc lập cho từng thao tác để đối chiếu.
+
+### Phản biện
+
+Chưa có phản hồi phản biện cụ thể được cung cấp. Văn bản quy ước và ví dụ không tự chứng minh các chức năng JavaScript đã được triển khai hoặc kiểm thử.
+
+### Quyết định của nhóm
+
+Liêm sử dụng nội dung AI soạn theo thông tin Liêm cung cấp; chưa có bằng chứng xác nhận cả nhóm đã duyệt quy ước.
+
+### Người kiểm tra
+
+Codex đối chiếu commit và nội dung tài liệu trong phiên hồi cứu; chưa có thông tin reviewer đã duyệt. Chờ Liêm kiểm tra mục log này.
+
+### Kiểm tra và minh chứng
+
+Đã đọc AGENTS.md, quy tắc, mẫu và log Liêm; không thấy mã task hoặc commit trong log trước khi nối. Commit 0d08e7e lúc 2026-11-08T01:09:10+07:00 thêm session3/docs/quy-uoc.md, ghi task HW-P1-PM-1.2; nội dung commit có bảy mục quy ước và các ví dụ. Tham chiếu theo dõi từ xa trên máy có chứa commit; chưa truy vấn GitHub trực tiếp nên không xác minh thời điểm push, số reaction PR hoặc trạng thái đóng task. Không commit hoặc push trong phiên ghi log này.
+
+---
+
+## P0 — Tạo issue và milestone roadmap / LIEM-20261108-7D2C4A19-006
+
+* Thời gian ghi: 2026-11-08T11:43:34+07:00
+* Thời gian thực hiện: Hồi cứu ngày 08/11/2026; commit ghi kết quả lúc 11:30:23 UTC+07:00; thời điểm trao đổi, chạy script và push chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261108-7D2C4A19
+* Người prompt: Liêm (PM).
+* Loại mục: Hoạt động.
+* Liên quan: PRJ-P0-PM-1.3; commit 9050a92.
+
+### Công cụ
+
+AI trợ giúp theo thông tin Liêm cung cấp; tên công cụ và model của phiên trước chưa xác minh. Công cụ được nhắc đến trong công việc: GitHub CLI, Git, npm.cmd và GitHub. Phiên ghi hồi cứu: Codex và Git; model chưa xác minh.
+
+### Mục đích
+
+Ghi nhận việc dùng AI để phân tích roadmap và hỗ trợ Liêm tạo issue, milestone cho repo nhóm.
+
+### Prompt
+
+Tóm lược theo thông tin Liêm cung cấp: nhờ AI hỗ trợ kiểm tra nhánh, xác thực GitHub CLI, đối chiếu issue hiện có, giải thích script, xem trước issue và hướng dẫn cập nhật tài liệu, commit và push; yêu cầu hiện tại là ghi hồi cứu vào log.
+
+### Kết quả đề xuất
+
+Theo Liêm, AI hướng dẫn kiểm tra nhánh, cài đặt hoặc nhận diện GitHub CLI, đăng nhập và xem issue đã có; đọc scripts/roadmap-issues.mjs, giải thích chênh lệch số lượng và hướng dẫn xem trước một issue. AI hướng dẫn cập nhật nhánh từ main và ghi kết quả vào docs/learning/PM-Liem/LP-PM-Liem.md. Liêm tự chạy lệnh npm.cmd run roadmap:issues -- --repo liemnguyen-work/ecommerce-dayora-project --apply, kiểm tra GitHub, cập nhật tài liệu, tạo commit và push. Nguyên văn hội thoại và thời điểm từng thao tác chưa được cung cấp.
+
+### Phản biện
+
+Theo Liêm, nội dung sub-issue ban đầu nêu 78 issue đồ án, trong khi roadmap hiện tại gồm 88 task: 78 đồ án và 10 bài tập. Script tạo checklist trong nội dung issue, không tạo sub-issue liên kết. Một lần AI hướng dẫn hủy màn hình cấp quyền khiến đăng nhập bị hủy; Liêm cho biết đã đăng nhập lại thành công. Số lượng issue và checklist không tự chứng minh issue đã đóng.
+
+### Quyết định của nhóm
+
+Liêm chọn tạo cả 88 issue theo roadmap hiện tại; chưa có thông tin xác nhận đây là quyết định chung của toàn nhóm.
+
+### Người kiểm tra
+
+Theo Liêm, Liêm đã kiểm tra trên GitHub và xác nhận issue không thiếu người phụ trách hoặc milestone. Codex đối chiếu commit và script trong phiên hồi cứu; chưa truy vấn GitHub trực tiếp. Chờ Liêm kiểm tra mục log này.
+
+### Kiểm tra và minh chứng
+
+Đã đọc AGENTS.md, quy tắc, mẫu và log Liêm; không thấy mã task hoặc commit trong log trước khi nối. Theo Liêm, script báo tạo 88 issue; Liêm kiểm tra 78 issue PRJ, 10 issue HW và 7 milestone P0–P6 trên GitHub. Commit 9050a92 lúc 2026-11-08T11:30:23+07:00 ghi kết quả tương ứng trong docs/learning/PM-Liem/LP-PM-Liem.md; mã script trong commit tạo các mục checklist. Tham chiếu origin/prj/p0-pm-1 trên máy có chứa commit; chưa truy vấn GitHub trực tiếp để xác minh trạng thái hiện tại, thời điểm push hoặc trạng thái đóng issue. Không chạy lại script, tạo issue, commit hoặc push trong phiên ghi log này.
