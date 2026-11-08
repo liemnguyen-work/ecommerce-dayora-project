@@ -774,3 +774,51 @@ Chưa có xác nhận reviewer BD2 Châu đã kiểm tra.
 - Đã đóng PR nháp #127, không merge.
 - Đã xóa nhánh test-ci-fail ở máy và trên GitHub.
 - Giữ nguyên test đúng trên nhánh prj/p0-do-2.
+## P0 — Bảo vệ main / KIET-20261108-CI7F2A-003
+
+- Thời gian ghi: 2026-11-08T21:29:53+07:00
+- Thời gian thực hiện: Chưa xác minh thời điểm Liêm lưu cấu hình.
+- Mã phiên nhật ký: KIET-20261108-CI7F2A
+- Người prompt: Mã Tuấn Kiệt
+- Loại mục: Hoạt động và kiểm tra
+- Liên quan: PRJ-P0-DO-2.4
+
+### Công cụ
+ChatGPT/Codex, GitHub plugin và GitHub Settings.
+
+### Mục đích
+Bảo vệ main, yêu cầu PR và job check đạt trước khi merge.
+
+### Prompt
+Kiệt yêu cầu tiếp tục bước 2.4, cung cấp ảnh tài khoản
+không có quyền quản trị. Sau đó Kiệt báo Liêm đã thực hiện
+và yêu cầu ghi nhật ký, tạo commit minh chứng.
+
+### Kết quả đề xuất
+AI hướng dẫn cấu hình branch protection cho main.
+Do Kiệt không có quyền, phần thiết lập được nhờ Liêm thực hiện.
+Kiệt báo Liêm đã hoàn tất.
+GitHub plugin xác nhận main có protected: true.
+
+### Phản biện
+protected: true chỉ xác nhận nhánh đang được bảo vệ,
+chưa đủ chứng minh check cụ thể đã được yêu cầu.
+API tổng quát trả contexts và checks trống;
+API chi tiết trả 403 do quyền của integration.
+Cần ảnh rule đã lưu để xác minh yêu cầu PR và required check check.
+
+### Quyết định của nhóm
+Theo thông tin Kiệt cung cấp, Liêm đã thực hiện cấu hình.
+Chưa có ảnh chi tiết trong cuộc trò chuyện để đối chiếu đầy đủ.
+
+### Người kiểm tra
+Kiệt cung cấp thông tin Liêm đã làm.
+ChatGPT/Codex kiểm tra trạng thái nhánh qua GitHub plugin.
+Chưa xác minh đầy đủ cấu hình required check.
+
+### Kiểm tra và minh chứng
+- Nhánh main: protected = true, protection.enabled = true.
+- Danh sách ruleset: trống tại thời điểm kiểm tra.
+- API chi tiết branch protection: 403.
+- Chờ ảnh cấu hình đã lưu từ Liêm trước khi kết luận
+  đạt toàn bộ tiêu chí PRJ-P0-DO-2.4.
