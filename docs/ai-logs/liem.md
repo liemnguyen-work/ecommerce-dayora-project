@@ -3067,3 +3067,48 @@ Theo Liêm, Liêm đã kiểm tra trên GitHub và xác nhận issue không thi�
 ### Kiểm tra và minh chứng
 
 Đã đọc AGENTS.md, quy tắc, mẫu và log Liêm; không thấy mã task hoặc commit trong log trước khi nối. Theo Liêm, script báo tạo 88 issue; Liêm kiểm tra 78 issue PRJ, 10 issue HW và 7 milestone P0–P6 trên GitHub. Commit 9050a92 lúc 2026-11-08T11:30:23+07:00 ghi kết quả tương ứng trong docs/learning/PM-Liem/LP-PM-Liem.md; mã script trong commit tạo các mục checklist. Tham chiếu origin/prj/p0-pm-1 trên máy có chứa commit; chưa truy vấn GitHub trực tiếp để xác minh trạng thái hiện tại, thời điểm push hoặc trạng thái đóng issue. Không chạy lại script, tạo issue, commit hoặc push trong phiên ghi log này.
+
+---
+
+## P0 — Thiết lập bảng theo dõi GitHub Project / LIEM-20261108-7D2C4A19-007
+
+* Thời gian ghi: 2026-11-08T17:27:26+07:00
+* Thời gian thực hiện: Hồi cứu ngày 08/11/2026; commit ghi kết quả lúc 17:23:59 UTC+07:00; thời điểm trao đổi, cấu hình và push chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261108-7D2C4A19
+* Người prompt: Liêm (PM).
+* Loại mục: Hoạt động.
+* Liên quan: PRJ-P0-PM-1.4; commit 14ed124; LIEM-20261108-7D2C4A19-006.
+
+### Công cụ
+
+AI trợ giúp theo thông tin Liêm cung cấp; tên công cụ và model của phiên trước chưa xác minh. Công cụ được nhắc đến: GitHub Projects và Git. Phiên ghi hồi cứu: Codex và Git; model chưa xác minh.
+
+### Mục đích
+
+Ghi nhận quá trình dùng AI hỗ trợ thiết lập bảng Kanban để nhóm theo dõi issue và milestone của DAYORA.
+
+### Prompt
+
+Tóm lược theo thông tin Liêm cung cấp: nhờ AI hướng dẫn tạo Project, đưa issue vào bảng, cấu hình trạng thái và milestone, chia sẻ quyền, sau đó ghi kết quả vào lộ trình và hướng dẫn commit, push; yêu cầu hiện tại là ghi hồi cứu quá trình.
+
+### Kết quả đề xuất
+
+Theo Liêm, AI giải thích nhãn project dành cho 78 issue đồ án, roadmap gồm cả 88 issue, và script trước đó không tạo nhãn xl. Ban đầu AI hướng dẫn tạo Project DAYORA - Quản lý Tiến độ Đồ án và dùng bộ lọc label:project để thêm 78 issue. Sau khi đối chiếu lộ trình yêu cầu mọi issue nhãn roadmap, Liêm chọn tự thêm 10 issue bài tập; theo Liêm, bảng hiển thị tổng cộng 88 thẻ.
+
+Liêm tự tạo Project, thêm issue, cấu hình bốn cột Todo, In Progress, In Review, Done, cấp quyền Write cho bảy thành viên còn lại và cập nhật docs/learning/PM-Liem/LP-PM-Liem.md. Liêm tự commit và push theo hướng dẫn; AI không trực tiếp thực hiện các thao tác GitHub này.
+
+### Phản biện
+
+Theo Liêm, hướng dẫn ban đầu chọn Milestone ở phần chia cột không phù hợp vì giao diện chỉ hiện Status. Sau khi Liêm cung cấp ảnh, AI điều chỉnh hướng dẫn dùng Swimlanes để nhóm theo milestone: cột theo trạng thái, hàng theo milestone P0–P6. Việc chỉ thêm 78 issue ban đầu cũng thiếu 10 issue bài tập so với yêu cầu nhãn roadmap; Liêm đã chọn bổ sung.
+
+### Quyết định của nhóm
+
+Liêm chọn thêm cả 88 issue và cấu hình bảng như trên. Chưa có bằng chứng về quyết định chung khác hoặc xác nhận toàn nhóm đã mở bảng.
+
+### Người kiểm tra
+
+Theo Liêm, Ngọc xác nhận đã mở được bảng; chưa có xác nhận sáu thành viên còn lại đã mở thử. Codex đối chiếu commit và tài liệu trong phiên hồi cứu; chờ Liêm kiểm tra mục log này.
+
+### Kiểm tra và minh chứng
+
+Đã đọc AGENTS.md, quy tắc, mẫu và log Liêm; không thấy mã task hoặc commit trong log trước khi nối. Commit 14ed124 lúc 2026-11-08T17:23:59+07:00 cập nhật docs/learning/PM-Liem/LP-PM-Liem.md, ghi 88 issue, bốn cột trạng thái, hàng milestone P0–P6, quyền Write cho bảy thành viên và Ngọc đã mở được bảng. Link Project do Liêm cung cấp: https://github.com/users/liemnguyen-work/projects/1. Tham chiếu origin/prj/p0-pm-1 trên máy có chứa commit; chưa truy vấn Project hoặc GitHub trực tiếp để xác minh độc lập nội dung, quyền, số thẻ hay thời điểm push. Không tạo Project, sửa quyền, commit hoặc push trong phiên ghi log này.
