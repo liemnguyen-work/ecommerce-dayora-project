@@ -362,3 +362,49 @@ Chưa có quyết định chung hoặc xác nhận phê duyệt từ reviewer FD
 * Codex đọc các CSS 400/600/800 trong node_modules/@fontsource/be-vietnam-pro: có @font-face tên Be Vietnam Pro, weight tương ứng, kiểu normal, font-display swap và subset vietnamese. Kiểm tra toàn bộ URL asset trong ba CSS: không có tệp tham chiếu bị thiếu. Font được cung cấp từ package cài tại máy, không cần Google Fonts CDN trong mã import này.
 * Codex trực tiếp chạy git diff --cached --check và git diff --check trước khi nối log: không báo lỗi. Không chạy lại build trong phiên review 1.3 và không mở trình duyệt.
 * Hồi cứu theo thông tin Đạt cung cấp: Đạt tự thao tác dưới hướng dẫn ChatGPT, npm run build -w web thành công; Firefox DevTools → Computed hiển thị Be Vietnam Pro, system-ui, sans-serif; git diff --check không báo lỗi; đã stage ba file. Kết quả build và trình duyệt này chưa được Codex trực tiếp quan sát trong phiên 1.3; mốc thời gian kiểm thử trước đây chưa xác minh.
+---
+
+## P0 — Khởi động và nền móng / DAT-20261108-C7A42F19-003
+
+* Thời gian ghi: 2026-11-08T15:21:34+07:00
+* Thời gian thực hiện: Review trong phiên hiện tại; phần triển khai và kiểm thử trước đó được tổng hợp hồi cứu theo lời Đạt, chưa xác minh mốc thời gian thực hiện.
+* Mã phiên nhật ký: DAT-20261108-C7A42F19
+* Người prompt: Đạt (tự xác nhận).
+* Loại mục: Kiểm tra
+* Liên quan: PRJ-P0-PD-1; PRJ-P0-PD-1.4; DAT-20261108-C7A42F19-002. HEAD khi review: 7e4ca18.
+
+### Công cụ
+
+ChatGPT hỗ trợ hướng dẫn và nhận xét ảnh theo thông tin Đạt cung cấp; Đạt tự chỉnh sửa và kiểm thử. Codex review tĩnh và ghi nhật ký trong phiên hiện tại, không thực hiện phần code trước đó.
+
+### Mục đích
+
+Đối chiếu trang mẫu với yêu cầu 1.4; kiểm tra màu, kiểu chữ, bố cục responsive và khả năng truy cập; chỉ nối nhật ký, không tự sửa mã, commit, push hoặc tạo PR.
+
+### Prompt
+
+Tóm lược yêu cầu thực tế: Đạt yêu cầu xác nhận thư mục/nhánh, đọc quy định, review App.tsx theo từng yêu cầu trang mẫu, chỉ ra lỗi và hướng sửa, nối log đủ 7 trường; phân biệt kết quả Đạt cung cấp và Codex trực tiếp kiểm tra. Đạt báo đã nhờ ChatGPT hướng dẫn, gửi ảnh Firefox 1366 × 900 và 390 × 900 để nhận xét, rồi build thành công. Không có prompt ChatGPT nguyên văn hoặc ảnh đính kèm trong yêu cầu review này.
+
+### Kết quả đề xuất
+
+Xác nhận đúng thư mục ecommerce-dayora-project và nhánh prj/p0-pd-1. App.tsx có đủ 5 ô Paper/Ink/Butter/Berry/Leaf với HEX đúng token index.css; ba mẫu chữ tiếng Việt text-4xl/text-2xl/text-base và weight 800/600/400; CTA bg-berry text-paper rounded-full, type button, trạng thái hover và focus-visible. Font Be Vietnam Pro được khai báo trong token/body và import đủ ba weight ở main.tsx. Grid một cột, từ sm hai cột, có padding và giới hạn chiều rộng: đáp ứng cấu hình responsive ở mức đọc code, chưa xác minh hiển thị. Không phát hiện lỗi chặn riêng yêu cầu dựng mẫu 1.4 qua review tĩnh; nghiệm thu ảnh và FD1 duyệt còn chờ.
+
+### Phản biện
+
+Codex chỉ ra lỗi ngôn ngữ có sẵn tại apps/web/index.html:2: lang en không khớp nội dung chính tiếng Việt, nên sửa thành vi khi được giao để công cụ đọc màn hình nhận đúng ngôn ngữ. App.tsx:8 dùng p cho tiêu đề trang nên thiếu heading ngữ nghĩa; nên dùng h1, nhưng cần xử lý CSS h1 ngoài layer tại index.css để tránh ghi đè utility font/màu/cỡ chữ. Không chỉ đổi thẻ rồi mặc định giao diện giữ nguyên. App.tsx:56 ghi cứng màu hover #A93A30 trùng --berry-deep; có thể dùng biến hiện có để tránh lệch token sau này. Nút chưa có hành động là phù hợp trang mẫu tạm; không coi là Kit Builder đã hoạt động. Các điểm này chưa được tự sửa; chưa có phản hồi mới của Đạt hoặc FD1 Thành.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung hoặc xác nhận phê duyệt từ reviewer FD1 Thành. Đạt xác nhận phạm vi review, nối log và dừng để kiểm tra; không tự thay mã hoặc đưa thay đổi lên kho.
+
+### Người kiểm tra
+
+Đạt báo đã tự kiểm tra Firefox ở hai kích thước và build thành công. Codex trực tiếp đọc code/diff, kiểm Git, tính tương phản từ HEX và chạy kiểm tra whitespace. Chờ Đạt rà soát nhật ký và FD1 Thành review.
+
+### Kiểm tra và minh chứng
+
+* Đã đọc AGENTS.md, quy tắc log, TEMPLATE.md, phần log liên quan, App.tsx, index.css, main.tsx, index.html và bước 4 trong docs/learning/PD-Dat/LP-PD-Dat.md. Không thấy AGENTS.md con trong apps/docs qua tìm kiếm.
+* Trước khi nối log, git status chỉ có App.tsx thay đổi chưa stage; không có staged diff. HEAD là 7e4ca18 feat(design): integrate Be Vietnam Pro font. git diff --check và git diff --cached --check không báo lỗi.
+* Tính tương phản từ HEX: Ink/Paper khoảng 11,06:1; Ink/Butter 6,70:1; Paper/Berry 4,64:1; Ink/Leaf 8,82:1; Paper/màu hover #A93A30 6,19:1. Các cặp chữ/nền hiện dùng vượt 4,5:1 theo phép tính màu, không phải kiểm định toàn bộ khả năng truy cập trên trình duyệt. Nguồn ngưỡng: https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html .
+* Kết quả do Đạt cung cấp, chưa được Codex trực tiếp quan sát trong phiên này: Firefox 1366 × 900 và 390 × 900, ảnh đã gửi ChatGPT nhận xét; npm run build -w web thành công với Vite 8.3.6. Codex không chạy lại build hoặc mở trình duyệt, chưa xem ảnh minh chứng và chưa xác minh ảnh đã được đính vào PR.
+* Đề xuất ảnh PR: ghi đúng kích thước viewport, chụp đủ 5 ô màu, ba mẫu chữ và CTA; nếu mobile dài hơn 900px, dùng ảnh toàn trang hoặc ảnh bổ sung có phần cuộn. Kiểm tra không cuộn ngang, chữ không bị cắt, Tab thấy viền focus; chờ FD1 Thành duyệt. Chỉ file log được Codex chỉnh trong phiên này.
