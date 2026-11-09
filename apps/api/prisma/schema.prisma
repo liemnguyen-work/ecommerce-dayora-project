@@ -6,7 +6,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 enum Role {
@@ -51,4 +53,287 @@ enum RuleSetStatus {
   DRAFT
   PUBLISHED
   ARCHIVED
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  fullName     String
+  phone        String?
+  role         Role     @default(CUSTOMER)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+
+  viewedProducts ViewedProduct[]
+  cart           Cart?
+  voucherUsages  VoucherUsage[]
+  orders         Order[]
+  reviews        Review[]
+}
+
+model Category {
+  id        String @id @default(uuid())
+  code      String @unique
+  name      String
+  sortOrder Int    @default(0)
+
+  products Product[]
+}
+
+model Product {
+  id          String        @id @default(uuid())
+  slug        String        @unique
+  name        String
+  description String?
+  guide       String?
+  categoryId  String
+  scenarios   Scenario[]
+  material    String?
+  status      ProductStatus @default(ACTIVE)
+  isFeatured  Boolean       @default(false)
+
+  category       Category        @relation(fields: [categoryId], references: [id])
+  skus           Sku[]
+  viewedProducts ViewedProduct[]
+  reviews        Review[]
+}
+
+model Sku {
+  id        String  @id @default(uuid())
+  code      String  @unique
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+
+  color     String
+  price     Int
+  salePrice Int?
+  stock     Int    @default(0)
+  reserved  Int    @default(0)
+
+  unit    String
+  unitQty Int    @default(1)
+
+  lengthCm Decimal? @db.Decimal(6, 1)
+  widthCm  Decimal? @db.Decimal(6, 1)
+  heightCm Decimal? @db.Decimal(6, 1)
+
+  volumeMl       Int?
+  capacityPeople Int?
+  useType        String
+
+  imageUrl    String?
+  imageSource String?
+
+  status ProductStatus @default(ACTIVE)
+
+  cartItems  CartItem[]
+  orderItems OrderItem[]
+}
+
+model ViewedProduct {
+  userId    String
+  productId String
+  viewedAt  DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+
+  @@id([userId, productId])
+}
+
+model Cart {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user  User       @relation(fields: [userId], references: [id])
+  items CartItem[]
+}
+
+model CartItem {
+  id         String @id @default(uuid())
+  cartId     String
+  skuId      String
+  quantity   Int    @default(1)
+  kitGroupId String @default("SINGLE")
+
+  cart Cart @relation(fields: [cartId], references: [id])
+  sku  Sku  @relation(fields: [skuId], references: [id])
+
+  @@unique([cartId, skuId, kitGroupId])
+}
+
+model Voucher {
+  id            String   @id @default(uuid())
+  code          String   @unique
+  percentOff    Int?
+  amountOff     Int?
+  maxDiscount   Int?
+  minOrderValue Int?
+  usageLimit    Int?
+  perUserLimit  Int?
+  startsAt      DateTime
+  endsAt        DateTime
+  isActive      Boolean  @default(true)
+
+  usages VoucherUsage[]
+}
+
+model VoucherUsage {
+  id        String   @id @default(uuid())
+  voucherId String
+  userId    String
+  orderId   String   @unique
+  usedAt    DateTime @default(now())
+
+  voucher Voucher @relation(fields: [voucherId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+  order   Order   @relation(fields: [orderId], references: [id])
+}
+
+model Promotion {
+  id        String    @id @default(uuid())
+  title     String
+  imageUrl  String
+  linkUrl   String?
+  sortOrder Int       @default(0)
+  isActive  Boolean   @default(true)
+  startsAt  DateTime?
+  endsAt    DateTime?
+}
+
+model ShippingRate {
+  id            String @id @default(uuid())
+  zone          String @unique
+  fee           Int
+  freeFromValue Int?
+}
+
+model Order {
+  id     String @id @default(uuid())
+  code   String @unique
+  userId String
+
+  status         OrderStatus    @default(PENDING_PAYMENT)
+  paymentStatus  PaymentStatus  @default(UNPAID)
+  shippingStatus ShippingStatus @default(NOT_SHIPPED)
+
+  recipientName    String
+  recipientPhone   String
+  recipientAddress String
+
+  subtotal    Int
+  discount    Int @default(0)
+  shippingFee Int @default(0)
+  total       Int
+
+  reserveExpiresAt DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  user         User             @relation(fields: [userId], references: [id])
+  items        OrderItem[]
+  voucherUsage VoucherUsage?
+  statusLogs   OrderStatusLog[]
+  payments     Payment[]
+  reviews      Review[]
+}
+
+model OrderItem {
+  id      String @id @default(uuid())
+  orderId String
+  skuId   String
+
+  // Snapshot tại thời điểm mua
+  productName   String
+  skuCode       String
+  colorSnapshot String?
+  unitSnapshot  String?
+  unitPrice     Int
+  quantity      Int
+  lineTotal     Int
+
+  // Thông tin Kit Builder
+  kitGroupId     String?
+  ruleSetVersion Int?
+  kitSnapshot    Json?
+
+  order Order @relation(fields: [orderId], references: [id])
+  sku   Sku   @relation(fields: [skuId], references: [id])
+}
+
+model OrderStatusLog {
+  id             String          @id @default(uuid())
+  orderId        String
+  status         OrderStatus?
+  paymentStatus  PaymentStatus?
+  shippingStatus ShippingStatus?
+  note           String?
+  createdAt      DateTime        @default(now())
+
+  order Order @relation(fields: [orderId], references: [id])
+}
+
+model Payment {
+  id      String @id @default(uuid())
+  orderId String
+
+  // Mã tham chiếu nội bộ, có ngay khi tạo lần thử thanh toán.
+  referenceCode String @unique
+
+  provider String
+
+  // Mã giao dịch do nhà cung cấp trả về, ban đầu có thể chưa có.
+  txnNo String?
+
+  amount    Int
+  status    PaymentStatus @default(UNPAID)
+  paidAt    DateTime?
+  createdAt DateTime      @default(now())
+
+  order Order @relation(fields: [orderId], references: [id])
+
+  @@unique([provider, txnNo])
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  userId    String
+  productId String
+  orderId   String
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+  order   Order   @relation(fields: [orderId], references: [id])
+
+  @@unique([userId, productId, orderId])
+}
+
+model RuleSet {
+  id          String        @id @default(uuid())
+  version     Int           @unique
+  status      RuleSetStatus @default(DRAFT)
+  rules       Json
+  note        String?
+  createdById String
+  publishedAt DateTime?
+  createdAt   DateTime      @default(now())
+
+  logs RuleChangeLog[]
+}
+
+model RuleChangeLog {
+  id        String   @id @default(uuid())
+  ruleSetId String
+  actorId   String
+  action    String
+  diff      Json?
+  createdAt DateTime @default(now())
+
+  ruleSet RuleSet @relation(fields: [ruleSetId], references: [id])
 }

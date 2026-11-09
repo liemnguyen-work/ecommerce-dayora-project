@@ -694,3 +694,253 @@ Reviewer BD2 Châu: chưa có minh chứng đã review.
 - Commit: https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/b06f0ae
 - Chưa xác nhận CI xanh trên GitHub; chưa thử CI đỏ,
   chưa cấu hình required check và chưa hoàn thành kiểm tra kiến thức.
+  ### Bổ sung minh chứng PRJ-P0-DO-2.2
+
+- PR #122 đã merge:
+  https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/122
+- Job check đã pass toàn bộ các bước:
+  Setup Node, Install dependencies, Lint, Test và Build.
+- Minh chứng:
+  https://github.com/liemnguyen-work/ecommerce-dayora-project/actions/runs/42457901247/job/128660747266
+- Kết quả này xác nhận CI chạy thành công trên PR.
+  Chưa xác nhận các bước thử CI đỏ, bảo vệ main và kiểm tra kiến thức.
+  ## P0 — Thử CI đỏ / KIET-20261108-CI7F2A-002
+
+- Thời gian ghi: 2026-11-08T15:22:05+07:00
+- Thời gian thực hiện: CI chạy ngày 08/11/2026, khoảng 15:17 giờ Việt Nam.
+- Mã phiên nhật ký: KIET-20261108-CI7F2A
+- Người prompt: Mã Tuấn Kiệt
+- Loại mục: Hoạt động và kiểm tra
+- Liên quan: PRJ-P0-DO-2.3; KIET-20261108-CI7F2A-001
+
+### Công cụ
+ChatGPT/Codex, GitHub plugin, VS Code, Git Bash và GitHub Actions.
+Kiệt trực tiếp thao tác trên máy và cung cấp ảnh minh chứng.
+
+### Mục đích
+Cố tình sửa sai kỳ vọng test trên nhánh nháp để kiểm tra
+CI phát hiện lỗi ở bước Test và bỏ qua bước Build.
+
+### Prompt
+Tóm lược: Kiệt cung cấp yêu cầu sub-issue PRJ-P0-DO-2.3,
+yêu cầu hướng dẫn thử CI đỏ và bổ sung nhật ký sử dụng AI.
+Kiệt gửi ảnh PR #127 và log job check để kiểm tra kết quả.
+
+### Kết quả đề xuất
+AI hướng dẫn tạo nhánh test-ci-fail từ nhánh làm việc,
+đổi giá trị status kỳ vọng từ 'ok' thành 'wrong-status'
+trong apps/api/src/app.controller.spec.ts.
+Giữ nguyên controller và workflow.
+Kiệt push commit thử nghiệm 38b14b1 và mở Draft PR #127.
+AI hướng dẫn lưu ảnh, đóng PR không merge, sau đó xóa nhánh nháp.
+
+### Phản biện
+- Chỉ push nhánh nháp chưa kích hoạt workflow vì push chỉ lọc main.
+  Cần mở PR hướng vào main để kích hoạt sự kiện pull_request.
+- Job đỏ chưa đủ chứng minh đúng nguyên nhân; phải kiểm tra
+  bước Test thất bại và Build được bỏ qua.
+- GitHub Checks không hiển thị log chi tiết trong ảnh ban đầu;
+  AI cung cấp đường dẫn trực tiếp tới job.
+- Lỗi được đưa vào giá trị kỳ vọng của test trên nhánh nháp,
+  không sửa code chức năng hoặc làm hỏng nhánh làm việc thật.
+
+### Quyết định của nhóm
+Kiệt thực hiện thử nghiệm theo sub-issue đã giao.
+Chưa có phản hồi reviewer hoặc quyết định chung mới.
+PR thử nghiệm không được dùng để merge mã lỗi vào main.
+
+### Người kiểm tra
+Kiệt cung cấp ảnh PR và log Test.
+ChatGPT/Codex đối chiếu ảnh và dùng GitHub plugin kiểm tra
+trạng thái từng bước trong job.
+Chưa có xác nhận reviewer BD2 Châu đã kiểm tra.
+
+### Kiểm tra và minh chứng
+- PR nháp: https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/127
+- Commit thử nghiệm: 38b14b18f60223f38f3f66cbc796cb374e16cb3d
+- Job:
+  https://github.com/liemnguyen-work/ecommerce-dayora-project/actions/runs/42462257420/job/128673872219
+- Install dependencies và Lint: success.
+- Test: failure; ảnh log chỉ vị trí app.controller.spec.ts:8:33,
+  lệnh vitest run kết thúc với mã thoát 1.
+- Build: skipped.
+- Ảnh đã cung cấp thể hiện Test đỏ và Build bị bỏ qua;
+  chưa có ảnh riêng phần so sánh 'wrong-status' và 'ok'.
+- Chưa xác nhận PR #127 đã đóng hoặc nhánh test-ci-fail đã xóa.
+  Chưa kết luận toàn bộ bước 2.3 hoàn tất.
+  ### Bổ sung kết quả dọn dẹp PRJ-P0-DO-2.3
+
+- Kiệt xác nhận đã lưu ảnh minh chứng.
+- Đã đóng PR nháp #127, không merge.
+- Đã xóa nhánh test-ci-fail ở máy và trên GitHub.
+- Giữ nguyên test đúng trên nhánh prj/p0-do-2.
+## P0 — Bảo vệ main / KIET-20261108-CI7F2A-003
+
+- Thời gian ghi: 2026-11-08T21:29:53+07:00
+- Thời gian thực hiện: Chưa xác minh thời điểm Liêm lưu cấu hình.
+- Mã phiên nhật ký: KIET-20261108-CI7F2A
+- Người prompt: Mã Tuấn Kiệt
+- Loại mục: Hoạt động và kiểm tra
+- Liên quan: PRJ-P0-DO-2.4
+
+### Công cụ
+ChatGPT/Codex, GitHub plugin và GitHub Settings.
+
+### Mục đích
+Bảo vệ main, yêu cầu PR và job check đạt trước khi merge.
+
+### Prompt
+Kiệt yêu cầu tiếp tục bước 2.4, cung cấp ảnh tài khoản
+không có quyền quản trị. Sau đó Kiệt báo Liêm đã thực hiện
+và yêu cầu ghi nhật ký, tạo commit minh chứng.
+
+### Kết quả đề xuất
+AI hướng dẫn cấu hình branch protection cho main.
+Do Kiệt không có quyền, phần thiết lập được nhờ Liêm thực hiện.
+Kiệt báo Liêm đã hoàn tất.
+GitHub plugin xác nhận main có protected: true.
+
+### Phản biện
+protected: true chỉ xác nhận nhánh đang được bảo vệ,
+chưa đủ chứng minh check cụ thể đã được yêu cầu.
+API tổng quát trả contexts và checks trống;
+API chi tiết trả 403 do quyền của integration.
+Cần ảnh rule đã lưu để xác minh yêu cầu PR và required check check.
+
+### Quyết định của nhóm
+Theo thông tin Kiệt cung cấp, Liêm đã thực hiện cấu hình.
+Chưa có ảnh chi tiết trong cuộc trò chuyện để đối chiếu đầy đủ.
+
+### Người kiểm tra
+Kiệt cung cấp thông tin Liêm đã làm.
+ChatGPT/Codex kiểm tra trạng thái nhánh qua GitHub plugin.
+Chưa xác minh đầy đủ cấu hình required check.
+
+### Kiểm tra và minh chứng
+- Nhánh main: protected = true, protection.enabled = true.
+- Danh sách ruleset: trống tại thời điểm kiểm tra.
+- API chi tiết branch protection: 403.
+- Chờ ảnh cấu hình đã lưu từ Liêm trước khi kết luận
+  đạt toàn bộ tiêu chí PRJ-P0-DO-2.4.
+  ## P0 — Sửa Prisma Client / KIET-20261109-PRISMAFIX-001
+
+- Thời gian ghi: 2026-11-09T22:57:49+07:00
+- Thời gian thực hiện: Ngày 09/11/2026; test có mốc 22:52:40 trên terminal.
+- Mã phiên nhật ký: KIET-20261109-PRISMAFIX
+- Người prompt: Mã Tuấn Kiệt
+- Loại mục: Hoạt động, phản biện và kiểm tra
+- Liên quan: Task sửa lỗi Prisma sau review; #22, #24.
+- Nhánh: fix/p0-prisma-client
+
+### Công cụ
+
+ChatGPT/Codex, GitHub plugin, VS Code, Git Bash,
+npm, Prisma, ESLint, Vitest và GitHub.
+
+### Mục đích
+
+Sửa đường dẫn import PrismaClient cho phù hợp với generator mới
+và không đưa mã Prisma tự sinh lên Git.
+Ưu tiên task sửa lỗi trước các công việc đang dở.
+
+### Prompt
+
+Tổng hợp các yêu cầu và hướng dẫn AI trong task:
+
+1. Kiệt cung cấp yêu cầu sửa import PrismaClient và bổ sung
+   thư mục generated vào .gitignore; yêu cầu một PR,
+   CI xanh và một bạn khác Approve trước khi merge.
+
+2. AI kiểm tra schema.prisma, prisma.service.ts,
+   package.json API và .gitignore trên main bằng GitHub plugin.
+   Xác nhận generator đã đổi sang prisma-client nhưng service
+   vẫn import từ @prisma/client.
+
+3. AI hướng dẫn kiểm tra git status, fetch, chuyển về main,
+   pull cập nhật mới nhất rồi tạo nhánh fix/p0-prisma-client.
+   Nếu có thay đổi ngoài phạm vi thì dừng để xử lý trước.
+
+4. AI hướng dẫn đổi import:
+   từ @prisma/client
+   sang ../generated/prisma/client.js.
+   Giữ nguyên các phần còn lại của PrismaService.
+
+5. AI hướng dẫn thêm apps/api/src/generated/ vào .gitignore
+   ở gốc repo và tạo hai commit riêng theo yêu cầu task.
+
+6. AI hướng dẫn chạy prisma:generate và build API;
+   kiểm tra git status, git ls-files và git check-ignore
+   để xác nhận generated không được Git theo dõi.
+
+7. Sau khi Kiệt gửi kết quả, AI hướng dẫn chạy lint, test
+   và git log -2 --oneline để đối chiếu kiểm tra và commit.
+
+8. AI hướng dẫn push nhánh, mở PR vào main,
+   ghi kết quả kiểm tra trong mô tả và chọn Liêm làm Assignee.
+
+9. Khi Kiệt hỏi cách chọn Assignee, AI hướng dẫn tìm
+   liemnguyen-work trong cột bên phải của PR.
+   Phân biệt Assignee với Reviewer thực hiện Approve.
+
+10. Khi Kiệt hỏi chọn loại PR nào, AI hướng dẫn chọn
+    Create pull request vì phần sửa đã sẵn sàng để review.
+    Vẫn cần CI xanh và một bạn khác Approve trước khi merge.
+
+11. Khi Kiệt hỏi có cần commit nữa không, AI giải thích
+    hai thay đổi đã có commit; tạo PR và chọn Assignee
+    không cần thêm commit nếu không sửa file.
+
+12. Kiệt yêu cầu tổng hợp AI Usage Log và các hướng dẫn
+    đã dùng trong task này.
+
+### Kết quả đề xuất
+
+- Sửa import trong apps/api/src/prisma/prisma.service.ts
+  sang ../generated/prisma/client.js.
+- Thêm apps/api/src/generated/ vào .gitignore.
+- Không sửa schema nghiệp vụ hoặc chạy migration trong task.
+- Hai commit được xác nhận qua ảnh terminal:
+  - ecc6aa9 — fix(api): import PrismaClient from generated client
+  - 24da76e — chore(git): ignore generated Prisma client
+
+### Phản biện
+
+- Đường dẫn import phải khớp output của generator mới,
+  không tiếp tục dùng client cũ trong @prisma/client.
+- Generate thành công không chứng minh đã kết nối database thật.
+- Build và test trên máy cá nhân chưa chứng minh CI trên máy sạch
+  tự sinh được Prisma Client; cần kiểm tra job CI của PR.
+- .gitignore không tự ngừng theo dõi file đã được commit,
+  nên kiểm tra thêm bằng git ls-files.
+- Giữ hai file prisma-empty.bak ngoài commit.
+- Thông báo quy trình chung của Liêm cho phép tiếp tục task
+  không thay thế yêu cầu riêng của task sửa lỗi:
+  phải có một bạn khác Approve trước khi merge.
+
+### Quyết định của nhóm
+
+Thực hiện hai thay đổi theo task Kiệt cung cấp.
+Hướng dẫn chọn Liêm làm Assignee để theo dõi PR.
+Chưa có minh chứng trong cuộc trò chuyện xác nhận
+PR đã được Approve hoặc merge.
+
+### Người kiểm tra
+
+Kiệt trực tiếp chạy lệnh và cung cấp ảnh terminal.
+ChatGPT/Codex kiểm tra cấu hình trên GitHub và đối chiếu đầu ra.
+Chưa xác nhận người review hoặc kết quả Approve.
+
+### Kiểm tra và minh chứng
+
+- npm run prisma:generate -w api:
+  sinh Prisma Client 6.19.3 vào src/generated/prisma thành công.
+- npm run build -w api: hoàn tất không báo lỗi.
+- npm run lint: API và Web không báo lỗi trong đầu ra đã gửi.
+- npm test: một test health pass, tổng 1/1.
+- git status sau generate: chỉ còn hai file .bak chưa theo dõi,
+  không hiện thư mục generated.
+- git ls-files -- apps/api/src/generated: không có đầu ra.
+- git check-ignore xác nhận .gitignore áp dụng cho generated.
+- git log xác nhận hai commit ecc6aa9 và 24da76e.
+- Chưa nhận link PR, kết quả CI hoặc xác nhận Approve/merge.
+- Không kết luận toàn bộ task hoàn thành ở thời điểm ghi log.

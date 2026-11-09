@@ -1,16 +1,19 @@
+
 {
   "name": "api",
   "version": "0.0.0",
   "private": true,
   "scripts": {
-  "start:dev": "nest start --watch",
-  "build": "nest build",
-  "start": "node dist/main.js",
-  "test": "vitest run",
-  "lint": "eslint \"src/**/*.ts\"",
-  "prisma:generate": "prisma generate --schema prisma/schema.prisma --allow-no-models",
-  "prisma:validate": "prisma validate --schema prisma/schema.prisma"
-},
+    "start:dev": "nest start --watch",
+    "prebuild": "npm run prisma:generate",
+    "build": "nest build",
+    "start": "node dist/main.js",
+    "test": "vitest run",
+    "lint": "eslint \"src/**/*.ts\"",
+    "prisma:generate": "prisma generate --schema prisma/schema.prisma --allow-no-models",
+    "prisma:validate": "prisma validate --schema prisma/schema.prisma",
+    "db:migrate": "prisma migrate dev"
+  },
   "dependencies": {
     "@nestjs/common": "^11.2.8",
     "@nestjs/core": "^11.2.8",

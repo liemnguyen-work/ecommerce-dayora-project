@@ -739,3 +739,223 @@ Tôi (Châu) cung cấp quá trình sử dụng ChatGPT, sửa tệp và thao t�
 Giới hạn: Chưa có bằng chứng reviewer hỏi 2 câu, phê duyệt toàn bộ câu trả lời hoặc trạng thái đóng issue. Nội dung câu trả lời không tự chứng minh các chức năng đã chạy thành công. Thông tin push thành công và lỗi Git được ghi theo lời tôi cung cấp; thời gian tương tác AI vẫn chưa xác minh.
 
 Trong phiên tổng hợp này, Codex chỉ nối thêm log vào `docs/ai-logs/chau.md`; không sửa `Chau.md`, mã nguồn, commit hoặc push.
+
+---
+
+## P0 — Schema + migration đầu, bước 6 / chau-20261109-q7m2-01
+
+* Thời gian ghi: 2026-11-09T01:48:41+07:00
+* Thời gian thực hiện: Trao đổi trong phiên hiện tại; thời điểm Châu sửa config và chạy migration chưa xác minh.
+* Mã phiên nhật ký: chau-20261109-q7m2
+* Người prompt: Châu (đã xác nhận trong hội thoại)
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P0-BD2-1, bước 6; chưa xác minh số GitHub Issue.
+
+### Công cụ
+
+Codex; công cụ đọc tệp và tra cứu tài liệu Prisma trong lượt tư vấn trước của cùng hội thoại.
+
+### Mục đích
+
+Giải thích yêu cầu tạo prisma.config.ts và migration init lên Supabase, nhận xét code do Châu cung cấp để Châu tự sửa; ghi nhận phản hồi hoàn thành bước 6.
+
+### Prompt
+
+Tóm lược: Châu yêu cầu giải thích ngắn yêu cầu, chỉ lỗi và hướng sửa đoạn prisma.config.ts, không viết code hoàn chỉnh và chờ Châu sửa. Sau đó Châu xác nhận danh tính và báo đã hoàn thành bước 6 của PRJ-P0-BD2-1.
+
+### Kết quả đề xuất
+
+Codex đã giải thích tiêu chí 18 bảng nghiệp vụ cùng cấu trúc cột và khóa ngoại; đề xuất đối chiếu Prisma 6.19.3, bổ sung engine classic khi khai báo datasource, bắt buộc DIRECT_URL thay vì fallback và bỏ cấu hình seed nếu chưa có seed/tsx. Đây là hướng dẫn đã gửi trong lượt trước, không phải bằng chứng Châu đã áp dụng từng đề xuất. Châu báo đã hoàn thành bước 6; chưa cung cấp config sau sửa, đầu ra migration hoặc ảnh Table Editor trong lượt xác nhận. Lượt hiện tại chỉ nối thêm nhật ký; không sửa mã nguồn hoặc chạy migration.
+
+### Phản biện
+
+Codex phân biệt thông báo hoàn thành của Châu với kiểm tra độc lập trên Supabase. Ở lượt hiện tại, đọc apps/api/prisma.config.ts báo không tìm thấy tệp trong workspace đang truy cập; chưa xác định nguyên nhân khác biệt với ngữ cảnh IDE/lượt trước, không kết luận tệp đã bị xóa hoặc migration thất bại.
+
+### Quyết định của nhóm
+
+Châu xác nhận đã hoàn thành bước 6. Chưa có thông tin nhóm hoặc reviewer phê duyệt; không tự đánh dấu toàn bộ task PRJ-P0-BD2-1 hoàn thành.
+
+### Người kiểm tra
+
+Châu là người báo hoàn thành. Codex chưa kiểm tra trực tiếp Supabase, đủ 18 bảng, cấu trúc cột hoặc khóa ngoại. Nhật ký chờ Châu kiểm tra.
+
+### Kiểm tra và minh chứng
+
+Nguồn xác nhận hoàn thành: tin nhắn Châu trong hội thoại hiện tại. Codex đã đọc phần cuối log cá nhân trước khi nối thêm. Không chạy kiểm thử, migration hoặc kết nối CSDL; không đọc .env, commit hay push. Tệp thay đổi trong lượt này: docs/ai-logs/chau.md. Chưa có minh chứng Supabase để xác minh độc lập tiêu chí hoàn thành.
+
+---
+
+## P0 — Yêu cầu chấm kiến thức schema/migration / chau-20261109-q7m2-02
+
+* Thời gian ghi: 2026-11-09T02:10:59+07:00
+* Thời gian thực hiện: Trong lượt hội thoại hiện tại.
+* Mã phiên nhật ký: chau-20261109-q7m2
+* Người prompt: Châu
+* Loại mục: Hoạt động
+* Liên quan: chau-20261109-q7m2-01; PRJ-P0-BD2-1.
+
+### Công cụ
+
+Codex; đọc tệp cục bộ và công cụ web.
+
+### Mục đích
+
+Chấm từng câu trả lời về Schema + migration đầu và hỏi thêm hai câu vặn, không đưa code mẫu trước khi Châu trả lời.
+
+### Prompt
+
+Tóm lược: Châu báo hoàn thành task, dẫn URL GitHub của docs/learning/BD2-Chau/LP-BD2-Chau.md, yêu cầu chấm đúng/thiếu/sai và giải thích, sau đó hỏi hai câu vặn.
+
+### Kết quả đề xuất
+
+Bản cục bộ của tệp được dẫn chỉ có lộ trình, checklist sáu bước và bảng tiến độ trống, không có câu trả lời để chấm. Truy cập URL GitHub thất bại (Cache miss), nên chưa xác minh được bản trên GitHub. Codex yêu cầu Châu cung cấp nội dung câu trả lời hoặc đúng đường dẫn; chuẩn bị hai câu hỏi về tồn khả dụng và kiểm chứng migration, không cung cấp code mẫu. Chưa chấm kiến thức khi thiếu bài làm.
+
+### Phản biện
+
+Không coi checklist chưa đánh dấu là bằng chứng Châu chưa làm; không coi lời báo hoàn thành là bài trả lời để chấm từng câu.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung hoặc phê duyệt task trong lượt này.
+
+### Người kiểm tra
+
+Codex đã đọc bản cục bộ. Chờ Châu cung cấp bài làm và trả lời câu hỏi; nhật ký chờ Châu kiểm tra.
+
+### Kiểm tra và minh chứng
+
+Đã đọc docs/learning/BD2-Chau/LP-BD2-Chau.md; web không tải được URL người dùng dẫn. Không chạy migration, kiểm thử hoặc kiểm tra Supabase. Chỉ nối thêm docs/ai-logs/chau.md; không sửa code, commit hoặc push.
+
+---
+
+## P0 — Review commit migration đầu / chau-20261109-q7m2-03
+
+* Thời gian ghi: 2026-11-09T02:18:32+07:00
+* Thời gian thực hiện: Trong lượt hội thoại hiện tại.
+* Mã phiên nhật ký: chau-20261109-q7m2
+* Người prompt: Châu
+* Loại mục: Phản biện
+* Liên quan: chau-20261109-q7m2-02; PRJ-P0-BD2-1; commit 68fae57185c3f94991fa31e8d7e7b453eb0aba8e.
+
+### Công cụ
+
+Codex, Git và công cụ web. URL GitHub chưa tải được; Git cục bộ có đầy đủ commit được dẫn.
+
+### Mục đích
+
+Đánh giá bài làm theo sáu bước của task từ commit Châu cung cấp, hỏi thêm hai câu vặn và không đưa code mẫu.
+
+### Prompt
+
+Châu gửi link commit sau yêu cầu chấm đúng/thiếu/sai và hỏi hai câu vặn ở lượt trước.
+
+### Kết quả đề xuất
+
+Codex đọc diff và nội dung schema/migration tại đúng commit. Schema có 18 model, 7 enum; SQL có 18 bảng nghiệp vụ, 19 khóa ngoại và 14 unique index. Nhóm bán hàng, mua hàng và Kit có cấu trúc tương ứng trong SQL. Bước 1 thiếu minh chứng sơ đồ và giải thích D06–D08. Bước 2 có cấu trúc nhưng chưa có đầu ra validate. Bước 6 chưa đạt phần cấu hình: config thiếu engine classic khi khai báo datasource theo Prisma 6, fallback không bắt buộc DIRECT_URL, khai báo seed chưa có tệp và dependency tsx trong package API. Chưa có minh chứng áp dụng lên Supabase. Codex hỏi về unique của CartItem và phân biệt có file migration với áp dụng thành công; chưa cung cấp đáp án hoặc code mẫu.
+
+### Phản biện
+
+Review chỉ xác nhận cấu trúc đọc được trong Git, không chứng minh hiểu bài hoặc chạy thành công. Các model phần lớn đã có từ commit cha, không gán toàn bộ schema là phần mới viết trong commit này. Châu đã báo hoàn thành nhưng chưa có minh chứng CSDL để đối chiếu độc lập. Không coi thiếu foreign key cho createdById/actorId là lỗi nghiệp vụ khi chưa đối chiếu yêu cầu đã được nhóm chốt.
+
+### Quyết định của nhóm
+
+Chưa có phê duyệt nhóm; nhận xét là review của Codex, không thay thế reviewer BD1 Hoàn.
+
+### Người kiểm tra
+
+Codex đọc Git và đối chiếu checklist. Chờ Châu trả lời hai câu hỏi và kiểm tra log; chưa có kết quả reviewer độc lập.
+
+### Kiểm tra và minh chứng
+
+Đã dùng git show --stat, git show diff, đọc schema.prisma, migration.sql, package.json và git ls-tree tại 68fae57185c3f94991fa31e8d7e7b453eb0aba8e. Chưa chạy validate, migration hoặc truy cập Supabase. Chỉ nối thêm docs/ai-logs/chau.md; không sửa code, commit hoặc push.
+
+---
+
+## P0 — Chấm hai câu vặn schema/migration / chau-20261109-q7m2-04
+
+* Thời gian ghi: 2026-11-09T02:20:18+07:00
+* Thời gian thực hiện: Trong lượt hội thoại hiện tại; thời điểm chạy migration và xem Dashboard chưa xác minh.
+* Mã phiên nhật ký: chau-20261109-q7m2
+* Người prompt: Châu
+* Loại mục: Phản biện
+* Liên quan: chau-20261109-q7m2-03; PRJ-P0-BD2-1.
+
+### Công cụ
+
+Codex.
+
+### Mục đích
+
+Đánh giá hai câu trả lời của Châu về unique CartItem và bằng chứng áp dụng migration.
+
+### Prompt
+
+Tóm lược: Châu giải thích cùng SKU có thể nằm trong nhiều nhóm Kit của cùng giỏ, unique ba trường giữ riêng các dòng; phân biệt file SQL với migration đã áp dụng. Châu cung cấp hai dòng Applying migration 20261108183740_init và Your database is now in sync with your schema, đồng thời báo đã thấy các bảng nghiệp vụ và _prisma_migrations trên Supabase.
+
+### Kết quả đề xuất
+
+Cả hai câu đúng ý chính. Câu 1 cần diễn đạt chính xác: unique hai trường khiến thao tác thêm dòng trùng bị từ chối; tự gộp chỉ xảy ra nếu ứng dụng chủ động xử lý, không do unique tự gộp. Câu 2 phân biệt đúng file và thực thi; để nghiệm thu đúng cấu trúc cần đối chiếu cột, kiểu dữ liệu, null/default, PK/FK/unique trên đúng database/schema, và bản ghi migration hoàn tất không bị rollback. _prisma_migrations là bảng kỹ thuật ngoài 18 bảng nghiệp vụ.
+
+### Phản biện
+
+Codex đánh giá nội dung câu trả lời, chưa truy cập Supabase hoặc chạy lại lệnh. Hai dòng terminal và quan sát Dashboard là thông tin Châu cung cấp; chưa có ảnh hoặc đầu ra đầy đủ để đối chiếu độc lập. Phản hồi mới bổ sung minh chứng do thành viên báo cáo cho mục trước, không sửa mục cũ. Câu trả lời không tự chứng minh các điểm config trong commit đã được sửa.
+
+### Quyết định của nhóm
+
+Chưa có phê duyệt chung hoặc xác nhận reviewer BD1 Hoàn. Không tự đóng task hoặc ghi toàn bộ tiêu chí đã đạt.
+
+### Người kiểm tra
+
+Codex chấm hai câu trả lời; Châu cung cấp kết quả thực hành. Nhật ký chờ Châu kiểm tra.
+
+### Kiểm tra và minh chứng
+
+Đối chiếu nội dung trả lời với câu hỏi và schema đã đọc ở mục trước; không chạy kiểm thử, validate, migration hoặc kết nối CSDL. Chỉ nối thêm docs/ai-logs/chau.md, không sửa mã nguồn, commit hoặc push.
+
+---
+
+## P0 — Ghi nhận kiểm tra kiến thức sau task Schema + migration đầu / chau-20261109-q7m2-05
+
+* Thời gian ghi: 2026-11-09T02:20:49+07:00
+* Thời gian thực hiện: Kiểm tra kiến thức trong hội thoại hiện tại, trước yêu cầu lưu mục này; không xác định riêng giờ bắt đầu/kết thúc.
+* Mã phiên nhật ký: chau-20261109-q7m2
+* Người prompt: Châu
+* Loại mục: Kiểm tra
+* Liên quan: PRJ-P0-BD2-1; chau-20261109-q7m2-02, chau-20261109-q7m2-03, chau-20261109-q7m2-04; commit 68fae57185c3f94991fa31e8d7e7b453eb0aba8e.
+
+### Công cụ
+
+Codex; Git được dùng ở lượt review trước để đọc bài làm tại commit. Không xác minh model cụ thể.
+
+### Mục đích
+
+Lưu kết quả kiểm tra kiến thức sau khi Châu báo hoàn thành task P0 Schema + migration đầu. Phạm vi kiểm tra là PRJ-P0-BD2-1, không đại diện toàn bộ công việc P0 của nhóm.
+
+### Prompt
+
+Nguyên văn yêu cầu lưu: “lưu AI usage log đã kiểm tra kiến thức sau khi làm xong P0 của dự án”. Trước đó Châu yêu cầu chấm bài làm và hỏi hai câu vặn, không đưa code mẫu trước khi trả lời; Châu đã trả lời cả hai câu trong hội thoại.
+
+### Kết quả đề xuất
+
+Đã thực hiện hỏi–đáp và chấm hai câu:
+
+1. Vì sao CartItem unique trên cartId, skuId, kitGroupId: Châu giải thích đúng việc cùng SKU nằm trong nhiều nhóm Kit của một giỏ, cần giữ riêng số lượng và ngữ cảnh. Kết quả: đúng ý chính. Codex chỉnh cách diễn đạt: unique hai trường từ chối dòng trùng, không tự gộp dòng; ứng dụng mới quyết định xử lý gộp.
+2. Có migration.sql có chứng minh Supabase đã đủ bảng không: Châu phân biệt đúng migration đã tạo và đã áp dụng; cung cấp nội dung terminal báo áp dụng migration, đồng bộ schema và báo đã xem bảng trên Dashboard. Kết quả: đúng ý chính. Codex bổ sung cần đối chiếu cấu trúc cột, kiểu dữ liệu, PK/FK/unique; _prisma_migrations là bảng kỹ thuật ngoài 18 bảng nghiệp vụ.
+
+Kết luận giới hạn: Châu đã trả lời hai câu kiểm tra kiến thức và cả hai đạt ý chính, có các điểm cần diễn đạt/bổ sung như trên. Không có code mẫu được đưa trước khi Châu trả lời. Chỉ nối thêm nhật ký trong lượt này.
+
+### Phản biện
+
+Các góp ý chi tiết đã được ghi ở chau-20261109-q7m2-04. Chưa có câu trả lời sửa lại sau góp ý; không ghi đã khắc phục mọi điểm. Kết quả hỏi–đáp không thay thế nghiệm thu CSDL hay xác nhận sửa config tại commit. Báo cáo runtime và Dashboard do Châu cung cấp, Codex chưa xác minh độc lập.
+
+### Quyết định của nhóm
+
+Châu yêu cầu lưu kết quả kiểm tra kiến thức. Chưa có quyết định chung xác nhận toàn bộ P0 hoặc phê duyệt task; không tự đóng Issue, đánh dấu merge hay duyệt mã nguồn.
+
+### Người kiểm tra
+
+Codex đặt câu hỏi và chấm nội dung trả lời của Châu trong hội thoại. Chưa có kết quả review độc lập của BD1 Hoàn. Bản ghi chờ Châu kiểm tra.
+
+### Kiểm tra và minh chứng
+
+Minh chứng: hai câu trả lời của Châu và phản hồi chấm ngay trước yêu cầu lưu; chi tiết đã nối tại chau-20261109-q7m2-04. Đã đọc phần cuối log trước khi nối thêm; không sửa các mục cũ. Không chạy lại validate, migration, kiểm thử hoặc truy cập Supabase. Tệp thay đổi: docs/ai-logs/chau.md. Không commit hoặc push.
