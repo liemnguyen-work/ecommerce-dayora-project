@@ -822,3 +822,59 @@ Chưa xác minh đầy đủ cấu hình required check.
 - API chi tiết branch protection: 403.
 - Chờ ảnh cấu hình đã lưu từ Liêm trước khi kết luận
   đạt toàn bộ tiêu chí PRJ-P0-DO-2.4.
+  ## P0 — Đính chính bảo vệ main / KIET-20261109-PROTECTION-001
+
+- Thời gian ghi: 2026-11-09T23:14:35+07:00
+- Thời gian thực hiện: Ngày 09/11/2026; chưa xác minh giờ lưu rule.
+- Mã phiên nhật ký: KIET-20261109-PROTECTION
+- Người prompt: Mã Tuấn Kiệt
+- Loại mục: Đính chính và kiểm tra
+- Liên quan: #117, #564; KIET-20261108-CI7F2A-003
+
+### Công cụ
+ChatGPT/Codex, Git Bash, VS Code và GitHub Settings.
+
+### Mục đích
+Khắc phục cấu hình bảo vệ main còn thiếu required check
+và bảo đảm approval đến từ người khác người thực hiện.
+
+### Prompt
+Tóm lược: Kiệt cung cấp task sửa lỗi sau review,
+yêu cầu đủ năm thiết lập bảo vệ main và kiểm chứng
+PR chưa có Approve phải bị khóa merge.
+AI hướng dẫn phối hợp Liêm do Kiệt không có quyền admin,
+kiểm tra ảnh rule, cập nhật main và tạo nhánh sửa lỗi.
+
+### Kết quả đề xuất
+Hai ảnh Kiệt cung cấp thể hiện rule main đã chọn:
+- Require a pull request before merging; approvals: 1.
+- Dismiss stale approvals when new commits are pushed.
+- Require approval of the most recent reviewable push.
+- Require status checks to pass; check nằm trong danh sách bắt buộc.
+- Do not allow bypassing the above settings.
+
+Kiệt đã cập nhật main và tạo nhánh fix/p0-main-protection.
+
+### Phản biện
+Lần trước protected: true chưa đủ chứng minh check đã bắt buộc.
+API chi tiết trả 403 cũng không xác nhận được yêu cầu approval.
+Task review báo PR #138 có tình trạng người làm tự duyệt;
+phiên này ghi nhận yêu cầu sửa, chưa tự xác minh lịch sử review đó.
+
+Ảnh cấu hình mới thể hiện đủ các lựa chọn cần thiết,
+nhưng vẫn cần kiểm chứng thực tế trên PR sau khi rule được lưu.
+Không coi Assignee là người đã Approve.
+
+### Quyết định của nhóm
+Theo task, Kiệt tự tạo PR và nhờ BD2 Châu Approve.
+Không dùng approval của chính người thực hiện làm minh chứng đạt.
+
+### Người kiểm tra
+Kiệt cung cấp ảnh cấu hình và terminal.
+ChatGPT/Codex đối chiếu các tùy chọn trong ảnh.
+Chưa có minh chứng Châu review PR mới.
+
+### Kiểm tra và minh chứng
+- Hai ảnh cấu hình thể hiện đủ năm yêu cầu.
+- main đã pull thành công trước khi tạo nhánh.
+- Nhánh hiện tại: fix/p0-main-protection.
