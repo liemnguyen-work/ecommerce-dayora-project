@@ -39,3 +39,12 @@ Phạm vi gồm danh sách và chi tiết sản phẩm, tìm kiếm, lọc, sắ
 - **Thực tế:** Chữ “Xóa” bị ngắt giữa từ. Ký hiệu ₫ xuống dòng ở cột Đơn giá và Thành tiền. Hai nút − và + hiển thị lệch quanh số lượng.
 - **Mong đợi:** Chữ “Xóa” và giá tiền hiển thị trọn trên một dòng. Hai nút − và + nằm cùng hàng với số lượng.
 - **Minh chứng:** [Giỏ hàng ở 768 px](screenshots/cart-768px.png).
+
+## Kiểm tra tích hợp hệ thống – HW-P1-QA-1.4
+
+| Mục kiểm tra | Kết quả | Ghi nhận thực tế | Người phụ trách sửa |
+| --- | --- | --- | --- |
+| Trùng tên hàm hoặc biến | Đạt | Mỗi tên trong 5 tên dùng chung đã đối chiếu có đúng một khai báo. Trên `products.html`, `products` có kiểu `object`, còn `formatPrice`, `getProductById`, `loadCart` và `addToCart` đều có kiểu `function`. Console không hiện lỗi khai báo trùng. | — |
+| Sự kiện `cart:changed` chạy lặp | Đạt | Bấm **Thêm vào giỏ** đúng một lần trên trang Sản phẩm. Console ghi `cart:changed: 1` và số trên menu Giỏ hàng tăng từ 1 lên 2. | — |
+| Đường dẫn JavaScript và ảnh | Đạt | Kiểm tra Network trên Trang chủ, Sản phẩm, Chi tiết sản phẩm, Giới thiệu và Giỏ hàng. Bộ lọc `status-code:404` hiển thị `0 / 226 requests`. | — |
+| Đồng bộ giỏ hàng giữa hai tab | Đạt | Sau khi thêm sản phẩm ở tab Sản phẩm, tab Giỏ hàng đã mở sẵn tự cập nhật số trên menu và số lượng trong giỏ trước khi tải lại trang. | — |
