@@ -431,3 +431,691 @@ Codex kiểm tra đầu ra lệnh; Ngọc chưa xác nhận push thành công.
 ### Kiểm tra và minh chứng
 
 Git trả mã 128, thông báo `could not read Username for 'https://github.com': Device not configured`. Trước mục log này nhánh `KhanhNgoc` có 14 commit chưa đẩy. Chưa xác minh được trạng thái xác thực của Git CLI qua việc đăng nhập GitHub Desktop.
+
+---
+
+## P0 / ngoc-20261107-4c91-01
+
+* Thời gian ghi: 2026-11-07T16:27:28+07:00
+* Thời gian thực hiện: Trong phiên ngày 07/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: ngoc-20261107-4c91
+* Người prompt: Ngọc
+* Loại mục: Phản biện
+* Liên quan: PRJ-P0-QA-1
+
+### Công cụ
+
+Codex, Git.
+
+### Mục đích
+
+Rà ví dụ lấy test nghiệm thu trong bản nháp phần 1 để Ngọc tự sửa.
+
+### Prompt
+
+Tóm lược: Ngọc yêu cầu giải thích bước, chỉ vấn đề và gợi ý sửa lệnh mẫu; không viết hoàn chỉnh và chờ Ngọc sửa.
+
+### Kết quả đề xuất
+
+Cú pháp checkout hợp lệ; đề xuất dùng mốc commit test đã chốt theo issue thay vì phụ thuộc đầu nhánh có thể thay đổi, giải thích placeholder và lưu ý checkout ghi đè thay đổi tại đường dẫn. Không sửa tài liệu của Ngọc.
+
+### Phản biện
+
+Chưa có phản biện của Ngọc đối với hướng dẫn này.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới; Ngọc yêu cầu tự sửa bản nháp.
+
+### Người kiểm tra
+
+Codex kiểm tra ref và thử checkout trên index và thư mục tạm; chờ Ngọc kiểm tra hướng dẫn.
+
+### Kiểm tra và minh chứng
+
+Ref cục bộ `origin/prj/p0-do-1` có file spec; checkout từ ref này trên bản tạm thành công và nội dung trùng với ref. Không chạy fetch hay xác minh issue trên GitHub; chưa chứng minh ref đã được QA duyệt hoặc nội dung remote hiện tại. Tệp thay đổi: `docs/ai-logs/ngoc.md`.
+
+---
+
+## P0 / ngoc-20261107-4c91-02
+
+* Thời gian ghi: 2026-11-07T16:36:42+07:00
+* Thời gian thực hiện: Trong phiên ngày 07/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: ngoc-20261107-4c91
+* Người prompt: Ngọc
+* Loại mục: Phản biện
+* Liên quan: ngoc-20261107-4c91-01; PRJ-P0-QA-1
+
+### Công cụ
+
+Codex, Git.
+
+### Mục đích
+
+Rà lại bản nháp do Ngọc chỉnh sửa, giúp Ngọc tự hoàn thiện hướng dẫn lấy test.
+
+### Prompt
+
+Tóm lược: Ngọc đưa bản nháp đã chỉnh và yêu cầu kiểm tra lại.
+
+### Kết quả đề xuất
+
+Ghi nhận ví dụ dùng commit cố định; lưu ý commit ví dụ được tạo sau code API nên cần đối chiếu mốc test được chốt và issue, làm rõ checkout cập nhật cả staging, và không phải lúc nào cũng có thay đổi để commit. Không sửa tài liệu của Ngọc.
+
+### Phản biện
+
+Chưa có phản biện của Ngọc đối với lần rà này.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Codex kiểm tra lịch sử Git và hướng dẫn trong roadmap; chờ Ngọc kiểm tra bản nháp và góp ý.
+
+### Kiểm tra và minh chứng
+
+Git cho thấy commit ví dụ `c6e712f` có sau commit code API `f1a653e`; file spec tại đó giống `68918c4`, theo diff đã kiểm trong lần rà trước. Chưa kiểm tra issue hay xác nhận QA duyệt mốc; không chạy fetch. Tệp thay đổi: `docs/ai-logs/ngoc.md`.
+
+---
+
+## P0 / ngoc-20261107-4c91-03
+
+* Thời gian ghi: 2026-11-07T16:43:34+07:00
+* Thời gian thực hiện: Trong phiên ngày 07/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: ngoc-20261107-4c91
+* Người prompt: Ngọc
+* Loại mục: Kiểm tra
+* Liên quan: ngoc-20261107-4c91-02; PRJ-P0-QA-1
+
+### Công cụ
+
+Codex, Git.
+
+### Mục đích
+
+Kiểm tra bản nháp phần 1 và lệnh mẫu sau khi Ngọc sửa.
+
+### Prompt
+
+Tóm lược: Ngọc yêu cầu kiểm tra bản nháp đã đạt yêu cầu chưa và gợi ý sửa nếu cần.
+
+### Kết quả đề xuất
+
+Lệnh checkout từ commit `68918c4` chạy thành công trên vùng tạm; bản nháp đáp ứng yêu cầu có lệnh mẫu chạy được trong kho cục bộ. Lưu ý ví dụ chưa xác minh issue hoặc QA duyệt và fetch phụ thuộc ref được cấu hình. Không sửa tài liệu của Ngọc.
+
+### Phản biện
+
+Chưa có phản biện của Ngọc đối với lần kiểm tra này.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới; chưa xác nhận QA đã duyệt mốc trong issue.
+
+### Người kiểm tra
+
+Codex kiểm tra lệnh trong vùng tạm; chờ Ngọc và reviewer kiểm tra tài liệu.
+
+### Kiểm tra và minh chứng
+
+Checkout với index và thư mục tạm trả mã 0; nội dung file trùng commit và file xuất hiện trong danh sách staged. Commit là tổ tiên của ref cục bộ `origin/prj/p0-do-1`. Không chạy fetch hay kiểm tra issue từ xa. Tệp thay đổi: `docs/ai-logs/ngoc.md`.
+
+---
+
+## P0 / ngoc-20261107-4c91-04
+
+* Thời gian ghi: 2026-11-07T16:48:27+07:00
+* Thời gian thực hiện: Trong phiên ngày 07/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: ngoc-20261107-4c91
+* Người prompt: Ngọc
+* Loại mục: Kiểm tra
+* Liên quan: ngoc-20261107-4c91-03; PRJ-P0-QA-1
+
+### Công cụ
+
+Codex, Git.
+
+### Mục đích
+
+Kiểm tra nội dung phần 1 đã được Ngọc lưu trong tài liệu.
+
+### Prompt
+
+Tóm lược: Ngọc yêu cầu kiểm tra lại `docs/TEST-PROCESS.md` sau khi tự lưu bản chỉnh sửa.
+
+### Kết quả đề xuất
+
+Nội dung đã lưu có lệnh mẫu đã thử thành công ở mục trước, mô tả mốc minh họa, cách xử lý khi thiếu mốc và lưu ý staging. Gợi ý thêm dòng mới cuối tệp. Không sửa tài liệu của Ngọc.
+
+### Phản biện
+
+Chưa có phản biện của Ngọc đối với lần kiểm tra này.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới; chưa xác minh issue hoặc QA duyệt mốc thực tế.
+
+### Người kiểm tra
+
+Codex đối chiếu file đã lưu và diff; chờ Ngọc và reviewer kiểm tra.
+
+### Kiểm tra và minh chứng
+
+Đọc `docs/TEST-PROCESS.md`, xem `git diff` và trạng thái Git; lệnh checkout không đổi so với lần thử thành công ở mục liên quan, không chạy lại hoặc fetch. Git diff báo thiếu dòng mới cuối tệp. Tệp Codex thay đổi: `docs/ai-logs/ngoc.md`.
+
+---
+
+## P0 / ngoc-20261108-a73d-01
+
+* Thời gian ghi: 2026-11-08T11:26:11+07:00
+* Thời gian thực hiện: Ngày 08/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: ngoc-20261108-a73d
+* Người prompt: Ngọc
+* Loại mục: Phản biện
+* Liên quan: ngoc-20261107-4c91-04; PRJ-P0-QA-1
+
+### Công cụ
+
+Codex, Git.
+
+### Mục đích
+
+Rà bản nháp phần 2 về lệnh gác cổng để Ngọc tự chỉnh sửa trước khi thử trên nhánh nháp.
+
+### Prompt
+
+Tóm lược: Giải thích ngắn yêu cầu, chỉ chỗ sai và gợi ý sửa; không viết hoàn chỉnh, chờ Ngọc sửa và dán lại.
+
+### Kết quả đề xuất
+
+Gợi ý xác nhận đường dẫn test tồn tại ở mốc đã chốt, kiểm tra đúng commit PR và thư mục làm việc sạch, làm rõ khôi phục từ vùng stage và ghi mốc, đường dẫn, mã thoát trong minh chứng review. Không sửa tài liệu của Ngọc.
+
+### Phản biện
+
+Chưa có phản biện của Ngọc đối với góp ý này.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới; Ngọc yêu cầu tự sửa bản nháp.
+
+### Người kiểm tra
+
+Codex rà bản nháp và tài liệu liên quan; chờ Ngọc kiểm tra góp ý.
+
+### Kiểm tra và minh chứng
+
+Đọc `docs/TEST-PROCESS.md`, hướng dẫn task và trạng thái Git. Chưa chạy phép thử sửa spec trên nhánh nháp; chưa xác minh issue từ xa. Tệp Codex thay đổi: `docs/ai-logs/ngoc.md`.
+
+---
+
+## P0 / ngoc-20261108-a73d-02
+
+* Thời gian ghi: 2026-11-08T11:30:33+07:00
+* Thời gian thực hiện: Ngày 08/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: ngoc-20261108-a73d
+* Người prompt: Ngọc
+* Loại mục: Phản biện
+* Liên quan: ngoc-20261108-a73d-01; PRJ-P0-QA-1
+
+### Công cụ
+
+Codex.
+
+### Mục đích
+
+Rà bản nháp phần 2 sau khi Ngọc chỉnh sửa theo góp ý.
+
+### Prompt
+
+Tóm lược: Ngọc dán bản sửa để kiểm tra lại.
+
+### Kết quả đề xuất
+
+Ghi nhận bản nháp đã làm rõ xác minh commit, đường dẫn, mã thoát và điều kiện khôi phục từ vùng stage; nhắc đối chiếu commit PR với nguồn review và bảo vệ thay đổi sẵn có khi thử. Chưa sửa tài liệu.
+
+### Phản biện
+
+Ngọc đã chỉnh bản nháp theo góp ý ở mục liên quan; chưa có phản biện đối với lần rà này.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Codex rà nội dung được dán; chờ Ngọc và reviewer kiểm tra.
+
+### Kiểm tra và minh chứng
+
+Chưa chạy các lệnh trong bản nháp hoặc phép thử sửa spec; tiêu chí mã thoát 1 chưa được xác minh. Tệp Codex thay đổi: `docs/ai-logs/ngoc.md`.
+
+---
+
+## P0 / ngoc-20261108-a73d-03
+
+* Thời gian ghi: 2026-11-08T11:36:06+07:00
+* Thời gian thực hiện: Ngày 08/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: ngoc-20261108-a73d
+* Người prompt: Ngọc
+* Loại mục: Phản biện
+* Liên quan: ngoc-20261108-a73d-02; PRJ-P0-QA-1
+
+### Công cụ
+
+Codex.
+
+### Mục đích
+
+Rà bản hoàn chỉnh phần 2 do Ngọc tự chỉnh sửa trước khi thử trên nhánh nháp.
+
+### Prompt
+
+Tóm lược: Ngọc cung cấp bản hoàn chỉnh sau góp ý để rà lại.
+
+### Kết quả đề xuất
+
+Bản nháp làm rõ đối chiếu commit PR, kiểm tra mốc và file, lưu thay đổi trước khi lấy file, và khôi phục từ vùng stage. Chưa phát hiện lỗi cản trở phép thử dự kiến; chưa sửa tài liệu.
+
+### Phản biện
+
+Ngọc đã chỉnh bản nháp theo góp ý ở mục liên quan; chưa có phản biện đối với lần rà này.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Codex rà nội dung được dán; chờ Ngọc và reviewer kiểm tra.
+
+### Kiểm tra và minh chứng
+
+Chưa chạy lệnh hoặc phép thử sửa spec; tiêu chí thấy diff và mã thoát 1 chưa được xác minh. Tệp Codex thay đổi: `docs/ai-logs/ngoc.md`.
+
+---
+
+## P0 / ngoc-20261108-a73d-04
+
+* Thời gian ghi: 2026-11-08T12:19:58+07:00
+* Thời gian thực hiện: Ngày 08/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: ngoc-20261108-a73d
+* Người prompt: Ngọc
+* Loại mục: Phản biện
+* Liên quan: ngoc-20261108-a73d-03; PRJ-P0-QA-1
+
+### Công cụ
+
+Codex.
+
+### Mục đích
+
+Rà bản nháp checklist reviewer trước khi Ngọc tự sửa và gửi PM duyệt.
+
+### Prompt
+
+Tóm lược: Kiểm tra năm mục bắt buộc, đặc biệt cách dùng ref và truy vết Task; giải thích, chỉ vấn đề, gợi ý sửa, không viết hoàn chỉnh.
+
+### Kết quả đề xuất
+
+Chỉ ra thiếu Closes, lưu ý đối chiếu ref với mốc test đã chốt và phần 2 đã lưu, kiểm tra lệnh test và CI theo cấu hình thực tế, cách xác minh ảnh và link log, và yêu cầu một commit mỗi sub-issue chưa có căn cứ trong roadmap đã đọc. Nhắc phương thức merge theo nhóm thống nhất. Không sửa checklist.
+
+### Phản biện
+
+Chưa có phản biện của Ngọc đối với lần rà này.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới; chưa có xác nhận PM đồng ý checklist.
+
+### Người kiểm tra
+
+Codex đối chiếu nội dung được dán với tài liệu và cấu hình cục bộ; chờ Ngọc và PM kiểm tra.
+
+### Kiểm tra và minh chứng
+
+Đọc docs/TEST-PROCESS.md, docs/ROADMAP.md, hướng dẫn task, package.json và template PR hiện có; không chạy test hay kiểm tra CI từ xa. Nội dung phần 2 đã lưu khác bản hoàn chỉnh Ngọc từng dán. Tệp Codex thay đổi: docs/ai-logs/ngoc.md.
+
+---
+
+## P0 / ngoc-20261108-a73d-05
+
+* Thời gian ghi: 2026-11-08T12:22:33+07:00
+* Thời gian thực hiện: Ngày 08/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: ngoc-20261108-a73d
+* Người prompt: Ngọc
+* Loại mục: Phản biện
+* Liên quan: ngoc-20261108-a73d-04; PRJ-P0-QA-1
+
+### Công cụ
+
+Codex.
+
+### Mục đích
+
+Rà lại checklist phần 3 do Ngọc chỉnh sửa trước khi trình PM.
+
+### Prompt
+
+Tóm lược: Ngọc cung cấp bản hoàn chỉnh đã chỉnh theo góp ý để rà lại.
+
+### Kết quả đề xuất
+
+Ghi nhận checklist có đủ năm nội dung; lưu ý định dạng Markdown được dán có ký tự thoát, phương thức merge và quy định commit sub-issue cần đối chiếu quyết định nhóm, và bản tài liệu hiện chưa có phần 3. Không sửa tài liệu.
+
+### Phản biện
+
+Ngọc đã sửa checklist sau góp ý trước; chưa có phản biện với lần rà này.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới, chưa xác nhận PM duyệt mẫu.
+
+### Người kiểm tra
+
+Codex rà nội dung được dán và đọc lại tài liệu; chờ Ngọc và PM kiểm tra.
+
+### Kiểm tra và minh chứng
+
+Chưa chạy test, kiểm tra CI từ xa hoặc xác nhận PM duyệt. Tệp Codex thay đổi: docs/ai-logs/ngoc.md.
+
+---
+
+## P0 / ngoc-20261108-a73d-06
+
+* Thời gian ghi: 2026-11-08T12:24:39+07:00
+* Thời gian thực hiện: Ngày 08/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: ngoc-20261108-a73d
+* Người prompt: Ngọc
+* Loại mục: Phản biện
+* Liên quan: ngoc-20261108-a73d-05; PRJ-P0-QA-1
+
+### Công cụ
+
+Codex.
+
+### Mục đích
+
+Rà bản checklist phần 3 được Ngọc sửa tiếp trước khi trình PM.
+
+### Prompt
+
+Tóm lược: Ngọc cung cấp bản sửa sau góp ý để rà lại.
+
+### Kết quả đề xuất
+
+Ghi nhận đề xuất Rebase được phân biệt với quyết định nhóm; lưu ý chưa có căn cứ cho quy định commit từng sub-issue ngay cả khi giới hạn trong task, kiểm tra ký tự thoát và lưu tài liệu. Không sửa checklist.
+
+### Phản biện
+
+Ngọc đã sửa checklist sau góp ý trước; chưa có phản biện với lần rà này.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới; PM chưa được xác nhận đã duyệt checklist hay đề xuất merge.
+
+### Người kiểm tra
+
+Codex rà bản được dán và đối chiếu tài liệu cục bộ; chờ Ngọc và PM kiểm tra.
+
+### Kiểm tra và minh chứng
+
+Đọc roadmap và hướng dẫn task; chưa xác minh issue từ xa, chưa chạy test hay kiểm tra CI. Tệp Codex thay đổi: docs/ai-logs/ngoc.md.
+
+---
+
+## P0 / ngoc-20261108-a73d-07
+
+* Thời gian ghi: 2026-11-08T12:46:11+07:00
+* Thời gian thực hiện: Ngày 08/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: ngoc-20261108-a73d
+* Người prompt: Ngọc
+* Loại mục: Phản biện
+* Liên quan: ngoc-20261108-a73d-06; PRJ-P0-QA-1
+
+### Công cụ
+
+Codex; tài liệu GitHub Docs.
+
+### Mục đích
+
+Rà bản nháp template PR bổ sung checklist chung và giữ nội dung Buổi 2 để Ngọc tự chỉnh sửa.
+
+### Prompt
+
+Tóm lược: Giải thích yêu cầu, chỉ lỗi và gợi ý sửa bản nháp; không viết hoàn chỉnh, chờ Ngọc sửa. Ngọc cho biết PM đã duyệt checklist phần 3.
+
+### Kết quả đề xuất
+
+Lưu ý phạm vi quy ước commit sub-issue, dòng Closes ẩn trong comment, check CI chỉ xuất hiện sau khi mở PR, và cách xác minh mẫu mới sau khi vào nhánh mặc định. Chỉ ra nội dung checklist chung và Buổi 2 được giữ; không sửa template.
+
+### Phản biện
+
+Chưa có phản biện của Ngọc với lần rà này.
+
+### Quyết định của nhóm
+
+Ngọc cho biết PM đã duyệt checklist phần 3; chưa có minh chứng duyệt được cung cấp trong cuộc trao đổi này. Chưa xác nhận mở rộng quy ước sub-issue sang mọi task.
+
+### Người kiểm tra
+
+Codex đối chiếu bản nháp với tài liệu cục bộ và GitHub Docs; chờ Ngọc kiểm tra góp ý.
+
+### Kiểm tra và minh chứng
+
+Đọc template, docs/TEST-PROCESS.md, roadmap và tài liệu GitHub về PR template; chưa mở PR mới hay xác minh CI từ xa. Tệp Codex thay đổi: docs/ai-logs/ngoc.md.
+
+---
+
+## P0 / ngoc-20261108-a73d-08
+
+* Thời gian ghi: 2026-11-08T12:48:36+07:00
+* Thời gian thực hiện: Ngày 08/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: ngoc-20261108-a73d
+* Người prompt: Ngọc
+* Loại mục: Phản biện
+* Liên quan: ngoc-20261108-a73d-07; PRJ-P0-QA-1
+
+### Công cụ
+
+Codex.
+
+### Mục đích
+
+Rà template PR sau khi Ngọc chỉnh sửa theo góp ý.
+
+### Prompt
+
+Tóm lược: Ngọc cung cấp bản hoàn chỉnh đã sửa để rà lại.
+
+### Kết quả đề xuất
+
+Ghi nhận đã giới hạn quy ước sub-issue, hiển thị Closes, tách kiểm tra CI sau khi mở PR và nêu check bắt buộc thành công. Nhắc kiểm tra đúng commit và trạng thái sạch cho bước tự kiểm và không đánh dấu CI đạt khi check thiếu hoặc chưa thành công. Không sửa template.
+
+### Phản biện
+
+Ngọc đã sửa bản nháp theo góp ý trước; chưa có phản biện đối với lần rà này.
+
+### Quyết định của nhóm
+
+Ngọc cho biết PM đã duyệt checklist phần 3; chưa có xác nhận bổ sung về quy ước commit ngoài phạm vi task.
+
+### Người kiểm tra
+
+Codex đối chiếu bản dán với template đã lưu; chờ Ngọc kiểm tra góp ý.
+
+### Kiểm tra và minh chứng
+
+Đọc template và trạng thái Git; chưa mở PR mới hay kiểm tra CI từ xa. Tệp Codex thay đổi: docs/ai-logs/ngoc.md.
+
+---
+
+## P0 / ngoc-20261108-a73d-09
+
+* Thời gian ghi: 2026-11-08T12:53:23+07:00
+* Thời gian thực hiện: Ngày 08/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: ngoc-20261108-a73d
+* Người prompt: Ngọc
+* Loại mục: Phản biện
+* Liên quan: ngoc-20261108-a73d-08; PRJ-P0-QA-1
+
+### Công cụ
+
+Codex.
+
+### Mục đích
+
+Rà bản template PR Ngọc chỉnh sửa sau góp ý về commit và CI.
+
+### Prompt
+
+Tóm lược: Ngọc dán bản hoàn chỉnh sau chỉnh sửa để rà lại.
+
+### Kết quả đề xuất
+
+Hai thay đổi làm rõ điều kiện tự kiểm commit và điều kiện đánh dấu CI; bản dán chưa khớp tệp template đang lưu. Không sửa template; cần kiểm tra mẫu tự điền khi mở PR mới.
+
+### Phản biện
+
+Ngọc đã sửa bản nháp theo góp ý trước; chưa có phản biện với lần rà này.
+
+### Quyết định của nhóm
+
+Ngọc cho biết PM đã duyệt checklist phần 3; chưa xác nhận việc duyệt bản template mới.
+
+### Người kiểm tra
+
+Codex đối chiếu bản dán với tệp cục bộ; chờ Ngọc kiểm tra.
+
+### Kiểm tra và minh chứng
+
+Đọc template và log; chưa mở PR mới hay kiểm tra CI từ xa. Tệp Codex thay đổi: docs/ai-logs/ngoc.md.
+
+---
+
+## P0 / ngoc-20261108-f42c-01
+
+* Thời gian ghi: 2026-11-08T15:10:09+07:00
+* Thời gian thực hiện: Ngày 08/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: ngoc-20261108-f42c
+* Người prompt: Ngọc
+* Loại mục: Phản biện
+* Liên quan: PRJ-P0-QA-1; ngoc-20261108-a73d-09
+
+### Công cụ
+
+Codex.
+
+### Mục đích
+
+Đối chiếu bài kiểm tra kiến thức về quy trình gác cổng PR và đặt câu hỏi để Ngọc tự giải thích.
+
+### Prompt
+
+Tóm lược: Ngọc yêu cầu chấm từng câu đúng, thiếu hoặc sai, giải thích và hỏi thêm hai câu vặn; không đưa code mẫu trước khi Ngọc trả lời.
+
+### Kết quả đề xuất
+
+Đối chiếu sáu câu trả lời với quy trình, chỉ ra các ý đúng và thiếu, giới hạn xác minh tình huống merge; chuẩn bị hai câu hỏi tình huống. Không sửa bài làm hay tài liệu quy trình.
+
+### Phản biện
+
+Chưa có phản biện của Ngọc về kết quả chấm.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới; kết quả chấm không xác nhận task đã được nghiệm thu.
+
+### Người kiểm tra
+
+Codex đối chiếu tài liệu; chờ Ngọc kiểm tra và trả lời câu hỏi.
+
+### Kiểm tra và minh chứng
+
+Đọc bài làm, `docs/TEST-PROCESS.md`, hướng dẫn học và mẫu PR tại bản làm việc được chỉ trong IDE. Chưa xác minh lịch sử merge, chạy test hoặc kiểm tra PR từ xa. Tệp thay đổi: `docs/ai-logs/ngoc.md`.
+
+---
+
+## P0 / ngoc-20261108-f42c-02
+
+* Thời gian ghi: 2026-11-08T15:15:49+07:00
+* Thời gian thực hiện: Ngày 08/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: ngoc-20261108-f42c
+* Người prompt: Ngọc
+* Loại mục: Phản biện
+* Liên quan: ngoc-20261108-f42c-01; PRJ-P0-QA-1
+
+### Công cụ
+
+Codex.
+
+### Mục đích
+
+Nhận xét câu trả lời của Ngọc về review khi PR có commit mới và khi test nghiệm thu bị sửa.
+
+### Prompt
+
+Tóm lược: Ngọc trả lời hai câu hỏi tình huống về đối chiếu test, kiểm tra CI và xử lý điều kiện nghiệm thu bị xóa.
+
+### Kết quả đề xuất
+
+Đánh giá hai câu trả lời đúng về nguyên tắc; nhắc xác nhận môi trường đối chiếu, ghi mốc và mã thoát, tự chạy kiểm tra phù hợp và không tự thay đổi mốc nghiệm thu.
+
+### Phản biện
+
+Ngọc đã trả lời hai câu hỏi; chưa có phản biện về nhận xét mới.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới; nhận xét không xác nhận task đã được nghiệm thu.
+
+### Người kiểm tra
+
+Codex đối chiếu câu trả lời với tài liệu quy trình; chờ Ngọc kiểm tra nhận xét.
+
+### Kiểm tra và minh chứng
+
+Đọc `docs/TEST-PROCESS.md`; không chạy test hoặc kiểm tra PR thực tế. Tệp thay đổi: `docs/ai-logs/ngoc.md`.
+
+---
+
+## P0 / ngoc-20261108-f42c-03
+
+* Thời gian ghi: 2026-11-08T15:18:16+07:00
+* Thời gian thực hiện: Ngày 08/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: ngoc-20261108-f42c
+* Người prompt: Ngọc
+* Loại mục: Hoạt động
+* Liên quan: ngoc-20261108-f42c-01; ngoc-20261108-f42c-02; PRJ-P0-QA-1
+
+### Công cụ
+
+Codex.
+
+### Mục đích
+
+Tóm tắt phiên thảo luận học tập về quy trình gác cổng PR theo yêu cầu của Ngọc.
+
+### Prompt
+
+Tóm lược: Ngọc đề nghị ghi tóm tắt phiên thảo luận vào nhật ký AI cá nhân.
+
+### Kết quả đề xuất
+
+Codex chấm sáu câu trả lời trong bài kiểm tra kiến thức, nêu các ý đúng và thiếu, rồi hỏi hai tình huống. Ngọc trả lời cần kiểm tra lại trên SHA mới và yêu cầu sửa khi điều kiện nghiệm thu bị xóa; Codex nhận xét cả hai đúng về nguyên tắc, bổ sung điều kiện và minh chứng cần kiểm tra. Các chi tiết đã ghi tại hai mục liên quan; không sửa bài làm hoặc quy trình.
+
+### Phản biện
+
+Ngọc đã trả lời hai tình huống; chưa có phản biện đối với nhận xét cuối của Codex.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới; thảo luận không xác nhận task đã được nghiệm thu.
+
+### Người kiểm tra
+
+Codex đối chiếu các mục log đã ghi trong phiên; chờ Ngọc kiểm tra bản tóm tắt.
+
+### Kiểm tra và minh chứng
+
+Đọc lại hai mục liên quan trước khi nối thêm. Chưa chạy test hoặc kiểm tra PR thực tế trong hoạt động tóm tắt. Tệp thay đổi: `docs/ai-logs/ngoc.md`.
