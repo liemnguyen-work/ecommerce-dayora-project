@@ -638,7 +638,98 @@ Codex trực tiếp kiểm tra code/diff, cú pháp và logic Node. Đạt chưa
 
 ### Kiểm tra và minh chứng
 
-* Đúng nhánh hw/p1-pd-1, working tree ban đầu sạch. Đã đọc code cart-page.js, cart.html, CSS khu 9, cart.js, quy tắc/mẫu và log gần nhất; kiểm tra badge và script trên năm trang qua nguồn HTML. Đối chiếu issue theo yêu cầu Đạt cung cấp.
-* node --check session3/js/modules/cart-page.js đạt; git diff --check trước khi nối log không báo lỗi. Harness Node đạt cập nhật nhiều badge khi thêm/tăng/giảm/xóa, nhận storage cart, bỏ qua key/storage khác và gọi an toàn trên trang không có bảng giỏ. Assertion DOM giả lập trong harness trước cũng qua các ca vẽ lại tổng/giỏ trống khi storage đổi và DOMContentLoaded không khởi tạo click listener lần hai, trước khi phần kiểm tra Git bằng subprocess bị chặn.
-* Xác nhận năm HTML có .cart-count và nạp products.js/cart.js/cart-page.js. So sánh phần CSS trước khu 9 với HEAD: giữ nguyên. Diff JavaScript chỉ thay khởi tạo và thêm hai hàm badge/storage, giữ nguyên render/delegation.
-* Chỉ sửa session3/js/modules/cart-page.js, session3/cart.html, session3/css/style.css (khu 9) và nối docs/ai-logs/dat.md. Lịch sử log giữ nguyên từng byte. Không có kết quả kiểm thử trình duyệt hoặc phê duyệt; không commit/push/PR.
+* Codex: đã đọc AGENTS.md, docs/ai-logs/ai-logging-rules.md, docs/ai-logs/TEMPLATE.md và toàn bộ docs/ai-logs/dat.md; đọc hai file ứng dụng cùng main.tsx, App.css và index.html. Không tìm thấy AGENTS.md con trong apps/docs. Ban đầu chỉ App.tsx và index.css thay đổi chưa stage; không có staged diff. git diff --check không báo lỗi trước khi nối log.
+* Kết quả do Đạt cung cấp, không phải Codex tự chạy lại: git diff --check không báo lỗi; npm run build -w web thành công; npm run lint -w web thành công.
+* Kết quả trình duyệt do Đạt cung cấp, chưa được Codex trực tiếp quan sát: đã kiểm tra Firefox tại viewport 1366 × 900 và 390 × 900; DevTools xác nhận h1 dùng Be Vietnam Pro, màu Ink; #root có width khoảng 1366px, không còn cố định 1126px. matchMedia('(prefers-color-scheme: dark)').matches trả về true nhưng giao diện vẫn giữ màu DAYORA.
+* Chưa xem ảnh, bản xuất DevTools hoặc log lệnh của Đạt; chưa xác minh thời điểm các kiểm tra hồi cứu. Không kết luận đã tự kiểm thử hiển thị, mọi weight/ký tự font hoặc toàn bộ khả năng truy cập. Chưa đọc trực tiếp mô tả Issue #568 trên GitHub; phạm vi issue dựa trên yêu cầu Đạt. Không có commit mới, push hoặc PR trong công việc này.
+
+---
+
+## P0 — Hướng dẫn hệ thiết kế DAYORA / DAT-20261109-8EB47926-003
+
+* Thời gian ghi: 2026-11-09T22:43:28+07:00
+* Thời gian thực hiện: Codex soạn tài liệu và kiểm tra trong phiên hiện tại; hoạt động phân tích với ChatGPT được ghi theo Đạt cung cấp, chưa xác minh thời điểm hoặc prompt nguyên văn.
+* Mã phiên nhật ký: DAT-20261109-8EB47926
+* Người prompt: PD Đạt (tự xác nhận).
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P0-PD-1.5; [task #25](https://github.com/liemnguyen-work/ecommerce-dayora-project/issues/25); DAT-20261109-8EB47926-001; DAT-20261109-8EB47926-002.
+
+### Công cụ
+
+ChatGPT hỗ trợ phân tích theo thông tin Đạt cung cấp trong yêu cầu ghi log; chưa có prompt/kết quả chi tiết hoặc model để xác minh độc lập. Codex trực tiếp đọc code, soạn design/DESIGN-SYSTEM.md, tính tương phản bằng Node và kiểm tra Markdown/Git; tham khảo tài liệu W3C chính thức.
+
+### Mục đích
+
+Tạo hướng dẫn thiết kế tiếng Việt cho FD1/FD2: màu, font, khoảng cách, bo góc, nút và checklist 1366px/390px; phân biệt code đã triển khai với quy chuẩn đề xuất, không thay CSS/TSX hoặc bản khung docs/DESIGN-SYSTEM.md.
+
+### Prompt
+
+Tóm lược yêu cầu Đạt: đọc index.css, main.tsx, App.tsx, bản khung docs và quy tắc/mẫu log; tạo mới design/DESIGN-SYSTEM.md với 5 màu cùng token/HEX/vai trò/tương phản, giải thích màu phụ, Be Vietnam Pro 800/600/400, gutter/section-gap theo CSS, nút bo 999px, thẻ 20–24px, các trạng thái và điều cấm, hướng dẫn FD1/FD2/checklist; tính hoặc xác minh WCAG, kiểm Markdown/diff, chỉ sửa hai file tài liệu và dừng, không commit/push/PR.
+
+### Kết quả đề xuất
+
+Codex tạo design/DESIGN-SYSTEM.md đầy đủ các mục được yêu cầu. Đối chiếu token màu chính trong @theme và 4 biến phụ :root, font import 400/600/800, class thực tế trong App.tsx. Ghi rõ màu phụ chưa là token Tailwind tự sinh utility, layout mẫu chưa dùng gutter/section-gap, heading base không tự gán weight, rounded-full hiện có khác với quy chuẩn giá trị 999px; disabled và thẻ sản phẩm là đề xuất chưa có trong App mẫu. Nêu rõ checklist chưa thực hiện và chưa có phê duyệt của FD1 Thành. Giữ nguyên docs/DESIGN-SYSTEM.md và code ứng dụng.
+
+### Phản biện
+
+Codex tính tương phản thay vì gán nhãn đạt cho từng màu riêng lẻ: Ink/Paper 11,0577:1, Paper/Berry 4,6414:1, Ink/Butter 6,7023:1, Ink/Leaf 8,8164:1, Butter/Paper 1,6498:1. Chữ vàng trên nền Paper không đạt; các cặp chữ/nền phụ được tính riêng và đạt 4,5:1. Tài liệu ghi công thức sRGB, giới hạn màu đặc và đánh giá bằng số chưa làm tròn; không khẳng định toàn bộ giao diện đạt WCAG. Chưa có review của Đạt/FD1 Thành hoặc kiểm chứng font/bố cục trên trình duyệt trong phiên này.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung hoặc xác nhận FD1 Thành review/phê duyệt. Phạm vi Đạt cho phép: chỉ tạo design/DESIGN-SYSTEM.md và nối dat.md, không sửa bản khung docs hay CSS/TSX, không commit/push/PR; dừng để Đạt tự kiểm tra. Các quy chuẩn đề xuất trong tài liệu chờ review, không được coi là nhóm đã chốt.
+
+### Người kiểm tra
+
+Codex trực tiếp đối chiếu nguồn, tính tương phản, kiểm tra cấu trúc Markdown và Git. Chờ Đạt kiểm tra tài liệu; FD1 Thành chưa xác nhận review. Không chạy trình duyệt/build/lint vì chỉ soạn tài liệu; không ghi kết quả kiểm thử giao diện mới.
+
+### Kiểm tra và minh chứng
+
+* Nhánh prj/p0-pd-1; working tree ban đầu sạch; design/DESIGN-SYSTEM.md chưa tồn tại trước khi tạo. Đã đọc sáu file Đạt yêu cầu và log gần nhất.
+* Node tính tương phản từ HEX theo độ chói tương đối sRGB, đối chiếu ngưỡng với https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html và nguyên tắc không chỉ dùng màu với https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html . Các nguồn được dẫn trực tiếp trong tài liệu.
+* Kiểm tra Markdown bằng Node: số cột các bảng nhất quán, liên kết tương đối tồn tại, code fence cân bằng; các mã HEX trong tài liệu khớp index.css. Đây là kiểm tra cấu trúc, chưa render Markdown bằng trình duyệt hoặc chạy markdownlint.
+* git diff --check trước khi nối log không báo lỗi; file mới chưa được Git theo dõi nên kiểm tra whitespace riêng cho tài liệu mới khi bàn giao. Chỉ hai file thay đổi: design/DESIGN-SYSTEM.md và docs/ai-logs/dat.md. Phần lịch sử dat.md giữ nguyên từng byte; không commit/push/tạo PR.
+
+---
+
+## P0 — Sửa đoạn chèn nhầm trong tài liệu thiết kế / DAT-20261109-8EB47926-004
+
+* Thời gian ghi: 2026-11-09T22:49:50+07:00
+* Thời gian thực hiện: Kiểm tra và sửa trong phiên hiện tại.
+* Mã phiên nhật ký: DAT-20261109-8EB47926
+* Người prompt: Đạt (tự xác nhận).
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P0-PD-1.5; task #25; DAT-20261109-8EB47926-003.
+
+### Công cụ
+
+Codex đọc/sửa file bằng PowerShell, kiểm tra cấu trúc Markdown bằng Node và Git. Sử dụng kỹ năng computer-use để thử mở Markdown Preview trong VS Code; chưa xác minh được Preview.
+
+### Mục đích
+
+Kiểm tra năm dạng lỗi Markdown Đạt nêu; chỉ sửa định dạng và xóa phản hồi chèn nhầm, giữ nguyên các thông số thiết kế.
+
+### Prompt
+
+Tóm lược: Đạt yêu cầu mở file gốc design/DESIGN-SYSTEM.md, kiểm tra heading **#, bảng escape hoặc ngắt hàng, link escape, inline code escape và phản hồi Codex chèn vào mục 2; nếu đúng không sửa, nếu sai chỉ sửa phần lỗi; kiểm tra Preview/bảng/diff, nối log nếu có sửa, không commit/push.
+
+### Kết quả đề xuất
+
+File trên đĩa có đoạn phản hồi bắt đầu bằng “Đã tạo” nối ngay sau heading “2. Năm màu chính và tương phản chữ”, tiếp tục bằng các đoạn báo cáo và danh sách file trước phần “Các biến --color-*”. Codex xóa đúng khối đó, khôi phục heading mục 2 và dòng trống phân cách. Không phát hiện heading **#/**##, escape dấu pipe, link ]\( hoặc backtick escape; không có dòng trống chia cắt hàng bảng. Giữ nguyên nội dung thiết kế còn lại, không tính lại hoặc thay thông số.
+
+### Phản biện
+
+Phản hồi bị chèn là nội dung ngoài tài liệu, không phải quy chuẩn thiết kế. Không có căn cứ xác định thao tác nào đã chèn khối này, nên không gán nguyên nhân. Script kiểm tra cấu trúc không thay thế Markdown Preview: công cụ UI gặp lỗi coordinate input geometry is unavailable, sau đó báo phát hiện user input trong cửa sổ VS Code; Codex dừng điều khiển để tránh xung đột. Chưa quan sát được Preview/bảng đã render, không ghi đã xác minh hiển thị.
+
+### Quyết định của nhóm
+
+Chưa có phê duyệt nhóm hoặc FD1 Thành. Đạt cho phép sửa đúng lỗi định dạng/nội dung chèn nhầm và nối log; không sửa code, commit/push hoặc tạo PR.
+
+### Người kiểm tra
+
+Codex kiểm tra file gốc, sửa khối chèn nhầm và kiểm cấu trúc bằng Node/Git. Chờ Đạt mở Markdown Preview để kiểm tra hiển thị sáu bảng; chưa ghi Đạt đã kiểm tra hoặc duyệt.
+
+### Kiểm tra và minh chứng
+
+* Node kiểm toàn file: không còn các dạng escape/heading sai đã nêu hoặc khối phản hồi; sáu bảng có separator, số cột nhất quán và hàng liên tục.
+* Thay đổi lần này: design/DESIGN-SYSTEM.md và nối docs/ai-logs/dat.md. Hai file này đã có thay đổi từ trước khi bắt đầu; giữ toàn bộ phần lịch sử log có sẵn từng byte.
+* Chưa xác minh Markdown Preview do trở ngại UI nêu trên. Không commit/push/PR. Chạy git diff --check sau sửa để báo kết quả bàn giao; tài liệu mới chưa được theo dõi được kiểm tra whitespace riêng.
