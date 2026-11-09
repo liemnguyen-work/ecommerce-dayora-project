@@ -733,3 +733,49 @@ Codex kiểm tra file gốc, sửa khối chèn nhầm và kiểm cấu trúc b�
 * Node kiểm toàn file: không còn các dạng escape/heading sai đã nêu hoặc khối phản hồi; sáu bảng có separator, số cột nhất quán và hàng liên tục.
 * Thay đổi lần này: design/DESIGN-SYSTEM.md và nối docs/ai-logs/dat.md. Hai file này đã có thay đổi từ trước khi bắt đầu; giữ toàn bộ phần lịch sử log có sẵn từng byte.
 * Chưa xác minh Markdown Preview do trở ngại UI nêu trên. Không commit/push/PR. Chạy git diff --check sau sửa để báo kết quả bàn giao; tài liệu mới chưa được theo dõi được kiểm tra whitespace riêng.
+
+---
+
+## P0 — Chuẩn bị file và nhật ký kiểm tra kiến thức / DAT-20261109-8EB47926-005
+
+* Thời gian ghi: 2026-11-10T02:22:47+07:00
+* Thời gian thực hiện: Codex kiểm tra môi trường file và ghi log trong phiên hiện tại; hoạt động ChatGPT trước đó được tổng hợp hồi cứu theo Đạt, chưa xác minh mốc thời gian thực hiện.
+* Mã phiên nhật ký: DAT-20261109-8EB47926
+* Người prompt: PD Đạt (tự xác nhận).
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P0-PD-1.6; PRJ-P0-PD-1; DAT-20261109-8EB47926-004.
+
+### Công cụ
+
+ChatGPT đã đối chiếu mã nguồn và chuẩn bị nội dung tham khảo cho 6 câu theo xác nhận Đạt trong yêu cầu hiện tại. Chưa cung cấp prompt nguyên văn, model hoặc bản trao đổi để xác minh độc lập. Codex hỗ trợ kiểm tra cấu trúc môi trường file và ghi nhật ký; không viết đáp án kiểm tra.
+
+### Mục đích
+
+Đảm bảo có thư mục docs/learning/PD-Dat/kiem-tra/ và file PRJ-P0-PD-1.md để Đạt tự làm bài; ghi trung thực vai trò AI và giữ nguyên nội dung cá nhân, code ứng dụng cùng các thay đổi chưa commit.
+
+### Prompt
+
+Tóm lược yêu cầu Đạt: kiểm git status -sb trên nhánh prj/p0-pd-1, không tùy tiện chuyển nhánh khi có thay đổi; đọc AGENTS.md, quy tắc/mẫu và log; tạo thư mục/file kiểm tra nếu thiếu, không tự sinh câu trả lời; chỉ nối một mục log đủ 7 trường phản ánh ChatGPT đã đối chiếu mã nguồn/chuẩn bị tham khảo cho 6 câu, Codex hỗ trợ cấu trúc file và nhật ký; không nhận Đạt đã hoàn thành hoặc reviewer duyệt; kiểm diff và dừng, không commit/push/PR.
+
+### Kết quả đề xuất
+
+Codex xác nhận đúng nhánh prj/p0-pd-1. Thư mục docs/learning/PD-Dat/kiem-tra/ và file PRJ-P0-PD-1.md đã tồn tại, nên không tạo lại, không sửa hoặc bổ sung nội dung. Chỉ nối mục này vào docs/ai-logs/dat.md. Hoạt động ChatGPT được ghi là nội dung tham khảo theo lời Đạt, không phải bằng chứng Đạt đã tự hoàn thành kiểm tra kiến thức.
+
+### Phản biện
+
+Không có căn cứ đánh giá 6 câu đã được Đạt tự trả lời, hiểu hoặc được reviewer thông qua. Codex không chấm nội dung, không viết đáp án, không đổi tài liệu tham khảo thành lời cá nhân. Trạng thái Git ban đầu có session3/docs/answers/Dat.md thay đổi và thư mục kiểm tra chưa theo dõi; các thay đổi đó được giữ nguyên, không gán là Codex tạo trong phiên này.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung hoặc xác nhận reviewer/FD1 Thành đã duyệt. Đạt cho phép kiểm tra môi trường file và nối một mục log, không sửa code ứng dụng hoặc đáp án, không commit/push/tạo PR; dừng để Đạt rà soát.
+
+### Người kiểm tra
+
+Đạt xác nhận hoạt động ChatGPT đối chiếu code và chuẩn bị tham khảo cho 6 câu. Codex kiểm nhánh, sự tồn tại thư mục/file và Git; chưa đánh giá kiến thức hoặc xác nhận kết quả tự làm của Đạt. Chờ Đạt kiểm tra nội dung log và tự hoàn thiện bài.
+
+### Kiểm tra và minh chứng
+
+* Đã đọc AGENTS.md, docs/ai-logs/ai-logging-rules.md, TEMPLATE.md và log hiện tại. Không tìm thấy AGENTS.md con trong docs qua tìm kiếm.
+* git status -sb ban đầu: prj/p0-pd-1...origin/prj/p0-pd-1; session3/docs/answers/Dat.md có thay đổi chưa commit; docs/learning/PD-Dat/kiem-tra/ chưa theo dõi. Không chuyển nhánh, stage hoặc hoàn tác thay đổi.
+* File docs/learning/PD-Dat/kiem-tra/PRJ-P0-PD-1.md đã có; kiểm hash trước/sau để giữ nguyên file này và session3/docs/answers/Dat.md. Không tạo câu trả lời hoặc sửa code.
+* Chỉ nối docs/ai-logs/dat.md, giữ nguyên từng byte lịch sử trước đó. Kiểm tra git diff --check và git status -sb sau ghi để báo kết quả; không commit/push/PR.
