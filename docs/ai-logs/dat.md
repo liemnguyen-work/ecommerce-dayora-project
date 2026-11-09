@@ -408,3 +408,91 @@ Chưa có quyết định chung hoặc xác nhận phê duyệt từ reviewer FD
 * Tính tương phản từ HEX: Ink/Paper khoảng 11,06:1; Ink/Butter 6,70:1; Paper/Berry 4,64:1; Ink/Leaf 8,82:1; Paper/màu hover #A93A30 6,19:1. Các cặp chữ/nền hiện dùng vượt 4,5:1 theo phép tính màu, không phải kiểm định toàn bộ khả năng truy cập trên trình duyệt. Nguồn ngưỡng: https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html .
 * Kết quả do Đạt cung cấp, chưa được Codex trực tiếp quan sát trong phiên này: Firefox 1366 × 900 và 390 × 900, ảnh đã gửi ChatGPT nhận xét; npm run build -w web thành công với Vite 8.3.6. Codex không chạy lại build hoặc mở trình duyệt, chưa xem ảnh minh chứng và chưa xác minh ảnh đã được đính vào PR.
 * Đề xuất ảnh PR: ghi đúng kích thước viewport, chụp đủ 5 ô màu, ba mẫu chữ và CTA; nếu mobile dài hơn 900px, dùng ảnh toàn trang hoặc ảnh bổ sung có phần cuộn. Kiểm tra không cuộn ngang, chữ không bị cắt, Tab thấy viền focus; chờ FD1 Thành duyệt. Chỉ file log được Codex chỉnh trong phiên này.
+---
+
+## P0 — Khởi động và nền móng / DAT-20261109-8EB47926-001
+
+* Thời gian ghi: 2026-11-09T13:48:41+07:00
+* Thời gian thực hiện: Hồi cứu; mục cũ ghi ngày 08/11/2026, chưa xác minh độc lập thời điểm học hoặc mốc bắt đầu/kết thúc.
+* Mã phiên nhật ký: DAT-20261109-8EB47926
+* Người prompt: Đạt (tự xác nhận, Product Designer UI/UX DAYORA).
+* Loại mục: Đính chính
+* Liên quan: PRJ-P0-PD-1.1; mục cũ có tiêu đề “PRJ-P0-PD-1.1 — Tìm hiểu Design System” và ngày thực hiện 08/11/2026, nằm trước DAT-20261108-C7A42F19-001. Mục cũ không có mã mục riêng nên dẫn bằng tiêu đề/ngày/vị trí, không gán mã ngược vào lịch sử.
+
+### Công cụ
+
+ChatGPT hỗ trợ Đạt tìm hiểu kiến thức theo thông tin Đạt cung cấp. Codex tổng hợp hồi cứu và nối mục đính chính trong phiên hiện tại; không biết model ChatGPT đã dùng.
+
+### Mục đích
+
+Bổ sung mã mục, thời gian ghi và đủ 7 trường mà mục PRJ-P0-PD-1.1 cũ còn thiếu; ghi đúng việc học 5 màu DAYORA và font Be Vietnam Pro, giữ nguyên lịch sử cũ.
+
+### Prompt
+
+Tóm lược theo Đạt cung cấp: sử dụng ChatGPT để tìm hiểu vai trò 5 màu DAYORA, font Be Vietnam Pro và kiểm tra kiến thức, sửa nhầm lẫn Butter với Berry. Trong phiên này Đạt yêu cầu nối mục loại Đính chính đầy đủ theo quy tắc. Chưa có prompt ChatGPT nguyên văn; không dựng lại câu lệnh cũ.
+
+### Kết quả đề xuất
+
+Nội dung đúng được bổ sung: Paper (#FFFDF7) là nền chính; Ink (#23412E) là chữ chính và đường nét; Butter (#F2C14E) dùng highlight/trang trí; Berry (#C8483C) dùng CTA và điểm nhấn chính; Leaf (#DDE8C9) là nền phụ. Font Be Vietnam Pro với weight 400 cho nội dung thường, 600 cho nhấn mạnh, 800 cho tiêu đề lớn. Đạt cho biết đã dùng ChatGPT để tìm hiểu và sửa nhầm lẫn giữa Butter (trang trí) với Berry (CTA). Đây là tổng hợp hồi cứu theo nguồn Đạt, không phải đóng góp code của Codex.
+
+### Phản biện
+
+Mục cũ thiếu mã mục riêng, thời gian ghi thực tế và cấu trúc 7 trường bắt buộc; vì vậy nối mục mới thay vì sửa lịch sử. Mục cũ đã ghi đúng vai trò Butter/Berry sau khi sửa nhầm lẫn; không có căn cứ nói mục cũ hiện ghi đảo hai màu. Việc học không chứng minh nhóm hoặc reviewer đã nghiệm thu.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung hoặc xác nhận phê duyệt từ nhóm hay FD1 Thành. Đạt yêu cầu đính chính bằng cách chỉ nối log; không sửa mục cũ.
+
+### Người kiểm tra
+
+Đạt cung cấp thông tin về quá trình học và việc sửa nhầm lẫn. Codex đọc toàn bộ dat.md, quy tắc và mẫu, kiểm tra cấu trúc mục bổ sung; chờ Đạt kiểm tra nội dung hồi cứu.
+
+### Kiểm tra và minh chứng
+
+Nguồn: yêu cầu Đạt trong phiên này và mục lịch sử nêu trên. Các mã màu/font khớp khai báo hiện tại trong apps/web/src/index.css. Không xác minh lại cuộc chat cũ hoặc tài liệu design/DESIGN-SYSTEM.md được mục cũ nhắc tới. Chỉ nối docs/ai-logs/dat.md; không thay đổi lịch sử hoặc tạo commit.
+
+---
+
+## P0 — Khởi động và nền móng / DAT-20261109-8EB47926-002
+
+* Thời gian ghi: 2026-11-09T13:48:41+07:00
+* Thời gian thực hiện: Review và ghi log trong phiên hiện tại; phần sửa CSS và kiểm thử của Đạt được tổng hợp hồi cứu, chưa xác minh mốc thực hiện trước đây.
+* Mã phiên nhật ký: DAT-20261109-8EB47926
+* Người prompt: Đạt (tự xác nhận).
+* Loại mục: Kiểm tra
+* Liên quan: Issue #568 — Fix CSS sau review (theo Đạt cung cấp); PRJ-P0-PD-1.1; PRJ-P0-PD-1.2; DAT-20261108-C7A42F19-001; DAT-20261108-C7A42F19-003; DAT-20261109-8EB47926-001.
+
+### Công cụ
+
+ChatGPT hướng dẫn Đạt xóa CSS mẫu Vite và kiểm tra kết quả theo thông tin Đạt cung cấp. Đạt trực tiếp chỉnh sửa code. Codex review tĩnh diff và nối nhật ký trong phiên hiện tại, không tự sửa code ứng dụng.
+
+### Mục đích
+
+Review thay đổi hiện tại của apps/web/src/index.css và apps/web/src/App.tsx cho Issue #568, ghi nhận đúng nguồn kết quả kiểm tra; chỉ nối log rồi dừng để Đạt kiểm tra.
+
+### Prompt
+
+Tóm lược yêu cầu hiện tại: đọc AGENTS.md, quy tắc/mẫu log và toàn bộ dat.md; review hai file, không tự sửa code; bổ sung đính chính 1.1 và một mục riêng cho #568 đầy đủ 7 trường, mã duy nhất và thời gian thực tế. Đạt cho biết đã nhờ ChatGPT hướng dẫn xóa CSS mẫu Vite, tự sửa index.css và đổi tiêu đề App.tsx từ p sang h1, đồng thời cung cấp kết quả lệnh và Firefox. Chưa có prompt ChatGPT nguyên văn.
+
+### Kết quả đề xuất
+
+Codex xác nhận nhánh prj/p0-pd-1; HEAD khi review là 737226e. Diff hiện tại bỏ biến/style mẫu Vite, color-scheme light dark, media query dark trong index.css, bỏ #root cố định 1126px và quy tắc h1/h2 dùng font/màu mẫu. Giữ 5 màu, hai token font Be Vietnam Pro, biến phụ trợ DAYORA và body Paper/Ink; h1/h2 hiện áp dụng font-display/text-ink. App.tsx đổi p sang h1 cho tiêu đề, giữ các utility cỡ chữ/weight. Phần chỉnh sửa này do Đạt thực hiện theo lời Đạt và diff được quan sát; Codex chỉ nối docs/ai-logs/dat.md.
+
+### Phản biện
+
+Không phát hiện lỗi chặn mới trong phạm vi diff qua review tĩnh. Còn thụt lề nội dung và thẻ đóng h1 chưa nhất quán (App.tsx:9–10). Quy tắc body và h1/h2 vẫn nằm ngoài @layer base; hiện font/màu phù hợp nhưng có thể ghi đè utility cùng thuộc tính khi tái sử dụng, nên cân nhắc đưa vào base trong công việc được giao tiếp theo. Lỗi có sẵn apps/web/index.html:2 vẫn lang="en" trong khi nội dung tiếng Việt. CTA còn ghi cứng hover #A93A30 dù đã có --berry-deep. App.css còn CSS mẫu tham chiếu biến đã bỏ, nhưng không được import trong nguồn web hiện tại nên chưa tác động trang này. Codex không tự sửa các điểm trên. Chưa có phản hồi duyệt của nhóm/FD1 Thành.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung hoặc xác nhận phê duyệt của nhóm hay FD1 Thành. Phạm vi được Đạt xác nhận: review và chỉ nối hai mục mới vào cuối dat.md, giữ nguyên code/lịch sử; không commit, push hoặc tạo PR, dừng chờ Đạt kiểm tra.
+
+### Người kiểm tra
+
+Đạt báo đã trực tiếp kiểm tra các lệnh và Firefox như bên dưới. Codex trực tiếp đọc quy định, toàn bộ dat.md, mã/diff, trạng thái Git và chạy git diff --check; không chạy lại build/lint, không mở Firefox hoặc DevTools trong phiên này. Chờ Đạt rà soát log; chưa có nghiệm thu của FD1 Thành.
+
+### Kiểm tra và minh chứng
+
+* Codex: đã đọc AGENTS.md, docs/ai-logs/ai-logging-rules.md, docs/ai-logs/TEMPLATE.md và toàn bộ docs/ai-logs/dat.md; đọc hai file ứng dụng cùng main.tsx, App.css và index.html. Không tìm thấy AGENTS.md con trong apps/docs. Ban đầu chỉ App.tsx và index.css thay đổi chưa stage; không có staged diff. git diff --check không báo lỗi trước khi nối log.
+* Kết quả do Đạt cung cấp, không phải Codex tự chạy lại: git diff --check không báo lỗi; npm run build -w web thành công; npm run lint -w web thành công.
+* Kết quả trình duyệt do Đạt cung cấp, chưa được Codex trực tiếp quan sát: đã kiểm tra Firefox tại viewport 1366 × 900 và 390 × 900; DevTools xác nhận h1 dùng Be Vietnam Pro, màu Ink; #root có width khoảng 1366px, không còn cố định 1126px. matchMedia('(prefers-color-scheme: dark)').matches trả về true nhưng giao diện vẫn giữ màu DAYORA.
+* Chưa xem ảnh, bản xuất DevTools hoặc log lệnh của Đạt; chưa xác minh thời điểm các kiểm tra hồi cứu. Không kết luận đã tự kiểm thử hiển thị, mọi weight/ký tự font hoặc toàn bộ khả năng truy cập. Chưa đọc trực tiếp mô tả Issue #568 trên GitHub; phạm vi issue dựa trên yêu cầu Đạt. Không có commit mới, push hoặc PR trong công việc này.
