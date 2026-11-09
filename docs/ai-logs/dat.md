@@ -642,3 +642,51 @@ Codex trực tiếp kiểm tra code/diff, cú pháp và logic Node. Đạt chưa
 * node --check session3/js/modules/cart-page.js đạt; git diff --check trước khi nối log không báo lỗi. Harness Node đạt cập nhật nhiều badge khi thêm/tăng/giảm/xóa, nhận storage cart, bỏ qua key/storage khác và gọi an toàn trên trang không có bảng giỏ. Assertion DOM giả lập trong harness trước cũng qua các ca vẽ lại tổng/giỏ trống khi storage đổi và DOMContentLoaded không khởi tạo click listener lần hai, trước khi phần kiểm tra Git bằng subprocess bị chặn.
 * Xác nhận năm HTML có .cart-count và nạp products.js/cart.js/cart-page.js. So sánh phần CSS trước khu 9 với HEAD: giữ nguyên. Diff JavaScript chỉ thay khởi tạo và thêm hai hàm badge/storage, giữ nguyên render/delegation.
 * Chỉ sửa session3/js/modules/cart-page.js, session3/cart.html, session3/css/style.css (khu 9) và nối docs/ai-logs/dat.md. Lịch sử log giữ nguyên từng byte. Không có kết quả kiểm thử trình duyệt hoặc phê duyệt; không commit/push/PR.
+
+---
+
+## P1 — BUG-01 bố cục giỏ hàng tablet / DAT-20261109-A6CFD653-006
+
+* Thời gian ghi: 2026-11-09T23:59:26+07:00
+* Thời gian thực hiện: Codex chỉnh sửa và kiểm tra tĩnh trong phiên hiện tại; thời điểm phản hồi/kiểm thử trước đây của thành viên nhóm chưa xác minh.
+* Mã phiên nhật ký: DAT-20261109-A6CFD653
+* Người prompt: PD Đạt (tự xác nhận).
+* Loại mục: Hoạt động
+* Liên quan: HW-P1-PD-1, task #548; BUG-01 tại [Issue #549](https://github.com/liemnguyen-work/ecommerce-dayora-project/issues/549) theo Đạt cung cấp; DAT-20261109-A6CFD653-005.
+
+### Công cụ
+
+Codex đọc CSS/JavaScript thực tế, chỉnh CSS khu 9 và markup nhóm nút; PowerShell/Git đối chiếu phạm vi, Node kiểm cú pháp. Không tự chạy trình duyệt hoặc gán kết quả của thành viên nhóm cho Codex.
+
+### Mục đích
+
+Sửa khả năng ngắt chữ Xóa, giá/ký hiệu tiền và nhóm giảm/số lượng/tăng tại 768 × 1024px theo phản hồi Đạt chuyển từ nhóm; giữ vùng bấm tối thiểu 44px, logic bước 1.1–1.5 và khả năng sử dụng tại 390px/1366px.
+
+### Prompt
+
+Tóm lược yêu cầu Đạt: bắt buộc nhánh hw/p1-pd-1; đọc style.css và cart-page.js, kiểm overflow-wrap anywhere/padding/độ rộng bảng; chỉ sửa CSS khu 9 và nếu cần bọc nút bằng .cart-qty-controls; nowrap giá/nút xóa, inline-flex nhóm số lượng, tối ưu tablet 601–900px; không đổi logic, chạy cú pháp/diff, nối log, không commit/push/PR và dừng để tự kiểm thử.
+
+### Kết quả đề xuất
+
+Codex thấy .cart-page có overflow-wrap:anywhere được kế thừa xuống nội dung, bảng width 100% với padding ô 16px mỗi bên và nhóm số lượng là ba phần tử inline rời. Ở 768px, vùng giỏ có chiều rộng khoảng 736px theo CSS nên các cột cạnh tranh chỗ; đây là phân tích tĩnh, chưa đo layout trên trình duyệt.
+
+Đổi overflow-wrap trên .cart-page về normal; giới hạn anywhere cho tên sản phẩm. Đặt white-space:nowrap cho cột đơn giá/thành tiền (cả heading), tổng tiền/số lượng strong và nút xóa. Thêm đúng một div .cart-qty-controls bao ba phần tử giảm/số lượng/tăng trong template; CSS inline-flex, align-items:center, gap 8px, flex-wrap:nowrap và con không co. Tablet 601–900px dùng bảng 0.9rem, padding ô 12px 8px, ảnh 44px và padding ngang nút xóa 12px; dành chiều rộng linh hoạt cho cột tên. Giữ quy tắc mobile dạng thẻ, ẩn đơn giá ≤600px, nhóm số lượng không tách hàng và vùng bấm 44px. Wrapper bảng overflow-x:auto sẵn có được giữ để bảo vệ trang khi nội dung cực dài.
+
+### Phản biện
+
+Chưa có kiểm thử trình duyệt sau sửa nên không khẳng định đã hết tràn ngang hoặc giữ đúng bố cục ở 768px/390px/1366px. Giá cực dài/số lượng rất lớn có thể làm bảng cần cuộn trong wrapper vì chủ đích không ngắt các giá trị này. Không giảm vùng bấm để ép vừa bảng. Giữ toàn bộ logic LocalStorage, tổng, badge, render và Event Delegation; renderCart chỉ thêm markup wrapper theo phạm vi Đạt cho phép. Chưa đọc trực tiếp nội dung phản hồi #549 trên GitHub, không gán tên thành viên hoặc phê duyệt chưa có.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung hoặc xác nhận reviewer nghiệm thu. Đạt đã cho phép Codex sửa đúng CSS khu 9, wrapper HTML nút trong cart-page.js và nối log; dừng để Đạt tự kiểm thử, không commit/push/tạo PR.
+
+### Người kiểm tra
+
+Đạt cung cấp báo lỗi thực tế 768 × 1024px từ thành viên nhóm. Codex kiểm tra tĩnh, cú pháp và phạm vi thay đổi. Kiểm thử trình duyệt sau sửa của Đạt chưa thực hiện/chưa xác nhận; Codex không mở trình duyệt. Chờ Đạt kiểm tra giá và Xóa một dòng, ba phần tử số lượng cùng hàng, không tràn trang và hồi quy tăng/giảm/xóa/tổng/badge.
+
+### Kiểm tra và minh chứng
+
+* Nhánh hw/p1-pd-1, working tree ban đầu sạch. Đã đọc CSS khu 9, cart-page.js, quy tắc/mẫu log và mục gần nhất.
+* node --check session3/js/modules/cart-page.js đạt; git diff --check trước khi nối log không báo lỗi.
+* So sánh CSS với HEAD: phần trước khu 9 giữ nguyên. So sánh JavaScript sau khi bỏ hai dòng wrapper vừa thêm: trùng HEAD, xác nhận không đổi logic. Chỉ ba file thay đổi: session3/css/style.css, session3/js/modules/cart-page.js và docs/ai-logs/dat.md.
+* Log chỉ nối cuối, giữ nguyên lịch sử từng byte. Chưa có ảnh hoặc kết quả kiểm thử trình duyệt sau sửa; không commit, push hoặc PR.

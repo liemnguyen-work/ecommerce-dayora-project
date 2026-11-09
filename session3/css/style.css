@@ -275,7 +275,7 @@ input:focus-visible {
 }
 
 .cart-page {
-  overflow-wrap: anywhere;
+  overflow-wrap: normal;
 }
 
 .cart-page [hidden] {
@@ -405,6 +405,53 @@ input:focus-visible {
 .cart-item-title {
   font-weight: 600;
   color: var(--mau-chu);
+  overflow-wrap: anywhere;
+}
+
+.cart-table th:nth-child(2),
+.cart-table td:nth-child(2),
+.cart-table th:nth-child(4),
+.cart-table td:nth-child(4),
+.cart-summary strong,
+.btn-remove {
+  white-space: nowrap;
+}
+
+.cart-qty-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.cart-qty-controls > * {
+  flex-shrink: 0;
+}
+
+/* Thu gọn các cột ở tablet, dành phần còn lại cho tên sản phẩm. */
+@media (min-width: 601px) and (max-width: 900px) {
+  .cart-table {
+    font-size: 0.9rem;
+  }
+
+  .cart-table th,
+  .cart-table td {
+    padding: 12px 8px;
+  }
+
+  .cart-table th:first-child {
+    width: 100%;
+  }
+
+  .cart-item-img {
+    width: 44px;
+    height: 44px;
+  }
+
+  .btn-remove {
+    padding-inline: 12px;
+  }
 }
 
 /* Nút tăng và giảm số lượng */
