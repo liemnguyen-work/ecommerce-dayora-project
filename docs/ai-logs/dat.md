@@ -548,3 +548,49 @@ Chưa có quyết định chung hoặc xác nhận phê duyệt từ nhóm/revie
 * Nhánh hiện tại hw/p1-pd-1. Ban đầu chỉ session3/js/modules/cart-page.js thay đổi chưa stage, không có staged diff. git diff --check và git diff --cached --check trước khi nối log không báo lỗi.
 * Kết quả ba nút hoạt động không tải lại trang là do Đạt tự kiểm thử và cung cấp; không phải kết quả trình duyệt do Codex thực hiện. Chưa xác minh thời điểm kiểm thử hoặc xem ảnh/console.
 * Sau khi nối log, danh sách file thay đổi gồm session3/js/modules/cart-page.js (thay đổi sẵn của Đạt) và docs/ai-logs/dat.md (Codex nối mục mới). Giữ nguyên từng byte lịch sử log và nội dung code; không commit, push hoặc tạo PR.
+
+---
+
+## P1 — Tổng giỏ hàng và trạng thái trống / DAT-20261109-A6CFD653-004
+
+* Thời gian ghi: 2026-11-09T17:50:35+07:00
+* Thời gian thực hiện: Chỉnh sửa/review bằng Codex trong phiên hiện tại; không gán thời điểm thực hiện hoặc kết quả kiểm thử trình duyệt của Đạt.
+* Mã phiên nhật ký: DAT-20261109-A6CFD653
+* Người prompt: PD Đạt (tự xác nhận).
+* Loại mục: Hoạt động
+* Liên quan: HW-P1-PD-1.4; [Issue #552](https://github.com/liemnguyen-work/ecommerce-dayora-project/issues/552); DAT-20261109-A6CFD653-003 (bước 1.3).
+
+### Công cụ
+
+Codex trực tiếp đọc, chỉnh sửa và review code; PowerShell/Git kiểm tra phạm vi và whitespace, Node kiểm tra cú pháp và logic với DOM giả lập. Không sử dụng thư viện mới hoặc trình duyệt. Không gán phần triển khai 1.4 này cho ChatGPT trong các phiên trước.
+
+### Mục đích
+
+Hoàn thiện tổng số lượng/tổng tiền và trạng thái giỏ trống, giữ chức năng tăng/giảm/xóa cùng Event Delegation trên #cart-root; chuẩn bị thay đổi cho Đạt tự kiểm thử.
+
+### Prompt
+
+Tóm lược yêu cầu Đạt: đọc code thực tế cart-page.js, cart.html, CSS khu 9 và cart.js chỉ đọc; thêm #cart-content giữ các ID cũ; khi trống ẩn bảng/tổng và hiện thông báo cùng link products.html; khi có sản phẩm dùng getCartTotals()/formatPrice(), .summary-box/.summary-total và nút Đặt hàng disabled nếu chưa có thanh toán. Chỉ chỉnh ba file ứng dụng đã nêu cùng nối log đủ 7 trường, kiểm tra git diff --check, không commit/push/PR; dừng để Đạt tự kiểm thử.
+
+### Kết quả đề xuất
+
+Codex thêm #cart-content bao bảng và giữ #cart-root/#cart-tbody/#cart-summary; thêm markup .summary-box, .summary-total, nút .cart-checkout disabled với chú thích thanh toán chưa khả dụng. Không tìm thấy trang checkout/payment trong session3 qua tên file, không tạo link thanh toán. renderCart() ẩn wrapper bảng và summary khi không có sản phẩm tra được trong catalog, đặt tổng 0, thêm .cart-empty với đúng thông báo “Giỏ hàng của bạn đang trống” và link “Tiếp tục mua sắm” đến products.html. Khi có sản phẩm, bỏ thông báo, hiện bảng/tổng, gọi getCartTotals(), hiển thị số món và tiền qua formatPrice(). Giữ nguyên setupCartActions() và các lời gọi render sau thao tác, nên bảng/tổng cùng cập nhật. Chỉ bổ sung CSS trong khu 9 cho trạng thái trống, link/focus, summary, nút disabled và bố cục mobile; thêm quy tắc [hidden] trong phạm vi .cart-page. Không sửa cart.js.
+
+### Phản biện
+
+Kiểm tra logic phát hiện tổng ẩn còn giữ giá trị cũ sau xóa sản phẩm cuối; Codex đã bổ sung đặt tổng về 0 và chạy lại đạt. Lần chạy harness đầu còn gặp lỗi mã hóa tiếng Việt khi truyền PowerShell sang Node, đã đổi chuỗi kỳ vọng sang Unicode escape; đó là lỗi harness, không phải lỗi giao diện. Các kiểm tra DOM giả lập không chứng minh bố cục, khả năng truy cập hay tương tác thực trên trình duyệt. Hạn chế dữ liệu LocalStorage sai kiểu đã nêu ở bước trước chưa được xử lý trong phạm vi này; dùng dữ liệu chuẩn do cart.js tạo. Chưa có phản hồi review hoặc nghiệm thu của Đạt/nhóm.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung hoặc phê duyệt nhóm/reviewer. Đạt đã cho phép Codex triển khai đúng phạm vi ba file ứng dụng và nối log; dừng để Đạt tự kiểm thử trước, không commit/push/tạo PR.
+
+### Người kiểm tra
+
+Codex review code và trực tiếp chạy kiểm tra cú pháp, logic Node với DOM giả lập cùng Git. Kiểm thử trình duyệt bước 1.4 của Đạt chưa thực hiện; Codex không mở trình duyệt và không ghi kết quả hiển thị desktop/mobile đã đạt. Chờ Đạt kiểm tra giao diện, chức năng và nhật ký.
+
+### Kiểm tra và minh chứng
+
+* Đúng nhánh hw/p1-pd-1; working tree ban đầu sạch. Đã đọc code các file được yêu cầu, quy tắc/mẫu và phần log gần nhất. Đối chiếu #552 theo yêu cầu Đạt cung cấp trong phiên này.
+* node --check session3/js/modules/cart-page.js đạt. Harness Node nạp products.js, cart.js, cart-page.js với LocalStorage/DOM giả lập: đạt giỏ trống, tổng ban đầu 3 món, tăng lên 4, giảm và chặn dưới 1, xóa từng món tới trống, tổng 0 và khôi phục giỏ có sản phẩm. Giá trị tổng tiền được so sánh sau thao tác với getCartTotals()/formatPrice(). Không tạo file test trong repo; đây không phải kiểm thử trình duyệt.
+* git diff --check trước khi nối log không báo lỗi. Ba file ứng dụng thay đổi: session3/cart.html, session3/js/modules/cart-page.js, session3/css/style.css (chỉ khu 9). File thứ tư là docs/ai-logs/dat.md nối mục này; phần lịch sử được giữ nguyên từng byte.
+* Đạt cần tự kiểm thử desktop/mobile: giỏ ban đầu trống, thêm dữ liệu và tải trang, tăng/giảm/xóa cập nhật tổng, xóa sản phẩm cuối ẩn bảng/tổng, link Tiếp tục mua sắm, nút Đặt hàng disabled, không tràn ngang. Chưa có kết quả các ca trình duyệt này. Không commit, push hoặc tạo PR.

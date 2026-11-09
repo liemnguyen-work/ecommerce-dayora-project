@@ -31,24 +31,30 @@
     <p>Kiểm tra sản phẩm và số lượng trước khi tiếp tục.</p>
 
     <div id="cart-root">
-      <div class="cart-table-wrap">
-        <table class="cart-table">
-          <thead>
-            <tr>
-              <th scope="col">Sản phẩm</th>
-              <th scope="col">Đơn giá</th>
-              <th scope="col">Số lượng</th>
-              <th scope="col">Thành tiền</th>
-              <th scope="col">Xóa</th>
-            </tr>
-          </thead>
-          <tbody id="cart-tbody"></tbody>
-        </table>
+      <div id="cart-content">
+        <div class="cart-table-wrap">
+          <table class="cart-table">
+            <thead>
+              <tr>
+                <th scope="col">Sản phẩm</th>
+                <th scope="col">Đơn giá</th>
+                <th scope="col">Số lượng</th>
+                <th scope="col">Thành tiền</th>
+                <th scope="col">Xóa</th>
+              </tr>
+            </thead>
+            <tbody id="cart-tbody"></tbody>
+          </table>
+        </div>
       </div>
 
-      <div class="cart-summary" id="cart-summary">
-        <p>Tổng số lượng: <strong id="cart-total-items">0</strong></p>
-        <p>Tổng tiền: <strong id="cart-total-price">0 ₫</strong></p>
+      <div class="cart-summary" id="cart-summary" aria-live="polite">
+        <div class="summary-box">
+          <p>Tổng số lượng: <strong id="cart-total-items">0 món</strong></p>
+          <p class="summary-total">Tổng tiền: <strong id="cart-total-price">0 ₫</strong></p>
+          <button type="button" class="cart-checkout" disabled aria-describedby="checkout-note">Đặt hàng</button>
+          <p id="checkout-note">Thanh toán chưa khả dụng.</p>
+        </div>
       </div>
     </div>
   </section>

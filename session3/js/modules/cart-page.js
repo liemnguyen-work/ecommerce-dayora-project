@@ -8,17 +8,42 @@ window.addEventListener("DOMContentLoaded", () => {
 
 function renderCart() {
   const tbody = document.getElementById("cart-tbody");
+  const content = document.getElementById("cart-content");
+  const summary = document.getElementById("cart-summary");
 
   // Các trang khác không có bảng giỏ hàng
-  if (!tbody) return;
+  if (!tbody || !content || !summary) return;
 
   const cart = loadCart();
+  const tableWrap = content.querySelector(".cart-table-wrap");
+  if (!tableWrap) return;
+  const emptyMessage = content.querySelector(".cart-empty");
+  const hasProducts = cart.some(item => getProductById(item.id));
 
   // Chưa có sản phẩm
-  if (cart.length === 0) {
+  if (!hasProducts) {
     tbody.innerHTML = "";
+    tableWrap.hidden = true;
+    summary.hidden = true;
+    document.getElementById("cart-total-items").textContent = "0 món";
+    document.getElementById("cart-total-price").textContent = formatPrice(0);
+    if (!emptyMessage) {
+      content.insertAdjacentHTML("beforeend", `
+        <div class="cart-empty" role="status">
+          <p>Giỏ hàng của bạn đang trống</p>
+          <a href="products.html" class="primary-link">Tiếp tục mua sắm</a>
+        </div>
+      `);
+    }
     return;
   }
+
+  if (emptyMessage) emptyMessage.remove();
+  tableWrap.hidden = false;
+  summary.hidden = false;
+  const totals = getCartTotals();
+  document.getElementById("cart-total-items").textContent = `${totals.totalItems} món`;
+  document.getElementById("cart-total-price").textContent = formatPrice(totals.totalPrice);
 
   const rows = cart.map(item => {
     const product = getProductById(item.id);

@@ -269,6 +269,74 @@ input:focus-visible {
 
 /* 9. GIỎ HÀNG — Đạt */
 
+.cart-page [hidden] {
+  display: none;
+}
+
+.cart-empty {
+  margin-top: 32px;
+  padding: clamp(24px, 6vw, 64px) 16px;
+  border: 1px solid var(--mau-la);
+  border-radius: 20px;
+  text-align: center;
+}
+
+.cart-empty p {
+  margin-bottom: 24px;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.cart-page .primary-link,
+.cart-checkout {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 12px 24px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--mau-nhan);
+  color: var(--mau-nen);
+  font: inherit;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.cart-page .primary-link:hover {
+  text-decoration: underline;
+}
+
+.cart-page .primary-link:focus-visible {
+  outline: 2px solid var(--mau-chu);
+  outline-offset: 4px;
+}
+
+.summary-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 16px;
+  overflow-wrap: anywhere;
+}
+
+.summary-total {
+  font-size: clamp(1.25rem, 3vw, 1.5rem);
+}
+
+.cart-checkout:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  .summary-box {
+    align-items: stretch;
+  }
+}
+
 .cart-page {
   width: min(100% - 32px, 1100px);
   margin: 48px auto 80px;
