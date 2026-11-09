@@ -1150,3 +1150,85 @@ Thành tự thử và gửi ảnh; Codex đối chiếu ảnh.
 ### Kiểm tra và minh chứng
 
 Ảnh hiển thị xyz, danh mục Thảm picnic, sắp xếp giá tăng và thông báo Không tìm thấy sản phẩm nào phù hợp. Kết hợp ba điều kiện giá tăng và giảm đã được ghi ở mục 020 và 021. Chưa commit hoặc push Bước 5.
+
+## Bài tập Buổi 3 / THANH-20261109-742B51D3-023
+
+* Thời gian ghi: 2026-11-09T14:45:48+07:00
+* Thời gian thực hiện: 2026-11-09, trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261109-742B51D3
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: HW-P1-FD1-1.6
+
+### Công cụ
+
+Codex.
+
+### Mục đích
+
+Hỗ trợ Thành tự trả lời và ghi câu trả lời kiến thức Buổi 3.
+
+### Prompt
+
+Tóm lược: Thành yêu cầu AI đặt câu hỏi, ghi lại câu trả lời và cập nhật câu 3; yêu cầu trong issue là tự trả lời, không dán đáp án AI.
+
+### Kết quả đề xuất
+
+Codex hỏi theo issue. Thành trả lời về trình tự xử lý và lý do sao chép trước sort. Với câu 3, Thành chưa nhớ nguồn danh mục; sau khi Thành hỏi, Codex đã gợi ý thuộc tính category trong dữ liệu sản phẩm và lợi ích cập nhật tự động. Thành nhắc lại nguồn category, nêu viết tay tốn công và yêu cầu ghi; Codex nối phần trả lời vào session3/docs/answers/Thanh.md, đánh dấu cần Thành tự bổ sung lý do cập nhật.
+
+### Phản biện
+
+Chưa có phản biện mới của Thành về phần ghi vào file.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Thành đã trả lời trong trao đổi; chờ Thành tự kiểm tra và hoàn thiện phần trả lời được AI gợi ý.
+
+### Kiểm tra và minh chứng
+
+Codex kiểm tra trạng thái Git và nội dung file trả lời trước khi nối; giữ nguyên bản nháp hiện có. Câu 1 và 2 mới ghi nhận trong trao đổi, chưa thêm vào file. Chưa hoàn thành kiểm tra kiến thức, chưa commit hoặc push Bước 6.
+
+## Bài tập Buổi 3 / THANH-20261109-742B51D3-024
+
+* Thời gian ghi: 2026-11-09T14:51:33+07:00
+* Thời gian thực hiện: 2026-11-09, trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261109-742B51D3
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: HW-P1-FD1-1.6; THANH-20261109-742B51D3-023
+
+### Công cụ
+
+Codex và Git.
+
+### Mục đích
+
+Ghi lại câu trả lời kiến thức của Thành để Thành rà soát trước khi nộp.
+
+### Prompt
+
+Tóm lược: Thành trả lời lần lượt các câu trong issue và yêu cầu AI ghi lại vào file, sau khi hoàn tất thì commit.
+
+### Kết quả đề xuất
+
+Codex nối các câu trả lời của Thành vào session3/docs/answers/Thanh.md, giữ phần bản nháp cũ; câu 3 ghi rõ Thành nhớ nguồn category sau gợi ý của AI và dẫn ý Thành tự giải thích trong câu 5. Code Bước 1–5 không được mở hoặc sửa trong hoạt động này.
+
+### Phản biện
+
+Chưa có phản biện của Thành về bản ghi; câu 3 có hỗ trợ AI nên Thành cần rà soát theo yêu cầu tự trả lời của issue.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Thành cung cấp các câu trả lời trong trao đổi; Codex ghi lại và kiểm tra diff. Chưa có reviewer hỏi lại hai câu.
+
+### Kiểm tra và minh chứng
+
+Kiểm tra file và trạng thái Git trước khi ghi; các câu trả lời ghi theo ý Thành, với hỗ trợ AI cho câu 3 được ghi rõ. Câu 1 chưa nêu hiển thị lại kết quả, câu 4 và 8 có thể nêu rõ các chức năng bị ảnh hưởng. Chưa commit hoặc push Bước 6.

@@ -46,3 +46,41 @@ Gợi ý: mở DevTools, đặt viewport 390 px; kiểm tra phần tử rộng c
 - Bài học rút ra: [tự viết].
 
 Trạng thái: **NHÁP — chờ Thành tự hoàn thiện, xác nhận và giải thích**.
+
+## Buổi 3 — Kiểm tra kiến thức HW-P1-FD1-1.6
+
+### Câu 3 — Danh sách danh mục
+
+Danh sách danh mục lấy từ `category` trong dữ liệu sản phẩm; viết tay thì tốn công. Thành nhớ lại nguồn sau khi AI gợi ý. Như Thành giải thích ở câu 5, khi thêm hoặc đổi danh mục thì ô chọn tự cập nhật.
+
+### Câu 1 — Trình tự tìm kiếm và lọc
+
+Sản phẩm gốc, rồi đến lọc sản phẩm, rồi đến tìm kiếm; cuối cùng là sắp xếp theo thứ tự theo yêu cầu.
+
+### Câu 2 — Vì sao không sắp xếp trực tiếp `products`
+
+Vì có nhiều phần khác sử dụng mảng này; nếu sắp xếp trực tiếp sẽ ảnh hưởng thứ tự, còn tạo bản sao thì giữ được thứ tự gốc.
+
+### Câu 4 — Thanh công cụ
+
+Giúp khách hàng tìm sản phẩm, lọc theo nhu cầu; nếu bỏ đi thì chức năng tìm kiếm sản phẩm sẽ bị ảnh hưởng.
+
+### Câu 5 — Danh sách danh mục tạo từ dữ liệu
+
+Danh sách danh mục được tạo từ dữ liệu sản phẩm để khi thêm hoặc đổi danh mục thì ô chọn tự cập nhật và không bị trùng. Nếu bỏ bước này thì ô danh mục chỉ hiện lựa chọn Tất cả danh mục, nên người dùng không chọn được từng danh mục để lọc sản phẩm.
+
+### Câu 6 — Tìm theo tên
+
+Đưa từ khóa về chữ thường và bỏ khoảng trắng hai đầu để dễ tìm kiếm. Nếu bỏ, chữ viết hoa dù cùng nghĩa có thể không được chấp nhận và bị bỏ sót sản phẩm.
+
+### Câu 7 — Sắp xếp trên bản sao
+
+Sắp xếp giá trên bản sao để giữ nguyên thứ tự ban đầu của danh sách sản phẩm. Nếu sắp xếp trực tiếp thì mảng gốc bị thay đổi thứ tự và có thể ảnh hưởng đến những chức năng khác dùng danh sách đó.
+
+### Câu 8 — `applyFilters()`
+
+Áp dụng quy trình từ sản phẩm gốc, lọc danh mục, tìm kiếm rồi sắp xếp theo giá. Nếu bỏ thì khách hàng khó tìm sản phẩm phù hợp và mất thời gian hơn.
+
+### Câu 9 — Một lỗi đã gặp
+
+Lúc kiểm tra Git tôi thấy không có file nào thay đổi dù tôi đã thêm thanh công cụ và CSS. Nguyên nhân là tôi chưa lưu các file sau khi chỉnh sửa. Tôi nhấn Ctrl+S để lưu lại rồi kiểm tra Git thì thấy hai file đã được thay đổi.
