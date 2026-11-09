@@ -737,3 +737,144 @@ Codex trực tiếp đối chiếu heading/trạng thái/placeholder trong Dat.m
 * Đã đọc HUONG-DAN-BUOI-3.md, Dat.md, ai-logging-rules.md, TEMPLATE.md, nội dung log liên quan và toàn bộ session3/docs/ai-usage.md. Không có AGENTS.md con trong session3/docs qua tìm kiếm.
 * Working tree ban đầu sạch trên hw/p1-pd-1. Kiểm tra chỉ có 6 heading Câu 1–6 trong Dat.md; không có heading Câu 7–9 hoặc bộ 9 câu trong hướng dẫn được đối chiếu. Không xác nhận tính đúng kiến thức hoặc kết quả trình duyệt.
 * Chỉ nối docs/ai-logs/dat.md và session3/docs/ai-usage.md; giữ nguyên từng byte nội dung cũ của hai file, kiểm hash Dat.md không đổi. git diff --check trước khi nối không báo lỗi; kiểm tra lại sau ghi khi bàn giao.
+* Codex: đã đọc AGENTS.md, docs/ai-logs/ai-logging-rules.md, docs/ai-logs/TEMPLATE.md và toàn bộ docs/ai-logs/dat.md; đọc hai file ứng dụng cùng main.tsx, App.css và index.html. Không tìm thấy AGENTS.md con trong apps/docs. Ban đầu chỉ App.tsx và index.css thay đổi chưa stage; không có staged diff. git diff --check không báo lỗi trước khi nối log.
+* Kết quả do Đạt cung cấp, không phải Codex tự chạy lại: git diff --check không báo lỗi; npm run build -w web thành công; npm run lint -w web thành công.
+* Kết quả trình duyệt do Đạt cung cấp, chưa được Codex trực tiếp quan sát: đã kiểm tra Firefox tại viewport 1366 × 900 và 390 × 900; DevTools xác nhận h1 dùng Be Vietnam Pro, màu Ink; #root có width khoảng 1366px, không còn cố định 1126px. matchMedia('(prefers-color-scheme: dark)').matches trả về true nhưng giao diện vẫn giữ màu DAYORA.
+* Chưa xem ảnh, bản xuất DevTools hoặc log lệnh của Đạt; chưa xác minh thời điểm các kiểm tra hồi cứu. Không kết luận đã tự kiểm thử hiển thị, mọi weight/ký tự font hoặc toàn bộ khả năng truy cập. Chưa đọc trực tiếp mô tả Issue #568 trên GitHub; phạm vi issue dựa trên yêu cầu Đạt. Không có commit mới, push hoặc PR trong công việc này.
+
+---
+
+## P0 — Hướng dẫn hệ thiết kế DAYORA / DAT-20261109-8EB47926-003
+
+* Thời gian ghi: 2026-11-09T22:43:28+07:00
+* Thời gian thực hiện: Codex soạn tài liệu và kiểm tra trong phiên hiện tại; hoạt động phân tích với ChatGPT được ghi theo Đạt cung cấp, chưa xác minh thời điểm hoặc prompt nguyên văn.
+* Mã phiên nhật ký: DAT-20261109-8EB47926
+* Người prompt: PD Đạt (tự xác nhận).
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P0-PD-1.5; [task #25](https://github.com/liemnguyen-work/ecommerce-dayora-project/issues/25); DAT-20261109-8EB47926-001; DAT-20261109-8EB47926-002.
+
+### Công cụ
+
+ChatGPT hỗ trợ phân tích theo thông tin Đạt cung cấp trong yêu cầu ghi log; chưa có prompt/kết quả chi tiết hoặc model để xác minh độc lập. Codex trực tiếp đọc code, soạn design/DESIGN-SYSTEM.md, tính tương phản bằng Node và kiểm tra Markdown/Git; tham khảo tài liệu W3C chính thức.
+
+### Mục đích
+
+Tạo hướng dẫn thiết kế tiếng Việt cho FD1/FD2: màu, font, khoảng cách, bo góc, nút và checklist 1366px/390px; phân biệt code đã triển khai với quy chuẩn đề xuất, không thay CSS/TSX hoặc bản khung docs/DESIGN-SYSTEM.md.
+
+### Prompt
+
+Tóm lược yêu cầu Đạt: đọc index.css, main.tsx, App.tsx, bản khung docs và quy tắc/mẫu log; tạo mới design/DESIGN-SYSTEM.md với 5 màu cùng token/HEX/vai trò/tương phản, giải thích màu phụ, Be Vietnam Pro 800/600/400, gutter/section-gap theo CSS, nút bo 999px, thẻ 20–24px, các trạng thái và điều cấm, hướng dẫn FD1/FD2/checklist; tính hoặc xác minh WCAG, kiểm Markdown/diff, chỉ sửa hai file tài liệu và dừng, không commit/push/PR.
+
+### Kết quả đề xuất
+
+Codex tạo design/DESIGN-SYSTEM.md đầy đủ các mục được yêu cầu. Đối chiếu token màu chính trong @theme và 4 biến phụ :root, font import 400/600/800, class thực tế trong App.tsx. Ghi rõ màu phụ chưa là token Tailwind tự sinh utility, layout mẫu chưa dùng gutter/section-gap, heading base không tự gán weight, rounded-full hiện có khác với quy chuẩn giá trị 999px; disabled và thẻ sản phẩm là đề xuất chưa có trong App mẫu. Nêu rõ checklist chưa thực hiện và chưa có phê duyệt của FD1 Thành. Giữ nguyên docs/DESIGN-SYSTEM.md và code ứng dụng.
+
+### Phản biện
+
+Codex tính tương phản thay vì gán nhãn đạt cho từng màu riêng lẻ: Ink/Paper 11,0577:1, Paper/Berry 4,6414:1, Ink/Butter 6,7023:1, Ink/Leaf 8,8164:1, Butter/Paper 1,6498:1. Chữ vàng trên nền Paper không đạt; các cặp chữ/nền phụ được tính riêng và đạt 4,5:1. Tài liệu ghi công thức sRGB, giới hạn màu đặc và đánh giá bằng số chưa làm tròn; không khẳng định toàn bộ giao diện đạt WCAG. Chưa có review của Đạt/FD1 Thành hoặc kiểm chứng font/bố cục trên trình duyệt trong phiên này.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung hoặc xác nhận FD1 Thành review/phê duyệt. Phạm vi Đạt cho phép: chỉ tạo design/DESIGN-SYSTEM.md và nối dat.md, không sửa bản khung docs hay CSS/TSX, không commit/push/PR; dừng để Đạt tự kiểm tra. Các quy chuẩn đề xuất trong tài liệu chờ review, không được coi là nhóm đã chốt.
+
+### Người kiểm tra
+
+Codex trực tiếp đối chiếu nguồn, tính tương phản, kiểm tra cấu trúc Markdown và Git. Chờ Đạt kiểm tra tài liệu; FD1 Thành chưa xác nhận review. Không chạy trình duyệt/build/lint vì chỉ soạn tài liệu; không ghi kết quả kiểm thử giao diện mới.
+
+### Kiểm tra và minh chứng
+
+* Nhánh prj/p0-pd-1; working tree ban đầu sạch; design/DESIGN-SYSTEM.md chưa tồn tại trước khi tạo. Đã đọc sáu file Đạt yêu cầu và log gần nhất.
+* Node tính tương phản từ HEX theo độ chói tương đối sRGB, đối chiếu ngưỡng với https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html và nguyên tắc không chỉ dùng màu với https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html . Các nguồn được dẫn trực tiếp trong tài liệu.
+* Kiểm tra Markdown bằng Node: số cột các bảng nhất quán, liên kết tương đối tồn tại, code fence cân bằng; các mã HEX trong tài liệu khớp index.css. Đây là kiểm tra cấu trúc, chưa render Markdown bằng trình duyệt hoặc chạy markdownlint.
+* git diff --check trước khi nối log không báo lỗi; file mới chưa được Git theo dõi nên kiểm tra whitespace riêng cho tài liệu mới khi bàn giao. Chỉ hai file thay đổi: design/DESIGN-SYSTEM.md và docs/ai-logs/dat.md. Phần lịch sử dat.md giữ nguyên từng byte; không commit/push/tạo PR.
+
+---
+
+## P0 — Sửa đoạn chèn nhầm trong tài liệu thiết kế / DAT-20261109-8EB47926-004
+
+* Thời gian ghi: 2026-11-09T22:49:50+07:00
+* Thời gian thực hiện: Kiểm tra và sửa trong phiên hiện tại.
+* Mã phiên nhật ký: DAT-20261109-8EB47926
+* Người prompt: Đạt (tự xác nhận).
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P0-PD-1.5; task #25; DAT-20261109-8EB47926-003.
+
+### Công cụ
+
+Codex đọc/sửa file bằng PowerShell, kiểm tra cấu trúc Markdown bằng Node và Git. Sử dụng kỹ năng computer-use để thử mở Markdown Preview trong VS Code; chưa xác minh được Preview.
+
+### Mục đích
+
+Kiểm tra năm dạng lỗi Markdown Đạt nêu; chỉ sửa định dạng và xóa phản hồi chèn nhầm, giữ nguyên các thông số thiết kế.
+
+### Prompt
+
+Tóm lược: Đạt yêu cầu mở file gốc design/DESIGN-SYSTEM.md, kiểm tra heading **#, bảng escape hoặc ngắt hàng, link escape, inline code escape và phản hồi Codex chèn vào mục 2; nếu đúng không sửa, nếu sai chỉ sửa phần lỗi; kiểm tra Preview/bảng/diff, nối log nếu có sửa, không commit/push.
+
+### Kết quả đề xuất
+
+File trên đĩa có đoạn phản hồi bắt đầu bằng “Đã tạo” nối ngay sau heading “2. Năm màu chính và tương phản chữ”, tiếp tục bằng các đoạn báo cáo và danh sách file trước phần “Các biến --color-*”. Codex xóa đúng khối đó, khôi phục heading mục 2 và dòng trống phân cách. Không phát hiện heading **#/**##, escape dấu pipe, link ]\( hoặc backtick escape; không có dòng trống chia cắt hàng bảng. Giữ nguyên nội dung thiết kế còn lại, không tính lại hoặc thay thông số.
+
+### Phản biện
+
+Phản hồi bị chèn là nội dung ngoài tài liệu, không phải quy chuẩn thiết kế. Không có căn cứ xác định thao tác nào đã chèn khối này, nên không gán nguyên nhân. Script kiểm tra cấu trúc không thay thế Markdown Preview: công cụ UI gặp lỗi coordinate input geometry is unavailable, sau đó báo phát hiện user input trong cửa sổ VS Code; Codex dừng điều khiển để tránh xung đột. Chưa quan sát được Preview/bảng đã render, không ghi đã xác minh hiển thị.
+
+### Quyết định của nhóm
+
+Chưa có phê duyệt nhóm hoặc FD1 Thành. Đạt cho phép sửa đúng lỗi định dạng/nội dung chèn nhầm và nối log; không sửa code, commit/push hoặc tạo PR.
+
+### Người kiểm tra
+
+Codex kiểm tra file gốc, sửa khối chèn nhầm và kiểm cấu trúc bằng Node/Git. Chờ Đạt mở Markdown Preview để kiểm tra hiển thị sáu bảng; chưa ghi Đạt đã kiểm tra hoặc duyệt.
+
+### Kiểm tra và minh chứng
+
+* Node kiểm toàn file: không còn các dạng escape/heading sai đã nêu hoặc khối phản hồi; sáu bảng có separator, số cột nhất quán và hàng liên tục.
+* Thay đổi lần này: design/DESIGN-SYSTEM.md và nối docs/ai-logs/dat.md. Hai file này đã có thay đổi từ trước khi bắt đầu; giữ toàn bộ phần lịch sử log có sẵn từng byte.
+* Chưa xác minh Markdown Preview do trở ngại UI nêu trên. Không commit/push/PR. Chạy git diff --check sau sửa để báo kết quả bàn giao; tài liệu mới chưa được theo dõi được kiểm tra whitespace riêng.
+
+---
+
+## P0 — Chuẩn bị file và nhật ký kiểm tra kiến thức / DAT-20261109-8EB47926-005
+
+* Thời gian ghi: 2026-11-10T02:22:47+07:00
+* Thời gian thực hiện: Codex kiểm tra môi trường file và ghi log trong phiên hiện tại; hoạt động ChatGPT trước đó được tổng hợp hồi cứu theo Đạt, chưa xác minh mốc thời gian thực hiện.
+* Mã phiên nhật ký: DAT-20261109-8EB47926
+* Người prompt: PD Đạt (tự xác nhận).
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P0-PD-1.6; PRJ-P0-PD-1; DAT-20261109-8EB47926-004.
+
+### Công cụ
+
+ChatGPT đã đối chiếu mã nguồn và chuẩn bị nội dung tham khảo cho 6 câu theo xác nhận Đạt trong yêu cầu hiện tại. Chưa cung cấp prompt nguyên văn, model hoặc bản trao đổi để xác minh độc lập. Codex hỗ trợ kiểm tra cấu trúc môi trường file và ghi nhật ký; không viết đáp án kiểm tra.
+
+### Mục đích
+
+Đảm bảo có thư mục docs/learning/PD-Dat/kiem-tra/ và file PRJ-P0-PD-1.md để Đạt tự làm bài; ghi trung thực vai trò AI và giữ nguyên nội dung cá nhân, code ứng dụng cùng các thay đổi chưa commit.
+
+### Prompt
+
+Tóm lược yêu cầu Đạt: kiểm git status -sb trên nhánh prj/p0-pd-1, không tùy tiện chuyển nhánh khi có thay đổi; đọc AGENTS.md, quy tắc/mẫu và log; tạo thư mục/file kiểm tra nếu thiếu, không tự sinh câu trả lời; chỉ nối một mục log đủ 7 trường phản ánh ChatGPT đã đối chiếu mã nguồn/chuẩn bị tham khảo cho 6 câu, Codex hỗ trợ cấu trúc file và nhật ký; không nhận Đạt đã hoàn thành hoặc reviewer duyệt; kiểm diff và dừng, không commit/push/PR.
+
+### Kết quả đề xuất
+
+Codex xác nhận đúng nhánh prj/p0-pd-1. Thư mục docs/learning/PD-Dat/kiem-tra/ và file PRJ-P0-PD-1.md đã tồn tại, nên không tạo lại, không sửa hoặc bổ sung nội dung. Chỉ nối mục này vào docs/ai-logs/dat.md. Hoạt động ChatGPT được ghi là nội dung tham khảo theo lời Đạt, không phải bằng chứng Đạt đã tự hoàn thành kiểm tra kiến thức.
+
+### Phản biện
+
+Không có căn cứ đánh giá 6 câu đã được Đạt tự trả lời, hiểu hoặc được reviewer thông qua. Codex không chấm nội dung, không viết đáp án, không đổi tài liệu tham khảo thành lời cá nhân. Trạng thái Git ban đầu có session3/docs/answers/Dat.md thay đổi và thư mục kiểm tra chưa theo dõi; các thay đổi đó được giữ nguyên, không gán là Codex tạo trong phiên này.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung hoặc xác nhận reviewer/FD1 Thành đã duyệt. Đạt cho phép kiểm tra môi trường file và nối một mục log, không sửa code ứng dụng hoặc đáp án, không commit/push/tạo PR; dừng để Đạt rà soát.
+
+### Người kiểm tra
+
+Đạt xác nhận hoạt động ChatGPT đối chiếu code và chuẩn bị tham khảo cho 6 câu. Codex kiểm nhánh, sự tồn tại thư mục/file và Git; chưa đánh giá kiến thức hoặc xác nhận kết quả tự làm của Đạt. Chờ Đạt kiểm tra nội dung log và tự hoàn thiện bài.
+
+### Kiểm tra và minh chứng
+
+* Đã đọc AGENTS.md, docs/ai-logs/ai-logging-rules.md, TEMPLATE.md và log hiện tại. Không tìm thấy AGENTS.md con trong docs qua tìm kiếm.
+* git status -sb ban đầu: prj/p0-pd-1...origin/prj/p0-pd-1; session3/docs/answers/Dat.md có thay đổi chưa commit; docs/learning/PD-Dat/kiem-tra/ chưa theo dõi. Không chuyển nhánh, stage hoặc hoàn tác thay đổi.
+* File docs/learning/PD-Dat/kiem-tra/PRJ-P0-PD-1.md đã có; kiểm hash trước/sau để giữ nguyên file này và session3/docs/answers/Dat.md. Không tạo câu trả lời hoặc sửa code.
+* Chỉ nối docs/ai-logs/dat.md, giữ nguyên từng byte lịch sử trước đó. Kiểm tra git diff --check và git status -sb sau ghi để báo kết quả; không commit/push/PR.
