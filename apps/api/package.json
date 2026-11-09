@@ -1,9 +1,11 @@
+
 {
   "name": "api",
   "version": "0.0.0",
   "private": true,
   "scripts": {
     "start:dev": "nest start --watch",
+    "prebuild": "npm run prisma:generate",
     "build": "nest build",
     "start": "node dist/main.js",
     "test": "vitest run",
