@@ -690,3 +690,50 @@ Chưa có quyết định chung hoặc xác nhận reviewer nghiệm thu. Đạt
 * node --check session3/js/modules/cart-page.js đạt; git diff --check trước khi nối log không báo lỗi.
 * So sánh CSS với HEAD: phần trước khu 9 giữ nguyên. So sánh JavaScript sau khi bỏ hai dòng wrapper vừa thêm: trùng HEAD, xác nhận không đổi logic. Chỉ ba file thay đổi: session3/css/style.css, session3/js/modules/cart-page.js và docs/ai-logs/dat.md.
 * Log chỉ nối cuối, giữ nguyên lịch sử từng byte. Chưa có ảnh hoặc kết quả kiểm thử trình duyệt sau sửa; không commit, push hoặc PR.
+
+---
+
+## P1 — Kiểm tra cấu trúc câu trả lời BTVN Buổi 3 / DAT-20261109-A6CFD653-007
+
+* Thời gian ghi: 2026-11-10T01:36:30+07:00
+* Thời gian thực hiện: Codex kiểm tra và ghi tài liệu trong phiên hiện tại; trao đổi trước đó với ChatGPT được tổng hợp hồi cứu theo Đạt, chưa xác minh thời điểm.
+* Mã phiên nhật ký: DAT-20261109-A6CFD653
+* Người prompt: Đạt (PD, tự xác nhận).
+* Loại mục: Kiểm tra
+* Liên quan: HW-P1-PD-1.6; HW-P1-PD-1; DAT-20261109-A6CFD653-006.
+
+### Công cụ
+
+ChatGPT hướng dẫn quy trình nộp bài, đối chiếu yêu cầu bài tập và cách ghi log theo xác nhận của Đạt trong yêu cầu hiện tại. Chưa có prompt nguyên văn/model được xác minh. Codex đọc tài liệu, kiểm tra cấu trúc file câu trả lời, nối log cá nhân và tóm tắt hoạt động AI; không viết hoặc sửa câu trả lời thay Đạt.
+
+### Mục đích
+
+Kiểm tra session3/docs/answers/Dat.md đã có đủ 9 câu trả lời Buổi 3 theo yêu cầu Đạt hay chưa; chỉ báo thiếu/sai cấu trúc, ghi nhận hoạt động AI thực tế và chuẩn bị để Đạt duyệt.
+
+### Prompt
+
+Tóm lược: Đạt yêu cầu xác nhận nhánh hw/p1-pd-1, không tự chuyển nhánh; đọc hướng dẫn Buổi 3, Dat.md, quy tắc/mẫu/log và ai-usage.md; kiểm tra đủ 9 câu trả lời, không soạn hoặc sửa câu trả lời cá nhân; ghi nhận ChatGPT đã hướng dẫn quy trình nộp/đối chiếu yêu cầu/ghi log, nối log đủ 7 trường và tóm tắt cuối ai-usage.md; kiểm tra diff, không commit/push/PR/đóng Issue. Đây là tóm lược yêu cầu hiện tại, không phải tái tạo prompt ChatGPT cũ.
+
+### Kết quả đề xuất
+
+Codex xác nhận đúng nhánh hw/p1-pd-1 và không chuyển nhánh. Dat.md trên đĩa hiện mang tiêu đề “Bản nháp tham khảo — Đạt”, ghi rõ AI soạn, chưa là câu trả lời cá nhân/chưa được Đạt xác nhận; có 6 heading Câu 1–6, không có Câu 7–9. Các mục chủ yếu về HTML/CSS Buổi 2 (Grid, ảnh, responsive, khu CSS 8), còn placeholder tự viết và trạng thái NHÁP. Vì vậy chưa đủ bộ 9 câu trả lời Buổi 3; không coi 6 mục nháp là 6 câu cá nhân đã hoàn tất.
+
+Mục 6 trong HUONG-DAN-BUOI-3.md quy định tự trả lời bằng lời cá nhân, mỗi câu 1–3 dòng, và bảng PD hiện liệt kê 3 câu trọng tâm; chưa tìm thấy bộ 9 câu trong tài liệu được yêu cầu nên chưa thể ánh xạ 9 câu đầy đủ. Chỉ nêu thiếu/sai cấu trúc, không giải đáp hoặc chấm nội dung. Nối mục này vào dat.md và thêm một mục tóm tắt riêng của Đạt cuối session3/docs/ai-usage.md; giữ nguyên Dat.md và phần của thành viên khác.
+
+### Phản biện
+
+Chưa có căn cứ tuyên bố Đạt đã hoàn tất kiểm tra kiến thức hoặc đã được duyệt. Có khác biệt giữa yêu cầu 9 câu của Đạt và bảng 3 câu trọng tâm PD trong hướng dẫn hiện tại; cần Đạt đối chiếu đề/Issue để xác định bộ câu hỏi trước khi tự hoàn thiện. Không tự dựng bộ 9 câu hoặc lấy câu trả lời nháp AI làm lời của Đạt. Nội dung ai-usage.md cũ còn tiêu đề Buổi 2 và các mục thành viên khác; chỉ nối phần Buổi 3 của Đạt, không sửa lịch sử.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung hoặc phê duyệt của nhóm/FD1 Thành. Đạt cho phép kiểm tra cấu trúc và nối hai mục tài liệu, giữ nguyên câu trả lời cá nhân và lịch sử; dừng để Đạt duyệt. Không commit, push, tạo PR hoặc đóng Issue.
+
+### Người kiểm tra
+
+Codex trực tiếp đối chiếu heading/trạng thái/placeholder trong Dat.md với hướng dẫn Buổi 3 và kiểm Git. Đạt xác nhận việc dùng ChatGPT nêu trên; chưa cung cấp prompt nguyên văn hay kết quả duyệt. Chờ Đạt tự hoàn thiện câu trả lời và rà soát log/tóm tắt; chưa có nghiệm thu reviewer.
+
+### Kiểm tra và minh chứng
+
+* Đã đọc HUONG-DAN-BUOI-3.md, Dat.md, ai-logging-rules.md, TEMPLATE.md, nội dung log liên quan và toàn bộ session3/docs/ai-usage.md. Không có AGENTS.md con trong session3/docs qua tìm kiếm.
+* Working tree ban đầu sạch trên hw/p1-pd-1. Kiểm tra chỉ có 6 heading Câu 1–6 trong Dat.md; không có heading Câu 7–9 hoặc bộ 9 câu trong hướng dẫn được đối chiếu. Không xác nhận tính đúng kiến thức hoặc kết quả trình duyệt.
+* Chỉ nối docs/ai-logs/dat.md và session3/docs/ai-usage.md; giữ nguyên từng byte nội dung cũ của hai file, kiểm hash Dat.md không đổi. git diff --check trước khi nối không báo lỗi; kiểm tra lại sau ghi khi bàn giao.
