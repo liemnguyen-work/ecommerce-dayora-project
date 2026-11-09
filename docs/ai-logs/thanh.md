@@ -371,3 +371,167 @@ So sánh ba tệp gốc giữa HEAD bản cũ và origin/main thấy trùng; chu
 - Mục đích: đối chiếu issue, chuẩn bị nộp Bước 1 và ghi nhận kết quả Thành tự kiểm tra.
 - Thành xác nhận đã kiểm tra giao diện ở 1366 px và 390 px, không tràn ngang và Console không có lỗi đỏ. Ảnh Thành cung cấp cho thấy tại 390 px, scrollWidth và clientWidth cùng bằng 390; ảnh giao diện cho thấy thanh công cụ xếp dọc trên màn hình nhỏ. Ảnh màn hình lớn không hiển thị số đo viewport nên kết quả 1366 px dựa trên xác nhận của Thành.
 - Codex đối chiếu nội dung issue và diff; các kiểm tra giao diện nêu trên do Thành thực hiện, không phải Codex tự chạy.
+
+## Bài tập Buổi 3 / THANH-20261109-742B51D3-004
+
+* Thời gian ghi: 2026-11-09T13:40:27+07:00
+* Thời gian thực hiện: 2026-11-09, trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261109-742B51D3
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: HW-P1-FD1-1.2
+
+### Công cụ
+
+Codex và Git.
+
+### Mục đích
+
+Hỗ trợ Thành bắt đầu tạo danh sách danh mục từ dữ liệu sản phẩm.
+
+### Prompt
+
+Tóm lược: Thành yêu cầu hỗ trợ task tiếp theo và chỉ ghi quá trình trao đổi, kết quả thực tế vào log, không chép nội dung issue.
+
+### Kết quả đề xuất
+
+Codex kiểm tra nhánh, dữ liệu, thứ tự nạp script và gợi ý Thành tự tạo hàm lấy category, loại trùng và thêm option. Chưa thay đổi mã ứng dụng.
+
+### Phản biện
+
+Chưa có phản biện của Thành về gợi ý.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Codex kiểm tra tĩnh mã hiện tại; chờ Thành thực hiện và kiểm tra trên trình duyệt.
+
+### Kiểm tra và minh chứng
+
+Nhánh hw/p1-fd1-1 đang sạch trước mục log; search-filter.js chưa có hàm; products.html nạp products.js trước search-filter.js bằng defer. Chưa thử hiển thị danh mục hoặc thêm sản phẩm giả lập.
+
+## Bài tập Buổi 3 / THANH-20261109-742B51D3-005
+
+* Thời gian ghi: 2026-11-09T13:43:14+07:00
+* Thời gian thực hiện: 2026-11-09, trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261109-742B51D3
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: THANH-20261109-742B51D3-004; HW-P1-FD1-1.2
+
+### Công cụ
+
+Codex, Git và Node.js.
+
+### Mục đích
+
+Thực hiện phần tạo danh mục sản phẩm theo yêu cầu của Thành.
+
+### Prompt
+
+Thành yêu cầu AI làm giúp bước này.
+
+### Kết quả đề xuất
+
+Codex viết populateCategories trong session3/js/modules/search-filter.js: lấy category từ products, dùng Set loại trùng, tạo lựa chọn mặc định và các option, gọi hàm khi nạp script. Thành chưa xác nhận sử dụng hoặc review.
+
+### Phản biện
+
+Chưa có phản biện của Thành hoặc nhóm.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Codex kiểm tra bằng Node.js với DOM giả lập; chờ Thành tự kiểm tra trên trình duyệt.
+
+### Kiểm tra và minh chứng
+
+Thử dữ liệu hiện tại cho năm danh mục không lặp và lựa chọn mặc định có giá trị rỗng; thử thêm category Lều trại trong bộ nhớ thấy có option tương ứng. Không thay products.js. git diff --check không báo lỗi; chưa thử trên trình duyệt, chưa commit hoặc push Bước 2.
+
+## Bài tập Buổi 3 / THANH-20261109-742B51D3-006
+
+* Thời gian ghi: 2026-11-09T13:48:37+07:00
+* Thời gian thực hiện: 2026-11-09, trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261109-742B51D3
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: THANH-20261109-742B51D3-005; HW-P1-FD1-1.2
+
+### Công cụ
+
+Codex, Node.js và ảnh Thành cung cấp.
+
+### Mục đích
+
+Kiểm tra danh sách danh mục khi bổ sung dữ liệu thử.
+
+### Prompt
+
+Thành yêu cầu kiểm tra và cung cấp ảnh menu danh mục.
+
+### Kết quả đề xuất
+
+Codex mở trang từ bản làm việc bằng máy chủ tạm và đưa thêm một sản phẩm giả lập vào dữ liệu phục vụ cho trang thử trong bộ nhớ. Không sửa products.js của nhóm. Máy chủ tạm đã được dừng.
+
+### Phản biện
+
+Chưa có phản biện của Thành hoặc nhóm.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Codex đối chiếu ảnh Thành cung cấp với kết quả thử.
+
+### Kiểm tra và minh chứng
+
+Ảnh cho thấy tùy chọn Tất cả, năm danh mục ban đầu mỗi mục một lần và mục Lều trại. Ảnh không cho thấy địa chỉ trang, dữ liệu nguồn hay Console, vì vậy không xác nhận nguồn dữ liệu và lỗi Console chỉ từ ảnh. Thử nghiệm Node.js với DOM giả lập đã được ghi trong mục 005. Chưa commit hoặc push Bước 2.
+
+## Bài tập Buổi 3 / THANH-20261109-742B51D3-007
+
+* Thời gian ghi: 2026-11-09T13:57:19+07:00
+* Thời gian thực hiện: 2026-11-09, trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261109-742B51D3
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: THANH-20261109-742B51D3-006; HW-P1-FD1-1.2
+
+### Công cụ
+
+Codex; ảnh trình duyệt và Console do Thành cung cấp.
+
+### Mục đích
+
+Ghi nhận kiểm tra và hướng dẫn Thành tự commit Bước 2.
+
+### Prompt
+
+Tóm lược: Thành gửi ảnh và đề nghị hướng dẫn commit thủ công nếu kết quả ổn.
+
+### Kết quả đề xuất
+
+Hướng dẫn kiểm tra nhánh và diff, stage đúng file, commit với mã task và push; Thành tự thực hiện.
+
+### Phản biện
+
+Chưa có phản biện của Thành hoặc nhóm.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Thành cung cấp ảnh; Codex đối chiếu nội dung ảnh.
+
+### Kiểm tra và minh chứng
+
+Ảnh menu hiển thị Tất cả và năm danh mục không lặp; ảnh Console không hiển thị lỗi đỏ. Ảnh không hiển thị đường dẫn trang hoặc thời điểm tải lại. Việc thêm danh mục giả lập đã được ghi ở các mục 005 và 006. Chưa tạo commit Bước 2 trong hoạt động này.
