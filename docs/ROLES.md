@@ -17,6 +17,8 @@ Mỗi module có 1 người chính + 1 người review. Kế hoạch theo phase:
 | QA | QA/Tester | Ngọc | `ngocnguyen31241024603` | Test plan, ca kiểm thử (≥ 24 ca Kit Builder), bug list, kiểm thử bảo mật | PM |
 | DO | DevOps | Kiệt | `TuanKiet-coder1` | Repo, env, CI, deploy Vercel/Render/Supabase, setup guide, checklist demo | BD2 |
 
+Ghi chú: `liemnguyen-work` và `liemnguyen31241023460-cell` là hai tài khoản của Liêm; các commit mới dùng tài khoản chính `liemnguyen-work`.
+
 Đã xác nhận username GitHub với cả 8 thành viên vào ngày 07/11/2026.
 
 ## Thư mục cá nhân theo phase

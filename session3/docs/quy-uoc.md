@@ -69,6 +69,7 @@ Các hàm giỏ hàng được định nghĩa trong `session3/js/modules/cart.js
 - `loadCart()` trả về mảng giỏ hàng. Nếu chưa có dữ liệu, JSON không hợp lệ hoặc dữ liệu đọc được không phải mảng, hàm trả về `[]`. Hàm hiện chưa kiểm tra tính hợp lệ của từng phần tử trong mảng.
 - `getCartTotals()` trả về đối tượng `{ totalItems, totalPrice }`, gồm tổng số lượng và tổng tiền. Khi giỏ hàng rỗng, hai giá trị đều bằng `0`.
 - `updateQuantity(id, qty)` cập nhật số lượng của sản phẩm tìm thấy rồi lưu giỏ hàng. Hàm không có lệnh `return` tường minh nên trả về `undefined`.
+  Số lượng được giữ tối thiểu là 1. Nếu muốn xóa sản phẩm khỏi giỏ, gọi `removeFromCart(id)`.
 
 Ví dụ:
 
