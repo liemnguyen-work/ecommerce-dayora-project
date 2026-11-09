@@ -48,3 +48,39 @@ Phạm vi gồm danh sách và chi tiết sản phẩm, tìm kiếm, lọc, sắ
 | Sự kiện `cart:changed` chạy lặp | Đạt | Bấm **Thêm vào giỏ** đúng một lần trên trang Sản phẩm. Console ghi `cart:changed: 1` và số trên menu Giỏ hàng tăng từ 1 lên 2. | — |
 | Đường dẫn JavaScript và ảnh | Đạt | Kiểm tra Network trên Trang chủ, Sản phẩm, Chi tiết sản phẩm, Giới thiệu và Giỏ hàng. Bộ lọc `status-code:404` hiển thị `0 / 226 requests`. | — |
 | Đồng bộ giỏ hàng giữa hai tab | Đạt | Sau khi thêm sản phẩm ở tab Sản phẩm, tab Giỏ hàng đã mở sẵn tự cập nhật số trên menu và số lượng trong giỏ trước khi tải lại trang. | — |
+
+## Danh sách lỗi phát hiện (Bug Tracker)
+
+| Mã lỗi | Mô tả lỗi | Mức độ | Người phụ trách | Trạng thái |
+| --- | --- | --- | --- | --- |
+| BUG-01 | Bố cục dòng sản phẩm trong bảng giỏ hàng bị lệch ở 768 × 1024 px. | Thấp | Đạt (`Dattran-ueh`) | Đã sửa |
+
+### BUG-01 — Bố cục bảng giỏ hàng ở 768 × 1024 px
+
+**Môi trường kiểm thử**
+
+Chrome DevTools ở chế độ Responsive, kích thước 768 × 1024 px.
+
+**Các bước tái hiện**
+
+1. Từ giỏ hàng trống, thêm 1 sản phẩm **Thảm picnic gấp gọn 2 người** (ID 1).
+2. Mở `cart.html` và đặt kích thước Responsive thành **768 × 1024 px**.
+3. Quan sát các cột **Đơn giá**, **Số lượng**, **Thành tiền** và **Xóa**.
+
+**Kết quả trước khi sửa**
+
+- Chữ **Xóa** bị ngắt giữa từ thành `Xó` và `a`.
+- Ký hiệu `₫` xuống dòng ở cả cột **Đơn giá** và **Thành tiền**.
+- Hai nút `−` và `+` hiển thị trên hai dòng khác nhau.
+
+**Kết quả mong đợi**
+
+Chữ **Xóa** hiển thị trọn trên một dòng. Ký hiệu `₫` nằm cùng dòng với giá ở cả hai cột. Hai nút `−` và `+` nằm cùng hàng với số lượng.
+
+**Minh chứng trước khi sửa**
+
+[Ảnh giỏ hàng ở 768 × 1024 px](screenshots/cart-768px.png)
+
+**Kết quả kiểm tra lại — 10/11/2026**
+
+Kiểm tra `cart.html` trên commit `bbf1d100957e19282971b2eee9c9e0150a1957c9` ở **768 × 1024 px**. Cả giỏ có ba sản phẩm và giỏ chỉ có một sản phẩm ID 1 đều hiển thị chữ **Xóa** trên một dòng, giữ ký hiệu `₫` cùng dòng với giá và căn hai nút `−`, `+` cùng hàng với số lượng. Kết quả **Đạt**.
