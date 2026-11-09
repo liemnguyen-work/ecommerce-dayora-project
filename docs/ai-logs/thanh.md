@@ -282,3 +282,92 @@ Codex kiểm tra tĩnh; chờ Thành review, kiểm tra trình duyệt và nhóm
 ### Kiểm tra và minh chứng
 
 Kiểm tra bằng PowerShell các đường dẫn href/src tương đối tồn tại; header giống nhau khi bỏ aria-current và footer giống nhau; ba trang menu có aria-current đúng link. Tìm script, thuộc tính sự kiện, bootstrap, tailwind, file:/// không có kết quả; git diff --check không báo lỗi. Chưa kiểm responsive, hover/focus hay font từ Google trên trình duyệt, chưa chạy check-session2.py vì python/py không có. Tệp ứng dụng: session2/index.html, products.html, product-detail.html, about.html; log docs/ai-logs/thanh.md.
+
+## Bài tập Buổi 3 / THANH-20261109-742B51D3-001
+
+* Thời gian ghi: 2026-11-09T13:15:57+07:00
+* Thời gian thực hiện: 2026-11-09, trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261109-742B51D3
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: HW-P1-FD1-1.1
+
+### Công cụ
+
+Codex.
+
+### Mục đích
+
+Kiểm tra và chuyển phần ghi nhận sử dụng AI Buổi 3 khỏi file trả lời kiến thức sang báo cáo AI của Buổi 3.
+
+### Prompt
+
+Tóm lược: Thành yêu cầu kiểm tra git status, xác định mục “Thành — AI hỗ trợ BTVN Buổi 3”, chuyển đúng mục nếu nằm nhầm vào answers sang session3/docs/ai-usage.md, giữ nguyên nội dung khác và không commit, chuyển nhánh, push hoặc đóng issue.
+
+### Kết quả đề xuất
+
+Xác định mục vừa thêm nằm cuối session3/docs/answers/Thanh.md và chưa có trong session3/docs/ai-usage.md; chuyển nội dung sang báo cáo đích, điều chỉnh cấp tiêu đề, giữ nguyên câu trả lời và các mục của người khác. Không thay đổi code sản phẩm hoặc CSS trong lần này.
+
+### Phản biện
+
+Chưa có phản biện của Thành hoặc reviewer về việc chuyển mục.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới; việc chuyển được Thành yêu cầu.
+
+### Người kiểm tra
+
+Codex đối chiếu git diff và git status; chờ Thành rà soát.
+
+### Kiểm tra và minh chứng
+
+Xem diff trước và sau: file answers trở về nội dung được theo dõi, báo cáo AI có một mục mới; các thay đổi sẵn có tại session3/products.html và session3/css/style.css được giữ nguyên. Không tìm thấy LP-FD1-Thanh-HW3.md trong workspace; vị trí đích dựa trên thông tin Thành cung cấp. Chưa tạo commit, chuyển nhánh, push hoặc đóng issue.
+
+## Bài tập Buổi 3 / THANH-20261109-742B51D3-002
+
+* Thời gian ghi: 2026-11-09T13:19:41+07:00
+* Thời gian thực hiện: 2026-11-09, trong phiên làm việc này
+* Mã phiên nhật ký: THANH-20261109-742B51D3
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: THANH-20261109-742B51D3-001; HW-P1-FD1-1.1
+
+### Công cụ
+
+Codex và Git.
+
+### Mục đích
+
+Chuẩn bị worktree và nhánh task từ origin/main, chuyển các thay đổi Bước 1 và ghi nhận AI có liên quan.
+
+### Prompt
+
+Tóm lược: Thành yêu cầu tạo worktree riêng và nhánh hw/p1-fd1-1 từ origin/main; chuyển chọn lọc toolbar, CSS khu 10 và ghi nhận AI, giữ nguyên bản làm việc cũ; chưa commit hoặc push.
+
+### Kết quả đề xuất
+
+Tạo worktree dayora-hw-p1-fd1-1 từ origin/main; chuyển thay đổi tại session3/products.html, session3/css/style.css và session3/docs/ai-usage.md. Giữ log gốc của origin/main và nối mục THANH-20261109-742B51D3-001 cùng mục này. Bản làm việc cũ không được sửa trong thao tác này.
+
+### Phản biện
+
+Chưa có review của Thành hoặc nhóm đối với worktree mới.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới; Thành yêu cầu chuẩn bị nhánh và chưa commit, push.
+
+### Người kiểm tra
+
+Codex đối chiếu nội dung và git diff; chờ Thành kiểm tra và review.
+
+### Kiểm tra và minh chứng
+
+So sánh ba tệp gốc giữa HEAD bản cũ và origin/main thấy trùng; chuyển các thay đổi chưa commit sang worktree mới. Kiểm tra git status, diff và log gốc; chưa chạy kiểm thử trình duyệt. Không tạo commit, push hoặc đóng issue.
+## Bài tập Buổi 3 / THANH-20261109-742B51D3-003
+
+- Người prompt: Thành; liên quan: HW-P1-FD1-1.1.
+- Công cụ: Codex, Git và GitHub.
+- Mục đích: đối chiếu issue, chuẩn bị nộp Bước 1 và ghi nhận kết quả Thành tự kiểm tra.
+- Thành xác nhận đã kiểm tra giao diện ở 1366 px và 390 px, không tràn ngang và Console không có lỗi đỏ. Ảnh Thành cung cấp cho thấy tại 390 px, scrollWidth và clientWidth cùng bằng 390; ảnh giao diện cho thấy thanh công cụ xếp dọc trên màn hình nhỏ. Ảnh màn hình lớn không hiển thị số đo viewport nên kết quả 1366 px dựa trên xác nhận của Thành.
+- Codex đối chiếu nội dung issue và diff; các kiểm tra giao diện nêu trên do Thành thực hiện, không phải Codex tự chạy.

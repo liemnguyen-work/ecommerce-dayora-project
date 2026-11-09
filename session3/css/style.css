@@ -266,3 +266,41 @@ input:focus-visible {
     transform: none;
   }
 }
+/* 10. TÌM KIẾM, LỌC — Thành */
+.filter-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 200px;
+  min-width: 0;
+}
+
+.filter-label {
+  margin-bottom: 8px;
+}
+
+.filter-input,
+.filter-select {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: 10px 12px;
+  font: inherit;
+}
+
+@media (max-width: 600px) {
+  .filter-toolbar {
+    flex-direction: column;
+  }
+
+  .filter-group {
+    flex: none;
+    width: 100%;
+  }
+}
