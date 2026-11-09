@@ -1,3 +1,9 @@
+
+window.addEventListener("DOMContentLoaded", () => {
+  renderCart();
+  setupCartActions();
+});
+
 // Chủ sở hữu: PD Đạt — giao diện giỏ hàng và số lượng trên biểu tượng giỏ.
 
 function renderCart() {
@@ -13,6 +19,7 @@ function renderCart() {
     tbody.innerHTML = "";
     return;
   }
+
   const rows = cart.map(item => {
     const product = getProductById(item.id);
 
@@ -42,11 +49,21 @@ function renderCart() {
         </td>
 
         <td data-label="Số lượng">
-          <button type="button" class="qty-btn"
-            data-action="decrease" data-id="${item.id}">−</button>
+          <button
+            type="button"
+            class="qty-btn btn-qty-minus"
+            data-action="decrease"
+            data-id="${item.id}"
+          >−</button>
+
           <span>${item.quantity}</span>
-          <button type="button" class="qty-btn"
-            data-action="increase" data-id="${item.id}">+</button>
+
+          <button
+            type="button"
+            class="qty-btn btn-qty-plus"
+            data-action="increase"
+            data-id="${item.id}"
+          >+</button>
         </td>
 
         <td data-label="Thành tiền">
@@ -54,8 +71,12 @@ function renderCart() {
         </td>
 
         <td data-label="Xóa">
-          <button type="button" class="btn-remove"
-            data-action="remove" data-id="${item.id}">
+          <button
+            type="button"
+            class="btn-remove btn-cart-remove"
+            data-action="remove"
+            data-id="${item.id}"
+          >
             Xóa
           </button>
         </td>
@@ -66,4 +87,47 @@ function renderCart() {
   tbody.innerHTML = rows.join("");
 }
 
-document.addEventListener("DOMContentLoaded", renderCart);
+// Gắn một sự kiện click duy nhất trên vùng chứa giỏ hàng
+function setupCartActions() {
+  const root = document.getElementById("cart-root");
+
+  if (!root) return;
+
+  root.addEventListener("click", event => {
+    const button = event.target.closest(
+      ".btn-qty-plus, .btn-qty-minus, .btn-cart-remove"
+    );
+
+    if (!button || !root.contains(button)) return;
+
+    const id = Number(button.dataset.id);
+
+    // Xóa sản phẩm
+    if (button.classList.contains("btn-cart-remove")) {
+      removeFromCart(id);
+      renderCart();
+      return;
+    }
+
+    const item = loadCart().find(
+      product => product.id === id
+    );
+
+    if (!item) return;
+
+    // Tăng số lượng
+    if (button.classList.contains("btn-qty-plus")) {
+      updateQuantity(id, item.quantity + 1);
+      renderCart();
+      return;
+    }
+
+    // Giảm số lượng, không cho xuống dưới 1
+    if (button.classList.contains("btn-qty-minus")) {
+      if (item.quantity > 1) {
+        updateQuantity(id, item.quantity - 1);
+        renderCart();
+      }
+    }
+  });
+}

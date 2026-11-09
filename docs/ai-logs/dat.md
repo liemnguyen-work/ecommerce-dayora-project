@@ -501,3 +501,50 @@ Chưa có quyết định chung hoặc phê duyệt của nhóm/reviewer đượ
 * Kết quả trình duyệt/Vite/LocalStorage ở trên do Đạt cung cấp trong yêu cầu này; Codex chưa xem ảnh, dữ liệu LocalStorage hoặc console thực tế, không tự kiểm thử hiển thị. Chưa xác minh mốc thời gian kiểm thử trước đây.
 * Nhánh hiện tại hw/p1-pd-1. Ban đầu chỉ session3/js/modules/cart-page.js thay đổi chưa stage, không có staged diff. Sau khi nối, phạm vi thay đổi là session3/js/modules/cart-page.js và docs/ai-logs/dat.md; Codex chỉ ghi file log, giữ nguyên code.
 * git diff --check báo lỗi trailing whitespace tại cart-page.js:17; cần Đạt xóa khoảng trắng rồi kiểm tra lại. Chưa tự sửa lỗi đó. Lịch sử log cũ được giữ nguyên từng byte bằng cách nối cuối. Không tạo commit mới, push hoặc PR.
+
+---
+
+## P1 — Bài tập tăng, giảm và xóa sản phẩm giỏ hàng / DAT-20261109-A6CFD653-003
+
+* Thời gian ghi: 2026-11-09T17:42:03+07:00
+* Thời gian thực hiện: Tổng hợp hồi cứu việc ChatGPT hỗ trợ code và Đạt tự kiểm thử; chưa xác minh mốc bắt đầu/kết thúc. Codex review tĩnh và ghi log trong phiên hiện tại.
+* Mã phiên nhật ký: DAT-20261109-A6CFD653
+* Người prompt: Đạt (tự xác nhận).
+* Loại mục: Hoạt động
+* Liên quan: HW-P1-PD-1.3; [Issue #551](https://github.com/liemnguyen-work/ecommerce-dayora-project/issues/551); DAT-20261109-A6CFD653-002 (bước 1.2).
+
+### Công cụ
+
+ChatGPT hỗ trợ Đạt chỉnh sửa session3/js/modules/cart-page.js theo thông tin Đạt cung cấp; chưa xác minh model. Đạt trực tiếp kiểm thử trên http://localhost:8000/cart.html. Codex chỉ review tĩnh code/diff, kiểm tra Git và nối log, không tự chạy trình duyệt.
+
+### Mục đích
+
+Review việc chuẩn hóa class nút và xử lý tăng/giảm/xóa bằng Event Delegation theo yêu cầu HW-P1-PD-1.3 do Đạt cung cấp, ghi nhận kết quả thực tế và giữ phần cập nhật tổng cho bước 1.4.
+
+### Prompt
+
+Tóm lược yêu cầu thực tế: Đạt cho biết đã dùng ChatGPT hỗ trợ chỉnh cart-page.js để dùng .btn-qty-plus, .btn-qty-minus, .btn-cart-remove; gắn một click listener vào #cart-root; gọi updateQuantity()/removeFromCart() và renderCart(), không giảm dưới 1. Đạt báo cả ba nút hoạt động không cần tải lại trang, yêu cầu Codex đọc quy tắc/mẫu/log, review code, nối mục đủ 7 trường, kiểm tra whitespace và danh sách file, không sửa code/commit/push/PR. Chưa có prompt ChatGPT nguyên văn; không dựng lại lời chat cũ.
+
+### Kết quả đề xuất
+
+Codex xác nhận qua code: DOMContentLoaded gọi renderCart() và setupCartActions(); markup có đủ ba class yêu cầu, giữ class trình bày cũ. setupCartActions() tìm #cart-root, thoát nếu không có, gắn một click listener trong luồng khởi tạo hiện tại; dùng closest() tìm nút và root.contains() giới hạn phạm vi. Nhánh xóa gọi removeFromCart(id), rồi renderCart(); nhánh tăng tìm item hiện tại từ loadCart(), gọi updateQuantity(id, item.quantity + 1), rồi renderCart(); nhánh giảm chỉ cập nhật và render khi item.quantity > 1. updateQuantity() trong cart.js còn chặn tối thiểu 1 bằng Math.max(). Render thay nội dung tbody nên listener trên root vẫn được giữ. Với dữ liệu giỏ hàng chuẩn có id/quantity dạng số, code phù hợp các yêu cầu 1.3 Đạt liệt kê; không kết luận thay reviewer nghiệm thu. Codex chỉ nối docs/ai-logs/dat.md, giữ nguyên cart-page.js.
+
+### Phản biện
+
+Không phát hiện lỗi chặn luồng tăng/giảm/xóa với dữ liệu chuẩn qua review tĩnh. setupCartActions() chưa có cơ chế chống gắn listener lặp nếu được gọi lại; luồng hiện tại chỉ gọi một lần ở DOMContentLoaded nên chưa gây lặp trong cách khởi tạo hiện có. Hạn chế dữ liệu từ bước trước vẫn còn: loadCart() chỉ xác minh mảng, chưa kiểm tra từng item; quantity dạng chuỗi có thể khiến phép + 1 nối chuỗi (ví dụ "2" + 1 thành "21"), còn id dạng chuỗi không khớp phép so sánh === trong nhánh tìm item. Chưa có minh chứng kiểm thử dữ liệu LocalStorage bị chỉnh sai. Tổng số lượng/tổng tiền chưa cập nhật là phần bước 1.4 theo Đạt, không coi là đã thực hiện ở 1.3. Lỗi whitespace của lần review trước không còn xuất hiện trong diff hiện tại; chỉ ghi kết quả mới tại đây, không sửa mục lịch sử.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung hoặc xác nhận phê duyệt từ nhóm/reviewer. Đạt xác nhận phạm vi: review tĩnh, nối log rồi dừng để kiểm tra; không sửa code, commit, push hoặc tạo PR. Cập nhật tổng số lượng/tổng tiền để bước 1.4 theo thông tin Đạt.
+
+### Người kiểm tra
+
+Đạt trực tiếp kiểm thử tại http://localhost:8000/cart.html và cung cấp kết quả cả ba nút tăng/giảm/xóa hoạt động đúng, không cần tải lại trang. Codex trực tiếp đọc cart-page.js/diff, đối chiếu cart.js và selector HTML, chạy git diff --check và git diff --cached --check; không mở trình duyệt, chưa quan sát độc lập các thao tác của Đạt. Chờ Đạt kiểm tra log và kết quả review; chưa có nghiệm thu nhóm.
+
+### Kiểm tra và minh chứng
+
+* Đã đọc docs/ai-logs/ai-logging-rules.md, TEMPLATE.md và toàn bộ dat.md trước khi nối. Yêu cầu #551 được đối chiếu theo danh sách Đạt cung cấp trong phiên này, chưa đọc trực tiếp mô tả issue trên GitHub.
+* cart.html hiện có #cart-root và #cart-tbody; script dữ liệu, cart.js và cart-page.js nạp theo thứ tự với defer. cart.js có updateQuantity(), removeFromCart() và saveCart() lưu LocalStorage sau thay đổi.
+* Nhánh hiện tại hw/p1-pd-1. Ban đầu chỉ session3/js/modules/cart-page.js thay đổi chưa stage, không có staged diff. git diff --check và git diff --cached --check trước khi nối log không báo lỗi.
+* Kết quả ba nút hoạt động không tải lại trang là do Đạt tự kiểm thử và cung cấp; không phải kết quả trình duyệt do Codex thực hiện. Chưa xác minh thời điểm kiểm thử hoặc xem ảnh/console.
+* Sau khi nối log, danh sách file thay đổi gồm session3/js/modules/cart-page.js (thay đổi sẵn của Đạt) và docs/ai-logs/dat.md (Codex nối mục mới). Giữ nguyên từng byte lịch sử log và nội dung code; không commit, push hoặc tạo PR.
