@@ -740,3 +740,208 @@ Thành thực hiện và cung cấp ảnh, phản hồi; Codex xem ảnh.
 ### Kiểm tra và minh chứng
 
 Thành xác nhận phép thử có khoảng trắng và xóa từ khóa; ảnh cho thấy tám sản phẩm, không hiển thị ô nhập. Kết quả tìm chữ hoa THẢM trả hai sản phẩm đã ghi ở mục 011. Chưa kiểm tra Console trong lượt này.
+
+## Bài tập Buổi 3 / THANH-20261109-742B51D3-013
+
+* Thời gian ghi: 2026-11-09T14:19:36+07:00
+* Thời gian thực hiện: 2026-11-09, trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261109-742B51D3
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: HW-P1-FD1-1.4; THANH-20261109-742B51D3-012
+
+### Công cụ
+
+Codex, Git, Node.js và nội dung issue do Thành cung cấp.
+
+### Mục đích
+
+Kiểm tra code trước và thực hiện Bước 4: sắp xếp theo giá trên bản sao.
+
+### Prompt
+
+Tóm lược: Thành yêu cầu tiếp tục task, cùng tương tác như lần trước; cung cấp nội dung issue và hỏi code trước còn vấn đề gì. Thành yêu cầu không điều khiển máy tính.
+
+### Kết quả đề xuất
+
+Codex kiểm tra code và chỉnh session3/js/modules/search-filter.js: tạo bản sao kết quả tìm, sắp xếp tăng hoặc giảm, giữ thứ tự gốc khi chọn mặc định, cập nhật khi tìm hoặc đổi sắp xếp. Lọc theo danh mục còn thuộc Bước 5. Chưa có review của Thành.
+
+### Phản biện
+
+Chưa có phản biện mới của Thành hoặc nhóm về thay đổi Bước 4.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Codex kiểm tra bằng Node.js với DOM giả lập và dữ liệu sản phẩm hiện tại; chờ Thành tự thử trên trình duyệt.
+
+### Kiểm tra và minh chứng
+
+Thử giá tăng, giảm, mặc định; đối chiếu toàn bộ thứ tự mảng products trước và sau; thử kết hợp từ khóa THẢM với giá giảm, trường hợp không có kết quả, ô tìm kiếm trống và năm danh mục. Kết quả đạt trong DOM giả lập; git diff --check không báo lỗi. Chưa thử trên trình duyệt, chưa commit hay push Bước 4.
+
+## Bài tập Buổi 3 / THANH-20261109-742B51D3-014
+
+* Thời gian ghi: 2026-11-09T14:24:52+07:00
+* Thời gian thực hiện: 2026-11-09, trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261109-742B51D3
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: THANH-20261109-742B51D3-013; HW-P1-FD1-1.4
+
+### Công cụ
+
+Codex.
+
+### Mục đích
+
+Trao đổi ngắn về việc sắp xếp trên bản sao và phần lọc danh mục chưa triển khai.
+
+### Prompt
+
+Tóm lược: Thành yêu cầu cùng trao đổi vừa đủ theo issue, hỏi việc lọc danh mục ở Bước 5, và trả lời câu hỏi về sort.
+
+### Kết quả đề xuất
+
+Codex giải thích danh mục chưa được nối lọc, sort thay đổi mảng được gọi và dùng bản sao để giữ thứ tự gốc. Code Bước 4 do Codex viết, như đã ghi ở mục 013.
+
+### Phản biện
+
+Thành đề nghị trao đổi từ từ và vừa đủ theo yêu cầu; Codex điều chỉnh.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Thành tham gia giải thích; Codex đối chiếu câu trả lời.
+
+### Kiểm tra và minh chứng
+
+Thành trả lời dùng sort trực tiếp làm thay đổi thứ tự gốc, còn tạo bản sao giúp giữ mảng gốc. Thành cung cấp ảnh chọn Bình nước và ly nhưng vẫn hiển thị thảm; code chưa nối sự kiện lọc danh mục, phần kết hợp là Bước 5 theo nội dung issue Bước 4. Chưa có kết quả thử Bước 4 trên trình duyệt trong lượt này.
+
+## Bài tập Buổi 3 / THANH-20261109-742B51D3-015
+
+* Thời gian ghi: 2026-11-09T14:25:38+07:00
+* Thời gian thực hiện: 2026-11-09, trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261109-742B51D3
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: THANH-20261109-742B51D3-014; HW-P1-FD1-1.4
+
+### Công cụ
+
+Trình duyệt qua ảnh Thành cung cấp; Codex.
+
+### Mục đích
+
+Kiểm tra sắp xếp giá tăng trên giao diện.
+
+### Prompt
+
+Thành xác nhận và gửi ảnh kết quả chọn Giá: Thấp đến Cao.
+
+### Kết quả đề xuất
+
+Codex đối chiếu ảnh với yêu cầu; không sửa mã ở lượt này.
+
+### Phản biện
+
+Chưa có phản biện mới.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Thành tự kiểm tra và gửi ảnh; Codex đối chiếu ảnh.
+
+### Kiểm tra và minh chứng
+
+Ảnh hiển thị lựa chọn giá thấp đến cao, khăn giấy 19.000 đồng đứng đầu và ly 79.000 đồng đứng thứ hai. Ảnh không hiển thị sản phẩm cuối hay Console; kiểm tra tự động trong DOM giả lập đã ghi ở mục 013.
+
+## Bài tập Buổi 3 / THANH-20261109-742B51D3-016
+
+* Thời gian ghi: 2026-11-09T14:26:19+07:00
+* Thời gian thực hiện: 2026-11-09, trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261109-742B51D3
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: THANH-20261109-742B51D3-015; HW-P1-FD1-1.4
+
+### Công cụ
+
+Trình duyệt qua ảnh Thành cung cấp; Codex.
+
+### Mục đích
+
+Kiểm tra sắp xếp giá giảm trên giao diện.
+
+### Prompt
+
+Thành xác nhận và gửi ảnh kết quả chọn Giá: Cao đến Thấp.
+
+### Kết quả đề xuất
+
+Codex đối chiếu ảnh với yêu cầu; không sửa mã ở lượt này.
+
+### Phản biện
+
+Chưa có phản biện mới.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Thành tự kiểm tra và gửi ảnh; Codex đối chiếu ảnh.
+
+### Kiểm tra và minh chứng
+
+Ảnh hiển thị lựa chọn giá cao đến thấp, túi giữ nhiệt 249.000 đồng đứng đầu và thảm 229.000 đồng đứng thứ hai. Chưa có kết quả Console trong lượt này; kiểm tra tự động trong DOM giả lập đã ghi ở mục 013.
+
+## Bài tập Buổi 3 / THANH-20261109-742B51D3-017
+
+* Thời gian ghi: 2026-11-09T14:27:29+07:00
+* Thời gian thực hiện: 2026-11-09, trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261109-742B51D3
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: THANH-20261109-742B51D3-016; HW-P1-FD1-1.4
+
+### Công cụ
+
+Chrome DevTools qua ảnh Thành cung cấp; Codex.
+
+### Mục đích
+
+Kiểm tra sản phẩm đầu tiên trong mảng gốc sau sắp xếp.
+
+### Prompt
+
+Thành xác nhận và gửi ảnh biểu thức products[0].id trong Console.
+
+### Kết quả đề xuất
+
+Codex đối chiếu ảnh với điều kiện hoàn thành của issue; không sửa mã ở lượt này.
+
+### Phản biện
+
+Chưa có phản biện mới.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Thành cung cấp ảnh Console; Codex đối chiếu ảnh.
+
+### Kiểm tra và minh chứng
+
+Ảnh Console hiển thị products[0].id với giá trị 1, có thể là giá trị xem trước khi nhập. Các ảnh giá tăng và giá giảm được ghi ở mục 015 và 016. Node.js với DOM giả lập đã đối chiếu toàn bộ thứ tự mảng trước và sau sắp xếp theo mục 013. Chưa commit hoặc push Bước 4.
