@@ -3200,3 +3200,46 @@ Codex đọc nội dung file và đối chiếu với thông tin Liêm cung cấ
 ### Kiểm tra và minh chứng
 
 Đã đọc AGENTS.md, quy tắc, mẫu và log cá nhân; không thấy mã task PRJ-P0-PM-1.6 trước khi nối. File câu trả lời có sáu phần: kiểm tra ROLES, chạy thử script, tạo issue/milestone/nhãn, bảng Project, báo cáo tiến độ và tình huống xl:issues/roadmap:issues. Thời điểm thực hiện do Liêm cung cấp trong cuộc trao đổi này; thời điểm kết thúc chưa xác minh. File câu trả lời hiện chưa được Git theo dõi. Chưa xác nhận commit, push, duyệt hoặc đóng issue; không tự commit hoặc push trong phiên ghi log.
+
+---
+
+## P1 — Bổ sung quy ước JavaScript / LIEM-20261110-PM12-001
+
+- Thời gian ghi: 2026-11-10T14:15:00+07:00
+- Thời gian thực hiện: Trong phiên trao đổi này; thời điểm bắt đầu chưa xác minh.
+- Mã phiên nhật ký: LIEM-20261110-PM12
+- Người prompt: Liêm (PM).
+- Loại mục: Hoạt động.
+- Liên quan: HW-P1-PM-1.2; issue #565; mục log trước về HW-P1-PM-1.2.
+
+### Công cụ
+
+Codex
+
+### Mục đích
+
+Bổ sung tài liệu quy ước JavaScript Buổi 3 theo các nội dung reviewer yêu cầu.
+
+### Prompt
+
+Tóm lược: Liêm nhờ AI đối chiếu `session3/docs/quy-uoc.md` với code, hướng dẫn bổ sung vị trí các hàm, cách định dạng tiền và giá trị trả về của các hàm giỏ hàng.
+
+### Kết quả đề xuất
+
+Codex đọc và đối chiếu với `session3/js/data/products.js` và `session3/js/modules/cart.js`, sau đó đề xuất nội dung bổ sung. Liêm tự sao chép các đoạn hướng dẫn vào `session3/docs/quy-uoc.md` và lưu file.
+
+### Phản biện
+
+Codex ghi rõ `loadCart()` hiện chưa kiểm tra tính hợp lệ của từng phần tử trong mảng. Nội dung cần tiếp tục được reviewer đối chiếu với yêu cầu issue #565 và code tích hợp của nhóm.
+
+### Quyết định của nhóm
+
+Liêm chọn bổ sung nội dung theo hướng dẫn. Chưa có bằng chứng toàn nhóm hoặc reviewer đã duyệt phần bổ sung.
+
+### Người kiểm tra
+
+Codex đã đọc lại tài liệu sau khi Liêm bổ sung và đối chiếu tĩnh với code. Chưa có bằng chứng reviewer đã duyệt.
+
+### Kiểm tra và minh chứng
+
+File `session3/docs/quy-uoc.md` giữ đủ bảy mục và đã bổ sung vị trí hàm, `Intl.NumberFormat`, hành vi và giá trị trả về của `loadCart`, `getCartTotals`, `updateQuantity`. Codex chưa chạy thử các hàm và chưa truy cập được đầy đủ issue #565 trong lượt kiểm tra. Chưa ghi nhận commit hoặc push cho phần bổ sung.
