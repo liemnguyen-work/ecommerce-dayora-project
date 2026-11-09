@@ -266,3 +266,97 @@ input:focus-visible {
     transform: none;
   }
 }
+
+/* 9. GIỎ HÀNG — Đạt */
+
+.cart-page {
+  width: min(100% - 32px, 1100px);
+  margin: 48px auto 80px;
+}
+
+.cart-page h1 {
+  color: var(--mau-chu);
+  margin-bottom: 12px;
+}
+
+.cart-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 32px;
+}
+
+.cart-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--mau-nen);
+}
+
+.cart-table th,
+.cart-table td {
+  padding: 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--mau-la);
+}
+
+.cart-table th {
+  background: var(--mau-la);
+  font-weight: 600;
+  color: var(--mau-chu);
+}
+
+.cart-summary {
+  margin-top: 24px;
+  padding: 24px;
+  background: var(--mau-la);
+  border-radius: 20px;
+  text-align: right;
+}
+
+.cart-summary strong {
+  color: var(--mau-chu);
+  font-weight: 800;
+}
+
+/* Responsive cho điện thoại */
+@media (max-width: 600px) {
+  .cart-page {
+    margin: 32px auto 56px;
+  }
+
+  .cart-table,
+  .cart-table tbody {
+    display: block;
+    width: 100%;
+  }
+
+  .cart-table thead {
+    display: none;
+  }
+
+  .cart-table tbody tr {
+    display: block;
+    margin-bottom: 16px;
+    padding: 12px;
+    border: 1px solid var(--mau-la);
+    border-radius: 16px;
+  }
+
+  .cart-table td {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 4px;
+  }
+
+  .cart-table td[data-label]::before {
+    content: attr(data-label);
+    font-weight: 600;
+  }
+
+  .cart-summary {
+    text-align: left;
+    padding: 16px;
+  }
+}

@@ -25,56 +25,34 @@
   </header>
 
   <main>
-    <section class="banner" aria-labelledby="banner-title">
-      <img class="banner-image" src="images/banner.jpg" alt="">
-      <div class="banner-content">
-        <p class="eyebrow">PICNIC · HẸN HÒ · ĐI BIỂN</p>
-        <h1 id="banner-title">Gói gọn đồ dùng, mở trọn cuộc vui.</h1>
-        <p>Thảm, bình nước, hộp đựng, túi giữ nhiệt cho chuyến đi trong ngày từ 1 đến 8 người.</p>
-        <a class="primary-link" href="products.html">Xem sản phẩm</a>
-      </div>
-    </section>
 
-    <section class="home-section" aria-labelledby="featured-title">
-      <div class="section-heading"><div><p class="eyebrow">CỬA HÀNG</p><h2 id="featured-title">Sản phẩm nổi bật</h2></div><a href="products.html">Xem tất cả</a></div>
-      <div class="featured-grid">
-        <article class="product-card"><img src="images/product-1.jpg" alt="Thảm picnic gấp gọn cho 2 người"><div class="product-info"><h3>Thảm picnic gấp gọn 2 người</h3><p>149.000 ₫</p><a href="product-detail.html#san-pham-1">Xem chi tiết</a></div></article>
-        <article class="product-card"><img src="images/product-2.jpg" alt="Thảm picnic gấp gọn cho 4 người"><div class="product-info"><h3>Thảm picnic gấp gọn 4 người</h3><p>229.000 ₫</p><a href="product-detail.html#san-pham-2">Xem chi tiết</a></div></article>
-        <article class="product-card"><img src="images/product-3.jpg" alt="Bình nước cá nhân 750 ml"><div class="product-info"><h3>Bình nước cá nhân 750 ml</h3><p>159.000 ₫</p><a href="product-detail.html#san-pham-3">Xem chi tiết</a></div></article>
-        <article class="product-card"><img src="images/product-4.jpg" alt="Ly picnic có nắp 350 ml"><div class="product-info"><h3>Ly picnic có nắp 350 ml</h3><p>79.000 ₫</p><a href="product-detail.html#san-pham-4">Xem chi tiết</a></div></article>
-      </div>
-    </section>
+  <section class="cart-page" aria-labelledby="cart-title">
+    <h1 id="cart-title">Giỏ hàng của bạn</h1>
+    <p>Kiểm tra sản phẩm và số lượng trước khi tiếp tục.</p>
 
-    <section class="home-section" aria-labelledby="categories-title">
-      <p class="eyebrow">CHUẨN BỊ CHO CHUYẾN ĐI</p>
-      <h2 id="categories-title">Nhóm đồ dùng</h2>
-      <div class="occasions-grid">
-        <article><h3>Thảm picnic</h3></article>
-        <article><h3>Bình nước và ly</h3></article>
-        <article><h3>Hộp đựng thực phẩm</h3></article>
-        <article><h3>Túi giữ nhiệt</h3></article>
-        <article><h3>Vật dụng vệ sinh</h3></article>
-        <article><h3>Phụ kiện tiện ích</h3></article>
+    <div id="cart-root">
+      <div class="cart-table-wrap">
+        <table class="cart-table">
+          <thead>
+            <tr>
+              <th scope="col">Sản phẩm</th>
+              <th scope="col">Đơn giá</th>
+              <th scope="col">Số lượng</th>
+              <th scope="col">Thành tiền</th>
+              <th scope="col">Xóa</th>
+            </tr>
+          </thead>
+          <tbody id="cart-items"></tbody>
+        </table>
       </div>
-      <p><a href="products.html">Xem danh sách sản phẩm</a></p>
-    </section>
 
-    <section class="home-section occasions" aria-labelledby="occasions-title">
-      <div class="section-heading"><div><p class="eyebrow">BA CHUYẾN ĐI</p>
-      <h2 id="occasions-title">Bạn đang chuẩn bị cho chuyến nào?</h2></div><a href="about.html">Về DAYORA</a></div>
-      <div class="occasions-grid">
-        <article><h3>Picnic ăn nhẹ</h3><p>Thảm, hộp đựng và túi giữ nhiệt cho cả nhóm bạn hoặc gia đình.</p></article>
-        <article><h3>Hẹn hò buổi chiều</h3><p>Bộ gọn cho hai người: thảm nhỏ, ly có nắp, bình nước.</p></article>
-        <article><h3>Đi biển trong ngày</h3><p>Giữ đồ uống mát và mang đủ nước cho mọi người.</p></article>
+      <div class="cart-summary">
+        <p>Tổng số lượng: <strong id="cart-total-items">0</strong></p>
+        <p>Tổng tiền: <strong id="cart-total-price">0 ₫</strong></p>
       </div>
-    </section>
-    <section class="home-section about-preview" aria-labelledby="about-title">
-      <p class="eyebrow">CHÀO BẠN, CHÚNG MÌNH LÀ DAYORA</p>
-      <h2 id="about-title">Chuẩn bị gọn hơn, tận hưởng nhiều hơn.</h2>
-      <p>DAYORA đồng hành cùng bạn lựa chọn đồ dùng cho những chuyến đi ngắn trong ngày.</p>
-      <a href="about.html">Tìm hiểu về DAYORA →</a>
-    </section>
-  </main>
+    </div>
+  </section>
+   </main>
 
   <footer class="site-footer">
     <div class="footer-inner">
