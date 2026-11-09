@@ -945,3 +945,208 @@ Thành cung cấp ảnh Console; Codex đối chiếu ảnh.
 ### Kiểm tra và minh chứng
 
 Ảnh Console hiển thị products[0].id với giá trị 1, có thể là giá trị xem trước khi nhập. Các ảnh giá tăng và giá giảm được ghi ở mục 015 và 016. Node.js với DOM giả lập đã đối chiếu toàn bộ thứ tự mảng trước và sau sắp xếp theo mục 013. Chưa commit hoặc push Bước 4.
+
+## Bài tập Buổi 3 / THANH-20261109-742B51D3-018
+
+* Thời gian ghi: 2026-11-09T14:31:00+07:00
+* Thời gian thực hiện: 2026-11-09, trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261109-742B51D3
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: HW-P1-FD1-1.5; THANH-20261109-742B51D3-017
+
+### Công cụ
+
+Codex và Git.
+
+### Mục đích
+
+Bắt đầu Bước 5 và kiểm tra mã hiện có trước khi trao đổi và thực hiện.
+
+### Prompt
+
+Tóm lược: Thành cung cấp nội dung Bước 5, yêu cầu tiếp tục theo quy trình trao đổi và kiểm tra.
+
+### Kết quả đề xuất
+
+Codex kiểm tra nhánh và mã: tìm kiếm, sắp xếp đã dùng chung hàm; danh mục chưa tham gia lọc; renderProducts đã có thông báo khi danh sách trống. Đề xuất bổ sung lọc danh mục và sự kiện change trong luồng applyFilters. Chưa sửa mã ứng dụng.
+
+### Phản biện
+
+Chưa có phản biện mới của Thành về phương án Bước 5.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Codex đọc mã; chờ Thành trao đổi và kiểm tra hành vi thực tế.
+
+### Kiểm tra và minh chứng
+
+Git status cho thấy nhánh hw/p1-fd1-1 sạch trước khi ghi mục log; kiểm tra tĩnh search-filter.js và render-products.js. Chưa chạy thử Bước 5, chưa commit hoặc push.
+
+## Bài tập Buổi 3 / THANH-20261109-742B51D3-019
+
+* Thời gian ghi: 2026-11-09T14:33:13+07:00
+* Thời gian thực hiện: 2026-11-09, trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261109-742B51D3
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: HW-P1-FD1-1.5; THANH-20261109-742B51D3-018
+
+### Công cụ
+
+Codex, Git và Node.js.
+
+### Mục đích
+
+Trao đổi và triển khai applyFilters kết hợp ba điều kiện theo Bước 5.
+
+### Prompt
+
+Thành trả lời tình huống kết hợp danh mục, từ khóa và giá cao xuống thấp; trước đó yêu cầu tiếp tục làm task theo quy trình cùng trao đổi.
+
+### Kết quả đề xuất
+
+Thành trả lời thảm được sắp theo giá từ cao xuống thấp. Codex giải thích giá 229.000 đồng đứng trước 149.000 đồng và viết applyFilters trong session3/js/modules/search-filter.js, lọc danh mục và tên, sắp xếp bản sao, nối các sự kiện input/change và dùng renderProducts có sẵn.
+
+### Phản biện
+
+Chưa có phản biện mới của Thành về mã Bước 5.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Codex chạy kiểm tra Node.js với DOM giả lập; chờ Thành thử trên trình duyệt.
+
+### Kiểm tra và minh chứng
+
+Thử ba điều kiện với giá giảm cho ID 2,1 và giá tăng cho ID 1,2; thử xyz hiển thị thông báo không tìm thấy, đặt lại hiện tám sản phẩm và đối chiếu thứ tự products không đổi. Thử sự kiện input và change với renderProducts thực tế trong DOM giả lập. git diff --check không báo lỗi; chưa kiểm tra trình duyệt, chưa commit hoặc push Bước 5.
+
+## Bài tập Buổi 3 / THANH-20261109-742B51D3-020
+
+* Thời gian ghi: 2026-11-09T14:34:46+07:00
+* Thời gian thực hiện: 2026-11-09, trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261109-742B51D3
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: HW-P1-FD1-1.5; THANH-20261109-742B51D3-019
+
+### Công cụ
+
+Trình duyệt qua ảnh Thành cung cấp; Codex.
+
+### Mục đích
+
+Kiểm tra kết hợp tìm kiếm, danh mục và sắp xếp giá giảm.
+
+### Prompt
+
+Thành gửi ảnh kết quả tự thử theo ví dụ issue.
+
+### Kết quả đề xuất
+
+Codex đối chiếu ảnh với kết quả mong đợi; không sửa mã ứng dụng trong lượt này.
+
+### Phản biện
+
+Chưa có phản biện mới.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Thành tự thử và gửi ảnh; Codex đối chiếu ảnh.
+
+### Kiểm tra và minh chứng
+
+Ảnh cho thấy danh mục Thảm picnic, từ khóa gấp gọn, giá cao đến thấp, thảm 4 người 229.000 đồng trước thảm 2 người 149.000 đồng. Chưa có ảnh trình duyệt kiểm tra giá tăng hoặc thông báo xyz trong lượt này; kiểm tra DOM giả lập được ghi ở mục 019.
+
+## Bài tập Buổi 3 / THANH-20261109-742B51D3-021
+
+* Thời gian ghi: 2026-11-09T14:35:32+07:00
+* Thời gian thực hiện: 2026-11-09, trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261109-742B51D3
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: HW-P1-FD1-1.5; THANH-20261109-742B51D3-020
+
+### Công cụ
+
+Trình duyệt qua ảnh Thành cung cấp; Codex.
+
+### Mục đích
+
+Kiểm tra kết hợp tìm kiếm, danh mục và sắp xếp giá tăng.
+
+### Prompt
+
+Thành gửi ảnh kết quả tự thử giá tăng theo điều kiện hoàn thành.
+
+### Kết quả đề xuất
+
+Codex đối chiếu ảnh với kết quả mong đợi; không sửa mã ứng dụng trong lượt này.
+
+### Phản biện
+
+Chưa có phản biện mới.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Thành tự thử và gửi ảnh; Codex đối chiếu ảnh.
+
+### Kiểm tra và minh chứng
+
+Ảnh cho thấy danh mục Thảm picnic, từ khóa gấp gọn, giá thấp đến cao, thảm 2 người 149.000 đồng trước thảm 4 người 229.000 đồng. Chưa có ảnh trình duyệt kiểm tra thông báo xyz; kiểm tra DOM giả lập được ghi ở mục 019.
+
+## Bài tập Buổi 3 / THANH-20261109-742B51D3-022
+
+* Thời gian ghi: 2026-11-09T14:36:21+07:00
+* Thời gian thực hiện: 2026-11-09, trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261109-742B51D3
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: HW-P1-FD1-1.5; THANH-20261109-742B51D3-021
+
+### Công cụ
+
+Trình duyệt qua ảnh Thành cung cấp; Codex.
+
+### Mục đích
+
+Kiểm tra thông báo khi không tìm thấy sản phẩm.
+
+### Prompt
+
+Thành gửi ảnh kết quả tự thử với từ khóa xyz.
+
+### Kết quả đề xuất
+
+Codex đối chiếu ảnh với thông báo theo issue; không sửa mã ứng dụng trong lượt này.
+
+### Phản biện
+
+Chưa có phản biện mới.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Thành tự thử và gửi ảnh; Codex đối chiếu ảnh.
+
+### Kiểm tra và minh chứng
+
+Ảnh hiển thị xyz, danh mục Thảm picnic, sắp xếp giá tăng và thông báo Không tìm thấy sản phẩm nào phù hợp. Kết hợp ba điều kiện giá tăng và giảm đã được ghi ở mục 020 và 021. Chưa commit hoặc push Bước 5.

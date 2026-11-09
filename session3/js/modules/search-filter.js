@@ -19,29 +19,40 @@ function populateCategories() {
 populateCategories();
 
 const searchInput = document.getElementById("filter-search");
+const categorySelect = document.getElementById("filter-category");
 const sortSelect = document.getElementById("filter-sort");
 
-function updateSearchAndSort() {
+function applyFilters() {
   const query = searchInput ? searchInput.value.trim().toLowerCase() : "";
-  const matchingProducts = products.filter(product =>
-    product.name.toLowerCase().includes(query)
-  );
-  const sortedList = [...matchingProducts];
+  const category = categorySelect ? categorySelect.value : "";
   const sortOrder = sortSelect ? sortSelect.value : "default";
+  let result = [...products];
 
-  if (sortOrder === "price-asc") {
-    sortedList.sort((a, b) => a.price - b.price);
-  } else if (sortOrder === "price-desc") {
-    sortedList.sort((a, b) => b.price - a.price);
+  if (category) {
+    result = result.filter(product => product.category === category);
   }
 
-  renderProducts(sortedList);
+  if (query) {
+    result = result.filter(product => product.name.toLowerCase().includes(query));
+  }
+
+  if (sortOrder === "price-asc") {
+    result.sort((a, b) => a.price - b.price);
+  } else if (sortOrder === "price-desc") {
+    result.sort((a, b) => b.price - a.price);
+  }
+
+  renderProducts(result);
 }
 
 if (searchInput) {
-  searchInput.addEventListener("input", updateSearchAndSort);
+  searchInput.addEventListener("input", applyFilters);
+}
+
+if (categorySelect) {
+  categorySelect.addEventListener("change", applyFilters);
 }
 
 if (sortSelect) {
-  sortSelect.addEventListener("change", updateSearchAndSort);
+  sortSelect.addEventListener("change", applyFilters);
 }
