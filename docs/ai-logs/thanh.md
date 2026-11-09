@@ -535,3 +535,208 @@ Thành cung cấp ảnh; Codex đối chiếu nội dung ảnh.
 ### Kiểm tra và minh chứng
 
 Ảnh menu hiển thị Tất cả và năm danh mục không lặp; ảnh Console không hiển thị lỗi đỏ. Ảnh không hiển thị đường dẫn trang hoặc thời điểm tải lại. Việc thêm danh mục giả lập đã được ghi ở các mục 005 và 006. Chưa tạo commit Bước 2 trong hoạt động này.
+
+## Bài tập Buổi 3 / THANH-20261109-742B51D3-008
+
+* Thời gian ghi: 2026-11-09T14:05:26+07:00
+* Thời gian thực hiện: 2026-11-09, trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261109-742B51D3
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: HW-P1-FD1-1.3; THANH-20261109-742B51D3-007
+
+### Công cụ
+
+Codex, Git, Node.js và trình duyệt đọc issue.
+
+### Mục đích
+
+Thực hiện tìm sản phẩm theo tên cho Bước 3.
+
+### Prompt
+
+Tóm lược: Thành gửi issue #538, yêu cầu làm đúng đầu ra và tối ưu thời gian.
+
+### Kết quả đề xuất
+
+Codex thêm xử lý sự kiện input trong session3/js/modules/search-filter.js: chuẩn hóa từ khóa bằng trim và toLowerCase, lọc tên với includes và gọi renderProducts. Thành chưa review.
+
+### Phản biện
+
+Chưa có phản biện của Thành hoặc nhóm.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Codex kiểm tra bằng Node.js với DOM giả lập; chờ Thành kiểm tra trên trình duyệt.
+
+### Kiểm tra và minh chứng
+
+Với dữ liệu hiện tại: THẢM có khoảng trắng hai đầu trả hai sản phẩm; bình nước trả một; từ không khớp trả không sản phẩm; từ khóa rỗng hoặc chỉ gồm khoảng trắng trả tám sản phẩm. Kiểm tra năm danh mục vẫn được tạo; git diff --check không báo lỗi. Chưa thử chức năng trên trình duyệt, chưa commit hoặc push Bước 3.
+
+## Bài tập Buổi 3 / THANH-20261109-742B51D3-009
+
+* Thời gian ghi: 2026-11-09T14:09:53+07:00
+* Thời gian thực hiện: 2026-11-09, trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261109-742B51D3
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: THANH-20261109-742B51D3-008; HW-P1-FD1-1.3
+
+### Công cụ
+
+Codex.
+
+### Mục đích
+
+Trao đổi để Thành hiểu mã tìm kiếm ở Bước 3.
+
+### Prompt
+
+Tóm lược: Thành yêu cầu trao đổi từng bước và phản hồi số câu hỏi quá nhiều.
+
+### Kết quả đề xuất
+
+Codex giải thích input.value, trim, toLowerCase, includes và filter; điều chỉnh cách hướng dẫn ngắn gọn hơn theo phản hồi của Thành. Mã Bước 3 do Codex viết trước đó, không tự nhận là Thành viết.
+
+### Phản biện
+
+Thành cho biết bị hỏi quá nhiều; Codex tiếp nhận và giảm số câu hỏi.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Thành tham gia giải thích trong trao đổi; Codex đối chiếu câu trả lời, chưa đánh giá hoàn thành kiến thức.
+
+### Kiểm tra và minh chứng
+
+Thành trả lời từ khóa sau trim và toLowerCase là thảm và xác nhận tên chứa picnic sẽ khớp; trước đó Codex đã giải thích giá trị nhập giữ khoảng trắng. Chưa có kiểm tra trình duyệt mới trong lượt trao đổi này.
+
+## Bài tập Buổi 3 / THANH-20261109-742B51D3-010
+
+* Thời gian ghi: 2026-11-09T14:11:56+07:00
+* Thời gian thực hiện: 2026-11-09, trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261109-742B51D3
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: THANH-20261109-742B51D3-008; HW-P1-FD1-1.3
+
+### Công cụ
+
+Trình duyệt qua ảnh Thành cung cấp; Codex.
+
+### Mục đích
+
+Ghi nhận kiểm tra chức năng tìm kiếm của Thành.
+
+### Prompt
+
+Thành gửi hai ảnh kết quả thử tìm sản phẩm.
+
+### Kết quả đề xuất
+
+Codex đối chiếu ảnh với kết quả dự kiến; chưa chỉnh sửa mã trong lượt này.
+
+### Phản biện
+
+Chưa có phản biện mới của Thành hoặc nhóm.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Thành thực hiện và cung cấp ảnh; Codex xem ảnh.
+
+### Kiểm tra và minh chứng
+
+Ảnh hiển thị từ khóa thảm bằng chữ thường và hai sản phẩm thảm; từ khóa bình nước và một sản phẩm bình nước. Ảnh không xác nhận trường hợp chữ hoa, khoảng trắng đầu cuối, xóa từ khóa hay Console. Các trường hợp chữ hoa, khoảng trắng và ô rỗng đã được Codex thử bằng DOM giả lập tại mục 008, chưa có ảnh trình duyệt tương ứng.
+
+## Bài tập Buổi 3 / THANH-20261109-742B51D3-011
+
+* Thời gian ghi: 2026-11-09T14:12:42+07:00
+* Thời gian thực hiện: 2026-11-09, trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261109-742B51D3
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: THANH-20261109-742B51D3-010; HW-P1-FD1-1.3
+
+### Công cụ
+
+Trình duyệt qua ảnh Thành cung cấp; Codex.
+
+### Mục đích
+
+Kiểm tra tìm kiếm không phân biệt hoa thường.
+
+### Prompt
+
+Thành gửi ảnh kết quả tìm kiếm chữ hoa.
+
+### Kết quả đề xuất
+
+Codex xác nhận kết quả thể hiện trong ảnh; chưa chỉnh sửa mã trong lượt này.
+
+### Phản biện
+
+Chưa có phản biện mới.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Thành cung cấp ảnh; Codex đối chiếu kết quả.
+
+### Kiểm tra và minh chứng
+
+Ảnh cho thấy từ khóa THẢM chữ hoa hiện hai sản phẩm thảm. Khoảng trắng hai đầu không xác định được từ ảnh; việc xóa từ khóa và Console chưa có ảnh kiểm tra trong lượt này. Thử nghiệm DOM giả lập các trường hợp đó đã ghi ở mục 008.
+
+## Bài tập Buổi 3 / THANH-20261109-742B51D3-012
+
+* Thời gian ghi: 2026-11-09T14:13:16+07:00
+* Thời gian thực hiện: 2026-11-09, trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261109-742B51D3
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: THANH-20261109-742B51D3-011; HW-P1-FD1-1.3
+
+### Công cụ
+
+Trình duyệt qua ảnh và phản hồi Thành cung cấp; Codex.
+
+### Mục đích
+
+Ghi nhận kiểm tra khoảng trắng và kết quả sau khi xóa từ khóa.
+
+### Prompt
+
+Thành xác nhận đã thử và gửi ảnh danh sách sản phẩm.
+
+### Kết quả đề xuất
+
+Codex đối chiếu ảnh và ghi nhận phản hồi của Thành.
+
+### Phản biện
+
+Chưa có phản biện mới.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Thành thực hiện và cung cấp ảnh, phản hồi; Codex xem ảnh.
+
+### Kiểm tra và minh chứng
+
+Thành xác nhận phép thử có khoảng trắng và xóa từ khóa; ảnh cho thấy tám sản phẩm, không hiển thị ô nhập. Kết quả tìm chữ hoa THẢM trả hai sản phẩm đã ghi ở mục 011. Chưa kiểm tra Console trong lượt này.

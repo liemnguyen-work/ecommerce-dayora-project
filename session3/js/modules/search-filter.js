@@ -17,3 +17,16 @@ function populateCategories() {
 }
 
 populateCategories();
+
+const searchInput = document.getElementById("filter-search");
+
+if (searchInput) {
+  searchInput.addEventListener("input", () => {
+    const query = searchInput.value.trim().toLowerCase();
+    const matchingProducts = products.filter(product =>
+      product.name.toLowerCase().includes(query)
+    );
+
+    renderProducts(matchingProducts);
+  });
+}
