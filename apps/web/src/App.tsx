@@ -5,9 +5,9 @@ export default function App() {
       <div className="mx-auto max-w-4xl space-y-8">
 
         {/* Tiêu đề trang mẫu */}
-        <p className="text-center font-display text-3xl font-extrabold">
-          DAYORA — UI Styleguide
-        </p>
+        <h1 className="text-center font-display text-3xl font-extrabold">
+  DAYORA — UI Styleguide
+</h1>
 
         {/* 1. Bảng màu DAYORA */}
         <section aria-label="Bảng màu DAYORA">
