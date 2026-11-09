@@ -29,6 +29,26 @@
     <section class="products-section" aria-labelledby="products-title">
       <h1 id="products-title">Sản phẩm</h1>
       <p class="products-intro">8 món cơ bản cho chuyến đi trong ngày.</p>
+      <div class="filter-toolbar" aria-label="Bộ lọc sản phẩm">
+  <div class="filter-group">
+    <label for="filter-search" class="filter-label">Tìm kiếm</label>
+    <input type="search" id="filter-search" class="filter-input" placeholder="Tìm theo tên sản phẩm...">
+  </div>
+  <div class="filter-group">
+    <label for="filter-category" class="filter-label">Danh mục</label>
+    <select id="filter-category" class="filter-select">
+      <option value="">Tất cả danh mục</option>
+    </select>
+  </div>
+  <div class="filter-group">
+    <label for="filter-sort" class="filter-label">Sắp xếp</label>
+    <select id="filter-sort" class="filter-select">
+      <option value="default">Mặc định</option>
+      <option value="price-asc">Giá: Thấp đến Cao</option>
+      <option value="price-desc">Giá: Cao đến Thấp</option>
+    </select>
+  </div>
+</div>
       <ul class="product-grid">
       </ul>
     </section>

@@ -17,3 +17,34 @@ Bản tổng hợp từ nhật ký đã có; người thực hiện kiểm tra l
 ## Trạng thái bàn giao
 
 Ngọc và Liêm cần rà lại nguồn, prompt, kết quả, quyết định và minh chứng trước khi nộp. Không đưa token hoặc dữ liệu riêng tư vào báo cáo.
+
+## Thành — AI hỗ trợ BTVN Buổi 3
+
+### 1 — Học kiến thức trước khi làm
+
+- Tôi nhờ AI giải thích các khái niệm cần cho task: sự kiện `input`, `change`; `Set`; `filter`, `includes`, `toLowerCase`, `trim`; `sort`, sao chép mảng và kết hợp nhiều điều kiện.
+- AI đưa ví dụ ngoài dự án, giải thích lỗi thường gặp và đặt câu hỏi để tôi trả lời. Tôi trả lời trong cuộc trao đổi và được AI góp ý.
+- Theo cách hiểu của tôi: `input` giúp phản hồi khi đang nhập; `Set` giữ các giá trị không trùng; `sort()` làm thay đổi mảng được sắp xếp nên cần tạo bản sao nếu muốn giữ mảng gốc.
+
+### 2 — Làm Bước 1: Thanh công cụ sản phẩm
+
+- Yêu cầu: tạo ô tìm kiếm, chọn danh mục và sắp xếp trong `session3/products.html`; viết CSS tại khu vực của Thành trong `session3/css/style.css`.
+- Tôi trao đổi với AI về các yêu cầu và cách đặt thanh công cụ phía trên lưới sản phẩm.
+- Ban đầu AI gợi ý tôi tự viết CSS. Sau đó tôi yêu cầu AI cung cấp đoạn CSS để dán. Tôi sử dụng đoạn CSS AI đưa, gồm Flexbox, khoảng cách giữa các ô và media query cho màn hình nhỏ.
+- Lý do sử dụng: tôi cần được hỗ trợ tạo bố cục ba ô nằm ngang trên màn hình lớn và xếp dọc trên màn hình nhỏ.
+
+### 3 — Kiểm tra giao diện và Console
+
+- Tôi mở trang sản phẩm trên trình duyệt và gửi ảnh kết quả trong cuộc trao đổi.
+- Theo ảnh quan sát: ba ô nằm ngang ở màn hình lớn, xếp dọc ở màn hình nhỏ và Console không hiển thị lỗi đỏ.
+- Giới hạn: chưa xác nhận từ ảnh rằng hai chiều rộng được đặt chính xác là 1366 px và 390 px. Tôi cần kiểm tra lại hai kích thước và việc tràn ngang trước khi kết luận Bước 1 đạt.
+
+### 4 — Kiểm tra Git trước khi commit
+
+- AI hướng dẫn tôi kiểm tra nhánh, trạng thái file và lịch sử Git khi chuẩn bị commit.
+- Lúc đầu Git báo không có thay đổi. Sau khi tôi lưu file, `git status` hiển thị `session3/products.html` và `session3/css/style.css` đã thay đổi.
+- Tại thời điểm kiểm tra, tôi đang ở nhánh `Thành-Nguyễn`, chưa phải nhánh `hw/p1-fd1-1`. Tôi chưa tạo commit cho Bước 1 và cần kiểm tra lại nhánh trước khi commit.
+
+### Cập nhật sau khi Thành tự kiểm tra
+
+- Thành xác nhận đã kiểm tra ở 1366 px và 390 px, giao diện đạt yêu cầu và Console không có lỗi đỏ. Ở 390 px, ảnh Console cho thấy `scrollWidth` và `clientWidth` đều bằng 390. Việc kiểm tra 1366 px dựa trên xác nhận của Thành; ảnh được cung cấp không hiển thị số đo viewport.
