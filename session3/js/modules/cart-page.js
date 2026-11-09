@@ -2,7 +2,24 @@
 window.addEventListener("DOMContentLoaded", () => {
   renderCart();
   setupCartActions();
-});
+  updateCartCountBadge();
+}, { once: true });
+
+document.addEventListener("cart:changed", updateCartCountBadge);
+window.addEventListener("storage", handleCartStorageChange);
+
+function updateCartCountBadge() {
+  const totalItems = getCartTotals().totalItems;
+  document.querySelectorAll(".cart-count").forEach(badge => {
+    badge.textContent = String(totalItems);
+  });
+}
+
+function handleCartStorageChange(event) {
+  if (event.key !== "cart" || event.storageArea !== window.localStorage) return;
+  updateCartCountBadge();
+  renderCart();
+}
 
 // Chủ sở hữu: PD Đạt — giao diện giỏ hàng và số lượng trên biểu tượng giỏ.
 

@@ -594,3 +594,51 @@ Codex review code và trực tiếp chạy kiểm tra cú pháp, logic Node vớ
 * node --check session3/js/modules/cart-page.js đạt. Harness Node nạp products.js, cart.js, cart-page.js với LocalStorage/DOM giả lập: đạt giỏ trống, tổng ban đầu 3 món, tăng lên 4, giảm và chặn dưới 1, xóa từng món tới trống, tổng 0 và khôi phục giỏ có sản phẩm. Giá trị tổng tiền được so sánh sau thao tác với getCartTotals()/formatPrice(). Không tạo file test trong repo; đây không phải kiểm thử trình duyệt.
 * git diff --check trước khi nối log không báo lỗi. Ba file ứng dụng thay đổi: session3/cart.html, session3/js/modules/cart-page.js, session3/css/style.css (chỉ khu 9). File thứ tư là docs/ai-logs/dat.md nối mục này; phần lịch sử được giữ nguyên từng byte.
 * Đạt cần tự kiểm thử desktop/mobile: giỏ ban đầu trống, thêm dữ liệu và tải trang, tăng/giảm/xóa cập nhật tổng, xóa sản phẩm cuối ẩn bảng/tổng, link Tiếp tục mua sắm, nút Đặt hàng disabled, không tràn ngang. Chưa có kết quả các ca trình duyệt này. Không commit, push hoặc tạo PR.
+
+---
+
+## P1 — Badge giỏ hàng và responsive 390px / DAT-20261109-A6CFD653-005
+
+* Thời gian ghi: 2026-11-09T18:04:26+07:00
+* Thời gian thực hiện: Codex chỉnh sửa/review trong phiên hiện tại; kiểm thử trình duyệt của Đạt chưa thực hiện.
+* Mã phiên nhật ký: DAT-20261109-A6CFD653
+* Người prompt: PD Đạt (tự xác nhận).
+* Loại mục: Hoạt động
+* Liên quan: HW-P1-PD-1.5; [#553](https://github.com/liemnguyen-work/ecommerce-dayora-project/issues/553); task [#548](https://github.com/liemnguyen-work/ecommerce-dayora-project/issues/548); DAT-20261109-A6CFD653-004.
+
+### Công cụ
+
+Codex đọc, chỉnh sửa và review trực tiếp code; Node kiểm tra cú pháp/logic với DOM và sự kiện giả lập; PowerShell/Git kiểm tra phạm vi và diff. Không có thông tin về một phiên ChatGPT hỗ trợ riêng bước 1.5 để tổng hợp hồi cứu; không gán đóng góp chưa xác minh cho ChatGPT.
+
+### Mục đích
+
+Đồng bộ mọi .cart-count trên năm trang từ getCartTotals().totalItems, cập nhật trong trang và giữa tab; bổ sung menu giỏ trên cart.html và CSS mobile tại khu 9, giữ chức năng bước 1.1–1.4.
+
+### Prompt
+
+Tóm lược yêu cầu Đạt: đọc code trước khi sửa; thêm updateCartCountBadge() dùng querySelectorAll, gọi khi DOM tải, đăng ký một listener cart:changed và storage chỉ xử lý khóa cart, tránh listener trùng; giữ renderCart()/Event Delegation; chỉ thêm badge trong cart.html; chỉ sửa CSS khu 9 để bảng 0.9rem, ảnh 44px, ẩn đơn giá ở max-width 600px, nút dễ bấm và chống tràn; nối log, kiểm tra cú pháp/diff, không commit/push/PR, dừng để tự kiểm thử.
+
+### Kết quả đề xuất
+
+Codex thêm updateCartCountBadge() cập nhật textContent của tất cả .cart-count từ tổng số lượng; gọi trong DOMContentLoaded với once:true. Một listener document cart:changed dùng trực tiếp hàm badge; một listener storage có tên chỉ xử lý event.key === cart và event.storageArea === window.localStorage, cập nhật badge và gọi renderCart() (hàm tự thoát trên trang không có giỏ). Không tự phát thêm sự kiện cart:changed. Giữ nguyên nội dung renderCart() và setupCartActions(); đăng ký các listener đồng bộ một lần ở cấp script, không đặt trong render hoặc click handler.
+
+Thêm liên kết giỏ hàng với badge và aria-current=page trên cart.html, bỏ aria-current sai khỏi Trang chủ; bốn HTML còn lại đã có badge và nạp script nên không chỉnh. CSS chỉ khu 9: box-sizing trong .cart-page, xuống dòng nội dung dài, min-width/max-width cho phần tử liên quan; max-width 600px đặt bảng 0.9rem, ảnh 44 × 44px, ẩn cột thứ hai, cho tên sản phẩm co và xuống dòng. Giữ nút tăng/giảm tối thiểu 44 × 44px và nút xóa cao tối thiểu 44px. Không dùng thư viện/React/inline event handler.
+
+### Phản biện
+
+Các kiểm tra Node không chứng minh responsive hoặc đồng bộ tab trong trình duyệt thật. Chưa ghi giao diện 390px không tràn ngang là kết quả đã quan sát. Giới hạn LocalStorage sai kiểu nêu ở các mục trước còn tồn tại; không sửa cart.js trong phạm vi này. Listener storage chủ đích bỏ qua khóa khác, sessionStorage và key=null của localStorage.clear(), đúng phạm vi chỉ xử lý khóa cart. Chưa có phản hồi duyệt của Đạt/nhóm. Một harness bị sandbox chặn Node spawnSync git sau khi các assertion logic đã qua; kiểm tra Git/phạm vi CSS được thực hiện riêng bằng PowerShell, không coi lần harness bị ngắt là kiểm thử đầy đủ thành công.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung hoặc phê duyệt nhóm/reviewer. Đạt đã cho phép Codex chỉnh đúng bốn file nêu trong yêu cầu và dừng để tự kiểm thử; không commit, push hoặc tạo PR.
+
+### Người kiểm tra
+
+Codex trực tiếp kiểm tra code/diff, cú pháp và logic Node. Đạt chưa kiểm thử trình duyệt bước 1.5; Codex cũng không mở trình duyệt. Chờ Đạt kiểm tra năm trang, thao tác giỏ, đồng bộ hai tab cùng origin và bố cục 390px.
+
+### Kiểm tra và minh chứng
+
+* Đúng nhánh hw/p1-pd-1, working tree ban đầu sạch. Đã đọc code cart-page.js, cart.html, CSS khu 9, cart.js, quy tắc/mẫu và log gần nhất; kiểm tra badge và script trên năm trang qua nguồn HTML. Đối chiếu issue theo yêu cầu Đạt cung cấp.
+* node --check session3/js/modules/cart-page.js đạt; git diff --check trước khi nối log không báo lỗi. Harness Node đạt cập nhật nhiều badge khi thêm/tăng/giảm/xóa, nhận storage cart, bỏ qua key/storage khác và gọi an toàn trên trang không có bảng giỏ. Assertion DOM giả lập trong harness trước cũng qua các ca vẽ lại tổng/giỏ trống khi storage đổi và DOMContentLoaded không khởi tạo click listener lần hai, trước khi phần kiểm tra Git bằng subprocess bị chặn.
+* Xác nhận năm HTML có .cart-count và nạp products.js/cart.js/cart-page.js. So sánh phần CSS trước khu 9 với HEAD: giữ nguyên. Diff JavaScript chỉ thay khởi tạo và thêm hai hàm badge/storage, giữ nguyên render/delegation.
+* Chỉ sửa session3/js/modules/cart-page.js, session3/cart.html, session3/css/style.css (khu 9) và nối docs/ai-logs/dat.md. Lịch sử log giữ nguyên từng byte. Không có kết quả kiểm thử trình duyệt hoặc phê duyệt; không commit/push/PR.

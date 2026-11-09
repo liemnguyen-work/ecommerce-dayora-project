@@ -269,6 +269,15 @@ input:focus-visible {
 
 /* 9. GIỎ HÀNG — Đạt */
 
+.cart-page,
+.cart-page * {
+  box-sizing: border-box;
+}
+
+.cart-page {
+  overflow-wrap: anywhere;
+}
+
 .cart-page [hidden] {
   display: none;
 }
@@ -425,6 +434,33 @@ input:focus-visible {
 @media (max-width: 600px) {
   .cart-page {
     margin: 32px auto 56px;
+  }
+
+  .cart-table {
+    font-size: 0.9rem;
+  }
+
+  .cart-item-img {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+  }
+
+  .cart-item-title {
+    min-width: 0;
+    flex: 1 1 140px;
+  }
+
+  .cart-table th:nth-child(2),
+  .cart-table td:nth-child(2) {
+    display: none;
+  }
+
+  .cart-table-wrap,
+  .cart-table td,
+  .summary-box {
+    min-width: 0;
+    max-width: 100%;
   }
 
   .cart-table,
