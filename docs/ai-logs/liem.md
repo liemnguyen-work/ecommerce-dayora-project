@@ -3291,3 +3291,51 @@ Liêm: chờ kiểm tra bản README sau khi lưu. Reviewer: QA Ngọc theo phâ
 - Biên bản kiểm thử ghi TC-01 đến TC-16 là Đạt; AI không chạy lại các ca trong phiên này.
 - File dự kiến cập nhật: `session3/README.md`.
 - Chưa xác nhận commit, push hoặc đóng sub-issue cho bước này.
+
+---
+
+## Buổi 3 — Kịch bản trình bày / LIEM-20261110-TRINHBAY-001
+
+* Thời gian ghi: 2026-11-10T02:48:32+07:00
+* Thời gian thực hiện: 10/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261110-TRINHBAY
+* Người prompt: Liêm.
+* Loại mục: Hoạt động.
+* Liên quan: HW-P1-PM-1.4.
+
+### Công cụ
+
+ChatGPT; phiên bản model chưa xác minh.
+
+### Mục đích
+
+Chuẩn bị kịch bản trình bày bài tập Buổi 3 trong 5 phút, có phần nói và thứ tự demo cho cả 8 thành viên.
+
+### Prompt
+
+Tóm lược: Tôi cung cấp nội dung task và nhờ AI hướng dẫn lập `session3/docs/trinh-bay.md`, chia thời gian, phân vai và ghi thao tác demo.
+
+### Kết quả đề xuất
+
+AI kiểm tra file trình bày hiện có và tham khảo biên bản kiểm thử. AI soạn kịch bản dự kiến gồm các mốc thời gian, lời mở đầu, thao tác demo và lời kết cho 8 thành viên.
+
+Tôi sao chép nội dung đề xuất vào `session3/docs/trinh-bay.md` và lưu file để chuẩn bị kiểm tra.
+
+### Phản biện
+
+Kịch bản dựa trên yêu cầu task và thông tin kiểm thử đã ghi trong repo. Thời lượng và các thao tác cần được nhóm tập thử trên bản thực tế; chưa khẳng định đã demo thành công hoặc nói kịp 5 phút.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung được ghi nhận. Liêm chuẩn bị bản kịch bản để nhóm xem và tập thử.
+
+### Người kiểm tra
+
+Liêm: chờ kiểm tra lại nội dung và đường dẫn. Các thành viên: chờ tập thử và xác nhận phần trình bày của mình.
+
+### Kiểm tra và minh chứng
+
+- File dự kiến bàn giao: `session3/docs/trinh-bay.md`.
+- Biên bản tham khảo: `session3/docs/kiem-thu.md`.
+- Kịch bản phân vai đủ 8 thành viên và tổng thời gian dự kiến là 300 giây.
+- Chưa xác nhận kết quả tập thử, commit hoặc push tại thời điểm ghi.
