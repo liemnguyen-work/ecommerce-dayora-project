@@ -32,3 +32,10 @@ Phạm vi gồm danh sách và chi tiết sản phẩm, tìm kiếm, lọc, sắ
 | TC-14 | ID không tồn tại | `product-detail.html?id=999` | 1. Mở đường dẫn với `?id=999`. 2. Quan sát vùng chi tiết và Console. 3. Bấm liên kết quay lại danh sách. | Hiện “Sản phẩm không tồn tại”, không hiển thị nhầm sản phẩm và Console không có lỗi đỏ. Liên kết mở `products.html`. |Đạt|
 | TC-15 | ID sai định dạng hoặc bị thiếu | `product-detail.html?id=abc` và `product-detail.html` | 1. Mở đường dẫn với `?id=abc` rồi quan sát trang và Console. 2. Mở lại sau khi bỏ tham số `id`. 3. Kiểm tra liên kết quay lại danh sách ở mỗi lượt. | Cả hai lượt hiện “Sản phẩm không tồn tại” kèm liên kết quay lại `products.html`. Không hiển thị nhầm sản phẩm và Console không có lỗi đỏ. |Đạt|
 | TC-16 | Khóa giỏ hàng bị thiếu hoặc dữ liệu hỏng | Lượt A xóa riêng khóa `cart`. Lượt B đặt giá trị của khóa `cart` thành `{bad-json`. | 1. Mở `cart.html` trong phiên thử nghiệm. 2. Trong Application → Local Storage, chuẩn bị dữ liệu lượt A, tải lại trang và quan sát. 3. Quay về `cart.html` nếu đã bấm liên kết mua sắm, rồi lặp lại với lượt B. 4. Ở mỗi lượt, kiểm tra `loadCart()` trong Console, trạng thái giỏ và liên kết quay lại mua sắm. 5. Xóa khóa thử sau khi hoàn tất. | Cả hai lượt đều hiển thị giỏ trống, tổng số lượng bằng 0 và có liên kết mở `products.html`. `loadCart()` trả về `[]` và không có ngoại lệ JavaScript chưa được xử lý. Đối chiếu giá trị trả về của hàm riêng với giá trị đang lưu của khóa `cart`. |Đạt|
+## Kiểm tra giao diện – HW-P1-QA-1.3
+
+- **Trang và kích thước:** Giỏ hàng (`cart.html`), 768 × 1024 px.
+- **Cách tái hiện:** Thêm 1 Thảm picnic gấp gọn 2 người vào giỏ, mở trang Giỏ hàng và đặt khung Responsive ở 768 × 1024 px.
+- **Thực tế:** Chữ “Xóa” bị ngắt giữa từ. Ký hiệu ₫ xuống dòng ở cột Đơn giá và Thành tiền. Hai nút − và + hiển thị lệch quanh số lượng.
+- **Mong đợi:** Chữ “Xóa” và giá tiền hiển thị trọn trên một dòng. Hai nút − và + nằm cùng hàng với số lượng.
+- **Minh chứng:** [Giỏ hàng ở 768 px](screenshots/cart-768px.png).
