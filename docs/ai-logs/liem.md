@@ -3157,3 +3157,46 @@ Theo Liêm, Liêm đã chạy lệnh báo cáo ban đầu. Codex kiểm tra cú 
 ### Kiểm tra và minh chứng
 
 Đã đọc AGENTS.md, quy tắc, mẫu và log Liêm; không thấy mục chứa mã task PRJ-P0-PM-1.5 trước khi nối. Bản báo cáo sinh lại ngày 09/11/2026 có tám dòng thành viên, hiển thị 0/10 bài tập và 0/78 đồ án, link ../ROADMAP.md trỏ tới docs/ROADMAP.md. Kiểm tra đường dẫn tính cho docs/PROGRESS.md là ROADMAP.md, cho docs/learning/TIEN-DO.md là ../ROADMAP.md; cả hai đích tồn tại. node --check và git diff --check đạt sau khi sửa script, trước khi thêm log. Chưa xác nhận commit cho task, chưa xác nhận issue đã đóng; không tự commit hoặc push trong phiên này.
+
+---
+
+## P0 — Kiểm tra kiến thức task PM / LIEM-20261109-B7D468A2-001
+
+* Thời gian ghi: 2026-11-09T16:47:32+07:00
+* Thời gian thực hiện: Theo Liêm, 16:30 ngày 09/11/2026 (UTC+07:00); thời gian kết thúc chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261109-B7D468A2
+* Người prompt: Liêm (PM).
+* Loại mục: Hoạt động.
+* Liên quan: PRJ-P0-PM-1.6; PRJ-P0-PM-1.
+
+### Công cụ
+
+AI hỗ trợ theo thông tin Liêm cung cấp; tên công cụ và model của lần hỗ trợ trước chưa xác minh. Phiên ghi nhật ký: Codex; model chưa xác minh.
+
+### Mục đích
+
+Ghi nhận việc sử dụng AI trong bước kiểm tra kiến thức về quy trình xác nhận username, chạy thử script, tạo issue và milestone, thiết lập Project, sinh báo cáo tiến độ.
+
+### Prompt
+
+Tóm lược theo Liêm: nhờ AI giải thích từng bước, lý do thực hiện và ảnh hưởng nếu bỏ qua; nhờ gợi ý tình huống khó và diễn đạt lại câu trả lời ngắn gọn, tự nhiên hơn. Liêm yêu cầu ghi nhận trung thực việc sử dụng AI.
+
+### Kết quả đề xuất
+
+Theo Liêm, AI giải thích nội dung các bước, gợi ý tình huống lệnh xl:issues không tồn tại và script hiện dùng roadmap:issues. Liêm gửi nội dung câu trả lời và nhờ AI diễn đạt lại. Câu trả lời có AI hỗ trợ cả nội dung và diễn đạt, không phải hoàn toàn tự trả lời không dùng AI. File câu trả lời hiện tại là docs/learning/PM-Liem/kiem-tra/PRJ-P0-PM-1.md.
+
+### Phản biện
+
+Theo Liêm, task yêu cầu tự trả lời bằng lời của mình, không nhìn lại code và không nhờ AI viết hộ; quá trình thực tế có AI hỗ trợ nội dung và diễn đạt nên cần công khai khi nộp và trao đổi với reviewer. File câu trả lời không chứng minh Liêm đã trả lời trôi chảy hay vượt qua kiểm tra.
+
+### Quyết định của nhóm
+
+Liêm yêu cầu ghi trung thực mức hỗ trợ của AI; chưa có thông tin về quyết định hoặc phê duyệt của nhóm đối với câu trả lời.
+
+### Người kiểm tra
+
+Codex đọc nội dung file và đối chiếu với thông tin Liêm cung cấp. Chưa có bằng chứng reviewer đã kiểm tra hoặc duyệt; chờ Liêm kiểm tra mục log này.
+
+### Kiểm tra và minh chứng
+
+Đã đọc AGENTS.md, quy tắc, mẫu và log cá nhân; không thấy mã task PRJ-P0-PM-1.6 trước khi nối. File câu trả lời có sáu phần: kiểm tra ROLES, chạy thử script, tạo issue/milestone/nhãn, bảng Project, báo cáo tiến độ và tình huống xl:issues/roadmap:issues. Thời điểm thực hiện do Liêm cung cấp trong cuộc trao đổi này; thời điểm kết thúc chưa xác minh. File câu trả lời hiện chưa được Git theo dõi. Chưa xác nhận commit, push, duyệt hoặc đóng issue; không tự commit hoặc push trong phiên ghi log.
