@@ -3243,3 +3243,51 @@ Codex đã đọc lại tài liệu sau khi Liêm bổ sung và đối chiếu t
 ### Kiểm tra và minh chứng
 
 File `session3/docs/quy-uoc.md` giữ đủ bảy mục và đã bổ sung vị trí hàm, `Intl.NumberFormat`, hành vi và giá trị trả về của `loadCart`, `getCartTotals`, `updateQuantity`. Codex chưa chạy thử các hàm và chưa truy cập được đầy đủ issue #565 trong lượt kiểm tra. Chưa ghi nhận commit hoặc push cho phần bổ sung.
+
+---
+
+## Buổi 3 — Cập nhật README / LIEM-20261110-README-001
+
+* Thời gian ghi: 2026-11-10T02:44:17+07:00
+* Thời gian thực hiện: 10/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261110-README
+* Người prompt: Liêm.
+* Loại mục: Hoạt động.
+* Liên quan: HW-P1-PM-1.3.
+
+### Công cụ
+
+ChatGPT và Codex; phiên bản model chưa xác minh.
+
+### Mục đích
+
+Cập nhật `session3/README.md` cho bài tập Buổi 3, đủ 10 mục và chỉ mô tả các chức năng có minh chứng kiểm thử.
+
+### Prompt
+
+Tóm lược: Tôi nhờ AI đọc README, biên bản kiểm thử và các tài liệu liên quan; đề xuất README đủ 10 mục, đối chiếu từng chức năng với mã ca kiểm thử và không tự khẳng định những việc chưa có minh chứng.
+
+### Kết quả đề xuất
+
+Codex đề xuất README gồm 10 mục: mục tiêu, thành viên, công nghệ, cấu trúc, chức năng, cách chạy, kiểm thử, vấn đề đã gặp, repository và nhật ký AI. Nội dung mục chức năng dẫn các ca TC-01 đến TC-16 trong `session3/docs/kiem-thu.md`.
+
+Tôi gửi bản đề xuất cho ChatGPT kiểm tra. ChatGPT đối chiếu số mục, thành viên, mã ca kiểm thử, đường dẫn tài liệu và việc sử dụng Google Fonts; đồng thời đề xuất làm rõ đây là phiên bản học tập, chưa thanh toán thật.
+
+### Phản biện
+
+AI lưu ý các kết quả “Đạt” là nội dung được ghi trong biên bản kiểm thử, không phải kết quả AI tự chạy lại. Nhật ký `session3/docs/ai-usage.md` chưa được xác nhận đã tổng hợp đầy đủ hoạt động Buổi 3; trạng thái merge của commit sửa BUG-01 cần kiểm tra thêm.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung được ghi nhận. Liêm xem bản đề xuất để cập nhật README cá nhân được giao.
+
+### Người kiểm tra
+
+Liêm: chờ kiểm tra bản README sau khi lưu. Reviewer: QA Ngọc theo phân công; chưa ghi nhận kết quả review cho bước này.
+
+### Kiểm tra và minh chứng
+
+- Đối chiếu với `session3/docs/kiem-thu.md`, `session3/docs/ke-hoach.md` và các file thực tế trong `session3/`.
+- Biên bản kiểm thử ghi TC-01 đến TC-16 là Đạt; AI không chạy lại các ca trong phiên này.
+- File dự kiến cập nhật: `session3/README.md`.
+- Chưa xác nhận commit, push hoặc đóng sub-issue cho bước này.
