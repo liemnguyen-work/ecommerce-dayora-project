@@ -408,3 +408,50 @@ Chưa có quyết định chung hoặc xác nhận phê duyệt từ reviewer FD
 * Tính tương phản từ HEX: Ink/Paper khoảng 11,06:1; Ink/Butter 6,70:1; Paper/Berry 4,64:1; Ink/Leaf 8,82:1; Paper/màu hover #A93A30 6,19:1. Các cặp chữ/nền hiện dùng vượt 4,5:1 theo phép tính màu, không phải kiểm định toàn bộ khả năng truy cập trên trình duyệt. Nguồn ngưỡng: https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html .
 * Kết quả do Đạt cung cấp, chưa được Codex trực tiếp quan sát trong phiên này: Firefox 1366 × 900 và 390 × 900, ảnh đã gửi ChatGPT nhận xét; npm run build -w web thành công với Vite 8.3.6. Codex không chạy lại build hoặc mở trình duyệt, chưa xem ảnh minh chứng và chưa xác minh ảnh đã được đính vào PR.
 * Đề xuất ảnh PR: ghi đúng kích thước viewport, chụp đủ 5 ô màu, ba mẫu chữ và CTA; nếu mobile dài hơn 900px, dùng ảnh toàn trang hoặc ảnh bổ sung có phần cuộn. Kiểm tra không cuộn ngang, chữ không bị cắt, Tab thấy viền focus; chờ FD1 Thành duyệt. Chỉ file log được Codex chỉnh trong phiên này.
+---
+
+## P1 — Bài tập khung bảng giỏ hàng DAYORA / DAT-20261109-A6CFD653-001
+
+* Thời gian ghi: 2026-11-09T16:53:13+07:00
+* Thời gian thực hiện: Tổng hợp hồi cứu theo Đạt cung cấp; chưa xác minh mốc bắt đầu/kết thúc việc dùng ChatGPT, tự viết mã và kiểm tra ảnh. Review tĩnh và ghi log trong phiên hiện tại.
+* Mã phiên nhật ký: DAT-20261109-A6CFD653
+* Người prompt: Đạt (tự xác nhận).
+* Loại mục: Hoạt động
+* Liên quan: HW-P1-PD-1.1; [Issue #549](https://github.com/liemnguyen-work/ecommerce-dayora-project/issues/549); [commit 5de843050fb2807c31cf3f61426ff7f8f116f7ca](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/5de843050fb2807c31cf3f61426ff7f8f116f7ca).
+
+### Công cụ
+
+ChatGPT hướng dẫn Đạt tạo khung HTML, viết CSS responsive và kiểm tra ảnh giao diện Desktop/Mobile theo thông tin Đạt cung cấp. Chưa xác minh model. Codex đọc mã/commit và tổng hợp nhật ký trong phiên hiện tại; không trực tiếp viết phần code đó hoặc chạy trình duyệt.
+
+### Mục đích
+
+Ghi nhận thực tế việc sử dụng ChatGPT cho HW-P1-PD-1.1 — Khung bảng giỏ hàng DAYORA; lưu minh chứng commit và các điểm selector cần tiếp tục đối chiếu/khắc phục, giữ nguyên toàn bộ log cũ và mã ứng dụng.
+
+### Prompt
+
+Tóm lược theo Đạt cung cấp: nhờ ChatGPT hướng dẫn tạo khung HTML giỏ hàng, viết CSS responsive và xem ảnh Desktop/Mobile để kiểm tra giao diện. Trong phiên này Đạt yêu cầu đọc quy tắc, mẫu và dat.md, nối một mục đủ 7 trường có thời gian thực tế/mã duy nhất/link commit, ghi đúng người thao tác và các selector chưa khớp #549. Chưa cung cấp prompt ChatGPT nguyên văn; không tái tạo lời chat cũ.
+
+### Kết quả đề xuất
+
+Theo Đạt, ChatGPT cung cấp hướng dẫn và hỗ trợ kiểm tra ảnh; Đạt tự thao tác viết HTML/CSS, tự cung cấp ảnh Desktop/Mobile để ChatGPT kiểm tra, và báo đã push commit 5de843050fb2807c31cf3f61426ff7f8f116f7ca. Codex xác nhận commit tồn tại trong Git cục bộ với thông điệp feat(cart): create responsive cart table layout, Task HW-P1-PD-1.1; commit thay đổi session3/cart.html và session3/css/style.css. Khung có bảng 5 cột Sản phẩm/Đơn giá/Số lượng/Thành tiền/Xóa, tbody trống dành cho dữ liệu, tổng số lượng/tổng tiền và CSS mobile tại max-width 600px. Codex chỉ nối mục này vào docs/ai-logs/dat.md; không tự kết luận đã hoàn thành tiêu chí issue hoặc được nghiệm thu.
+
+### Phản biện
+
+Đạt yêu cầu lưu việc các selector chưa khớp yêu cầu #549 để tiếp tục khắc phục. Codex thử đọc issue bằng GitHub connector nhưng cả hai cách trả 404; tìm trong repo không có bản yêu cầu #549, nên chưa xác minh được tên selector bắt buộc hoặc cặp tên hiện tại → tên cần sửa. Đã hỏi Đạt cung cấp phần yêu cầu để đối chiếu; tại thời điểm ghi chưa có dữ liệu đó, không bịa danh sách sai lệch.
+
+Các selector thực tế cần mang sang lần đối chiếu tiếp: #cart-root; .cart-table-wrap; .cart-table; #cart-items (tbody); .cart-summary; #cart-total-items; #cart-total-price. CSS .cart-table td[data-label]::before phụ thuộc thuộc tính data-label trên ô dữ liệu, nhưng tbody hiện trống và session3/js/modules/cart-page.js mới có chú thích, chưa tạo các ô đó; vì vậy chưa kiểm chứng selector này khớp DOM khi có sản phẩm. Đây là giới hạn quan sát mã, không tự coi là danh sách selector sai so với #549. Chờ đối chiếu mô tả issue để chốt và sửa trong công việc tiếp theo; chưa sửa code.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung hay xác nhận phê duyệt của nhóm/reviewer được cung cấp. Đạt xác nhận phạm vi hiện tại: chỉ nối log, giữ nguyên lịch sử, không tự sửa code, commit hoặc push; dừng để Đạt kiểm tra. Thông tin commit đã push là do Đạt cung cấp, không phải xác nhận phê duyệt.
+
+### Người kiểm tra
+
+Đạt tự thao tác và cung cấp ảnh Desktop/Mobile cho ChatGPT kiểm tra theo lời Đạt. Codex trực tiếp đọc quy tắc/mẫu/toàn bộ dat.md, xem commit và mã HTML/CSS liên quan, kiểm tra Git và whitespace; không mở hoặc chạy trình duyệt, chưa xem ảnh trong phiên này. Chờ Đạt rà soát mục log và cung cấp yêu cầu selector #549; chưa có kết quả review nhóm.
+
+### Kiểm tra và minh chứng
+
+* Commit liên kết ở trên đã được xác nhận tồn tại bằng git show trong repository cục bộ. Trạng thái đã push dựa trên lời Đạt; GitHub connector trả 404 khi đọc #549 nên không xác minh độc lập mô tả issue hoặc trạng thái remote.
+* Nhánh khi ghi: hw/p1-pd-1. Working tree ban đầu sạch. git diff --check trước khi nối log không báo lỗi.
+* Ảnh và kiểm tra giao diện Desktop/Mobile: nguồn Đạt cung cấp cho ChatGPT theo lời Đạt; chưa có ảnh đính kèm trong yêu cầu hiện tại, chưa xác minh kích thước viewport, thời điểm, kết quả cụ thể hoặc URL ảnh. Không ghi Codex đã tự kiểm thử hiển thị hay xác nhận responsive đạt.
+* Lần này chỉ thay đổi docs/ai-logs/dat.md bằng cách nối cuối; giữ nguyên từng byte phần lịch sử có sẵn. Không commit, push, tạo PR hoặc sửa session3/cart.html/session3/css/style.css.

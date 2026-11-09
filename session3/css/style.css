@@ -317,6 +317,42 @@ input:focus-visible {
   font-weight: 800;
 }
 
+/* Hình ảnh và tên sản phẩm */
+.cart-item-img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.cart-item-title {
+  font-weight: 600;
+  color: var(--mau-chu);
+}
+
+/* Nút tăng và giảm số lượng */
+.qty-btn {
+  min-width: 44px;
+  min-height: 44px;
+  border: 1px solid var(--mau-la);
+  border-radius: 8px;
+  background: var(--mau-nen);
+  color: var(--mau-chu);
+  font: inherit;
+  cursor: pointer;
+}
+
+/* Nút xóa sản phẩm */
+.btn-remove {
+  min-height: 44px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  background: var(--mau-nhan);
+  color: white;
+  font: inherit;
+  cursor: pointer;
+}
 /* Responsive cho điện thoại */
 @media (max-width: 600px) {
   .cart-page {
