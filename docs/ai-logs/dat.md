@@ -455,3 +455,49 @@ Chưa có quyết định chung hay xác nhận phê duyệt của nhóm/reviewe
 * Nhánh khi ghi: hw/p1-pd-1. Working tree ban đầu sạch. git diff --check trước khi nối log không báo lỗi.
 * Ảnh và kiểm tra giao diện Desktop/Mobile: nguồn Đạt cung cấp cho ChatGPT theo lời Đạt; chưa có ảnh đính kèm trong yêu cầu hiện tại, chưa xác minh kích thước viewport, thời điểm, kết quả cụ thể hoặc URL ảnh. Không ghi Codex đã tự kiểm thử hiển thị hay xác nhận responsive đạt.
 * Lần này chỉ thay đổi docs/ai-logs/dat.md bằng cách nối cuối; giữ nguyên từng byte phần lịch sử có sẵn. Không commit, push, tạo PR hoặc sửa session3/cart.html/session3/css/style.css.
+
+---
+
+## P1 — Bài tập render giỏ hàng DAYORA / DAT-20261109-A6CFD653-002
+
+* Thời gian ghi: 2026-11-09T17:26:57+07:00
+* Thời gian thực hiện: Tổng hợp hồi cứu việc dùng ChatGPT, viết mã và kiểm thử theo Đạt cung cấp; chưa xác minh mốc bắt đầu/kết thúc. Codex review code và ghi log trong phiên hiện tại.
+* Mã phiên nhật ký: DAT-20261109-A6CFD653
+* Người prompt: Đạt (tự xác nhận).
+* Loại mục: Hoạt động
+* Liên quan: HW-P1-PD-1.2; [Issue #550](https://github.com/liemnguyen-work/ecommerce-dayora-project/issues/550); DAT-20261109-A6CFD653-001 (HW-P1-PD-1.1).
+
+### Công cụ
+
+ChatGPT hướng dẫn Đạt xây dựng renderCart() theo thông tin Đạt cung cấp; chưa xác minh model. Đạt tự thực hiện và kiểm tra với Firefox DevTools, LocalStorage, website chạy bằng Vite tại localhost:8000. Codex kiểm tra tĩnh code/diff và nối log; không chạy Vite hoặc trình duyệt trong phiên này.
+
+### Mục đích
+
+Ghi nhận việc dùng AI để xây dựng renderCart() trong session3/js/modules/cart-page.js, kết hợp loadCart(), getProductById(), formatPrice() và map(); phân biệt phần hiển thị từng dòng với xử lý nút ở bước 1.3 và cập nhật tổng ở bước 1.4.
+
+### Prompt
+
+Tóm lược theo Đạt cung cấp: dùng ChatGPT hướng dẫn viết renderCart() cho giỏ hàng DAYORA, đọc dữ liệu lưu trong LocalStorage, lấy thông tin sản phẩm và định dạng giá để hiển thị bảng giỏ hàng. Trong phiên này Đạt yêu cầu đọc quy tắc/mẫu/toàn bộ dat.md, nối mục mới đủ 7 trường, kiểm tra git diff --check và phạm vi hai file, không commit/push/PR. Chưa có prompt ChatGPT nguyên văn; không dựng lại lời chat cũ.
+
+### Kết quả đề xuất
+
+Theo Đạt, ChatGPT hướng dẫn và Đạt trực tiếp xây dựng hàm. Codex đọc diff xác nhận renderCart() tìm #cart-tbody, thoát nếu trang không có tbody, gọi loadCart(), xóa nội dung khi giỏ rỗng, dùng map() và getProductById(item.id), bỏ qua ID sản phẩm không tồn tại, tính subtotal = product.price * item.quantity, dùng formatPrice() cho đơn giá/thành tiền, rồi gán rows.join("") vào tbody.innerHTML. Mỗi dòng có ảnh, tên/link sản phẩm, đơn giá, số lượng, thành tiền và nút tăng/giảm/xóa với data-action/data-id; đăng ký gọi hàm qua DOMContentLoaded. Selector #cart-tbody khớp session3/cart.html hiện tại và các td có data-label. Codex không thay code, chỉ nối docs/ai-logs/dat.md.
+
+### Phản biện
+
+Codex kiểm tra thấy git diff --check báo trailing whitespace tại session3/js/modules/cart-page.js:17 (dòng trống chứa khoảng trắng). Giữ nguyên để Đạt xử lý; không ghi kiểm tra đã đạt. Chưa có listener xử lý nút tăng/giảm/xóa trong cart-page.js và chưa cập nhật tổng số lượng/tổng tiền; đây là phần chưa thực hiện thuộc bước 1.3/1.4 theo Đạt, không ghi là đã hoàn thành. loadCart() hiện xác minh dữ liệu là mảng nhưng chưa kiểm tra từng phần tử; renderCart() giả định item có id/quantity hợp lệ, nên dữ liệu LocalStorage bị chỉnh sai có thể gây lỗi hoặc thành tiền không hợp lệ. Các giá trị sản phẩm được nội suy qua innerHTML; hiện đọc từ catalog trong repo, cần xử lý escape nếu sau này chuyển sang nguồn không tin cậy. Chưa có kết quả kiểm thử các trường hợp dữ liệu sai trong phiên này.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung hoặc phê duyệt của nhóm/reviewer được cung cấp. Đạt xác nhận phạm vi hiện tại: ghi nhận bước 1.2, nối log và kiểm tra code/Git, không sửa code, không commit/push/tạo PR; dừng để Đạt kiểm tra. Chức năng nút và tổng tiếp tục ở bước 1.3/1.4 theo thông tin Đạt.
+
+### Người kiểm tra
+
+Đạt báo đã dùng Firefox DevTools kiểm tra dữ liệu LocalStorage, chạy website bằng Vite trên localhost:8000 và trực tiếp kiểm tra cart.html hiển thị 4 sản phẩm với đúng ảnh, tên, đơn giá, số lượng và thành tiền từng dòng. Codex trực tiếp đọc code/diff cùng hàm phụ trợ và HTML, chạy kiểm tra whitespace/Git; không tự chạy trình duyệt hoặc xác nhận độc lập kết quả 4 sản phẩm. Chờ Đạt rà soát log; chưa có xác nhận nghiệm thu của reviewer.
+
+### Kiểm tra và minh chứng
+
+* Đã đọc docs/ai-logs/ai-logging-rules.md, TEMPLATE.md và toàn bộ dat.md trước khi nối; kiểm tra cart-page.js, cart.js, cart.html và các hàm formatPrice()/getProductById() trong products.js. Các script dữ liệu, cart.js và cart-page.js được HTML nạp theo thứ tự với defer.
+* Kết quả trình duyệt/Vite/LocalStorage ở trên do Đạt cung cấp trong yêu cầu này; Codex chưa xem ảnh, dữ liệu LocalStorage hoặc console thực tế, không tự kiểm thử hiển thị. Chưa xác minh mốc thời gian kiểm thử trước đây.
+* Nhánh hiện tại hw/p1-pd-1. Ban đầu chỉ session3/js/modules/cart-page.js thay đổi chưa stage, không có staged diff. Sau khi nối, phạm vi thay đổi là session3/js/modules/cart-page.js và docs/ai-logs/dat.md; Codex chỉ ghi file log, giữ nguyên code.
+* git diff --check báo lỗi trailing whitespace tại cart-page.js:17; cần Đạt xóa khoảng trắng rồi kiểm tra lại. Chưa tự sửa lỗi đó. Lịch sử log cũ được giữ nguyên từng byte bằng cách nối cuối. Không tạo commit mới, push hoặc PR.
