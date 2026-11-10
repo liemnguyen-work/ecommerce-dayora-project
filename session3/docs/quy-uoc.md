@@ -18,6 +18,8 @@ Tên và đường dẫn trên chỉ dùng để minh họa cấu trúc.
 
 Hàm `formatPrice` nhận giá dạng số và trả về chuỗi tiền Việt Nam để hiển thị. Dữ liệu giá trong mảng vẫn được lưu dưới dạng số.
 
+Hàm `formatPrice` được định nghĩa trong `session3/js/data/products.js`. Hàm dùng `Intl.NumberFormat` với ngôn ngữ `vi-VN`, kiểu `currency` và đơn vị `VND` để chuyển giá dạng số thành chuỗi tiền Việt Nam.
+
 ```js
 formatPrice(149000); // Ví dụ kết quả: "149.000 ₫"
 ```
@@ -25,6 +27,8 @@ formatPrice(149000); // Ví dụ kết quả: "149.000 ₫"
 ## 3. Tìm sản phẩm: `getProductById(id)`
 
 Hàm `getProductById` tìm sản phẩm theo ID và trả về đối tượng tương ứng. Nếu không tìm thấy, hàm trả về `undefined`; ID được chuyển sang kiểu số khi tìm.
+
+Hàm `getProductById` được định nghĩa trong `session3/js/data/products.js`.
 
 ```js
 getProductById(1);   // Sản phẩm có id là 1, nếu có
@@ -59,6 +63,21 @@ localStorage.getItem("cart"); // Đọc dữ liệu đã lưu dưới khóa cart
 | `updateQuantity(id, qty)` | Cập nhật số lượng của sản phẩm trong giỏ. |
 | `removeFromCart(id)` | Xóa sản phẩm khỏi giỏ. |
 | `getCartTotals()` | Lấy tổng số lượng và tổng tiền của giỏ. |
+
+Các hàm giỏ hàng được định nghĩa trong `session3/js/modules/cart.js`.
+
+- `loadCart()` trả về mảng giỏ hàng. Nếu chưa có dữ liệu, JSON không hợp lệ hoặc dữ liệu đọc được không phải mảng, hàm trả về `[]`. Hàm hiện chưa kiểm tra tính hợp lệ của từng phần tử trong mảng.
+- `getCartTotals()` trả về đối tượng `{ totalItems, totalPrice }`, gồm tổng số lượng và tổng tiền. Khi giỏ hàng rỗng, hai giá trị đều bằng `0`.
+- `updateQuantity(id, qty)` cập nhật số lượng của sản phẩm tìm thấy rồi lưu giỏ hàng. Hàm không có lệnh `return` tường minh nên trả về `undefined`.
+  Số lượng được giữ tối thiểu là 1. Nếu muốn xóa sản phẩm khỏi giỏ, gọi `removeFromCart(id)`.
+
+Ví dụ:
+
+```js
+loadCart();             // Ví dụ khi giỏ hàng rỗng: []
+getCartTotals();        // Ví dụ khi giỏ hàng rỗng: { totalItems: 0, totalPrice: 0 }
+updateQuantity(1, 2);   // Cập nhật số lượng sản phẩm ID 1 nếu sản phẩm có trong giỏ
+```
 
 Ví dụ gọi hàm:
 

@@ -3200,3 +3200,142 @@ Codex đọc nội dung file và đối chiếu với thông tin Liêm cung cấ
 ### Kiểm tra và minh chứng
 
 Đã đọc AGENTS.md, quy tắc, mẫu và log cá nhân; không thấy mã task PRJ-P0-PM-1.6 trước khi nối. File câu trả lời có sáu phần: kiểm tra ROLES, chạy thử script, tạo issue/milestone/nhãn, bảng Project, báo cáo tiến độ và tình huống xl:issues/roadmap:issues. Thời điểm thực hiện do Liêm cung cấp trong cuộc trao đổi này; thời điểm kết thúc chưa xác minh. File câu trả lời hiện chưa được Git theo dõi. Chưa xác nhận commit, push, duyệt hoặc đóng issue; không tự commit hoặc push trong phiên ghi log.
+
+---
+
+## P1 — Bổ sung quy ước JavaScript / LIEM-20261110-PM12-001
+
+- Thời gian ghi: 2026-11-10T14:15:00+07:00
+- Thời gian thực hiện: Trong phiên trao đổi này; thời điểm bắt đầu chưa xác minh.
+- Mã phiên nhật ký: LIEM-20261110-PM12
+- Người prompt: Liêm (PM).
+- Loại mục: Hoạt động.
+- Liên quan: HW-P1-PM-1.2; issue #565; mục log trước về HW-P1-PM-1.2.
+
+### Công cụ
+
+Codex
+
+### Mục đích
+
+Bổ sung tài liệu quy ước JavaScript Buổi 3 theo các nội dung reviewer yêu cầu.
+
+### Prompt
+
+Tóm lược: Liêm nhờ AI đối chiếu `session3/docs/quy-uoc.md` với code, hướng dẫn bổ sung vị trí các hàm, cách định dạng tiền và giá trị trả về của các hàm giỏ hàng.
+
+### Kết quả đề xuất
+
+Codex đọc và đối chiếu với `session3/js/data/products.js` và `session3/js/modules/cart.js`, sau đó đề xuất nội dung bổ sung. Liêm tự sao chép các đoạn hướng dẫn vào `session3/docs/quy-uoc.md` và lưu file.
+
+### Phản biện
+
+Codex ghi rõ `loadCart()` hiện chưa kiểm tra tính hợp lệ của từng phần tử trong mảng. Nội dung cần tiếp tục được reviewer đối chiếu với yêu cầu issue #565 và code tích hợp của nhóm.
+
+### Quyết định của nhóm
+
+Liêm chọn bổ sung nội dung theo hướng dẫn. Chưa có bằng chứng toàn nhóm hoặc reviewer đã duyệt phần bổ sung.
+
+### Người kiểm tra
+
+Codex đã đọc lại tài liệu sau khi Liêm bổ sung và đối chiếu tĩnh với code. Chưa có bằng chứng reviewer đã duyệt.
+
+### Kiểm tra và minh chứng
+
+File `session3/docs/quy-uoc.md` giữ đủ bảy mục và đã bổ sung vị trí hàm, `Intl.NumberFormat`, hành vi và giá trị trả về của `loadCart`, `getCartTotals`, `updateQuantity`. Codex chưa chạy thử các hàm và chưa truy cập được đầy đủ issue #565 trong lượt kiểm tra. Chưa ghi nhận commit hoặc push cho phần bổ sung.
+
+---
+
+## Buổi 3 — Cập nhật README / LIEM-20261110-README-001
+
+* Thời gian ghi: 2026-11-10T02:44:17+07:00
+* Thời gian thực hiện: 10/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261110-README
+* Người prompt: Liêm.
+* Loại mục: Hoạt động.
+* Liên quan: HW-P1-PM-1.3.
+
+### Công cụ
+
+ChatGPT và Codex; phiên bản model chưa xác minh.
+
+### Mục đích
+
+Cập nhật `session3/README.md` cho bài tập Buổi 3, đủ 10 mục và chỉ mô tả các chức năng có minh chứng kiểm thử.
+
+### Prompt
+
+Tóm lược: Tôi nhờ AI đọc README, biên bản kiểm thử và các tài liệu liên quan; đề xuất README đủ 10 mục, đối chiếu từng chức năng với mã ca kiểm thử và không tự khẳng định những việc chưa có minh chứng.
+
+### Kết quả đề xuất
+
+Codex đề xuất README gồm 10 mục: mục tiêu, thành viên, công nghệ, cấu trúc, chức năng, cách chạy, kiểm thử, vấn đề đã gặp, repository và nhật ký AI. Nội dung mục chức năng dẫn các ca TC-01 đến TC-16 trong `session3/docs/kiem-thu.md`.
+
+Tôi gửi bản đề xuất cho ChatGPT kiểm tra. ChatGPT đối chiếu số mục, thành viên, mã ca kiểm thử, đường dẫn tài liệu và việc sử dụng Google Fonts; đồng thời đề xuất làm rõ đây là phiên bản học tập, chưa thanh toán thật.
+
+### Phản biện
+
+AI lưu ý các kết quả “Đạt” là nội dung được ghi trong biên bản kiểm thử, không phải kết quả AI tự chạy lại. Nhật ký `session3/docs/ai-usage.md` chưa được xác nhận đã tổng hợp đầy đủ hoạt động Buổi 3; trạng thái merge của commit sửa BUG-01 cần kiểm tra thêm.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung được ghi nhận. Liêm xem bản đề xuất để cập nhật README cá nhân được giao.
+
+### Người kiểm tra
+
+Liêm: chờ kiểm tra bản README sau khi lưu. Reviewer: QA Ngọc theo phân công; chưa ghi nhận kết quả review cho bước này.
+
+### Kiểm tra và minh chứng
+
+- Đối chiếu với `session3/docs/kiem-thu.md`, `session3/docs/ke-hoach.md` và các file thực tế trong `session3/`.
+- Biên bản kiểm thử ghi TC-01 đến TC-16 là Đạt; AI không chạy lại các ca trong phiên này.
+- File dự kiến cập nhật: `session3/README.md`.
+- Chưa xác nhận commit, push hoặc đóng sub-issue cho bước này.
+
+---
+
+## Buổi 3 — Kịch bản trình bày / LIEM-20261110-TRINHBAY-001
+
+* Thời gian ghi: 2026-11-10T02:48:32+07:00
+* Thời gian thực hiện: 10/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261110-TRINHBAY
+* Người prompt: Liêm.
+* Loại mục: Hoạt động.
+* Liên quan: HW-P1-PM-1.4.
+
+### Công cụ
+
+ChatGPT; phiên bản model chưa xác minh.
+
+### Mục đích
+
+Chuẩn bị kịch bản trình bày bài tập Buổi 3 trong 5 phút, có phần nói và thứ tự demo cho cả 8 thành viên.
+
+### Prompt
+
+Tóm lược: Tôi cung cấp nội dung task và nhờ AI hướng dẫn lập `session3/docs/trinh-bay.md`, chia thời gian, phân vai và ghi thao tác demo.
+
+### Kết quả đề xuất
+
+AI kiểm tra file trình bày hiện có và tham khảo biên bản kiểm thử. AI soạn kịch bản dự kiến gồm các mốc thời gian, lời mở đầu, thao tác demo và lời kết cho 8 thành viên.
+
+Tôi sao chép nội dung đề xuất vào `session3/docs/trinh-bay.md` và lưu file để chuẩn bị kiểm tra.
+
+### Phản biện
+
+Kịch bản dựa trên yêu cầu task và thông tin kiểm thử đã ghi trong repo. Thời lượng và các thao tác cần được nhóm tập thử trên bản thực tế; chưa khẳng định đã demo thành công hoặc nói kịp 5 phút.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung được ghi nhận. Liêm chuẩn bị bản kịch bản để nhóm xem và tập thử.
+
+### Người kiểm tra
+
+Liêm: chờ kiểm tra lại nội dung và đường dẫn. Các thành viên: chờ tập thử và xác nhận phần trình bày của mình.
+
+### Kiểm tra và minh chứng
+
+- File dự kiến bàn giao: `session3/docs/trinh-bay.md`.
+- Biên bản tham khảo: `session3/docs/kiem-thu.md`.
+- Kịch bản phân vai đủ 8 thành viên và tổng thời gian dự kiến là 300 giây.
+- Chưa xác nhận kết quả tập thử, commit hoặc push tại thời điểm ghi.
