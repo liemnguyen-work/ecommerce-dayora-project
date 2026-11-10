@@ -91,6 +91,7 @@ function renderCart() {
         </td>
 
         <td data-label="Số lượng">
+          <div class="cart-qty-controls">
           <button
             type="button"
             class="qty-btn btn-qty-minus"
@@ -106,6 +107,7 @@ function renderCart() {
             data-action="increase"
             data-id="${item.id}"
           >+</button>
+          </div>
         </td>
 
         <td data-label="Thành tiền">

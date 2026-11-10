@@ -48,3 +48,14 @@ Ngọc và Liêm cần rà lại nguồn, prompt, kết quả, quyết định v
 ### Cập nhật sau khi Thành tự kiểm tra
 
 - Thành xác nhận đã kiểm tra ở 1366 px và 390 px, giao diện đạt yêu cầu và Console không có lỗi đỏ. Ở 390 px, ảnh Console cho thấy `scrollWidth` và `clientWidth` đều bằng 390. Việc kiểm tra 1366 px dựa trên xác nhận của Thành; ảnh được cung cấp không hiển thị số đo viewport.
+
+---
+
+## Đạt (PD) — AI hỗ trợ BTVN Buổi 3 / HW-P1-PD-1.6
+
+- Thời gian ghi: 2026-11-10T01:36:30+07:00. Mã tham chiếu: DAT-20261109-A6CFD653-007; [log cá nhân của Đạt](../../docs/ai-logs/dat.md).
+- Nguồn xác nhận: Đạt cho biết đã trao đổi với ChatGPT để được hướng dẫn quy trình nộp bài, đối chiếu yêu cầu bài tập và cách ghi log. Đây là tổng hợp hồi cứu; chưa xác minh thời điểm trao đổi, model hoặc prompt nguyên văn, không dựng lại lời chat.
+- Trong phiên hiện tại, Codex đọc tài liệu và kiểm tra cấu trúc session3/docs/answers/Dat.md; không viết câu trả lời thay Đạt và không sửa file trả lời cá nhân.
+- Kết quả quan sát: Dat.md hiện là bản nháp AI chưa được Đạt xác nhận, có 6 mục Câu 1–6 mang ngữ cảnh HTML/CSS Buổi 2 và nhiều placeholder; chưa có đủ 9 câu trả lời Buổi 3 theo yêu cầu Đạt. Hướng dẫn Buổi 3 hiện chỉ liệt kê 3 câu trọng tâm cho PD; cần Đạt đối chiếu bộ câu hỏi chính thức để tự hoàn thiện. Không xác nhận nội dung kiến thức đã đúng hoặc bài đã nộp.
+- Phản biện/giới hạn: không coi bản nháp tham khảo là câu trả lời cá nhân; chưa có prompt ChatGPT nguyên văn hoặc phê duyệt reviewer. Chưa có quyết định chung của nhóm; chờ Đạt duyệt log/tóm tắt và tự hoàn thiện câu trả lời.
+- Người kiểm tra: Codex kiểm cấu trúc/tài liệu và Git; Đạt cung cấp xác nhận hoạt động ChatGPT. Không kiểm thử trình duyệt, không commit/push/tạo PR/đóng Issue trong phiên này. Toàn bộ nội dung thành viên khác và các mục trước được giữ nguyên.
