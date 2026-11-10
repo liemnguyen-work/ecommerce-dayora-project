@@ -613,3 +613,214 @@ input:focus-visible {
   border-radius: 8px;
   font: inherit;
 }
+
+/* Hoàn thiện giao diện trang giới thiệu */
+.about-page .about-grid img {
+  box-shadow: 0 6px 18px rgba(35, 65, 46, 0.12);
+}
+
+.about-page .about-grid p,
+.about-page .about-contact p {
+  line-height: 1.7;
+}
+
+.about-page .about-contact {
+  border: 1px solid #cbd8b9;
+}
+
+.about-page .about-contact a:hover {
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+/* Hoàn thiện giao diện giỏ hàng */
+.cart-page .cart-empty {
+  background-color: #f8faf3;
+}
+
+/* Canh ảnh và tên sản phẩm trong giỏ hàng */
+.cart-item-img {
+  vertical-align: middle;
+  margin-right: 12px;
+}
+
+.cart-item-title {
+  display: inline-block;
+  vertical-align: middle;
+  max-width: calc(100% - 80px);
+}
+
+/* Trình bày phần tổng tiền gọn hơn */
+.cart-page .cart-summary {
+  padding: 20px 0 0;
+  background: transparent;
+  border-top: 1px solid var(--mau-la);
+  border-radius: 0;
+  text-align: left;
+}
+
+.cart-page .summary-box {
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.cart-page .summary-box p {
+  margin: 0;
+}
+
+.cart-page .summary-total strong {
+  color: var(--mau-nhan);
+}
+
+/* Bố cục giỏ hàng: sản phẩm và tổng tiền */
+#cart-root {
+  display: flex;
+  align-items: flex-start;
+  gap: 32px;
+}
+
+#cart-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.cart-page .cart-summary {
+  flex: 0 0 280px;
+  margin-top: 32px;
+  padding: 24px;
+  background-color: #f3f6eb;
+  border: 1px solid var(--mau-la);
+  border-radius: 12px;
+}
+
+.cart-page .summary-box {
+  align-items: stretch;
+  gap: 16px;
+}
+
+.cart-page .cart-checkout {
+  width: 100%;
+}
+
+/* Màn hình nhỏ: đưa tổng tiền xuống dưới */
+@media (max-width: 1050px) {
+  #cart-root {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  #cart-content,
+  .cart-page .cart-summary {
+    width: 100%;
+  }
+
+  .cart-page .cart-summary {
+    flex-basis: auto;
+  }
+}
+
+/* Số lượng sản phẩm trên biểu tượng giỏ hàng */
+.nav-cart .cart-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  margin-left: 4px;
+  padding: 0 5px;
+  box-sizing: border-box;
+  border-radius: 999px;
+  background-color: var(--mau-nhan, #c94b40);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* Thẻ sản phẩm ở trang danh sách */
+.product-list-page .product-grid-item .product-card {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+}
+
+.product-list-page .product-card img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.product-list-page .product-grid-item .product-info {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+}
+
+.product-list-page .product-info .product-price {
+  margin: auto 0 0;
+  color: var(--mau-nhan, #c94b40);
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.product-list-page .product-detail-link {
+  align-self: flex-start;
+  font-weight: 600;
+}
+
+.product-list-page .btn-add-cart {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid var(--mau-nhan, #c94b40);
+  border-radius: 999px;
+  background-color: var(--mau-nhan, #c94b40);
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Giữ khoảng cách gọn trên điện thoại */
+@media (max-width: 480px) {
+  .product-list-page .product-grid-item .product-info {
+    padding: 12px;
+  }
+}
+
+/* Trang chi tiết sản phẩm Buổi 3 */
+.detail-page #detail-card {
+  display: grid;
+}
+
+.detail-page .detail-actions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  text-decoration: none;
+}
+
+.detail-page .detail-label {
+  color: var(--mau-nhan, #c94b40);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.detail-page .detail-button {
+  border-radius: 999px;
+}
+
+/* Ô số lượng trên trang chi tiết */
+.detail-page #detail-qty {
+  width: 120px;
+  min-height: 44px;
+  text-align: center;
+}
+
+/* Tạo khoảng cách trước phần chọn số lượng */
+.detail-page .detail-info label[for="detail-qty"] {
+  margin-top: 20px;
+  margin-bottom: 8px;
+}

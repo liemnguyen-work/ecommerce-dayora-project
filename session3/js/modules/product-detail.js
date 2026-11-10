@@ -37,11 +37,21 @@ function renderProductDetail() {
       <h1>${product.name}</h1>
       <p class="detail-price">${formatPrice(product.price)}</p>
       <p class="detail-desc">${product.description}</p>
+      ${product.specs && product.specs.length ? `
+      <dl class="detail-specs">
+        ${product.specs.map(spec => `
+          <div>
+            <dt>${spec.label}</dt>
+            <dd>${spec.value}</dd>
+          </div>
+        `).join("")}
+      </dl>
+    ` : ""}
       <label for="detail-qty">Số lượng</label>
       <input id="detail-qty" type="number" min="1" max="99" value="1">
       <div class="detail-actions">
         <button id="btn-add-detail" class="detail-button detail-button-secondary" type="button">Thêm vào giỏ</button>
-        <a class="detail-button detail-button-primary" href="cart.html">Xem giỏ hàng</a>
+        <button id="btn-buy-now" class="detail-button detail-button-primary" type="button">Mua ngay</button>
       </div>
     </div>
   `;
@@ -58,11 +68,22 @@ function renderProductDetail() {
       return qty;
     }
 
-    qtyInput.addEventListener("change", getQuantity);
+        qtyInput.addEventListener("change", getQuantity);
+
     addBtn.addEventListener("click", () => {
       addToCart(product.id, getQuantity());
     });
+
+    const buyNowBtn = document.getElementById("btn-buy-now");
+
+    if (buyNowBtn) {
+      buyNowBtn.addEventListener("click", () => {
+        addToCart(product.id, getQuantity());
+        window.location.href = "cart.html";
+      });
+    }
   }
 }
 
 renderProductDetail();
+

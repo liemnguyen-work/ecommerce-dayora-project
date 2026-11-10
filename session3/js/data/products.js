@@ -76,3 +76,61 @@ function getProductById(id) {
   const numId = Number(id);
   return products.find(item => item.id === numId);
 }
+
+// Thông số sản phẩm kế thừa từ Buổi 2
+const productSpecifications = {
+  1: [
+    { label: "Màu sắc", value: "Kem – teal" },
+    { label: "Chất liệu", value: "Vải polyester, lớp đế PE" },
+    { label: "Kích thước", value: "140 × 150 cm" },
+    { label: "Sức chứa", value: "2 người" },
+    { label: "Đơn vị bán", value: "Tấm" }
+  ],
+  2: [
+    { label: "Màu sắc", value: "Caro kem – olive" },
+    { label: "Chất liệu", value: "Vải polyester, lớp đế PE" },
+    { label: "Kích thước", value: "200 × 200 cm" },
+    { label: "Sức chứa", value: "4 người" },
+    { label: "Đơn vị bán", value: "Tấm" }
+  ],
+  3: [
+    { label: "Màu sắc", value: "Teal" },
+    { label: "Chất liệu", value: "Thân inox, nắp PP" },
+    { label: "Thông số", value: "750 ml; Ø7,5 × 25 cm" },
+    { label: "Đơn vị bán", value: "Bình" }
+  ],
+  4: [
+    { label: "Màu sắc", value: "Kem" },
+    { label: "Chất liệu", value: "Thân inox, nắp PP" },
+    { label: "Thông số", value: "350 ml; Ø8 × 11 cm" },
+    { label: "Đơn vị bán", value: "Ly" }
+  ],
+  5: [
+    { label: "Màu sắc", value: "Nắp kem – thân trong" },
+    { label: "Chất liệu", value: "Thân và nắp PP, gioăng silicone" },
+    { label: "Thông số", value: "1.000 ml; 20 × 14 × 7 cm" },
+    { label: "Đơn vị bán", value: "Hộp" }
+  ],
+  6: [
+    { label: "Màu sắc", value: "Teal" },
+    { label: "Chất liệu", value: "Vải polyester, đệm PE, lớp lót phủ nhôm" },
+    { label: "Thông số", value: "15 lít; 30 × 22 × 23 cm" },
+    { label: "Đơn vị bán", value: "Túi" }
+  ],
+  7: [
+    { label: "Màu sắc", value: "Kem" },
+    { label: "Chất liệu", value: "Vải polyester, đệm PE, lớp lót phủ nhôm" },
+    { label: "Thông số", value: "8 lít; 25 × 18 × 18 cm" },
+    { label: "Đơn vị bán", value: "Túi" }
+  ],
+  8: [
+    { label: "Màu sắc", value: "Trắng – bao kem" },
+    { label: "Chất liệu", value: "Giấy" },
+    { label: "Thông số", value: "18 × 20 cm/tờ; 100 tờ/gói" },
+    { label: "Đơn vị bán", value: "Gói 100 tờ" }
+  ]
+};
+
+products.forEach(product => {
+  product.specs = productSpecifications[product.id] || [];
+});
