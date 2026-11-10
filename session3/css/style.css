@@ -41,7 +41,13 @@ h2 { font-size: clamp(1.6rem, 3vw, 2.25rem); line-height: 1.25; margin-block: 8p
 .section-heading h2 { margin-bottom: 0; }
 .section-heading a, .about-preview a, .product-info a { color: inherit; }
 .featured-grid, .occasions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 24px; }
-.product-card { overflow: hidden; border: 1px solid var(--mau-la, #dde8c9); border-radius: 12px; }
+.product-card {
+  overflow: hidden;
+  border: 1px solid var(--mau-la, #dde8c9);
+  border-radius: 12px;
+  background-color: #fff;
+  box-shadow: 0 2px 10px rgba(35, 65, 46, 0.08);
+}
 .product-card img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; }
 .product-info { padding: 16px; }
 .product-info h3 { font-size: 1rem; margin: 0; }
@@ -546,4 +552,64 @@ input:focus-visible {
     text-align: left;
     padding: 16px;
   }
+}
+
+/* Bộ lọc trang sản phẩm */
+.product-list-page .filter-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 20px;
+  margin-bottom: 28px;
+  background-color: #f0f4e6;
+  border: 1px solid #dde8c9;
+  border-radius: 12px;
+}
+
+.product-list-page .filter-group {
+  display: flex;
+  flex: 1 1 200px;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.product-list-page .filter-label {
+  font-weight: 600;
+}
+
+.product-list-page .filter-input,
+.product-list-page .filter-select {
+  width: 100%;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  color: #23412e;
+  background-color: #fff;
+  border: 1px solid #cbd8b9;
+  border-radius: 8px;
+  font: inherit;
+}
+
+.product-list-page .filter-select:focus-visible {
+  outline: 3px solid #23412e;
+  outline-offset: 3px;
+}
+
+/* Ô chọn số lượng ở trang chi tiết */
+.detail-info label[for="detail-qty"] {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.detail-info #detail-qty {
+  width: 100px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 8px 12px;
+  color: var(--mau-chu, #23412e);
+  background-color: #fff;
+  border: 1px solid #cbd8b9;
+  border-radius: 8px;
+  font: inherit;
 }
