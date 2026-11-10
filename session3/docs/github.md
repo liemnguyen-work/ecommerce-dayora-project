@@ -2,30 +2,30 @@
 
 ## Phạm vi thống kê
 
-Bảng được đối chiếu từ PR Buổi 3 trên GitHub ngày 10/11/2026.
-Thành viên và vai trò dựa trên docs/ke-hoach.md.
+Bảng được đối chiếu với lịch sử nhánh `main` và các PR Buổi 3 ngày 10/11/2026. Thành viên và vai trò dựa trên `session3/docs/ke-hoach.md`.
 
-Số commit tính theo SHA duy nhất trong các PR được liệt kê,
-không tính merge commit đồng bộ nhánh.
-Có tính commit sửa lỗi, trả lời kiến thức và nhật ký thuộc các PR đó.
-Không dùng số commit để kết luận chất lượng hoặc mức độ hoàn thành.
+Số commit là các commit của từng người có thay đổi trong `session3/`, thống kê bằng:
+
+```bash
+git shortlog -sn --no-merges HEAD -- session3/
+```
+
+Không tính merge commit. Hai tên Git `liemnguyen-work` và `liemnguyen31241023460-cell` được cộng cho Liêm; `Nguyễn Châu` và `nbchau571` được cộng cho Châu. Số liệu có tính các commit sửa lỗi và tài liệu trong `session3/`, nhưng không tính commit chỉ sửa thư mục khác. Số commit không dùng để đánh giá chất lượng đóng góp.
 
 ## Bảng đóng góp tám thành viên
 
-| Thành viên | Vai trò | Commit đã merge | Commit trong PR đang mở | PR minh chứng |
-|---|---|---:|---:|---|
-| Liêm | PM | 3 | 4 | [#19](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/19), [#20](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/20), [#21](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/21), [#155](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/155) |
-| Kiệt | DO | 4 | 0 | [#15](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/15), [#18](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/18), [#23](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/23) |
-| Châu | BD2 | 7 | 0 | [#116](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/116), [#117](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/117), [#119](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/119), [#121](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/121), [#124](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/124) |
-| Phúc | FD2 | 6 | 0 | [#126](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/126) |
-| Thành | FD1 | 6 | 0 | [#148](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/148) |
-| Hoàn | BD1 | 6 | 0 | [#135](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/135), [#137](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/137), [#139](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/139), [#144](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/144) |
-| Đạt | PD | 6 | 2 | [#150](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/150), [#158](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/158) |
-| Ngọc | QA | 6 | 0 | [#125](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/125), [#151](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/151) |
+| Thành viên | Vai trò | Nhánh làm việc | Số commit | Mã PR đã merge |
+|---|---|---|---:|---|
+| Liêm | PM | `hw/p1-pm-1` | 7 | [#19](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/19), [#20](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/20), [#21](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/21), [#155](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/155) |
+| Kiệt | DO | `hw/p1-do-1`, `docs/session3-github-evidence` | 4 | [#15](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/15), [#18](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/18), [#23](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/23), [#159](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/159) |
+| Châu | BD2 | `hw/p1-bd2-1` | 7 | [#116](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/116), [#117](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/117), [#119](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/119), [#121](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/121), [#124](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/124) |
+| Phúc | FD2 | `hw/p1-fd2-1` | 5 | [#126](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/126) |
+| Thành | FD1 | `hw/p1-fd1-1` | 6 | [#148](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/148) |
+| Hoàn | BD1 | `hw/p1-bd1-1` | 6 | [#135](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/135), [#137](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/137), [#139](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/139), [#144](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/144) |
+| Đạt | PD | `hw/p1-pd-1` | 8 | [#150](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/150), [#158](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/158) |
+| Ngọc | QA | `hw/p1-qa-1` | 6 | [#125](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/125), [#151](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/151) |
 
-PR #155 và #158 đang mở tại thời điểm đối chiếu.
-Các PR còn lại trong bảng đã merge.
-PR mới bổ sung tài liệu này chưa được tính vào bảng.
+Tất cả PR trong bảng đã merge vào `main` tại thời điểm đối chiếu. Commit cập nhật tài liệu lần này chưa được tính trong số liệu trên.
 
 ## Commit tiêu biểu của từng thành viên
 
@@ -40,13 +40,21 @@ PR mới bổ sung tài liệu này chưa được tính vào bảng.
 | Đạt | Đồng bộ số lượng giỏ và cải thiện giao diện mobile | [cdf7691](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/cdf7691612b571b2c195754290b279ebe9b8b9e3) |
 | Ngọc | Ghi kết quả kiểm thử tích hợp | [a40dfc2](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/a40dfc26921de9403de413d171b9ecfc9e5bf3e6) |
 
-Các commit còn lại có thể xem trong tab Commits của từng PR.
+Các commit khác có thể xem trong tab **Commits** của từng PR.
 
-## Giới hạn và việc cần cập nhật
+## Kiểm tra tích hợp cuối
 
-- Người mở PR có thể là Liêm; không dùng riêng người mở PR
-  để quy đóng góp. Bảng đối chiếu nhánh, tác giả commit và phân công.
-- Bảng này ghi minh chứng GitHub, không thay thế kiểm thử chức năng.
-- Chưa xác nhận chạy lại hai lệnh kiểm tra tích hợp cuối
-  trong lần bổ sung tài liệu này.
-- Cập nhật trạng thái PR #155 và #158 trước khi chốt nộp bài.
+Đã kiểm tra mã nguồn `session3/` trên nhánh `main` tại commit `909f1bd`. Hai lệnh dưới đây không in ra kết quả nào:
+
+```bash
+grep -rnP --include='*.html' 'onclick\s*=|<script\b(?![^>]*\bsrc\s*=)[^>]*>' session3/
+grep -rIln 'jquery\|react\|vue' session3/
+```
+
+Lệnh grep thứ nhất trong hướng dẫn gốc khớp cả `</script>` của thẻ nạp file hợp lệ. Lệnh thứ hai quét cả ảnh PNG nên có thể báo nhầm dữ liệu nhị phân. Vì vậy, lần kiểm tra này dùng biểu thức tìm đúng `onclick` hoặc thẻ script không có `src`, đồng thời dùng `-I` để bỏ qua file nhị phân.
+
+## Giới hạn
+
+- Người mở PR có thể là Liêm; bảng đối chiếu nhánh làm việc, tác giả commit và phân công để ghi đóng góp.
+- Bảng là minh chứng GitHub, không thay thế kết quả kiểm thử chức năng.
+- Số liệu phản ánh `main` tại thời điểm kiểm tra; cần cập nhật nếu có thêm PR hoặc commit được merge sau đó.
