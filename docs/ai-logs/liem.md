@@ -3339,3 +3339,103 @@ Liêm: chờ kiểm tra lại nội dung và đường dẫn. Các thành viên:
 - Biên bản tham khảo: `session3/docs/kiem-thu.md`.
 - Kịch bản phân vai đủ 8 thành viên và tổng thời gian dự kiến là 300 giây.
 - Chưa xác nhận kết quả tập thử, commit hoặc push tại thời điểm ghi.
+
+---
+
+---
+
+## Buổi 3 — Bảng rà soát nộp bài / LIEM-20261110-A83D7C42-001
+
+* Thời gian ghi: 2026-11-10T17:30:20+07:00
+* Thời gian thực hiện: Hồi cứu ngày 10/11/2026; thời điểm bắt đầu và kết thúc chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261110-A83D7C42
+* Người prompt: Liêm.
+* Loại mục: Hoạt động.
+* Liên quan: HW-P1-PM-1.5.
+
+### Công cụ
+
+ChatGPT; phiên bản model chưa xác minh.
+
+### Mục đích
+
+Rà danh mục bàn giao Buổi 3 và bổ sung bảng 12 mục kèm link minh chứng vào `session3/README.md`.
+
+### Prompt
+
+Tóm lược: Tôi cung cấp nội dung task và nhờ AI hướng dẫn kiểm tra các hạng mục, minh chứng và trạng thái trên nhánh `main` trước khi thêm bảng vào README.
+
+### Kết quả đề xuất
+
+AI hướng dẫn tôi kiểm tra tài liệu, ảnh và trạng thái trên `origin/main`; sau đó đề xuất bảng 12 dòng với link minh chứng và các ô trạng thái. AI lưu ý không đánh dấu đạt chỉ vì file tồn tại, và các mục còn thiếu cần báo người phụ trách.
+
+Tôi tự thêm bảng vào README, cập nhật các ô, kiểm tra thay đổi, commit và push theo hướng dẫn.
+
+### Phản biện
+
+Lần kiểm tra đầu chưa thấy `session3/docs/github.md` trên `main`. Ở lần sau, tôi kiểm tra lại và xác nhận `github.md` và `trinh-bay.md` đã có trên `origin/main`.
+
+AI không trực tiếp chạy lại website, kiểm tra nội dung toàn bộ 15 ảnh hoặc xác nhận nhóm đã tập trình bày trong 5 phút ở phiên này. Các ô được đánh dấu trong README cần được đối chiếu với kết quả kiểm tra thực tế của nhóm.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới được ghi nhận. Liêm tự cập nhật bảng trong phần công việc được giao.
+
+### Người kiểm tra
+
+Liêm kiểm tra trạng thái file và diff trước khi commit theo ảnh Terminal đã cung cấp. Chưa có bằng chứng trong cuộc trao đổi này rằng reviewer đã duyệt commit của bước `.5`.
+
+### Kiểm tra và minh chứng
+
+- File đã thay đổi: `session3/README.md`.
+- Commit được ghi nhận: `6be8be0`; kết quả push được Liêm cung cấp qua ảnh Terminal.
+- Minh chứng tham khảo: `session3/docs/kiem-thu.md`, `session3/docs/github.md`, `session3/docs/screenshots/` và `session3/docs/trinh-bay.md`.
+- Việc đánh dấu một dòng hoàn thành không tự chứng minh chức năng hoặc minh chứng đã được kiểm tra thực tế.
+
+---
+
+---
+
+## Buổi 3 — Kiểm tra kiến thức PM / LIEM-20261110-A83D7C42-002
+
+* Thời gian ghi: 2026-11-10T17:41:20+07:00
+* Thời gian thực hiện: Hồi cứu ngày 10/11/2026; thời điểm bắt đầu và kết thúc chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261110-A83D7C42
+* Người prompt: Liêm.
+* Loại mục: Hoạt động.
+* Liên quan: HW-P1-PM-1.6.
+
+### Công cụ
+
+ChatGPT; phiên bản model chưa xác minh.
+
+### Mục đích
+
+Ôn tập kiến thức về kế hoạch, quy ước, README, kịch bản trình bày và bảng nộp bài Buổi 3 trước khi trả lời kiểm tra kiến thức.
+
+### Prompt
+
+Tóm lược: Tôi cung cấp 9 câu hỏi của task, nhờ AI giải thích các ý để tham khảo và cho biết tôi sẽ tự diễn đạt lại theo hiểu biết của mình.
+
+### Kết quả đề xuất
+
+AI cung cấp nội dung tham khảo cho 9 câu hỏi và nhắc rằng task yêu cầu không dán câu trả lời của AI. Tôi cho biết đã trả lời xong trong `session3/docs/answers/Liem.md`; tôi chưa gửi nội dung để AI góp ý từng câu.
+
+### Phản biện
+
+Task yêu cầu tự trả lời, không xem code và không dán câu trả lời AI. Khi đối chiếu file hiện có, một số câu Buổi 3 trùng với nội dung AI đã cung cấp; phần đầu file vẫn có bản nháp tham khảo Buổi 2. Cần tự rà và hoàn thiện file theo yêu cầu trước khi nộp, đồng thời ghi nhận trung thực mức hỗ trợ của AI.
+
+### Quyết định của nhóm
+
+Chưa có quyết định hoặc phê duyệt của nhóm đối với câu trả lời được ghi nhận.
+
+### Người kiểm tra
+
+AI đã đọc file hiện có để đối chiếu khi chuẩn bị mục log. Chưa có bằng chứng reviewer đã hỏi 2 câu hoặc xác nhận Liêm trả lời được không mở code.
+
+### Kiểm tra và minh chứng
+
+- File liên quan: `session3/docs/answers/Liem.md`.
+- Nội dung file hiện có gồm phần nháp Buổi 2 và phần câu hỏi Buổi 3; trạng thái cần được Liêm kiểm tra, hoàn thiện theo yêu cầu task.
+- Chưa xác nhận commit hoặc push cho bước `.6` tại thời điểm ghi.
+- Chưa xác nhận kết quả review hay đóng sub-issue.

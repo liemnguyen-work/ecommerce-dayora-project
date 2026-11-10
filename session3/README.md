@@ -128,3 +128,20 @@ Nhóm ghi lại mục đích sử dụng AI, nội dung hỗ trợ, phản biệ
 - [Quy tắc ghi nhật ký AI](../docs/ai-logs/ai-logging-rules.md).
 
 Mỗi thành viên chịu trách nhiệm kiểm tra và giải thích phần mình thực hiện.
+
+# Bảng rà soát trước khi nộp bài
+
+| STT | Hạng mục | Minh chứng | Người phụ trách | Kiểm tra |
+|---|---|---|---|---|
+| 1 | Mã nguồn website: HTML, CSS, JavaScript và ảnh | [Thư mục session3](./) | Kiệt | [x] Kiểm tra cấu trúc và các trang |
+| 2 | Dữ liệu 8 sản phẩm | [products.js](js/data/products.js) · [TC-01, TC-02](docs/kiem-thu.md) | Châu | [x] Đối chiếu dữ liệu và kết quả |
+| 3 | Danh sách sản phẩm động | [products.html](products.html) · [TC-01](docs/kiem-thu.md) | Phúc | [x] Kiểm tra danh sách trên website |
+| 4 | Tìm kiếm, lọc và sắp xếp | [products.html](products.html) · [TC-03–TC-05, TC-13](docs/kiem-thu.md) | Thành | [x] Kiểm tra chức năng |
+| 5 | Trang chi tiết sản phẩm | [product-detail.html](product-detail.html) · [TC-06, TC-14, TC-15](docs/kiem-thu.md) | Hoàn | [x] Kiểm tra ID hợp lệ và không hợp lệ |
+| 6 | Giao diện và thao tác giỏ hàng | [cart.html](cart.html) · [TC-07–TC-11](docs/kiem-thu.md) | Đạt | [x] Kiểm tra thêm, tăng, giảm, xóa và tổng tiền |
+| 7 | Lưu giỏ hàng bằng Local Storage | [cart.js](js/modules/cart.js) · [TC-12, TC-16](docs/kiem-thu.md) | Châu | [x] Kiểm tra lưu và khôi phục dữ liệu |
+| 8 | Báo cáo kiểm thử | [kiem-thu.md](docs/kiem-thu.md) | Ngọc | [x] Đối chiếu kết quả thực tế và danh sách lỗi |
+| 9 | Minh chứng commit và PR của 8 thành viên | [github.md](docs/github.md) | Kiệt | [x] Kiểm tra 8 dòng và trạng thái PR mới nhất |
+| 10 | README đủ 10 mục | [README](README.md) | Liêm | [x] Kiểm tra nội dung và các liên kết |
+| 11 | Ảnh minh chứng 5 trang ở 3 kích thước | [Thư mục ảnh](docs/screenshots/) | Ngọc | [x] Kiểm tra nội dung 15 ảnh |
+| 12 | Kịch bản trình bày | [trinh-bay.md](docs/trinh-bay.md) | Liêm | [x] Kiểm tra phân vai và tập thử 5 phút |
