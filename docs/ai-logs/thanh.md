@@ -1684,3 +1684,126 @@ Thành xác nhận đã xem nội dung; chưa có bằng chứng xác nhận đ�
 ### Kiểm tra và minh chứng
 
 Build/lint web và fetch giả lập đạt theo mục 005. Chưa gọi /health trên backend thật, chưa đáp ứng tiêu chí Xong khi của issue; lỗi backend và DATABASE_URL ghi ở mục 007. Không tự xác nhận đã đạt hay đóng issue #187. Thay đổi Prisma thuộc backend chưa được review và không đưa vào commit frontend.
+
+## P1 / THANH-20261113-A8C29F1D-011
+
+* Thời gian ghi: 2026-11-13T16:35:24+07:00
+* Thời gian thực hiện: trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261113-A8C29F1D
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-FD1-1.2; THANH-20261113-A8C29F1D-010
+
+### Công cụ
+
+Codex, Git, npm, Node.js và nội dung issue #188 do Thành cung cấp.
+
+### Mục đích
+
+Chuẩn bị định tuyến Bước 2; tiếp tục trao đổi với Thành trước khi commit.
+
+### Prompt
+
+Tóm lược: Thành cung cấp nội dung #188, yêu cầu AI thực hiện phần thực hành, sau đó cùng trao đổi rồi commit.
+
+### Kết quả đề xuất
+
+Codex cài react-router-dom theo phiên bản hướng dẫn trong ZIP; sửa apps/web/package.json, package-lock.json và App.tsx. Thêm BrowserRouter, sáu route và 404, giữ styleguide hiện tại ở / và dùng nội dung tạm cho các trang chưa có. Chưa commit hoặc push.
+
+### Phản biện
+
+Chưa có phản biện của Thành về code Bước 2; Thành yêu cầu trao đổi trước khi commit.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới. Thành yêu cầu chuẩn bị Bước 2 trong khi Bước 1 còn thiếu health thật; issue #188 ghi Bước 1 phải xong trước.
+
+### Người kiểm tra
+
+Codex chạy build, lint và kiểm thử React server rendering; Thành chưa tự kiểm tra trên trình duyệt.
+
+### Kiểm tra và minh chứng
+
+npm run build -w web và npm run lint -w web pass. React server rendering với MemoryRouter thử sáu route và một đường dẫn lạ cho nội dung tương ứng, bao gồm 404; lần đầu phép thử báo lỗi do chuỗi tiếng Việt trong lệnh kiểm thử bị sai mã hóa, sau khi sửa chuỗi kiểm thử bằng Unicode escape thì pass. Chưa kiểm tra thực tế bằng trình duyệt hoặc reload URL. npm install báo 10 lỗ hổng mức trung bình; chưa sửa dependency. Bước 1 đã push nhưng chưa xác nhận /health thật và chưa đóng #187; thay đổi Prisma backend vẫn chưa commit và không thuộc Bước 2.
+
+## P1 / THANH-20261113-A8C29F1D-012
+
+* Thời gian ghi: 2026-11-13T16:40:43+07:00
+* Thời gian thực hiện: trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261113-A8C29F1D
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: PRJ-P1-FD1-1.2; THANH-20261113-A8C29F1D-011
+
+### Công cụ
+
+Trình duyệt do Thành sử dụng; Codex.
+
+### Mục đích
+
+Kiểm tra các đường dẫn trên trình duyệt theo issue #188.
+
+### Prompt
+
+Thành gửi ảnh và xác nhận kết quả đúng như hướng dẫn.
+
+### Kết quả đề xuất
+
+Codex đối chiếu ảnh và ghi nhận kết quả Thành tự thử; không sửa mã trong lượt này.
+
+### Phản biện
+
+Chưa có phản biện mới của Thành về mã.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Thành tự kiểm tra trên trình duyệt và cung cấp ảnh; Codex đối chiếu ảnh.
+
+### Kiểm tra và minh chứng
+
+Ảnh hiển thị localhost:5173/ với styleguide, /san-pham với nội dung tạm, /san-pham/tham-picnic với nội dung tạm, /dang-nhap với nội dung tạm và /duong-dan-la với 404. Thành xác nhận kết quả đúng theo hướng dẫn, bao gồm các đường dẫn đã được yêu cầu thử; không có ảnh riêng cho /dang-ky và /ve-chung-toi. Các route đã được Codex kiểm tra MemoryRouter tại mục 011. Chưa commit Bước 2; Bước 1 còn thiếu kiểm tra health thật.
+
+## P1 / THANH-20261113-A8C29F1D-013
+
+* Thời gian ghi: 2026-11-13T16:41:41+07:00
+* Thời gian thực hiện: trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261113-A8C29F1D
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-FD1-1.2; THANH-20261113-A8C29F1D-012
+
+### Công cụ
+
+Codex.
+
+### Mục đích
+
+Trao đổi về route wildcard trước khi commit Bước 2.
+
+### Prompt
+
+Codex hỏi route * dùng cho trường hợp nào; Thành giải thích route bắt các URL không khớp route khác.
+
+### Kết quả đề xuất
+
+Codex xác nhận cách hiểu của Thành về route wildcard và ghi nhận vào AI log.
+
+### Phản biện
+
+Chưa có phản biện mới đối với mã.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Thành trả lời trong trao đổi; Codex đối chiếu câu trả lời. Kết quả thử trình duyệt được ghi ở mục 012.
+
+### Kiểm tra và minh chứng
+
+Thành trả lời route * bắt các URL không khớp route khác. Code Bước 2 được Codex viết theo yêu cầu và đã thử theo mục 011–012. Bước 1 còn thiếu thử health thật; schema Prisma sửa riêng ngoài commit frontend. Chưa tự coi prerequisite Bước 1 đã đạt.

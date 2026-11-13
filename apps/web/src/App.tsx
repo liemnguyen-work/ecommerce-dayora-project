@@ -1,5 +1,7 @@
 
-export default function App() {
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
+function Styleguide() {
   return (
     <main className="min-h-screen bg-paper px-4 py-8 text-left text-ink sm:px-8">
       <div className="mx-auto max-w-4xl space-y-8">
@@ -61,5 +63,30 @@ export default function App() {
 
       </div>
     </main>
+  );
+}
+
+function Placeholder({ title }: { title: string }) {
+  return (
+    <main className="min-h-screen bg-paper p-8 text-ink">
+      <h1>{title}</h1>
+      <p>Trang đang xây dựng.</p>
+    </main>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Styleguide />} />
+        <Route path="/san-pham" element={<Placeholder title="Sản phẩm" />} />
+        <Route path="/san-pham/:slug" element={<Placeholder title="Chi tiết sản phẩm" />} />
+        <Route path="/dang-nhap" element={<Placeholder title="Đăng nhập" />} />
+        <Route path="/dang-ky" element={<Placeholder title="Đăng ký" />} />
+        <Route path="/ve-chung-toi" element={<Placeholder title="Về chúng tôi" />} />
+        <Route path="*" element={<main className="p-8"><h1>404 - Không tìm thấy trang</h1></main>} />
+      </Routes>
+    </BrowserRouter>
   );
 }
