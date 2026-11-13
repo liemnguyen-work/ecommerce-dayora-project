@@ -2145,3 +2145,49 @@ Thành tự thao tác trong DevTools và thông báo kết quả.
 
 ### Kiểm tra và minh chứng
 Ảnh cho thấy prefers-reduced-motion: reduce; Thành xác nhận không còn hiệu ứng khi rê chuột hoặc chuyển nội dung. Lint và build đã thành công sau khi chỉnh footer.
+
+## P1 / THANH-20261113-A8C29F1D-024
+
+### Mục đích
+Thực hiện Bước 5: cuộn theo đường dẫn và điều hướng SPA.
+
+### Prompt
+Thành cung cấp yêu cầu PRJ-P1-FD1-1.5 và đề nghị tiếp tục.
+
+### Kết quả đề xuất
+Codex thêm xử lý cuộn đầu trang hoặc đến phần tử neo khi route thay đổi; rà soát liên kết header và footer.
+
+### Phản biện
+Cần thử Network và cuộn thực tế trên trình duyệt; chưa khẳng định tiêu chí nghiệm thu đã đạt.
+
+### Quyết định của nhóm
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+Codex chạy lint, build và rà soát mã; chờ Thành kiểm tra trình duyệt.
+
+### Kiểm tra và minh chứng
+Lint và build web thành công; không tìm thấy thẻ a trong hai component header và footer. Chưa kiểm tra Network hoặc thao tác cuộn thực tế.
+
+## P1 / THANH-20261113-A8C29F1D-025
+
+### Mục đích
+Ghi nhận kiểm tra điều hướng và cuộn trước commit Bước 5.
+
+### Prompt
+Thành xác nhận kết quả kiểm tra cuộn, Network và yêu cầu commit.
+
+### Kết quả đề xuất
+Codex chuẩn bị commit thay đổi cuộn theo route và nhật ký liên quan.
+
+### Phản biện
+Kết quả thao tác trình duyệt do Thành tự kiểm tra và xác nhận.
+
+### Quyết định của nhóm
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+Thành kiểm tra cuộn và chuyển trang; Codex đối chiếu ảnh Network.
+
+### Kiểm tra và minh chứng
+Thành xác nhận đổi trang cuộn lên đầu, mục Ba chuyến đi cuộn đến nội dung; sau khi bấm qua lại menu, Network lọc Doc trống. Lint và build web đã thành công.

@@ -1,8 +1,42 @@
 
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { useEffect } from 'react';
+import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
 import SiteHeader from './components/SiteHeader';
 import SiteFooter from './components/SiteFooter';
 import './motion.css';
+
+function ScrollOnNavigation() {
+  const { pathname, hash } = useLocation();
+
+  useEffect(() => {
+    if (!hash) {
+      window.scrollTo(0, 0);
+      return;
+    }
+
+    let id: string;
+    try {
+      id = decodeURIComponent(hash.slice(1));
+    } catch {
+      return;
+    }
+
+    let frame = 0;
+    let attempts = 0;
+    const findTarget = () => {
+      const target = document.getElementById(id);
+      if (target) {
+        target.scrollIntoView();
+      } else if (++attempts < 30) {
+        frame = requestAnimationFrame(findTarget);
+      }
+    };
+    frame = requestAnimationFrame(findTarget);
+    return () => cancelAnimationFrame(frame);
+  }, [pathname, hash]);
+
+  return null;
+}
 
 function Styleguide() {
   return (
@@ -86,6 +120,7 @@ function Placeholder({ title }: { title: string }) {
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollOnNavigation />
       <SiteHeader />
       <Routes>
         <Route path="/" element={<Styleguide />} />
