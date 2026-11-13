@@ -944,3 +944,9 @@ Chưa xác nhận người review hoặc kết quả Approve.
 - git log xác nhận hai commit ecc6aa9 và 24da76e.
 - Chưa nhận link PR, kết quả CI hoặc xác nhận Approve/merge.
 - Không kết luận toàn bộ task hoàn thành ở thời điểm ghi log.
+## P1 — Tạo Supabase cho nhóm / PRJ-P1-DO-1.1
+
+- Kiệt tạo Organization DAYORA Team (gói Free) và project DAYORA tại Singapore (`ap-southeast-1`).
+- Đã gửi lời mời cho 7 thành viên còn lại; ảnh trang Team hiển thị tổng 8 người gồm cả Kiệt.
+- Trạng thái lúc chụp: 7 lời mời đang chờ; quyền Owner cần được kiểm tra lại theo phân công nhóm.
+- AI hỗ trợ chọn vùng Singapore, giải thích Data API và cách kiểm tra danh sách thành viên. Kiệt trực tiếp tạo project, gửi lời mời và kiểm tra trên Supabase.
