@@ -2191,3 +2191,72 @@ Thành kiểm tra cuộn và chuyển trang; Codex đối chiếu ảnh Network.
 
 ### Kiểm tra và minh chứng
 Thành xác nhận đổi trang cuộn lên đầu, mục Ba chuyến đi cuộn đến nội dung; sau khi bấm qua lại menu, Network lọc Doc trống. Lint và build web đã thành công.
+
+## P1 / THANH-20261113-A8C29F1D-026
+
+### Mục đích
+Ghi lại phần tự đánh giá PRJ-P1-FD1-1 của Thành.
+
+### Prompt
+Thành cung cấp sáu câu trả lời và yêu cầu hỗ trợ đưa vào file.
+
+### Kết quả đề xuất
+Codex chép nội dung Thành cung cấp vào file kiểm tra và đánh dấu hai điểm cần tự bổ sung, chỉnh sửa.
+
+### Phản biện
+Chưa xác minh cuộn mượt; câu 4 chưa nêu ảnh hưởng khi bỏ chức năng. Không tự nhận đã kiểm tra backend /health thành công.
+
+### Quyết định của nhóm
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+Thành cần tự rà soát, chỉnh phần còn thiếu và giải thích trước reviewer.
+
+### Kiểm tra và minh chứng
+Nội dung câu trả lời lấy từ tin nhắn của Thành; chưa hoàn tất kiểm tra kiến thức, chưa commit.
+
+## P1 / THANH-20261113-A8C29F1D-027
+
+### Mục đích
+Hoàn thiện nội dung tự đánh giá theo câu trả lời của Thành.
+
+### Prompt
+Thành tự giải thích ảnh hưởng khi bỏ footer và giảm chuyển động, và xác nhận không nên nhận đã làm cuộn mượt.
+
+### Kết quả đề xuất
+Codex cập nhật câu 4 và 5 theo ý Thành, bỏ các ghi chú chờ chỉnh.
+
+### Phản biện
+Cần Thành tiếp tục tự giải thích và trả lời reviewer; không tự đánh dấu checklist đạt.
+
+### Quyết định của nhóm
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+Thành đưa lời giải thích; Codex ghi lại vào file.
+
+### Kiểm tra và minh chứng
+Căn cứ nội dung Thành trả lời trong cuộc trao đổi; chưa commit.
+
+## P1 / THANH-20261113-A8C29F1D-028
+
+### Mục đích
+Luyện giải thích kiến thức trước khi commit Bước 6.
+
+### Prompt
+Thành yêu cầu hỏi các câu còn lại một lượt rồi commit.
+
+### Kết quả đề xuất
+Codex hỏi hai câu về cuộn trang và giảm chuyển động; Thành tự trả lời.
+
+### Phản biện
+Kết quả này là trao đổi luyện tập với AI; reviewer hoặc trưởng nhóm chưa hỏi hai câu trong PR.
+
+### Quyết định của nhóm
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+Thành tự trả lời, Codex đối chiếu với thao tác đã trao đổi.
+
+### Kiểm tra và minh chứng
+Thành giải thích đưa trang mới về đầu để xem thông tin từ trên xuống, và khi bật reduce thấy hiệu ứng chuyển động giảm. Chưa xác nhận kiểm tra /health với backend thật.
