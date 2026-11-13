@@ -950,3 +950,11 @@ Chưa xác nhận người review hoặc kết quả Approve.
 - Đã gửi lời mời cho 7 thành viên còn lại; ảnh trang Team hiển thị tổng 8 người gồm cả Kiệt.
 - Trạng thái lúc chụp: 7 lời mời đang chờ; quyền Owner cần được kiểm tra lại theo phân công nhóm.
 - AI hỗ trợ chọn vùng Singapore, giải thích Data API và cách kiểm tra danh sách thành viên. Kiệt trực tiếp tạo project, gửi lời mời và kiểm tra trên Supabase.
+
+## P1 — Chuỗi kết nối / PRJ-P1-DO-1.2
+
+- Kiệt cấu hình DATABASE_URL bằng Transaction pooler cổng 6543 với pgbouncer=true; DIRECT_URL bằng Session pooler cổng 5432 trong apps/api/.env cục bộ.
+- git check-ignore xác nhận apps/api/.env được Git bỏ qua.
+- npm run prisma:validate -w api: schema hợp lệ.
+- npm run db:migrate -w api: áp dụng migration 20261108183740_init; database đồng bộ với schema; Prisma Client 6.19.3 được sinh thành công.
+- AI giải thích cách chọn pooler và vị trí đặt biến. Kiệt tự lấy chuỗi, lưu mật khẩu và chạy lệnh. Nhật ký không chứa thông tin kết nối thật.
