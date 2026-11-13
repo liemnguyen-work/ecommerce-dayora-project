@@ -2076,3 +2076,72 @@ Thành tự kiểm tra các mục menu và xác nhận dẫn đúng trang.
 
 ### Kiểm tra và minh chứng
 Thành gửi ảnh header ở 390 px và 1366 px và xác nhận thử menu; chưa có ảnh đối chiếu mẫu.
+
+## P1 / THANH-20261113-A8C29F1D-021
+
+### Mục đích
+Thực hiện Bước 4: footer dùng chung và hỗ trợ giảm chuyển động.
+
+### Prompt
+Thành cung cấp yêu cầu PRJ-P1-FD1-1.4 và yêu cầu tiếp tục theo quy trình, giao diện chỉn chu.
+
+### Kết quả đề xuất
+Codex tạo SiteFooter với liên kết nội bộ, bổ sung motion.css và tích hợp vào ứng dụng.
+
+### Phản biện
+Chưa có component dùng motion/react; khi bổ sung animation bằng thư viện cần xử lý useReducedMotion. Một số trang liên kết là nội dung tạm.
+
+### Quyết định của nhóm
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+Codex kiểm tra lint và build; chờ Thành kiểm tra trên trình duyệt.
+
+### Kiểm tra và minh chứng
+npm run lint -w web và npm run build -w web thành công. Chưa kiểm tra DevTools với prefers-reduced-motion; chưa commit Bước 4.
+
+## P1 / THANH-20261113-A8C29F1D-022
+
+### Mục đích
+Chỉnh lại giao diện footer theo nhận xét của Thành.
+
+### Prompt
+Thành gửi ảnh footer và yêu cầu làm đẹp hơn vì bố cục cũ chưa cân đối.
+
+### Kết quả đề xuất
+Codex thêm logo, điều chỉnh kiểu chữ, khoảng cách và bố cục cột thích ứng màn hình.
+
+### Phản biện
+Cần Thành xem lại trên trình duyệt và thử chế độ giảm chuyển động trước khi kết luận hoàn thành.
+
+### Quyết định của nhóm
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+Codex kiểm tra lint và build; Thành xem lại giao diện.
+
+### Kiểm tra và minh chứng
+npm run lint -w web và npm run build -w web thành công. Chưa xác nhận kết quả hiển thị mới hoặc kiểm tra reduce motion thực tế.
+
+## P1 / THANH-20261113-A8C29F1D-023
+
+### Mục đích
+Ghi nhận kiểm tra giảm chuyển động của Bước 4 trước commit.
+
+### Prompt
+Thành báo khi bật reduce, rê chuột không còn hiệu ứng; click chuyển nội dung không có hiệu ứng, và yêu cầu commit.
+
+### Kết quả đề xuất
+Codex chuẩn bị commit footer, CSS chuyển động và nhật ký liên quan.
+
+### Phản biện
+Kết quả thao tác trên trình duyệt do Thành xác nhận; không suy diễn các kiểm tra khác.
+
+### Quyết định của nhóm
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+Thành tự thao tác trong DevTools và thông báo kết quả.
+
+### Kiểm tra và minh chứng
+Ảnh cho thấy prefers-reduced-motion: reduce; Thành xác nhận không còn hiệu ứng khi rê chuột hoặc chuyển nội dung. Lint và build đã thành công sau khi chỉnh footer.
