@@ -1232,3 +1232,455 @@ Thành cung cấp các câu trả lời trong trao đổi; Codex ghi lại và k
 ### Kiểm tra và minh chứng
 
 Kiểm tra file và trạng thái Git trước khi ghi; các câu trả lời ghi theo ý Thành, với hỗ trợ AI cho câu 3 được ghi rõ. Câu 1 chưa nêu hiển thị lại kết quả, câu 4 và 8 có thể nêu rõ các chức năng bị ảnh hưởng. Chưa commit hoặc push Bước 6.
+
+## Bài tập Buổi 3 / THANH-20261110-742B51D3-025
+
+* Thời gian ghi: 2026-11-10T23:47:59+07:00
+* Thời gian thực hiện: 2026-11-10, trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261109-742B51D3
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: HW-P1-FD1-1; PR #148
+
+### Công cụ
+
+Codex và Git.
+
+### Mục đích
+
+Kiểm tra vì sao giao diện nhóm khác bản của Thành và xác minh trạng thái nộp.
+
+### Prompt
+
+Tóm lược: Thành hỏi vì sao giao diện danh mục trên bản nhóm xấu hơn và bài đã nộp đúng chưa; Thành yêu cầu không điều khiển máy tính từ trước.
+
+### Kết quả đề xuất
+
+Codex kiểm tra nhánh trên remote, tải tham chiếu main để đối chiếu mà không chuyển nhánh hoặc gộp. PR #148 gộp commit cuối 600d575 của nhánh task vào main. CSS của thanh lọc có trong nhánh Thành nhưng không còn trong main; HTML thanh lọc và mã search-filter.js giống nhau giữa hai phiên bản được so sánh.
+
+### Phản biện
+
+Chưa có phản biện của Thành hoặc nhóm về phát hiện.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới; chưa sửa code.
+
+### Người kiểm tra
+
+Codex kiểm tra Git và diff; chờ Thành đối chiếu đúng trang nhóm đang xem.
+
+### Kiểm tra và minh chứng
+
+Remote hw/p1-fd1-1 trỏ 600d575, main trỏ 8434a6b tại lúc kiểm tra. Diff merge PR #150 13522af so với parent đầu cho thấy CSS khu 10 filter-toolbar, filter-group, filter-label, filter-input, filter-select bị bỏ. Đây là nguyên nhân có cơ sở giải thích giao diện thanh lọc thay đổi; chưa quan sát trang Thành đang xem hoặc kiểm chứng triển khai Pages. Chưa commit hoặc push hoạt động kiểm tra này.
+
+## Chuẩn bị công việc / THANH-20261113-A8C29F1D-001
+
+* Thời gian ghi: 2026-11-13T15:29:03+07:00
+* Thời gian thực hiện: 2026-11-13, trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261113-A8C29F1D
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: Chờ Thành cung cấp task mới
+
+### Công cụ
+
+Codex và Git.
+
+### Mục đích
+
+Cập nhật ngữ cảnh repo nhóm để chuẩn bị công việc mới và bảo toàn các thay đổi cũ.
+
+### Prompt
+
+Tóm lược: Thành xác nhận danh tính, sẽ gửi task mới và yêu cầu lấy ngữ cảnh mới nhất từ repo Liêm về máy.
+
+### Kết quả đề xuất
+
+Codex kiểm tra trạng thái hai bản làm việc, fetch main từ origin và tạo worktree dayora-main-moi ở commit e702334, trạng thái detached HEAD. Chưa nhận nội dung hoặc phạm vi task mới, chưa tạo nhánh task.
+
+### Phản biện
+
+Chưa có phản biện của Thành.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Codex kiểm tra trạng thái Git và hướng dẫn log; chờ Thành cung cấp task và review.
+
+### Kiểm tra và minh chứng
+
+Cả hai bản làm việc cũ có thay đổi chưa commit nên được giữ nguyên. Bản hw/p1-fd1-1 có mục log chưa commit của lần kiểm tra trước, không tự ý ghi đè hay di chuyển. Bản mới lấy từ origin/main sau fetch; chưa sửa code, chưa merge, commit hay push.
+
+
+## Chuẩn bị công việc / THANH-20261113-A8C29F1D-002
+
+* Thời gian ghi: 2026-11-13T15:32:31+07:00
+* Thời gian thực hiện: trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261113-A8C29F1D
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: THANH-20261113-A8C29F1D-001
+
+### Công cụ
+
+Codex và Git.
+
+### Mục đích
+
+Cập nhật main vào đúng bản làm việc Thành đang mở, giữ thay đổi chưa commit.
+
+### Prompt
+
+Tóm lược: Thành yêu cầu cập nhật folder hiện tại và cung cấp git status để xác định đường dẫn.
+
+### Kết quả đề xuất
+
+Fetch origin/main và cập nhật fast-forward từ 600d575 đến e702334 ngay trong dayora-hw-p1-fd1-1; giữ mục log chưa commit. Nối mục 001 đã ghi ở bản mới vào log hiện tại, tiếp tục bằng mục này. Không push.
+
+### Phản biện
+
+Thành cho biết muốn cập nhật folder đang dùng thay vì tạo folder riêng; Codex đã điều chỉnh.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Codex kiểm tra trạng thái và lịch sử Git; chờ Thành review.
+
+### Kiểm tra và minh chứng
+
+Trước khi cập nhật kiểm tra HEAD là tổ tiên origin/main và main không thay đổi file log đang sửa; merge fast-forward thành công. Nhánh task cũ vẫn có upstream riêng nên trạng thái ahead so với remote task không có nghĩa là cần push nhánh cũ. Chưa nhận task mới.
+
+## Học P1 / THANH-20261113-A8C29F1D-003
+
+* Thời gian ghi: 2026-11-13T15:48:32+07:00
+* Thời gian thực hiện: trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261113-A8C29F1D
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-FD1-1
+
+### Công cụ
+
+Codex.
+
+### Mục đích
+
+Học khái niệm React trước khi thực hiện task.
+
+### Prompt
+
+Tóm lược: Thành yêu cầu giải thích component, props, useState và useEffect bằng ví dụ DAYORA, sau đó yêu cầu trình bày một lượt để học nhanh.
+
+### Kết quả đề xuất
+
+Codex giải thích bốn khái niệm và nêu bốn câu tự kiểm tra; chưa triển khai mã cho task.
+
+### Phản biện
+
+Thành yêu cầu trình bày bốn khái niệm cùng lượt; Codex điều chỉnh cách hướng dẫn.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Thành trả lời trong cuộc trao đổi; Codex đối chiếu câu trả lời.
+
+### Kiểm tra và minh chứng
+
+Thành trả lời header là component, tên và giá truyền bằng props, từ khóa lưu bằng state và có thể dùng useEffect để gọi API khi bộ lọc đổi. Thành có nêu thêm thư viện quản lý dữ liệu máy chủ nhưng chưa yêu cầu cài hoặc sử dụng. Chưa chạy thử hay viết mã task.
+
+## Học P1 / THANH-20261113-A8C29F1D-004
+
+* Thời gian ghi: 2026-11-13T15:53:04+07:00
+* Thời gian thực hiện: trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261113-A8C29F1D
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-FD1-1.1
+
+### Công cụ
+
+Codex và Git.
+
+### Mục đích
+
+Chuẩn bị nhánh và hỗ trợ thực hiện subtask đầu tiên theo lộ trình P1 của Thành.
+
+### Prompt
+
+Tóm lược: Thành yêu cầu triển khai đúng quy trình và hoàn thành commit đầu tiên nhanh; trước đó yêu cầu làm từng subtask và tự học cùng AI.
+
+### Kết quả đề xuất
+
+Codex đối chiếu hướng dẫn Bước 1 trong ZIP, kiểm tra trạng thái Git và tạo nhánh prj/p1-fd1-1 ngay trong worktree Thành sử dụng. Giữ nguyên AI log chưa commit. Codex kiểm tra endpoint health và cấu trúc web; chưa viết mã ứng dụng hoặc tạo commit.
+
+### Phản biện
+
+Chưa có phản biện của Thành về hướng triển khai Bước 1.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Codex kiểm tra Git và mã hiện có; chờ Thành tự thực hành và kiểm tra.
+
+### Kiểm tra và minh chứng
+
+Remote main tại e702334 và chưa thấy nhánh prj/p1-fd1-1; git switch tạo nhánh tại commit đó. apps/api có endpoint health; apps/web chưa có thư mục src/lib và node_modules chưa có. GitHub connector trả 404 với issue #187, nên hướng dẫn hiện dựa vào ZIP; chưa xác nhận được toàn bộ nội dung issue trực tiếp. Chưa chạy build hay health và chưa commit.
+
+## P1 / THANH-20261113-A8C29F1D-005
+
+* Thời gian ghi: 2026-11-13T16:00:16+07:00
+* Thời gian thực hiện: trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261113-A8C29F1D
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-FD1-1.1; THANH-20261113-A8C29F1D-004
+
+### Công cụ
+
+Codex, Git, npm, Node.js và hướng dẫn ZIP do Thành cung cấp.
+
+### Mục đích
+
+Thực hành tạo API client dùng chung và kiểm tra Bước 1 theo yêu cầu Thành.
+
+### Prompt
+
+Tóm lược: Thành yêu cầu AI sử dụng hướng dẫn ZIP để thực hiện các thao tác thực hành, ghi nhận trung thực, tiếp tục trao đổi để Thành hiểu.
+
+### Kết quả đề xuất
+
+Codex tạo apps/web/src/lib/api.ts với BASE cấu hình, fetch, credentials include, header JSON, xử lý lỗi và trả JSON. Codex cài dependency bằng npm ci và chạy prisma generate; Thành chưa review hoặc tự chạy các thao tác này.
+
+### Phản biện
+
+Chưa có phản biện của Thành về mã hoặc kết quả kiểm tra.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Codex kiểm tra build, lint và kiểm thử hàm với fetch giả lập; chờ Thành review và giải thích.
+
+### Kiểm tra và minh chứng
+
+npm run build -w web và npm run lint -w web thành công. Kiểm thử Node với phản hồi giả lập qua các trường hợp health thành công, URL mặc định, credentials, header bổ sung, lỗi JSON và lỗi không phải JSON đều đạt. npm ci báo 19 lỗ hổng (2 thấp, 12 trung bình, 5 cao), chưa sửa dependency. Khởi động backend ban đầu lỗi thiếu Prisma client; sau khi generate thành công, backend vẫn không chạy vì lỗi exports is not defined in ES module scope tại dist/generated/prisma/client.js. apps/api/.env chưa có; không đọc nội dung bí mật. Chưa gọi /health thực tế, chưa commit hoặc push.
+
+## P1 / THANH-20261113-A8C29F1D-006
+
+* Thời gian ghi: 2026-11-13T16:04:04+07:00
+* Thời gian thực hiện: trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261113-A8C29F1D
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: PRJ-P1-FD1-1.1; THANH-20261113-A8C29F1D-005
+
+### Công cụ
+
+Codex và Git.
+
+### Mục đích
+
+Kiểm tra phạm vi file, môi trường và rủi ro xung đột trước commit.
+
+### Prompt
+
+Tóm lược: Thành hỏi phần đang làm có lỗi, thiếu file hay ảnh hưởng commit và merge không.
+
+### Kết quả đề xuất
+
+Codex đối chiếu trạng thái Git, file API client, cấu hình mẫu và đầu nhánh remote; giải thích giới hạn xác minh backend, file chưa được stage và rủi ro xung đột khi main thay đổi. Không sửa mã ứng dụng.
+
+### Phản biện
+
+Chưa có phản biện mới của Thành.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Codex kiểm tra tĩnh, Git và remote; Thành chưa review code.
+
+### Kiểm tra và minh chứng
+
+Nhánh prj/p1-fd1-1 tại e702334; remote main cùng commit lúc kiểm tra, nhánh task chưa tồn tại trên remote. API client mới chưa được Git theo dõi; log đang sửa. Web lint/build và thử fetch giả lập đã ghi ở mục 005; backend chưa chạy được nên chưa kiểm tra /health thật. Không thể bảo đảm không conflict khi main thay đổi sau này. Chưa commit hoặc push.
+
+## P1 / THANH-20261113-A8C29F1D-007
+
+* Thời gian ghi: 2026-11-13T16:16:07+07:00
+* Thời gian thực hiện: trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261113-A8C29F1D
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-FD1-1.1; THANH-20261113-A8C29F1D-005
+
+### Công cụ
+
+Codex, Git, npm, Prisma và Node.js.
+
+### Mục đích
+
+Khắc phục lỗi Prisma cản trở việc khởi động backend để kiểm tra health.
+
+### Prompt
+
+Thành yêu cầu khắc phục lỗi Prisma sau khi được giải thích backend chưa khởi động được.
+
+### Kết quả đề xuất
+
+Codex đổi moduleFormat của generator trong apps/api/prisma/schema.prisma từ esm sang cjs cho khớp backend Node16 CommonJS, tạo lại Prisma client và chạy lại backend. Đây là thay đổi backend ngoài phạm vi file của subtask frontend; chưa commit, cần được người phụ trách backend review.
+
+### Phản biện
+
+Chưa có phản biện của Thành hoặc người phụ trách backend về thay đổi.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Codex chạy generate, build, test và thử khởi động; Thành và người phụ trách backend chưa review.
+
+### Kiểm tra và minh chứng
+
+Prisma generate, npm run build -w api và npm run test -w api thành công; một test đã pass. Backend biên dịch không lỗi và đăng ký route /api/health; lỗi exports is not defined không tái hiện. Sau đó khởi động dừng vì thiếu DATABASE_URL (P1012), nên chưa gọi được health thật. Không chạy migration hay kết nối cơ sở dữ liệu; chưa commit hoặc push.
+
+## P1 / THANH-20261113-A8C29F1D-008
+
+* Thời gian ghi: 2026-11-13T16:18:54+07:00
+* Thời gian thực hiện: trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261113-A8C29F1D
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: PRJ-P1-FD1-1.1; THANH-20261113-A8C29F1D-007
+
+### Công cụ
+
+Codex, Git và nội dung issue #187 do Thành cung cấp.
+
+### Mục đích
+
+Đối chiếu công việc và các bước còn thiếu với issue cụ thể.
+
+### Prompt
+
+Thành cung cấp nội dung issue #187 và hỏi đã làm theo hướng dẫn, còn thiếu gì và có vướng quy trình không.
+
+### Kết quả đề xuất
+
+Codex đối chiếu api.ts, nhánh, trạng thái thay đổi và các kết quả kiểm tra đã ghi. AI đã viết code theo yêu cầu trực tiếp của Thành, khác prompt mẫu issue khuyến khích Thành tự sửa; cần Thành review và hiểu. Thay đổi schema Prisma thuộc backend ngoài phạm vi file frontend của subtask và cần phối hợp review, không gộp mặc nhiên vào commit bước frontend.
+
+### Phản biện
+
+Chưa có phản biện của Thành hoặc reviewer đối với mã và kết quả đối chiếu.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Codex đọc nội dung issue, trạng thái Git và mã; Thành chưa xác nhận đã tự kiểm tra đủ checklist học trước.
+
+### Kiểm tra và minh chứng
+
+Build và lint web, kiểm thử fetch giả lập đã ghi ở mục 005. Sau sửa Prisma, backend build và một test pass nhưng thiếu DATABASE_URL, chưa gọi api('/health') với backend thật trong DevTools như issue yêu cầu. File web .env chưa tạo; BASE dùng fallback. Chưa commit, push, bình luận hoặc đóng issue.
+
+## P1 / THANH-20261113-A8C29F1D-009
+
+* Thời gian ghi: 2026-11-13T16:20:45+07:00
+* Thời gian thực hiện: trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261113-A8C29F1D
+* Người prompt: Thành
+* Loại mục: Quyết định
+* Liên quan: PRJ-P1-FD1-1.1; THANH-20261113-A8C29F1D-008
+
+### Công cụ
+
+Codex và Git.
+
+### Mục đích
+
+Hoàn thiện các bước có thể làm cho API client, ghi rõ giới hạn kiểm tra.
+
+### Prompt
+
+Tóm lược: Thành yêu cầu hoàn thành các phần còn lại và bỏ qua kiểm tra health thật trong lúc backend chưa chạy được.
+
+### Kết quả đề xuất
+
+Codex tạo apps/web/.env từ file .env.example vì chưa tồn tại, xác nhận file được Git bỏ qua. Theo yêu cầu của Thành, không thực hiện lại kiểm tra health thật lúc này; kết quả giả lập không thay thế bằng chứng yêu cầu của issue. Giữ thay đổi Prisma ngoài commit frontend.
+
+### Phản biện
+
+Codex lưu ý backend đã có endpoint nhưng chưa khởi động hoàn toàn do thiếu DATABASE_URL; không có bằng chứng đủ để nói backend chưa được lập trình.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới; chỉ ghi nhận yêu cầu của Thành.
+
+### Người kiểm tra
+
+Codex kiểm tra trạng thái Git và cấu hình mẫu; Thành chưa xác nhận hoàn tất phần tự học hay review mã.
+
+### Kiểm tra và minh chứng
+
+apps/web/.env được tạo từ .env.example và git check-ignore xác nhận được bỏ qua. Web build/lint và kiểm thử giả lập ghi ở mục 005; chưa gọi health thật, chưa chứng minh tiêu chí Xong khi của issue, không tự đánh dấu hoàn tất hay đóng issue.
+
+## P1 / THANH-20261113-A8C29F1D-010
+
+* Thời gian ghi: 2026-11-13T16:24:56+07:00
+* Thời gian thực hiện: trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261113-A8C29F1D
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-FD1-1.1; THANH-20261113-A8C29F1D-009
+
+### Công cụ
+
+Codex và Git.
+
+### Mục đích
+
+Chuẩn bị commit Bước 1 và PR nháp theo yêu cầu của Thành.
+
+### Prompt
+
+Tóm lược: Thành nói đã xem nội dung để commit và yêu cầu ghi nhận, nộp qua PR trên repo Liêm.
+
+### Kết quả đề xuất
+
+Thành xác nhận đã xem nội dung; Codex chuẩn bị ghi nhận code API client và AI log, giữ thay đổi Prisma ở ngoài commit frontend. PR được chuẩn bị dưới dạng nháp vì còn năm bước và health thật chưa được kiểm tra.
+
+### Phản biện
+
+Chưa ghi nhận phản biện cụ thể của Thành hoặc reviewer về từng dòng code.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới; đây là yêu cầu của Thành.
+
+### Người kiểm tra
+
+Thành xác nhận đã xem nội dung; chưa có bằng chứng xác nhận đã tự chạy kiểm thử hoặc hoàn thành tất cả kiến thức học trước. Codex đã kiểm tra như các mục 005, 007 và 008.
+
+### Kiểm tra và minh chứng
+
+Build/lint web và fetch giả lập đạt theo mục 005. Chưa gọi /health trên backend thật, chưa đáp ứng tiêu chí Xong khi của issue; lỗi backend và DATABASE_URL ghi ở mục 007. Không tự xác nhận đã đạt hay đóng issue #187. Thay đổi Prisma thuộc backend chưa được review và không đưa vào commit frontend.
