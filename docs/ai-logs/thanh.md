@@ -1807,3 +1807,272 @@ Thành trả lời trong trao đổi; Codex đối chiếu câu trả lời. K�
 ### Kiểm tra và minh chứng
 
 Thành trả lời route * bắt các URL không khớp route khác. Code Bước 2 được Codex viết theo yêu cầu và đã thử theo mục 011–012. Bước 1 còn thiếu thử health thật; schema Prisma sửa riêng ngoài commit frontend. Chưa tự coi prerequisite Bước 1 đã đạt.
+
+## P1 / THANH-20261113-A8C29F1D-014
+
+* Thời gian ghi: 2026-11-13T16:51:09+07:00
+* Thời gian thực hiện: trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261113-A8C29F1D
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-FD1-1.3; THANH-20261113-A8C29F1D-013
+
+### Công cụ
+
+Codex, npm, Git và nội dung issue #189 do Thành cung cấp.
+
+### Mục đích
+
+Chuẩn bị header và menu di động theo Bước 3, sau đó trao đổi và để Thành kiểm tra.
+
+### Prompt
+
+Tóm lược: Thành cung cấp issue #189, yêu cầu tiếp tục theo quy trình đã trao đổi; trước đó yêu cầu AI thực hiện thao tác và trao đổi trước khi commit.
+
+### Kết quả đề xuất
+
+Codex tạo SiteHeader.tsx với logo, điều hướng, giỏ hàng, tài khoản và dialog menu di động; thêm header vào App.tsx, bổ sung route tạm cho các trang chưa có và neo Ba chuyến đi. Codex dùng token và lớp Tailwind hiện có, chưa đối chiếu code mẫu và chưa chỉnh Prisma. Các route mới là trang tạm; cuộn tới hash là Bước 5.
+
+### Phản biện
+
+Chưa có phản biện của Thành đối với header; chờ Thành kiểm tra giao diện và tương tác.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Codex chạy build và lint frontend; Thành chưa tự kiểm tra header Bước 3 trên trình duyệt.
+
+### Kiểm tra và minh chứng
+
+npm run build -w web và npm run lint -w web pass. Chưa kiểm tra 1366 px, 390 px, menu, focus, điều hướng hoặc đối chiếu ảnh code mẫu. Bước 1 vẫn chưa kiểm tra health thật; thay đổi Prisma ngoài phạm vi vẫn chưa commit. Chưa commit hoặc push Bước 3.
+
+## P1 / THANH-20261113-A8C29F1D-015
+
+* Thời gian ghi: 2026-11-13T16:58:33+07:00
+* Thời gian thực hiện: trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261113-A8C29F1D
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: PRJ-P1-FD1-1.3; THANH-20261113-A8C29F1D-014
+
+### Công cụ
+
+Trình duyệt qua ảnh Thành cung cấp; Codex.
+
+### Mục đích
+
+Kiểm tra header trên giao diện.
+
+### Prompt
+
+Thành gửi ảnh trang và hỏi hiển thị đã đúng chưa.
+
+### Kết quả đề xuất
+
+Codex xác nhận ảnh thể hiện header, logo, menu ngang và styleguide; chưa kết luận toàn bộ tiêu chí issue.
+
+### Phản biện
+
+Chưa có phản biện mới về code.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Thành xem trang và gửi ảnh; Codex đối chiếu ảnh.
+
+### Kiểm tra và minh chứng
+
+Ảnh cho thấy header với logo, các link, Giỏ hàng và Tài khoản. Ảnh không thể hiện chiều rộng viewport chính xác, chưa chứng minh 1366 px; chưa có ảnh 390 px, thử menu và ảnh so sánh mẫu. Chưa commit Bước 3.
+
+## P1 / THANH-20261113-A8C29F1D-016
+
+* Thời gian ghi: 2026-11-13T17:00:26+07:00
+* Thời gian thực hiện: trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261113-A8C29F1D
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: PRJ-P1-FD1-1.3; THANH-20261113-A8C29F1D-015
+
+### Công cụ
+
+Trình duyệt qua ảnh Thành cung cấp; Codex, npm.
+
+### Mục đích
+
+Kiểm tra header trên màn hình nhỏ và sửa chữ bị xuống dòng.
+
+### Prompt
+
+Thành gửi ảnh header giao diện di động để kiểm tra theo hướng dẫn.
+
+### Kết quả đề xuất
+
+Codex thấy Giỏ hàng và Tài khoản xuống dòng, chỉnh kích thước logo, chữ và khoảng cách, giữ hai nhãn không tự ngắt dòng trên màn hình nhỏ.
+
+### Phản biện
+
+Ảnh Thành cung cấp cho thấy hai nhãn bị xuống dòng; chờ Thành xem lại sau sửa.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Thành cung cấp ảnh trước sửa; Codex chạy build và lint sau sửa.
+
+### Kiểm tra và minh chứng
+
+Ảnh cho thấy nút menu trên giao diện hẹp, nhưng không chứng minh chính xác 390 px hay menu hoạt động. npm run build -w web và npm run lint -w web pass sau chỉnh sửa. Chưa có ảnh sau sửa, chưa kiểm menu, tràn ngang hay so sánh mẫu. Chưa commit Bước 3.
+
+## P1 / THANH-20261113-A8C29F1D-017
+
+* Thời gian ghi: 2026-11-13T17:03:32+07:00
+* Thời gian thực hiện: trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261113-A8C29F1D
+* Người prompt: Thành
+* Loại mục: Phản biện
+* Liên quan: PRJ-P1-FD1-1.3; THANH-20261113-A8C29F1D-016
+
+### Công cụ
+
+Codex, Git, npm, Node.js, ảnh Thành cung cấp và tài liệu thiết kế trong repo Liêm.
+
+### Mục đích
+
+Cải thiện header theo phản hồi của Thành và đối chiếu link, phạm vi với issue.
+
+### Prompt
+
+Tóm lược: Thành không hài lòng với giao diện header và yêu cầu làm đẹp, kiểm tra link và hướng dẫn đồ án.
+
+### Kết quả đề xuất
+
+Codex điều chỉnh SiteHeader.tsx: thu gọn menu, thêm trạng thái trang, nút giỏ và tài khoản có biểu tượng và nhãn truy cập, cải thiện menu mobile và focus; dùng màu, font đã có. App.tsx tiếp tục giữ styleguide và các trang tạm. Code do AI chỉnh, chờ Thành review.
+
+### Phản biện
+
+Thành phản hồi header chưa đẹp; Codex không khẳng định thiết kế đã khớp code mẫu và điều chỉnh theo token hiện có.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới, chờ Đạt và Thành review.
+
+### Người kiểm tra
+
+Codex kiểm tra tĩnh, chạy lint/build và script đối chiếu đường dẫn; Thành chưa xem ảnh sau chỉnh sửa.
+
+### Kiểm tra và minh chứng
+
+npm run lint -w web và npm run build -w web pass. Kiểm tra tĩnh các đường dẫn yêu cầu có route tương ứng hoặc neo và logo tồn tại; các trang Tạo bộ, Giỏ hàng, Tài khoản là nội dung tạm. Chưa thử tương tác link, menu, focus hay tràn ngang trên trình duyệt; xử lý cuộn hash thuộc Bước 5. Chưa so sánh ảnh desktop/mobile với code mẫu, chưa commit hoặc push Bước 3; Bước 1 chưa kiểm tra health thật.
+
+## P1 / THANH-20261113-A8C29F1D-018
+
+* Thời gian ghi: 2026-11-13T17:06:56+07:00
+* Thời gian thực hiện: trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261113-A8C29F1D
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: PRJ-P1-FD1-1.3; THANH-20261113-A8C29F1D-017
+
+### Công cụ
+
+Trình duyệt qua ảnh Thành cung cấp; Codex.
+
+### Mục đích
+
+Kiểm tra header sau chỉnh sửa ở màn hình lớn và nhỏ.
+
+### Prompt
+
+Thành gửi ba ảnh giao diện sau chỉnh sửa.
+
+### Kết quả đề xuất
+
+Codex đối chiếu ảnh và ghi nhận hiện trạng; không sửa mã trong lượt này.
+
+### Phản biện
+
+Chưa có phản hồi bằng lời của Thành về thiết kế sau chỉnh sửa.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Thành xem giao diện và gửi ảnh; Codex xem ảnh.
+
+### Kiểm tra và minh chứng
+
+Ảnh cho thấy header và menu ngang, header màn hình hẹp với nút menu, và menu đang mở. Không thấy thông số viewport chính xác trong ảnh; chưa xác nhận kích thước 1366 hoặc 390, đóng bằng nút hoặc ngoài vùng, liên kết, focus hay so sánh với ảnh code mẫu. Chưa commit Bước 3.
+
+## P1 / THANH-20261113-A8C29F1D-019
+
+* Thời gian ghi: 2026-11-13T17:09:07+07:00
+* Thời gian thực hiện: trong phiên trao đổi này
+* Mã phiên nhật ký: THANH-20261113-A8C29F1D
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: PRJ-P1-FD1-1.3; THANH-20261113-A8C29F1D-018
+
+### Công cụ
+
+Trình duyệt qua ảnh và phản hồi Thành cung cấp; Codex.
+
+### Mục đích
+
+Kiểm tra header ở 390 px, 1366 px và việc đóng menu.
+
+### Prompt
+
+Sau hướng dẫn thử đóng menu và đặt viewport, Thành xác nhận đã thực hiện và gửi ảnh.
+
+### Kết quả đề xuất
+
+Codex đối chiếu ảnh và ghi nhận xác nhận của Thành; không sửa mã trong lượt này.
+
+### Phản biện
+
+Chưa có phản biện mới về code.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+
+Thành tự thao tác và gửi ảnh; Codex đối chiếu ảnh.
+
+### Kiểm tra và minh chứng
+
+Ảnh DevTools hiển thị viewport 390 x 845 và 1366 x 2167 với header. Ảnh trước cho thấy menu mở; Thành xác nhận đã thử đóng bằng dấu x và bấm ngoài, ảnh mới chỉ thể hiện menu đang đóng. Chưa có ảnh đối chiếu cùng code mẫu hoặc kết quả thử tất cả liên kết; chưa commit Bước 3.
+
+## P1 / THANH-20261113-A8C29F1D-020
+
+### Mục đích
+Ghi nhận kiểm tra menu và chuẩn bị commit Bước 3.
+
+### Prompt
+Thành xác nhận đã thử các mục menu và yêu cầu commit; mong giao diện các bước sau chỉn chu, chuyên nghiệp.
+
+### Kết quả đề xuất
+Codex chuẩn bị commit phần header và nhật ký liên quan.
+
+### Phản biện
+Trang đích chưa hoàn thiện có thể hiển thị nội dung tạm; chưa đối chiếu ảnh mẫu.
+
+### Quyết định của nhóm
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+Thành tự kiểm tra các mục menu và xác nhận dẫn đúng trang.
+
+### Kiểm tra và minh chứng
+Thành gửi ảnh header ở 390 px và 1366 px và xác nhận thử menu; chưa có ảnh đối chiếu mẫu.

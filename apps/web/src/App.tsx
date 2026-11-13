@@ -1,5 +1,6 @@
 
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import SiteHeader from './components/SiteHeader';
 
 function Styleguide() {
   return (
@@ -61,6 +62,11 @@ function Styleguide() {
           </button>
         </section>
 
+        <section id="trips-title" aria-label="Ba chuyến đi">
+          <h2>Ba chuyến đi</h2>
+          <p>Nội dung đang xây dựng.</p>
+        </section>
+
       </div>
     </main>
   );
@@ -78,6 +84,7 @@ function Placeholder({ title }: { title: string }) {
 export default function App() {
   return (
     <BrowserRouter>
+      <SiteHeader />
       <Routes>
         <Route path="/" element={<Styleguide />} />
         <Route path="/san-pham" element={<Placeholder title="Sản phẩm" />} />
@@ -85,6 +92,9 @@ export default function App() {
         <Route path="/dang-nhap" element={<Placeholder title="Đăng nhập" />} />
         <Route path="/dang-ky" element={<Placeholder title="Đăng ký" />} />
         <Route path="/ve-chung-toi" element={<Placeholder title="Về chúng tôi" />} />
+        <Route path="/tao-bo" element={<Placeholder title="Tạo bộ" />} />
+        <Route path="/gio-hang" element={<Placeholder title="Giỏ hàng" />} />
+        <Route path="/tai-khoan" element={<Placeholder title="Tài khoản" />} />
         <Route path="*" element={<main className="p-8"><h1>404 - Không tìm thấy trang</h1></main>} />
       </Routes>
     </BrowserRouter>
