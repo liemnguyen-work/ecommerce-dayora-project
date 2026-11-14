@@ -1,10 +1,21 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import { PrismaService } from '../prisma/prisma.service.js';
+import type { RegisterDto } from './auth.dto.js';
+import { hashPassword } from './password.js';
 
 // Thời hạn token tính bằng giây.
 const TOKEN_LIFETIME = 7 * 24 * 60 * 60;
+const publicUser = {
+  id: true,
+  email: true,
+  fullName: true,
+  phone: true,
+  role: true,
+  isActive: true,
+  createdAt: true,
+} as const;
 
 @Injectable()
 export class AuthService {
@@ -19,6 +30,32 @@ export class AuthService {
       throw new Error('JWT_SECRET is required');
     }
     this.secret = secret;
+  }
+
+  async register(dto: RegisterDto) {
+    const email = dto.email.trim().toLowerCase();
+    const existingUser = await this.prisma.user.findUnique({ where: { email } });
+    if (existingUser) {
+      throw new ConflictException('Email đã được sử dụng');
+    }
+
+    const passwordHash = await hashPassword(dto.password);
+    try {
+      return await this.prisma.user.create({
+        data: {
+          email,
+          passwordHash,
+          fullName: dto.fullName,
+          phone: dto.phone,
+        },
+        select: publicUser,
+      });
+    } catch (error: unknown) {
+      if (typeof error === 'object' && error !== null && 'code' in error && error.code === 'P2002') {
+        throw new ConflictException('Email đã được sử dụng');
+      }
+      throw error;
+    }
   }
 
   signToken(id: string): string {
