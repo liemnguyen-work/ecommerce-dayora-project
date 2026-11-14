@@ -94,10 +94,22 @@ export class CatalogService {
           .filter((sku) => matchesSku(sku, query))
           .map(({ stock, reserved, ...sku }) => {
             const availableStock = Math.max(0, stock - reserved);
-            return { ...sku, availableStock, inStock: availableStock > 0 };
+            const effectivePrice = sku.salePrice ?? sku.price;
+            return { ...sku, effectivePrice, availableStock, inStock: availableStock > 0 };
           }),
       }))
-      .filter((product) => product.skus.length > 0);
+      .filter((product) => product.skus.length > 0)
+      .map((product) => ({
+        ...product,
+        minPrice: Math.min(...product.skus.map((sku) => sku.effectivePrice)),
+      }));
+
+    if (query.sort) {
+      const direction = query.sort === 'price_asc' ? 1 : -1;
+      items.sort((a, b) =>
+        direction * (a.minPrice - b.minPrice) || a.id.localeCompare(b.id),
+      );
+    }
 
     return { items, total: items.length };
   }
