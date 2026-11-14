@@ -1419,3 +1419,53 @@ Codex kiểm tra riêng bằng Prisma giả, chạy ESLint và Vitest; Hoàn xem
 - ESLint `auth.service.ts`: pass sau khi sửa lỗi biến không dùng.
 - `npm.cmd test -w api -- auth -t "same message"`: dừng vì chưa tìm thấy `auth.guard.js`, 0 test được chạy; chưa đạt tiêu chí test xanh.
 - Commit code: [`57c6dda`](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/57c6dda). Chưa xác nhận task 1.5 được nghiệm thu hoặc đóng.
+
+---
+
+## Phase 1 / hoan-20261114-tdd1-07
+
+* Thời gian ghi: 2026-11-14T17:35:22+07:00
+* Thời gian thực hiện: 14/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: hoan-20261114-tdd1
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261114-tdd1-06; PRJ-P1-BD1-1.6
+
+### Công cụ
+
+Codex, npm, Node.js, Vitest, TypeScript, ESLint và Git.
+
+### Mục đích
+
+Triển khai guard kiểm tra phiên đăng nhập và quyền truy cập, đồng thời tải lại tài khoản để từ chối tài khoản không hoạt động.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp task guard và yêu cầu xem phương án. Hoàn hỏi guard phân quyền và kiểm tra phiên như thế nào; sau khi trao đổi, Hoàn đồng ý triển khai và yêu cầu commit, push, cập nhật AI log.
+
+### Kết quả đề xuất
+
+Codex tạo `JwtAuthGuard`, `RolesGuard` và `Roles` trong `auth.guard.ts`; bổ sung `getUser` trong `auth.service.ts` để chỉ lấy các trường công khai và từ chối tài khoản không hoạt động.
+
+Kiểm tra TypeScript phát hiện `@nestjs/config` phiên bản 12 đã được cài ở bước trước không tương thích kiểu module hiện tại. Codex kiểm tra peer dependency và chuyển về phiên bản 4 tương thích NestJS 11, cập nhật `package.json` và lockfile. Commit code `a385fbd` gồm guard, service và hai file dependency; kết quả push chưa được xác nhận tại thời điểm ghi.
+
+### Phản biện
+
+Hoàn hỏi guard có kiểm tra phiên và phân quyền trước khi cho đăng nhập không. Codex làm rõ: kiểm tra email và mật khẩu là bước đăng nhập; guard kiểm tra phiên và quyền khi người dùng truy cập API được bảo vệ sau đó.
+
+Codex lưu ý guard cần được gắn vào API tương ứng, và test đơn vị không chứng minh toàn bộ luồng HTTP hoặc tích hợp database thật. Kiểm tra TypeScript ban đầu thất bại vì phiên bản dependency, sau khi chỉnh phiên bản đã pass.
+
+### Quyết định của nhóm
+
+Hoàn xem phương án, đồng ý triển khai và yêu cầu commit, push, cập nhật nhật ký. Chưa có kết quả review hoặc nghiệm thu của nhóm được xác minh.
+
+### Người kiểm tra
+
+Codex chạy Vitest, TypeScript và ESLint; Hoàn xem phương án và kết quả. Reviewer/QA chưa được xác minh đã kiểm tra bước này.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api -- auth`: 6/6 ca trong `auth.spec.ts` pass sau khi tạo guard và điều chỉnh dependency.
+- Ba ca kiểm tra guard bổ sung tạm thời pass: thiếu cookie, tài khoản không hoạt động, quyền CUSTOMER/ADMIN và route không yêu cầu role; file tạm được xóa sau kiểm tra.
+- ESLint cho guard và service, `tsc --noEmit`: pass sau khi chỉnh dependency.
+- Commit code: [`a385fbd`](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/a385fbd). Chưa xác nhận task được reviewer nghiệm thu hoặc đóng.
