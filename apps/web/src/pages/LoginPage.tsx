@@ -1,12 +1,37 @@
 import { useRef, useState, type FormEvent } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../lib/auth.tsx';
 
 type FormErrors = { fullName?: string; email?: string; password?: string };
 
+function safeNext(value: string | null): string {
+  if (
+    !value ||
+    !value.startsWith('/') ||
+    value.startsWith('//') ||
+    value.includes('\\') ||
+    Array.from(value).some(character => {
+      const code = character.charCodeAt(0);
+      return code <= 31 || code === 127;
+    })
+  ) {
+    return '/';
+  }
+
+  try {
+    const url = new URL(value, window.location.origin);
+    return url.origin === window.location.origin ? value : '/';
+  } catch {
+    return '/';
+  }
+}
+
 export function AuthPage({ register = false }: { register?: boolean }) {
   const { login, register: createAccount } = useAuth();
   const navigate = useNavigate();
+  const [params] = useSearchParams();
+  const next = safeNext(params.get('next'));
+  const otherRoute = `${register ? '/dang-nhap' : '/dang-ky'}?next=${encodeURIComponent(next)}`;
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -43,7 +68,7 @@ export function AuthPage({ register = false }: { register?: boolean }) {
       } else {
         await login(normalizedEmail, password);
       }
-      navigate('/', { replace: true });
+      navigate(next, { replace: true });
     } catch (error: unknown) {
       setServerError(error instanceof Error ? error.message : 'Không thể gửi yêu cầu. Vui lòng thử lại.');
     } finally {
@@ -91,7 +116,7 @@ export function AuthPage({ register = false }: { register?: boolean }) {
 
         <p className="mt-6 text-sm">
           {register ? 'Đã có tài khoản? ' : 'Chưa có tài khoản? '}
-          <Link to={register ? '/dang-nhap' : '/dang-ky'} className="rounded font-semibold underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink">
+          <Link to={otherRoute} className="rounded font-semibold underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink">
             {register ? 'Đăng nhập' : 'Đăng ký'}
           </Link>
         </p>
