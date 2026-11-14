@@ -1565,3 +1565,99 @@ Codex kiểm tra diff và thử Prisma CLI với bản sao schema; chờ Hoàn x
 - Ảnh CI do Hoàn cung cấp cho thấy test auth dừng vì không tìm thấy `../generated/prisma/client.js`.
 - Prisma CLI generate với schema sao chép trong workspace và không đặt DATABASE_URL hoặc DIRECT_URL: pass; chưa chạy toàn bộ workflow sạch.
 - `git diff --check` cho workflow: pass. Chưa commit, push hay xác minh CI trên GitHub.
+
+---
+
+## Phase 1 / hoan-20261114-tdd1-10
+
+* Thời gian ghi: 2026-11-14T18:08:26+07:00
+* Thời gian thực hiện: 14/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: hoan-20261114-tdd1
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261114-tdd1-08; PRJ-P1-BD1-1.7; PR #648
+
+### Công cụ
+
+Codex, Vitest, TypeScript, ESLint và tài liệu OWASP.
+
+### Mục đích
+
+Thêm giới hạn thử đăng nhập sau khi Hoàn trao đổi với nhóm và xác nhận ngưỡng năm lần.
+
+### Prompt
+
+Tóm lược: Hoàn cho biết nhóm chọn năm lần, đề nghị Codex chọn thời gian và cách tính tham khảo thực tế, rồi đồng ý triển khai phương án được trình bày.
+
+### Kết quả đề xuất
+
+Codex đề xuất năm lần sai trong 15 phút, tạm chặn 15 phút theo email chuẩn hóa, đăng nhập thành công trước khi chặn xóa bộ đếm và phản hồi 429 kèm Retry-After khi bị chặn. Sau khi Hoàn đồng ý, Codex thêm AuthRateLimit, tích hợp controller và module, viết kiểm thử riêng mà không sửa test nghiệm thu ban đầu.
+
+### Phản biện
+
+Hoàn xác nhận ngưỡng năm lần và giao Codex đề xuất các thông số còn lại; chưa có bằng chứng nhóm duyệt riêng thời gian hoặc cách tính. Codex tham khảo OWASP và lưu ý khóa theo email có thể bị lợi dụng gây gián đoạn. Bộ đếm chỉ ở bộ nhớ một tiến trình: mất khi khởi động lại và không chia sẻ giữa nhiều phiên bản server. Chưa bổ sung giới hạn theo IP hoặc giải pháp lưu trữ dùng chung.
+
+### Quyết định của nhóm
+
+Hoàn cho biết nhóm chọn năm lần và đồng ý phương án do Codex đề xuất. Không khẳng định nhóm đã xác nhận từng thông số còn lại.
+
+### Người kiểm tra
+
+Codex chạy kiểm thử tự động, TypeScript và ESLint; chờ Hoàn và reviewer xem lại.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api -- auth`: 11/11 ca pass, gồm các ca rate limit, đồng thời và Retry-After.
+- `tsc --noEmit` và lint API: pass.
+- Chưa thử với database thật, chưa kiểm tra sau proxy hoặc nhiều server; chưa commit hay push thay đổi này.
+
+---
+
+## Phase 1 / hoan-20261114-tdd1-11
+
+* Thời gian ghi: 2026-11-14T22:42:21+07:00
+* Thời gian thực hiện: 14/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: hoan-20261114-tdd1
+* Người prompt: Hoàn
+* Loại mục: Kiểm tra
+* Liên quan: hoan-20261114-tdd1-08; hoan-20261114-tdd1-10; PRJ-P1-BD1-1.7
+
+### Công cụ
+
+Codex, VS Code, PowerShell, NestJS, Supabase Dashboard và Git.
+
+### Mục đích
+
+Kiểm tra luồng đăng ký, đăng nhập và cookie với database DAYORA, đồng thời lưu phần giới hạn đăng nhập đã làm.
+
+### Prompt
+
+Tóm lược: Hoàn yêu cầu hướng dẫn thử với database thật, tự kiểm tra cấu hình và tạo tài khoản test qua API, sau đó yêu cầu commit, push và ghi nhật ký AI.
+
+### Kết quả đề xuất
+
+Codex hướng dẫn kiểm tra tên biến cấu hình không hiển thị giá trị, khởi động server và thử API. Sau khi Hoàn cho biết bảng User chưa có tài khoản, Hoàn tạo một tài khoản thử nghiệm qua API đăng ký trên database DAYORA, đăng nhập và gọi API me.
+
+Codex tạo commit `cff1f6a` cho AuthRateLimit và test liên quan; kết quả push chưa được xác minh tại thời điểm ghi.
+
+### Phản biện
+
+Lệnh kiểm tra biến đầu tiên Codex cung cấp bị sai cách tạo danh sách; Codex giải thích và cung cấp lệnh sửa. Lệnh tạo tài khoản ban đầu gặp cảnh báo Invoke-WebRequest; Hoàn kiểm tra Supabase và thấy tài khoản đã được tạo, nên không tạo lại. Codex giải thích mật khẩu lưu dạng salt và hash, đồng thời nhắc tránh chia sẻ hash.
+
+Các kết quả HTTP 201, cookie HttpOnly và HTTP 200 của me do Hoàn cung cấp; thử bằng PowerShell Invoke-WebRequest, không phải curl như ví dụ issue. Chưa kiểm tra IP, proxy hoặc nhiều tiến trình cho rate limit.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu tạo tài khoản thử nghiệm và yêu cầu commit, push, ghi log. Chưa có xác nhận reviewer về nghiệm thu hoặc quyết định nhóm cho từng thông số rate limit.
+
+### Người kiểm tra
+
+Hoàn tự thao tác và cung cấp ảnh, kết quả; Codex hướng dẫn và kiểm tra kết quả do Hoàn báo. Reviewer/QA chưa được xác minh đã nghiệm thu.
+
+### Kiểm tra và minh chứng
+
+- Hoàn cung cấp kết quả server khởi động, tài khoản thử nghiệm xuất hiện trong bảng User, login HTTP 201 và cookie HttpOnly.
+- Hoàn xác nhận API me trả kết quả mong đợi HTTP 200.
+- Bộ test auth 11/11, TypeScript và lint pass theo mục `hoan-20261114-tdd1-10`.
+- Tài khoản thử nghiệm vẫn tồn tại trong database; chưa thực hiện xóa.
+- Commit code: [`cff1f6a`](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/cff1f6a). Chưa xác nhận task được reviewer nghiệm thu hoặc đóng.
