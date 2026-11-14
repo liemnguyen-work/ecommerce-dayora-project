@@ -1565,3 +1565,231 @@ Codex kiểm tra diff và thử Prisma CLI với bản sao schema; chờ Hoàn x
 - Ảnh CI do Hoàn cung cấp cho thấy test auth dừng vì không tìm thấy `../generated/prisma/client.js`.
 - Prisma CLI generate với schema sao chép trong workspace và không đặt DATABASE_URL hoặc DIRECT_URL: pass; chưa chạy toàn bộ workflow sạch.
 - `git diff --check` cho workflow: pass. Chưa commit, push hay xác minh CI trên GitHub.
+
+---
+
+## Phase 1 / hoan-20261114-tdd1-10
+
+* Thời gian ghi: 2026-11-14T18:08:26+07:00
+* Thời gian thực hiện: 14/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: hoan-20261114-tdd1
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261114-tdd1-08; PRJ-P1-BD1-1.7; PR #648
+
+### Công cụ
+
+Codex, Vitest, TypeScript, ESLint và tài liệu OWASP.
+
+### Mục đích
+
+Thêm giới hạn thử đăng nhập sau khi Hoàn trao đổi với nhóm và xác nhận ngưỡng năm lần.
+
+### Prompt
+
+Tóm lược: Hoàn cho biết nhóm chọn năm lần, đề nghị Codex chọn thời gian và cách tính tham khảo thực tế, rồi đồng ý triển khai phương án được trình bày.
+
+### Kết quả đề xuất
+
+Codex đề xuất năm lần sai trong 15 phút, tạm chặn 15 phút theo email chuẩn hóa, đăng nhập thành công trước khi chặn xóa bộ đếm và phản hồi 429 kèm Retry-After khi bị chặn. Sau khi Hoàn đồng ý, Codex thêm AuthRateLimit, tích hợp controller và module, viết kiểm thử riêng mà không sửa test nghiệm thu ban đầu.
+
+### Phản biện
+
+Hoàn xác nhận ngưỡng năm lần và giao Codex đề xuất các thông số còn lại; chưa có bằng chứng nhóm duyệt riêng thời gian hoặc cách tính. Codex tham khảo OWASP và lưu ý khóa theo email có thể bị lợi dụng gây gián đoạn. Bộ đếm chỉ ở bộ nhớ một tiến trình: mất khi khởi động lại và không chia sẻ giữa nhiều phiên bản server. Chưa bổ sung giới hạn theo IP hoặc giải pháp lưu trữ dùng chung.
+
+### Quyết định của nhóm
+
+Hoàn cho biết nhóm chọn năm lần và đồng ý phương án do Codex đề xuất. Không khẳng định nhóm đã xác nhận từng thông số còn lại.
+
+### Người kiểm tra
+
+Codex chạy kiểm thử tự động, TypeScript và ESLint; chờ Hoàn và reviewer xem lại.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api -- auth`: 11/11 ca pass, gồm các ca rate limit, đồng thời và Retry-After.
+- `tsc --noEmit` và lint API: pass.
+- Chưa thử với database thật, chưa kiểm tra sau proxy hoặc nhiều server; chưa commit hay push thay đổi này.
+
+---
+
+## Phase 1 / hoan-20261114-tdd1-11
+
+* Thời gian ghi: 2026-11-14T22:42:21+07:00
+* Thời gian thực hiện: 14/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: hoan-20261114-tdd1
+* Người prompt: Hoàn
+* Loại mục: Kiểm tra
+* Liên quan: hoan-20261114-tdd1-08; hoan-20261114-tdd1-10; PRJ-P1-BD1-1.7
+
+### Công cụ
+
+Codex, VS Code, PowerShell, NestJS, Supabase Dashboard và Git.
+
+### Mục đích
+
+Kiểm tra luồng đăng ký, đăng nhập và cookie với database DAYORA, đồng thời lưu phần giới hạn đăng nhập đã làm.
+
+### Prompt
+
+Tóm lược: Hoàn yêu cầu hướng dẫn thử với database thật, tự kiểm tra cấu hình và tạo tài khoản test qua API, sau đó yêu cầu commit, push và ghi nhật ký AI.
+
+### Kết quả đề xuất
+
+Codex hướng dẫn kiểm tra tên biến cấu hình không hiển thị giá trị, khởi động server và thử API. Sau khi Hoàn cho biết bảng User chưa có tài khoản, Hoàn tạo một tài khoản thử nghiệm qua API đăng ký trên database DAYORA, đăng nhập và gọi API me.
+
+Codex tạo commit `cff1f6a` cho AuthRateLimit và test liên quan; kết quả push chưa được xác minh tại thời điểm ghi.
+
+### Phản biện
+
+Lệnh kiểm tra biến đầu tiên Codex cung cấp bị sai cách tạo danh sách; Codex giải thích và cung cấp lệnh sửa. Lệnh tạo tài khoản ban đầu gặp cảnh báo Invoke-WebRequest; Hoàn kiểm tra Supabase và thấy tài khoản đã được tạo, nên không tạo lại. Codex giải thích mật khẩu lưu dạng salt và hash, đồng thời nhắc tránh chia sẻ hash.
+
+Các kết quả HTTP 201, cookie HttpOnly và HTTP 200 của me do Hoàn cung cấp; thử bằng PowerShell Invoke-WebRequest, không phải curl như ví dụ issue. Chưa kiểm tra IP, proxy hoặc nhiều tiến trình cho rate limit.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu tạo tài khoản thử nghiệm và yêu cầu commit, push, ghi log. Chưa có xác nhận reviewer về nghiệm thu hoặc quyết định nhóm cho từng thông số rate limit.
+
+### Người kiểm tra
+
+Hoàn tự thao tác và cung cấp ảnh, kết quả; Codex hướng dẫn và kiểm tra kết quả do Hoàn báo. Reviewer/QA chưa được xác minh đã nghiệm thu.
+
+### Kiểm tra và minh chứng
+
+- Hoàn cung cấp kết quả server khởi động, tài khoản thử nghiệm xuất hiện trong bảng User, login HTTP 201 và cookie HttpOnly.
+- Hoàn xác nhận API me trả kết quả mong đợi HTTP 200.
+- Bộ test auth 11/11, TypeScript và lint pass theo mục `hoan-20261114-tdd1-10`.
+- Tài khoản thử nghiệm vẫn tồn tại trong database; chưa thực hiện xóa.
+- Commit code: [`cff1f6a`](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/cff1f6a). Chưa xác nhận task được reviewer nghiệm thu hoặc đóng.
+
+---
+
+## Phase 1 / hoan-20261114-tdd1-12
+
+* Thời gian ghi: 2026-11-14T22:51:23+07:00
+* Thời gian thực hiện: 14/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: hoan-20261114-tdd1
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261114-tdd1-11; PRJ-P1-BD1-1.8
+
+### Công cụ
+
+Codex và Git.
+
+### Mục đích
+
+Tạo khung tài liệu để Hoàn tự trả lời câu hỏi kiểm tra kiến thức của task.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp nội dung task 1.8, sau đó nhờ tạo file để tự trả lời.
+
+### Kết quả đề xuất
+
+Codex tạo `docs/learning/BD1-Hoan/kiem-tra/PRJ-P1-BD1-1.md` với các câu hỏi, ô đánh dấu và chỗ trống theo task. Không viết câu trả lời thay Hoàn.
+
+### Phản biện
+
+Theo yêu cầu task, câu trả lời cần do Hoàn tự viết, không xem code và không nhờ AI viết hộ; sau đó có thể nhờ AI nhận xét. Chưa có câu trả lời để đánh giá.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu tạo khung; chưa có xác nhận review hoặc nghiệm thu của nhóm.
+
+### Người kiểm tra
+
+Codex kiểm tra file đã được tạo; chờ Hoàn tự trả lời và reviewer kiểm tra.
+
+### Kiểm tra và minh chứng
+
+- File câu hỏi đã tạo, các ô trả lời đang để trống; chưa commit hoặc push.
+- Chưa có kết quả trả lời hai câu ngẫu nhiên của reviewer hoặc trưởng nhóm.
+
+---
+
+## Phase 1 / hoan-20261114-tdd1-13
+
+* Thời gian ghi: 2026-11-14T23:10:47+07:00
+* Thời gian thực hiện: 14/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: hoan-20261114-tdd1
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261114-tdd1-12; PRJ-P1-BD1-1.8
+
+### Công cụ
+
+Codex và VS Code.
+
+### Mục đích
+
+Ghi lại nội dung Hoàn cung cấp vào tài liệu kiểm tra kiến thức.
+
+### Prompt
+
+Tóm lược: Hoàn gửi nội dung cho tám mục và yêu cầu ghi nhận câu trả lời.
+
+### Kết quả đề xuất
+
+Codex chèn nội dung do Hoàn cung cấp vào `docs/learning/BD1-Hoan/kiem-tra/PRJ-P1-BD1-1.md`, giữ nguyên câu hỏi và để các ô checklist chưa đánh dấu. Nội dung được giữ nguyên, gồm cả đoạn nêu cần đối chiếu các ca kiểm thử.
+
+### Phản biện
+
+Task yêu cầu Hoàn tự viết bằng lời của mình, không xem code và không nhờ AI viết hộ. Nguồn gốc và quá trình tự viết nội dung Hoàn gửi chưa được xác minh; một số câu mang cách diễn đạt như hướng dẫn. Hoàn cần tự kiểm tra, chỉnh bằng lời của mình và xác nhận tuân thủ quy tắc trước khi nộp.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu ghi nhận nội dung; chưa có xác nhận review hoặc nghiệm thu của nhóm.
+
+### Người kiểm tra
+
+Codex kiểm tra nội dung đã được thêm; chờ Hoàn kiểm tra và reviewer đánh giá.
+
+### Kiểm tra và minh chứng
+
+- File câu trả lời đã có nội dung theo lời Hoàn gửi; chưa commit hoặc push.
+- Chưa xác nhận hoàn thành câu trả lời tự viết hoặc hai câu ngẫu nhiên của reviewer.
+
+---
+
+## Phase 1 / hoan-20261114-tdd1-14
+
+* Thời gian ghi: 2026-11-14T23:12:36+07:00
+* Thời gian thực hiện: 14/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: hoan-20261114-tdd1
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261114-tdd1-13; PRJ-P1-BD1-1.8
+
+### Công cụ
+
+Codex và Git.
+
+### Mục đích
+
+Tạo commit và đưa file kiểm tra kiến thức cùng nhật ký AI lên nhánh PR theo yêu cầu của Hoàn.
+
+### Prompt
+
+Tóm lược: Sau khi cung cấp nội dung câu trả lời và yêu cầu ghi nhận, Hoàn yêu cầu commit, push và ghi AI log.
+
+### Kết quả đề xuất
+
+Codex tạo commit `d8d0354` chỉ chứa file `docs/learning/BD1-Hoan/kiem-tra/PRJ-P1-BD1-1.md`; kết quả push chưa xác nhận tại thời điểm ghi. Nội dung câu trả lời được giữ theo thông tin Hoàn cung cấp.
+
+### Phản biện
+
+Codex lưu ý phần đầu còn lời hướng dẫn hướng tới người đọc và phần CI ghi “khi merge” chưa được chứng minh; Hoàn cần kiểm tra, diễn đạt bằng lời của mình và xác nhận quy tắc tự làm theo task. Các ô checklist chưa được đánh dấu; việc commit không xác nhận đáp án đã được reviewer chấp nhận.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu commit và push; chưa có xác nhận nghiệm thu của reviewer hoặc trưởng nhóm.
+
+### Người kiểm tra
+
+Codex kiểm tra phạm vi staging và commit; chờ Hoàn kiểm tra nội dung và reviewer hỏi lại.
+
+### Kiểm tra và minh chứng
+
+- Commit file kiểm tra: [`d8d0354`](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/d8d0354).
+- Chưa có xác nhận hai câu ngẫu nhiên của reviewer hoặc trưởng nhóm; chưa xác nhận task 1.8 đủ điều kiện đóng.
