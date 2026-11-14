@@ -58,6 +58,17 @@ export class AuthService {
     }
   }
 
+  async getUser(id: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+      select: publicUser,
+    });
+    if (!user || !user.isActive) {
+      throw new UnauthorizedException('Phiên đăng nhập không hợp lệ');
+    }
+    return user;
+  }
+
   async login(dto: LoginDto) {
     const email = dto.email.trim().toLowerCase();
     const user = await this.prisma.user.findUnique({ where: { email } });
