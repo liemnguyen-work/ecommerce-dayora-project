@@ -41,7 +41,7 @@ const shippingRates = [
   },
 ];
 
-// Task #151: Khai báo dữ liệu SKU
+// Task #151: Kiểu dữ liệu một SKU
 type Item = {
   code: string;
   name: string;
@@ -59,9 +59,9 @@ type Item = {
   useType: string;
 };
 
-// Mã useType là đề xuất, cần xác nhận với nhóm.
-// TM-005 tạm ghép Product với TM-002 theo mục 3.1.
-// Cần PM xác nhận vì bảng 3.3.1 mô tả TM-005 khác kích thước.
+// Các useType cần đối chiếu với quy tắc Kit Builder.
+// TM-005 sử dụng quy ước biến thể tại mục 3.1.
+// Giá TM-005 tạm dùng giá TM-002 theo phương án đã chọn.
 
 const items: Item[] = [
   // TM - Thảm picnic
@@ -113,20 +113,19 @@ const items: Item[] = [
     capacityPeople: 1,
     useType: 'seating',
   },
-  
-{
-  code: 'TM-005',
-  name: 'Thảm picnic gấp gọn 4 người',
-  productName: 'Thảm picnic gấp gọn 4 người',
-  material: 'Vải polyester, lớp đế PE',
-  color: 'Caro be - xanh',
-  price: 229000,
-  unit: 'Tấm',
-  lengthCm: 200,
-  widthCm: 200,
-  capacityPeople: 4,
-  useType: 'seating',
-},
+  {
+    code: 'TM-005',
+    name: 'Thảm picnic gấp gọn 4 người',
+    productName: 'Thảm picnic gấp gọn 4 người',
+    material: 'Vải polyester, lớp đế PE',
+    color: 'Caro be - xanh',
+    price: 229000,
+    unit: 'Tấm',
+    lengthCm: 200,
+    widthCm: 200,
+    capacityPeople: 4,
+    useType: 'seating',
+  },
 
   // BL - Bình nước và ly
   {
@@ -446,8 +445,8 @@ const items: Item[] = [
   },
 ];
 
-// Chuyển tên sản phẩm thành slug
-function makeSlug(name: string) {
+// Tạo slug từ tên Product
+function makeSlug(name: string): string {
   return name
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
@@ -458,25 +457,41 @@ function makeSlug(name: string) {
     .replace(/^-|-$/g, '');
 }
 
-// Tên Product gốc dùng chung cho các biến thể
-function getProductName(item: Item) {
+function getProductName(item: Item): string {
   return item.productName ?? item.name;
 }
 
-// Kiểm tra dữ liệu trước khi ghi database
-function validateCatalog() {
-  const groups = ['TM', 'BL', 'HD', 'GN', 'VS', 'PK'];
+// Bốn cặp SKU dùng chung một Product theo mục 3.1
+const variantPairs = [
+  ['TM-002', 'TM-005'],
+  ['BL-002', 'BL-005'],
+  ['HD-001', 'HD-005'],
+  ['GN-001', 'GN-004'],
+] as const;
 
+// Kiểm tra toàn bộ danh mục trước khi ghi database
+function validateCatalog(): void {
+  const groups = ['TM', 'BL', 'HD', 'GN', 'VS', 'PK'];
   const codes = items.map((item) => item.code);
 
+  // 1. Chính xác 30 SKU
   if (items.length !== 30) {
     throw new Error('Catalog must contain exactly 30 SKUs');
   }
 
+  // 2. Mã SKU không trùng
   if (new Set(codes).size !== 30) {
     throw new Error('Catalog contains duplicate SKU codes');
   }
 
+  // 3. Mã SKU theo chuẩn TM-001, BL-001...
+  for (const item of items) {
+    if (!/^(TM|BL|HD|GN|VS|PK)-00[1-5]$/.test(item.code)) {
+      throw new Error(`Invalid SKU code: ${item.code}`);
+    }
+  }
+
+  // 4. Sáu nhóm, mỗi nhóm đúng năm SKU
   for (const group of groups) {
     const groupItems = items.filter((item) =>
       item.code.startsWith(`${group}-`)
@@ -486,54 +501,178 @@ function validateCatalog() {
       throw new Error(`Group ${group} must contain 5 SKUs`);
     }
 
-    const expectedCodes = Array.from(
-      { length: 5 },
-      (_, index) => `${group}-${String(index + 1).padStart(3, '0')}`
-    );
+    for (let index = 1; index <= 5; index++) {
+      const expected = `${group}-${String(index).padStart(3, '0')}`;
 
-    for (const expected of expectedCodes) {
       if (!codes.includes(expected)) {
         throw new Error(`Missing SKU: ${expected}`);
       }
     }
   }
 
-  const slugs = items.map((item) =>
-    makeSlug(getProductName(item))
-  );
-
-  if (new Set(slugs).size !== 26) {
-    throw new Error('Catalog must contain 26 unique Product slugs');
-  }
-
+  // 5. Kiểm tra trường bắt buộc và giá trị số
   for (const item of items) {
-    if (!item.name.trim() || !item.color.trim()) {
-      throw new Error(`Missing product information: ${item.code}`);
-    }
-
-    if (!item.useType.trim() || !item.material.trim()) {
-      throw new Error(`Missing Kit Builder data: ${item.code}`);
+    if (
+      !item.name.trim() ||
+      !item.material.trim() ||
+      !item.color.trim() ||
+      !item.unit.trim() ||
+      !item.useType.trim()
+    ) {
+      throw new Error(`Missing required data: ${item.code}`);
     }
 
     if (!Number.isInteger(item.price) || item.price <= 0) {
       throw new Error(`Invalid price: ${item.code}`);
+    }
+
+    const integerFields = [
+      'unitQty',
+      'volumeMl',
+      'capacityPeople',
+    ] as const;
+
+    for (const field of integerFields) {
+      const value = item[field];
+
+      if (
+        value !== undefined &&
+        (!Number.isInteger(value) || value <= 0)
+      ) {
+        throw new Error(`Invalid ${field}: ${item.code}`);
+      }
+    }
+
+    const dimensionFields = [
+      'lengthCm',
+      'widthCm',
+      'heightCm',
+    ] as const;
+
+    for (const field of dimensionFields) {
+      const value = item[field];
+
+      if (
+        value !== undefined &&
+        (!Number.isFinite(value) || value <= 0)
+      ) {
+        throw new Error(`Invalid ${field}: ${item.code}`);
+      }
+    }
+  }
+
+  // 6. Kiểm tra đúng bốn cặp biến thể
+  for (const [firstCode, secondCode] of variantPairs) {
+    const first = items.find((item) => item.code === firstCode);
+    const second = items.find((item) => item.code === secondCode);
+
+    if (!first || !second) {
+      throw new Error(
+        `Missing variant pair: ${firstCode}, ${secondCode}`
+      );
+    }
+
+    const firstSlug = makeSlug(getProductName(first));
+    const secondSlug = makeSlug(getProductName(second));
+
+    if (firstSlug !== secondSlug) {
+      throw new Error(
+        `Variant pair must share Product: ${firstCode}, ${secondCode}`
+      );
+    }
+  }
+
+  // 7. Kiểm tra không ghép nhầm các SKU khác
+  const slugGroups = new Map<string, string[]>();
+
+  for (const item of items) {
+    const slug = makeSlug(getProductName(item));
+    const existingCodes = slugGroups.get(slug) ?? [];
+
+    existingCodes.push(item.code);
+    slugGroups.set(slug, existingCodes);
+  }
+
+  if (slugGroups.size !== 26) {
+    throw new Error('Catalog must contain 26 unique Product slugs');
+  }
+
+  const expectedPairs = new Set(
+    variantPairs.map(([a, b]) => [a, b].sort().join('|'))
+  );
+
+  for (const skuCodes of slugGroups.values()) {
+    if (skuCodes.length === 1) {
+      continue;
+    }
+
+    const pairKey = [...skuCodes].sort().join('|');
+
+    if (skuCodes.length !== 2 || !expectedPairs.has(pairKey)) {
+      throw new Error(
+        `Unexpected Product variants: ${skuCodes.join(', ')}`
+      );
     }
   }
 
   console.log('Catalog validated: 30 SKUs and 26 Products');
 }
 
-async function main() {
-  // Kiểm tra danh mục trước khi ghi dữ liệu
+// Kiểm tra dữ liệu thực tế sau khi upsert
+async function verifyCatalogInDatabase(): Promise<void> {
+  const [dbProducts, dbSkus] = await Promise.all([
+    prisma.product.count(),
+    prisma.sku.findMany({
+      select: { code: true },
+    }),
+  ]);
+
+  const expectedCodes = new Set(
+    items.map((item) => `DAY-${item.code}`)
+  );
+
+  const actualCodes = new Set(dbSkus.map((sku) => sku.code));
+
+  const missingCodes = [...expectedCodes].filter(
+    (code) => !actualCodes.has(code)
+  );
+
+  const unexpectedCodes = [...actualCodes].filter(
+    (code) => !expectedCodes.has(code)
+  );
+
+  if (
+    dbProducts !== 26 ||
+    dbSkus.length !== 30 ||
+    missingCodes.length > 0 ||
+    unexpectedCodes.length > 0
+  ) {
+    throw new Error(
+      [
+        `Database catalog mismatch: ${dbProducts} Products, ${dbSkus.length} SKUs`,
+        `Missing SKU codes: ${missingCodes.join(', ') || 'none'}`,
+        `Unexpected SKU codes: ${unexpectedCodes.join(', ') || 'none'}`,
+      ].join('\n')
+    );
+  }
+
+  console.log('Database verified: 26 Products and 30 SKUs');
+}
+
+async function main(): Promise<void> {
+  // Kiểm tra dữ liệu trước khi ghi vào database
   validateCatalog();
 
-  // Task #150: Seed Category
+  // Task #150: Seed 6 Category
   const categoryIds = new Map<string, string>();
 
   for (const [i, [code, name]] of categories.entries()) {
     const category = await prisma.category.upsert({
       where: { code },
-      update: { name },
+      update: {
+        name,
+        sortOrder: i,
+      },
       create: {
         code,
         name,
@@ -544,18 +683,18 @@ async function main() {
     categoryIds.set(code, category.id);
   }
 
-  // Task #150: Seed ShippingRate
-  for (const r of shippingRates) {
+  // Task #150: Seed 3 ShippingRate
+  for (const rate of shippingRates) {
     await prisma.shippingRate.upsert({
-      where: { zone: r.zone },
+      where: { zone: rate.zone },
       update: {
-        fee: r.fee,
-        freeFromValue: r.freeFromValue,
+        fee: rate.fee,
+        freeFromValue: rate.freeFromValue,
       },
       create: {
-        zone: r.zone,
-        fee: r.fee,
-        freeFromValue: r.freeFromValue,
+        zone: rate.zone,
+        fee: rate.fee,
+        freeFromValue: rate.freeFromValue,
       },
     });
   }
@@ -566,31 +705,36 @@ async function main() {
     const categoryId = categoryIds.get(group);
 
     if (!categoryId) {
-      throw new Error(`Unknown category for ${item.code}`);
+      throw new Error(`Unknown category: ${item.code}`);
     }
 
     const productName = getProductName(item);
     const slug = makeSlug(productName);
 
+    // Chỉ các trường cần đồng bộ khi chạy seed lại
     const productData = {
       name: productName,
       categoryId,
       material: item.material,
-      scenarios: [],
     };
 
     const product = await prisma.product.upsert({
       where: { slug },
+
+      // Không reset scenarios đã gán trước đó
       update: productData,
+
+      // Product mới được tạo với scenarios ban đầu rỗng
       create: {
         slug,
         ...productData,
+        scenarios: [],
       },
     });
 
     const code = `DAY-${item.code}`;
 
-    // Không đưa stock hoặc reserved vào skuData
+    // Không đưa stock và reserved vào skuData
     const skuData = {
       productId: product.id,
       color: item.color,
@@ -608,7 +752,11 @@ async function main() {
 
     await prisma.sku.upsert({
       where: { code },
+
+      // Không thay đổi tồn kho khi SKU đã tồn tại
       update: skuData,
+
+      // Chỉ khởi tạo tồn kho ở lần tạo SKU đầu tiên
       create: {
         code,
         ...skuData,
@@ -619,6 +767,9 @@ async function main() {
   }
 
   console.log('Product and Sku seed completed');
+
+  // Kiểm tra số lượng và mã SKU thực tế trong database
+  await verifyCatalogInDatabase();
 
   // TODO: Bước 4 - Admin
   // TODO: Bước 5 - RuleSet v1
