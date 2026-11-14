@@ -2251,3 +2251,54 @@ Codex chạy kiểm tra riêng bằng Prisma giả, ESLint, TypeScript file serv
 - ESLint và TypeScript riêng cho service: pass.
 - Vitest ca chi tiết: dừng do thiếu `catalog.controller.js`, 0 test được chạy; chưa đạt tiêu chí hai test xanh.
 - Commit code: [`683f949`](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/683f949).
+
+---
+
+## Phase 1 / hoan-20261115-cat1-09
+
+* Thời gian ghi: 2026-11-15T01:53:13+07:00
+* Thời gian thực hiện: 15/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: hoan-20261115-cat1
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261115-cat1-08; PRJ-P1-BD1-2.6
+
+### Công cụ
+
+Codex, VS Code, Node.js, Prisma giả, Vitest, TypeScript, ESLint, npm và Git.
+
+### Mục đích
+
+Bổ sung API danh mục và kết nối danh sách, chi tiết sản phẩm với controller và module catalog.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp task 2.6 và yêu cầu xem phương án; sau khi Codex giải thích chức năng danh mục, ba API, module và kế hoạch kiểm tra, Hoàn yêu cầu thực hiện, rồi commit, push và cập nhật AI log.
+
+### Kết quả đề xuất
+
+Codex thêm `categories()` vào CatalogService, tạo CatalogController và CatalogModule, đăng ký module vào AppModule. Danh mục chỉ truy vấn nhóm có sản phẩm và SKU ACTIVE; ba route cung cấp danh sách sản phẩm, chi tiết theo slug và danh mục.
+
+Codex tạo commit code `bfb5220`; kết quả push chưa được xác nhận tại thời điểm ghi.
+
+### Phản biện
+
+Codex đối chiếu task: ví dụ commit trong hướng dẫn ghi mã 2.5 nhưng mục commit của sub-issue ghi 2.6; commit dùng mã 2.6. Test HTTP với Prisma giả giúp kiểm tra route và validation nhưng không chứng minh kết nối database thật.
+
+Khi chạy build toàn dự án, Prisma generate gặp EPERM khi đổi tên engine trên Windows; nguyên nhân cụ thể chưa xác nhận. Build web báo thiếu `react-router-dom` trong môi trường cài hiện tại; package đã được khai báo. Codex không tự dừng server hoặc cài lại dependency.
+
+### Quyết định của nhóm
+
+Hoàn duyệt phương án, yêu cầu triển khai, commit, push và cập nhật log. Chưa có xác nhận QA duyệt test hoặc reviewer nghiệm thu task.
+
+### Người kiểm tra
+
+Codex chạy test, kiểm tra HTTP bằng dữ liệu giả, TypeScript, lint và build; chờ Hoàn và reviewer xem kết quả.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api -- catalog`: 13/13 ca test catalog pass.
+- Kiểm tra HTTP tạm với Prisma giả: danh sách, danh mục, query sai trả 400 và sản phẩm không có trả 404; file tạm được xóa sau kiểm tra.
+- TypeScript và lint API: pass.
+- Build toàn dự án: chưa pass do lỗi Prisma EPERM và thiếu react-router-dom trong môi trường web như trên.
+- Commit code: [`bfb5220`](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/bfb5220). Chưa xác nhận review hoặc đóng task.
