@@ -63,6 +63,16 @@ function matchesSku(sku: CatalogSku, query: CatalogQuery): boolean {
 export class CatalogService {
   constructor(private readonly prisma: PrismaService) {}
 
+  categories() {
+    return this.prisma.category.findMany({
+      where: {
+        products: { some: { status: 'ACTIVE', skus: { some: { status: 'ACTIVE' } } } },
+      },
+      select: { id: true, code: true, name: true },
+      orderBy: [{ sortOrder: 'asc' }, { code: 'asc' }],
+    });
+  }
+
   async detail(slug: string) {
     if (slug.length > 200 || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
       throw new NotFoundException('Không tìm thấy sản phẩm');
