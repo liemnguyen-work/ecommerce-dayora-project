@@ -1793,3 +1793,290 @@ Codex kiểm tra phạm vi staging và commit; chờ Hoàn kiểm tra nội dung
 
 - Commit file kiểm tra: [`d8d0354`](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/d8d0354).
 - Chưa có xác nhận hai câu ngẫu nhiên của reviewer hoặc trưởng nhóm; chưa xác nhận task 1.8 đủ điều kiện đóng.
+
+---
+
+## Phase 1 / hoan-20261115-cat1-01
+
+* Thời gian ghi: 2026-11-15T00:43:51+07:00
+* Thời gian thực hiện: 15/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: hoan-20261115-cat1
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-2.1; issue #16
+
+### Công cụ
+
+Codex và Git.
+
+### Mục đích
+
+Chuẩn bị nhánh và đối chiếu yêu cầu kiểm thử trước khi thực hiện API catalog.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp task cha và năm task triển khai catalog, yêu cầu tiếp tục chuẩn bị nhánh và xem danh sách ca test.
+
+### Kết quả đề xuất
+
+Codex đối chiếu tài liệu do Hoàn cung cấp, nhận thấy 11 tên ca được nêu rõ trong khi tiêu chí cuối yêu cầu 13 ca. Sau khi Hoàn đồng ý tiếp tục, Codex fetch origin và tạo nhánh `prj/p1-bd1-2` từ `origin/main`.
+
+### Phản biện
+
+Codex đính chính lần đếm trước là 10 ca; chưa xác định được hai tên còn lại. Hai ca bổ sung chỉ là đề xuất cần QA xem xét. Cần phân biệt lỗi không nạp được module với ca test thực sự chạy và thất bại.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu tiếp tục chuẩn bị; chưa có xác nhận của QA về hai ca bổ sung.
+
+### Người kiểm tra
+
+Codex đối chiếu tài liệu do Hoàn cung cấp và trạng thái Git; chờ Hoàn xem danh sách ca test.
+
+### Kiểm tra và minh chứng
+
+- Nhánh mới tạo từ `origin/main` tại `cfe17ba`; lịch sử chứa commit migration ban đầu `68fae57`.
+- Chưa tạo `catalog.spec.ts`, chưa chạy test catalog, chưa commit hoặc push nhánh mới.
+
+---
+
+## Phase 1 / hoan-20261115-cat1-02
+
+* Thời gian ghi: 2026-11-15T00:54:19+07:00
+* Thời gian thực hiện: 15/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: hoan-20261115-cat1
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261115-cat1-01; PRJ-P1-BD1-2.1
+
+### Công cụ
+
+Codex, Vitest, ESLint và Git.
+
+### Mục đích
+
+Chuẩn bị test nghiệm thu catalog trước khi viết chức năng, theo các ca đã cùng Hoàn xem qua.
+
+### Prompt
+
+Tóm lược: Hoàn yêu cầu giải thích lần lượt 13 phép thử, sau đó đồng ý để Codex thực hiện bước viết test.
+
+### Kết quả đề xuất
+
+Codex tạo `apps/api/src/catalog/catalog.spec.ts` với 11 tên ca trong tài liệu và hai ca bổ sung được đánh dấu; test sử dụng Prisma giả. Chưa viết module chức năng catalog, chưa commit hoặc push.
+
+### Phản biện
+
+Hai ca bổ sung là đề xuất vì tài liệu nêu 11 tên nhưng tiêu chí cuối ghi 13 ca; cần QA xem trước khi cố định. Các assertion và giả định về giao diện service cần được đối chiếu bởi QA. Vitest không nạp được module chưa tồn tại, do đó chưa chứng minh các assertion chạy hoặc thất bại đúng hành vi.
+
+### Quyết định của nhóm
+
+Hoàn xem từng phép thử và yêu cầu thực hiện; chưa có xác nhận QA duyệt bộ test.
+
+### Người kiểm tra
+
+Codex chạy Vitest và ESLint; chờ Hoàn và QA xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api -- catalog`: báo thiếu `catalog-query.pipe.js`, 0 test được chạy.
+- ESLint cho file test: pass.
+- Chưa đạt tiêu chí từng ca FAIL, chưa commit hoặc push; cần reviewer xem xét cách nghiệm thu giai đoạn thiếu module.
+
+---
+
+## Phase 1 / hoan-20261115-cat1-03
+
+* Thời gian ghi: 2026-11-15T01:06:07+07:00
+* Thời gian thực hiện: 15/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: hoan-20261115-cat1
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261115-cat1-01, hoan-20261115-cat1-02, PRJ-P1-BD1-2.1
+
+### Công cụ
+
+Codex, VS Code, Git, Vitest và ESLint.
+
+### Mục đích
+
+Chuẩn bị test nghiệm thu trước khi viết chức năng cho task PRJ-P1-BD1-2 — API catalog. Hoàn muốn xem và hiểu từng tình huống kiểm thử trước khi Codex viết test và đưa lên nhánh làm việc.
+
+### Prompt
+
+Tóm lược các yêu cầu của Hoàn theo quá trình thực hiện:
+
+1. Hoàn cung cấp task cha #16 và sub-task đầu tiên về viết test trước theo TDD.
+2. Khi Codex nhận thấy số tên ca trong tài liệu chưa khớp với tổng 13 ca, Hoàn cung cấp tiếp nội dung năm task triển khai để đối chiếu.
+3. Hoàn đồng ý tạo nhánh catalog và yêu cầu giải thích từng phép thử trước khi viết.
+4. Sau khi xem lần lượt các phép thử, Hoàn đồng ý để Codex tạo file test.
+5. Hoàn hỏi lại vì sao kết quả test đỏ nhưng Vitest báo 0 test, và liệu có thể tiếp tục hay không.
+6. Hoàn yêu cầu commit, push file test và soạn nhật ký AI chi tiết để duyệt trước.
+
+### Kết quả đề xuất
+
+Codex đọc nội dung task Hoàn cung cấp và đối chiếu với lộ trình cá nhân. Các chức năng catalog cần kiểm thử gồm kiểm tra query, lọc và sắp xếp sản phẩm, chi tiết sản phẩm, danh mục và kết nối controller/module.
+
+Sau khi Hoàn đồng ý, Codex fetch repo nhóm và tạo nhánh `prj/p1-bd1-2` từ `origin/main`. Nhánh mới có commit migration Prisma ban đầu theo yêu cầu phụ thuộc của task.
+
+Codex lần lượt trình bày cho Hoàn 13 tình huống dự kiến:
+
+1. Chuyển query hợp lệ thành kiểu dữ liệu phù hợp.
+2. Từ chối query không hợp lệ.
+3. Truyền chuỗi tìm kiếm có dạng SQL như giá trị lọc Prisma.
+4. Gửi đúng các bộ lọc và điều kiện hoạt động.
+5. Không ghép điều kiện từ hai SKU khác nhau.
+6. Dùng giá giảm, kể cả giá bằng 0.
+7. Sắp xếp theo giá nhỏ nhất của SKU khớp và xử lý giá bằng nhau.
+8. Trả chi tiết, tồn khả dụng và sản phẩm liên quan.
+9. Trả 404 khi sản phẩm không tồn tại hoặc bị ẩn.
+10. Chỉ trả nhóm hàng có sản phẩm và SKU hoạt động.
+11. Kiểm tra kết nối module và controller.
+12. Không hiển thị sản phẩm không còn SKU hoạt động.
+13. Từ chối slug sai định dạng trước khi truy vấn.
+
+Trong số đó, 11 tên ca được nêu trong tài liệu. Ca 12 và 13 là đề xuất bổ sung để đối chiếu với yêu cầu cuối task là 13 ca; chưa có xác nhận QA duyệt hai ca bổ sung.
+
+Sau khi Hoàn đồng ý, Codex tạo `apps/api/src/catalog/catalog.spec.ts`, dùng Prisma giả và chưa viết các file chức năng catalog. Theo yêu cầu tiếp theo của Hoàn, Codex commit riêng file test và push nhánh `prj/p1-bd1-2`.
+
+### Phản biện
+
+Về số lượng test: Ban đầu Codex nói tài liệu có 10 tên ca; sau khi Hoàn cung cấp đủ năm task và đối chiếu lại, Codex đính chính thành 11 tên ca. Vì tiêu chí cuối ghi 13/13, Codex đề xuất hai ca bổ sung nhưng ghi rõ đây không phải tên được task quy định.
+
+Về kết quả FAIL: Hoàn hỏi liệu test đỏ là đúng vì chưa tạo đủ chức năng, tương tự task auth trước đó. Codex xác nhận FAIL là trạng thái mong đợi khi làm TDD, đồng thời phân biệt ca test được chạy và assertion thất bại với trường hợp Vitest không nạp được module nên báo đỏ nhưng 0 test được chạy.
+
+Lần chạy hiện tại thuộc trường hợp thứ hai: thiếu `catalog-query.pipe.js`. Do đó Codex không kết luận từng assertion đã FAIL hoặc sub-task đã đạt tiêu chí đóng issue.
+
+Về trách nhiệm kiểm tra: Hoàn đã xem mô tả các tình huống trước khi đồng ý tạo test; Codex là bên viết file test. Bộ test và các giả định về dữ liệu trả về vẫn cần Hoàn và QA xem lại trước khi duyệt, cố định.
+
+### Quyết định của nhóm
+
+Hoàn đồng ý tiếp tục chuẩn bị nhánh, xem từng phép thử, cho Codex tạo file và yêu cầu commit, push để review.
+
+Chưa có xác nhận QA duyệt bộ test, chấp nhận hai ca bổ sung hoặc chấp nhận kết quả 0 test như tiêu chí hoàn thành.
+
+### Người kiểm tra
+
+- Hoàn: cung cấp nội dung task, xem giải thích từng phép thử và hỏi lại về kết quả FAIL.
+- Codex: đối chiếu tài liệu do Hoàn cung cấp, chuẩn bị nhánh, viết test, chạy Vitest và ESLint, commit và push.
+- QA/reviewer: chưa có kết quả review được xác minh.
+
+### Kiểm tra và minh chứng
+
+- Nhánh: `prj/p1-bd1-2`, được tạo từ `origin/main`.
+- File test: `apps/api/src/catalog/catalog.spec.ts`, gồm 13 khối `it(...)`.
+- ESLint cho file test: pass.
+- `npm.cmd test -w api -- catalog`: Vitest báo thiếu `catalog-query.pipe.js`, 0 test được chạy.
+- Commit: [`547084e`](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/547084e), chỉ chứa file test catalog.
+- Nhánh đã được push lên `origin/prj/p1-bd1-2`.
+- Chưa xác nhận QA duyệt bộ test hoặc sub-task 2.1 đủ điều kiện đóng.
+
+---
+
+## Phase 1 / hoan-20261115-cat1-04
+
+* Thời gian ghi: 2026-11-15T01:17:39+07:00
+* Thời gian thực hiện: 15/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: hoan-20261115-cat1
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261115-cat1-03; PRJ-P1-BD1-2.2
+
+### Công cụ
+
+Codex, Node.js, Vitest và ESLint.
+
+### Mục đích
+
+Tạo pipe kiểm tra và chuyển đổi query catalog theo yêu cầu task.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp task, xem phương án, hỏi lại vai trò của pipe và đồng ý để Codex thực hiện.
+
+### Kết quả đề xuất
+
+Codex tạo `apps/api/src/catalog/catalog-query.pipe.ts` để kiểm tra các tham số được hỗ trợ, chuẩn hóa chuỗi, chuyển số và kích thước, từ chối dữ liệu không hợp lệ. Chưa tạo các file chức năng catalog khác.
+
+### Phản biện
+
+Hoàn diễn giải pipe nhận và chuyển thông tin đã quy ước; Codex làm rõ pipe không tự tìm hay trả danh sách sản phẩm. Kiểm tra riêng không thay thế hai ca Vitest của task.
+
+### Quyết định của nhóm
+
+Hoàn đồng ý triển khai theo phương án; chưa có xác nhận QA hoặc reviewer nghiệm thu.
+
+### Người kiểm tra
+
+Codex chạy kiểm tra riêng, ESLint và thử Vitest; chờ Hoàn và reviewer xem kết quả.
+
+### Kiểm tra và minh chứng
+
+- Kiểm tra riêng bằng Node: pass query hợp lệ, giới hạn số và các trường hợp dữ liệu sai được thử.
+- ESLint file pipe: pass.
+- `npm.cmd test -w api -- catalog.spec.ts -t "CatalogQueryPipe"`: 0 test do thiếu `catalog.service.js`; chưa đạt tiêu chí hai ca test xanh.
+- Chưa commit hoặc push pipe; bộ test nghiệm thu chưa được xác nhận QA duyệt.
+
+---
+
+## Phase 1 / hoan-20261115-cat1-05
+
+* Thời gian ghi: 2026-11-15T01:21:37+07:00
+* Thời gian thực hiện: 15/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: hoan-20261115-cat1
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261115-cat1-04; PRJ-P1-BD1-2.2
+
+### Công cụ
+
+Codex, VS Code, Node.js, Vitest, ESLint và Git.
+
+### Mục đích
+
+Thực hiện bước 2.2 của task catalog: tạo `CatalogQueryPipe` để kiểm tra và chuyển đổi các tham số tìm kiếm, lọc sản phẩm trước khi chuyển cho phần xử lý tiếp theo. Hoàn muốn hiểu tác dụng thực tế trước khi đồng ý triển khai và xem nhật ký AI chi tiết trước khi cập nhật.
+
+### Prompt
+
+Tóm lược các yêu cầu của Hoàn theo trình tự thực hiện:
+
+1. Hoàn cung cấp nội dung sub-task PRJ-P1-BD1-2.2 và yêu cầu tiếp tục.
+2. Codex đọc task, đối chiếu với hai ca test CatalogQueryPipe đã có và trình bày phương án thực hiện.
+3. Hoàn hỏi lại bước này có phải nhận thông tin người dùng nhập, chuyển chúng theo các trường hợp đã quy ước rồi trả kết quả không.
+4. Sau khi được giải thích sự khác nhau giữa kiểm tra/chuyển đổi query và tìm sản phẩm, Hoàn đồng ý để Codex triển khai.
+5. Sau khi xem kết quả, Hoàn yêu cầu viết AI log chi tiết để duyệt trước, sau đó đồng ý cập nhật log, commit và push.
+
+### Kết quả đề xuất
+
+Trước khi sửa code, Codex trình bày ví dụ query `minPrice=50000&scenario=PICNIC&size=200x150`, dự kiến chuyển giá thành số, giữ tình huống hợp lệ và chuyển kích thước thành mảng số. Query sai như giá chứa chữ hoặc tình huống không hỗ trợ sẽ bị từ chối với lỗi 400.
+
+Sau khi Hoàn đồng ý, Codex tạo `apps/api/src/catalog/catalog-query.pipe.ts` gồm `CatalogQuery` mô tả tham số và `CatalogQueryPipe` kiểm tra, chuyển đổi các trường. Pipe kiểm tra chuỗi, scenario và sort theo giá trị được phép; chuyển giá, sức chứa, kích thước; từ chối tham số lạ, sai kiểu, lặp dạng mảng, vượt giới hạn và giá tối thiểu lớn hơn giá tối đa.
+
+Codex kiểm tra riêng bằng Node, chạy ESLint và thử Vitest theo task. Theo yêu cầu của Hoàn, Codex tạo commit pipe `4d4519d`; kết quả push chưa được xác nhận tại thời điểm ghi.
+
+### Phản biện
+
+Hoàn diễn giải bước này nhận thông tin người dùng nhập, chuyển chúng theo các quy ước rồi trả kết quả. Codex xác nhận phần kiểm tra và chuyển đổi, đồng thời làm rõ pipe không tự tìm sản phẩm: CatalogService ở bước sau mới sử dụng điều kiện đã kiểm tra.
+
+Trước khi triển khai, Codex lưu ý file test còn import service, controller và module chưa được tạo. Sau khi tạo pipe, Vitest dừng ở `catalog.service.js` chưa tồn tại và báo 0 test. Vì vậy không thể kết luận hai ca CatalogQueryPipe đã chạy và pass.
+
+Hoàn yêu cầu xem nhật ký trước khi cập nhật. Codex đã ghi mục ngắn cat1-04 trên máy trước khi trình bày bản nháp, đã thông báo và xin lỗi. Mục chi tiết này được Hoàn duyệt trước khi nối thêm; mục cũ được giữ nguyên.
+
+### Quyết định của nhóm
+
+Hoàn xem phương án, trao đổi để hiểu vai trò của pipe, đồng ý triển khai và yêu cầu cập nhật nhật ký, commit, push. Chưa có xác nhận QA duyệt bộ test catalog hoặc reviewer nghiệm thu task 2.2.
+
+### Người kiểm tra
+
+- Hoàn: đọc phương án, diễn giải lại mục đích của pipe và xem bản nháp AI log.
+- Codex: đối chiếu task, viết pipe, kiểm tra riêng bằng Node, chạy ESLint và Vitest.
+- QA/reviewer: chưa có kết quả review hoặc nghiệm thu được xác minh.
+
+### Kiểm tra và minh chứng
+
+- Tệp chức năng: `apps/api/src/catalog/catalog-query.pipe.ts`.
+- Kiểm tra riêng bằng Node: pass query hợp lệ, giới hạn và các trường hợp dữ liệu sai đã thử.
+- ESLint cho pipe: pass.
+- `npm.cmd test -w api -- catalog.spec.ts -t "CatalogQueryPipe"`: dừng vì thiếu `catalog.service.js`, 0 test được chạy.
+- Chưa xác nhận hai ca Vitest xanh; kiểm tra riêng không thay thế tiêu chí nghiệm thu.
+- Commit pipe: [`4d4519d`](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/4d4519d). Chưa xác nhận push tại thời điểm ghi.
