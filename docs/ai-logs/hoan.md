@@ -1520,3 +1520,48 @@ Codex chạy test auth, TypeScript, lint và kiểm tra HTTP nội bộ với d�
 - Chưa thử curl với tài khoản và database thật; chưa triển khai `AuthRateLimit`. Chưa xác nhận đủ điều kiện đóng task.
 - npm báo 16 lỗ hổng trong các package được kiểm tra; chưa xác định package liên quan và chưa chạy tự sửa.
 - Commit code: [`c988167`](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/c988167).
+
+---
+
+## Phase 1 / hoan-20261114-tdd1-09
+
+* Thời gian ghi: 2026-11-14T17:54:37+07:00
+* Thời gian thực hiện: 14/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: hoan-20261114-tdd1
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261114-tdd1-08; PR #648
+
+### Công cụ
+
+Codex, GitHub Actions, Prisma CLI và Git.
+
+### Mục đích
+
+Phân tích lỗi CI không tìm thấy Prisma Client và chuẩn bị thay đổi thứ tự để sinh client trước khi chạy test.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp ảnh lỗi CI, hỏi có cần chạy test lại trên terminal không, sau đó đồng ý để Codex thêm bước sinh Prisma Client vào workflow.
+
+### Kết quả đề xuất
+
+Codex thêm bước `npm run prisma:generate -w api` sau cài dependency và trước lint, test, build trong `.github/workflows/ci.yml`. Chưa commit hoặc push thay đổi.
+
+### Phản biện
+
+Codex đối chiếu workflow và `.gitignore`: thư mục client được sinh không nằm trong repo, còn CI chạy test trước prebuild. Kiểm tra với schema sao chép không thay thế việc chạy workflow trên GitHub; chưa thể kết luận CI sẽ pass.
+
+### Quyết định của nhóm
+
+Hoàn đồng ý chỉnh CI để GitHub tự sinh Prisma Client trước test. Chưa có xác nhận review của nhóm.
+
+### Người kiểm tra
+
+Codex kiểm tra diff và thử Prisma CLI với bản sao schema; chờ Hoàn xem và CI chạy thực tế.
+
+### Kiểm tra và minh chứng
+
+- Ảnh CI do Hoàn cung cấp cho thấy test auth dừng vì không tìm thấy `../generated/prisma/client.js`.
+- Prisma CLI generate với schema sao chép trong workspace và không đặt DATABASE_URL hoặc DIRECT_URL: pass; chưa chạy toàn bộ workflow sạch.
+- `git diff --check` cho workflow: pass. Chưa commit, push hay xác minh CI trên GitHub.
