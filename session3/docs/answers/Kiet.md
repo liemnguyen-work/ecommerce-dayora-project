@@ -1,48 +1,18 @@
-# Bản nháp tham khảo — Kiệt
-
-**AI soạn theo phân công dự kiến; chưa phải câu trả lời cá nhân, chưa được Kiệt xác nhận.** Đề yêu cầu mỗi người tự trả lời và hiểu phần của mình. Hãy thay nội dung gợi ý bằng cách diễn đạt, ví dụ, kết quả kiểm tra và bằng chứng thực tế của bạn; không nhận phần việc chưa làm.
-
-Vai trò theo kế hoạch: GitHub. Gợi ý khu vực để đối chiếu: Cấu trúc và tài nguyên; chọn đoạn mã bạn thực sự tham gia.
-
-## Câu 1 — Giải thích mã nguồn
-
-- Đoạn HTML thực sự tham gia: [dẫn file và đoạn mã]. Thẻ [tên thẻ] có vai trò [tự giải thích].
-- Đoạn CSS thực sự tham gia: [dẫn file và đoạn mã]. Ba thuộc tính cần giải thích: [1], [2], [3]; tác động lên giao diện: [tự mô tả].
-- Nếu bạn chưa trực tiếp làm phần mã, hãy chọn phần bạn thực sự tham gia hoặc hỏi giảng viên/người phụ trách cách trình bày; không tự nhận mã của người khác.
-
-## Câu 2 — Dự đoán thay đổi Grid
-
-Gợi ý: `repeat(4, 1fr)` tạo bốn cột bằng nhau; đổi thành `repeat(2, 1fr)` làm còn hai cột, mỗi cột có thêm không gian và thẻ chuyển xuống các hàng tiếp theo.
-
-- Dự đoán bằng lời của bạn: [tự viết trước khi thử].
-- Cách thử và ảnh trước/sau: [tự thực hiện trên bản thử, ghi bằng chứng].
-- Kết quả quan sát và so với dự đoán: [chưa thực hiện/chờ bổ sung].
-
-## Câu 3 — Ảnh bị kéo giãn
-
-Gợi ý: kiểm tra tỉ lệ thực của ảnh và kích thước khung. `object-fit: cover` có thể giữ tỉ lệ khi lấp đầy khung nhưng sẽ cắt phần ảnh; `contain` giữ toàn ảnh nhưng có thể để trống. Có thể cân nhắc chiều cao tự động tùy thiết kế.
-
-- Phương án bạn chọn và lý do: [tự viết].
-- Cách xác minh ảnh không bị méo: [tự thử, ghi kết quả].
-
-## Câu 4 — Quyết định Grid hay Flexbox
-
-- Khu vực bạn thực sự tham gia: [tên file và thành phần].
-- Kỹ thuật đang dùng và lý do: [tự đối chiếu CSS].
-- Trường hợp kỹ thuật còn lại phù hợp hơn: [tự nêu ví dụ].
-
-## Câu 5 — Kiểm tra responsive 390 px
-
-Gợi ý: mở DevTools, đặt viewport 390 px; kiểm tra phần tử rộng cố định, menu, ảnh, lưới và nội dung dài; xem phần tử nào vượt mép.
-
-- Cách bạn kiểm tra: [tự mô tả].
-- Trường hợp thực tế và kết quả: [chưa xác minh/chờ bổ sung].
-
-## Câu 6 — Đánh giá AI
-
-- Đề xuất AI thực sự liên quan công việc của bạn: [mô tả và dẫn mã mục trong log cá nhân].
-- Bạn đã sử dụng, điều chỉnh hay loại bỏ? [tự xác nhận và giải thích].
-- Bạn đã kiểm như thế nào, kết quả ra sao? [tự bổ sung minh chứng].
-- Bài học rút ra: [tự viết].
-
-Trạng thái: **NHÁP — chờ Kiệt tự hoàn thiện, xác nhận và giải thích**.
+1. Nhóm xử lý xung đột mã nguồn và tích hợp bằng GitHub thế nào?
+Mỗi người làm trên nhánh riêng, commit rồi mở PR để nhóm xem trước khi gộp vào main. Nếu có xung đột, nhóm đối chiếu phần bị sửa trùng, giữ nội dung cần thiết của cả hai bên và kiểm tra lại sau khi giải quyết.
+2. Vì sao thứ tự thẻ <script> quan trọng? defer làm gì?
+File dùng dữ liệu và hàm chung phải được nạp trước file gọi chúng; đảo thứ tự có thể khiến hàm hoặc dữ liệu chưa tồn tại. defer cho trình duyệt tải script trong lúc đọc HTML và chạy chúng sau khi đọc xong, theo thứ tự các thẻ.
+3. Đường dẫn JS hoặc ảnh sai thì thấy dấu hiệu gì trong DevTools?
+Trong tab Network, file sai đường dẫn thường báo 404 hoặc không tải được. Với JS, Console có thể báo lỗi và chức năng không chạy; với ảnh, trên trang sẽ thấy ảnh bị hỏng hoặc không hiển thị.
+4. Bước 1: Chép session2/ sang session3/ để làm gì?
+Nhóm lấy giao diện HTML, CSS và ảnh đã làm làm nền cho bài JavaScript, đồng thời giữ nguyên bài Buổi 2. Nếu bỏ bước này, các chức năng mới không có đầy đủ trang và phần tử giao diện để gắn vào.
+5. Bước 2: Tạo sáu file JS khung để làm gì?
+Các file được chia theo dữ liệu sản phẩm và từng chức năng để thành viên làm đúng phần của mình, còn các trang biết cần nạp file nào. Nếu thiếu file hoặc nạp sai đường dẫn, trình duyệt báo lỗi tải file và chức năng tương ứng không hoạt động.
+6. Bước 3: Tạo cart.html để làm gì?
+Trang này tạo chỗ để hiển thị giỏ hàng và liên kết từ menu đến giỏ. Nếu không có trang hoặc vùng chứa phù hợp, người dùng không mở được giỏ và mã hiển thị giỏ không có nơi để đưa nội dung vào.
+7. Bước 4: Cập nhật mẫu PR để làm gì?
+Mẫu PR nhắc mỗi người ghi rõ thay đổi, cách kiểm tra và minh chứng giao diện để reviewer dễ đối chiếu. Bỏ mẫu này không làm website hỏng, nhưng dễ thiếu thông tin kiểm thử và khiến việc review mất thời gian hơn.
+8. Bước 5: Tích hợp cuối để làm gì?
+Mình kiểm tra mã có vi phạm quy ước về inline JavaScript, thư viện ngoài không, rồi tổng hợp commit và PR của tám thành viên. Nếu bỏ qua, nhóm có thể nộp bài còn lỗi quy ước hoặc thiếu minh chứng đóng góp; chức năng không nhất thiết hỏng ngay.
+9. Một lỗi đã gặp: nguyên nhân và cách sửa
+Lúc kiểm tra cuối, lệnh grep trong hướng dẫn in ra các thẻ <script src="..."> hợp lệ vì nó khớp cả </script>; lệnh tìm thư viện còn khớp nhầm dữ liệu trong ảnh PNG. Mình dùng biểu thức chỉ tìm script thiếu src và thêm -I để bỏ qua file nhị phân, rồi chạy lại: cả hai lệnh không in kết quả.

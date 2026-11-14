@@ -822,3 +822,146 @@ Chưa xác minh đầy đủ cấu hình required check.
 - API chi tiết branch protection: 403.
 - Chờ ảnh cấu hình đã lưu từ Liêm trước khi kết luận
   đạt toàn bộ tiêu chí PRJ-P0-DO-2.4.
+  ## P0 — Sửa Prisma Client / KIET-20261109-PRISMAFIX-001
+
+- Thời gian ghi: 2026-11-09T22:57:49+07:00
+- Thời gian thực hiện: Ngày 09/11/2026; test có mốc 22:52:40 trên terminal.
+- Mã phiên nhật ký: KIET-20261109-PRISMAFIX
+- Người prompt: Mã Tuấn Kiệt
+- Loại mục: Hoạt động, phản biện và kiểm tra
+- Liên quan: Task sửa lỗi Prisma sau review; #22, #24.
+- Nhánh: fix/p0-prisma-client
+
+### Công cụ
+
+ChatGPT/Codex, GitHub plugin, VS Code, Git Bash,
+npm, Prisma, ESLint, Vitest và GitHub.
+
+### Mục đích
+
+Sửa đường dẫn import PrismaClient cho phù hợp với generator mới
+và không đưa mã Prisma tự sinh lên Git.
+Ưu tiên task sửa lỗi trước các công việc đang dở.
+
+### Prompt
+
+Tổng hợp các yêu cầu và hướng dẫn AI trong task:
+
+1. Kiệt cung cấp yêu cầu sửa import PrismaClient và bổ sung
+   thư mục generated vào .gitignore; yêu cầu một PR,
+   CI xanh và một bạn khác Approve trước khi merge.
+
+2. AI kiểm tra schema.prisma, prisma.service.ts,
+   package.json API và .gitignore trên main bằng GitHub plugin.
+   Xác nhận generator đã đổi sang prisma-client nhưng service
+   vẫn import từ @prisma/client.
+
+3. AI hướng dẫn kiểm tra git status, fetch, chuyển về main,
+   pull cập nhật mới nhất rồi tạo nhánh fix/p0-prisma-client.
+   Nếu có thay đổi ngoài phạm vi thì dừng để xử lý trước.
+
+4. AI hướng dẫn đổi import:
+   từ @prisma/client
+   sang ../generated/prisma/client.js.
+   Giữ nguyên các phần còn lại của PrismaService.
+
+5. AI hướng dẫn thêm apps/api/src/generated/ vào .gitignore
+   ở gốc repo và tạo hai commit riêng theo yêu cầu task.
+
+6. AI hướng dẫn chạy prisma:generate và build API;
+   kiểm tra git status, git ls-files và git check-ignore
+   để xác nhận generated không được Git theo dõi.
+
+7. Sau khi Kiệt gửi kết quả, AI hướng dẫn chạy lint, test
+   và git log -2 --oneline để đối chiếu kiểm tra và commit.
+
+8. AI hướng dẫn push nhánh, mở PR vào main,
+   ghi kết quả kiểm tra trong mô tả và chọn Liêm làm Assignee.
+
+9. Khi Kiệt hỏi cách chọn Assignee, AI hướng dẫn tìm
+   liemnguyen-work trong cột bên phải của PR.
+   Phân biệt Assignee với Reviewer thực hiện Approve.
+
+10. Khi Kiệt hỏi chọn loại PR nào, AI hướng dẫn chọn
+    Create pull request vì phần sửa đã sẵn sàng để review.
+    Vẫn cần CI xanh và một bạn khác Approve trước khi merge.
+
+11. Khi Kiệt hỏi có cần commit nữa không, AI giải thích
+    hai thay đổi đã có commit; tạo PR và chọn Assignee
+    không cần thêm commit nếu không sửa file.
+
+12. Kiệt yêu cầu tổng hợp AI Usage Log và các hướng dẫn
+    đã dùng trong task này.
+
+### Kết quả đề xuất
+
+- Sửa import trong apps/api/src/prisma/prisma.service.ts
+  sang ../generated/prisma/client.js.
+- Thêm apps/api/src/generated/ vào .gitignore.
+- Không sửa schema nghiệp vụ hoặc chạy migration trong task.
+- Hai commit được xác nhận qua ảnh terminal:
+  - ecc6aa9 — fix(api): import PrismaClient from generated client
+  - 24da76e — chore(git): ignore generated Prisma client
+
+### Phản biện
+
+- Đường dẫn import phải khớp output của generator mới,
+  không tiếp tục dùng client cũ trong @prisma/client.
+- Generate thành công không chứng minh đã kết nối database thật.
+- Build và test trên máy cá nhân chưa chứng minh CI trên máy sạch
+  tự sinh được Prisma Client; cần kiểm tra job CI của PR.
+- .gitignore không tự ngừng theo dõi file đã được commit,
+  nên kiểm tra thêm bằng git ls-files.
+- Giữ hai file prisma-empty.bak ngoài commit.
+- Thông báo quy trình chung của Liêm cho phép tiếp tục task
+  không thay thế yêu cầu riêng của task sửa lỗi:
+  phải có một bạn khác Approve trước khi merge.
+
+### Quyết định của nhóm
+
+Thực hiện hai thay đổi theo task Kiệt cung cấp.
+Hướng dẫn chọn Liêm làm Assignee để theo dõi PR.
+Chưa có minh chứng trong cuộc trò chuyện xác nhận
+PR đã được Approve hoặc merge.
+
+### Người kiểm tra
+
+Kiệt trực tiếp chạy lệnh và cung cấp ảnh terminal.
+ChatGPT/Codex kiểm tra cấu hình trên GitHub và đối chiếu đầu ra.
+Chưa xác nhận người review hoặc kết quả Approve.
+
+### Kiểm tra và minh chứng
+
+- npm run prisma:generate -w api:
+  sinh Prisma Client 6.19.3 vào src/generated/prisma thành công.
+- npm run build -w api: hoàn tất không báo lỗi.
+- npm run lint: API và Web không báo lỗi trong đầu ra đã gửi.
+- npm test: một test health pass, tổng 1/1.
+- git status sau generate: chỉ còn hai file .bak chưa theo dõi,
+  không hiện thư mục generated.
+- git ls-files -- apps/api/src/generated: không có đầu ra.
+- git check-ignore xác nhận .gitignore áp dụng cho generated.
+- git log xác nhận hai commit ecc6aa9 và 24da76e.
+- Chưa nhận link PR, kết quả CI hoặc xác nhận Approve/merge.
+- Không kết luận toàn bộ task hoàn thành ở thời điểm ghi log.
+## P1 — Tạo Supabase cho nhóm / PRJ-P1-DO-1.1
+
+- Kiệt tạo Organization DAYORA Team (gói Free) và project DAYORA tại Singapore (`ap-southeast-1`).
+- Đã gửi lời mời cho 7 thành viên còn lại; ảnh trang Team hiển thị tổng 8 người gồm cả Kiệt.
+- Trạng thái lúc chụp: 7 lời mời đang chờ; quyền Owner cần được kiểm tra lại theo phân công nhóm.
+- AI hỗ trợ chọn vùng Singapore, giải thích Data API và cách kiểm tra danh sách thành viên. Kiệt trực tiếp tạo project, gửi lời mời và kiểm tra trên Supabase.
+
+## P1 — Chuỗi kết nối / PRJ-P1-DO-1.2
+
+- Kiệt cấu hình DATABASE_URL bằng Transaction pooler cổng 6543 với pgbouncer=true; DIRECT_URL bằng Session pooler cổng 5432 trong apps/api/.env cục bộ.
+- git check-ignore xác nhận apps/api/.env được Git bỏ qua.
+- npm run prisma:validate -w api: schema hợp lệ.
+- npm run db:migrate -w api: áp dụng migration 20261108183740_init; database đồng bộ với schema; Prisma Client 6.19.3 được sinh thành công.
+- AI giải thích cách chọn pooler và vị trí đặt biến. Kiệt tự lấy chuỗi, lưu mật khẩu và chạy lệnh. Nhật ký không chứa thông tin kết nối thật.
+
+## P1 — Thử trên máy thành viên / PRJ-P1-DO-1.3
+
+- Kiệt gửi hướng dẫn và hai chuỗi kết nối qua kênh riêng cho thành viên cần chạy dự án.
+- Theo xác nhận của Kiệt, hai thành viên khác đã chạy thử thành công.
+- Tên hai người, các lệnh họ đã chạy và ảnh/log minh chứng: bổ sung vào phần mô tả PR khi có thông tin đối chiếu.
+- AI hỗ trợ soạn hướng dẫn thử trên máy mới; Kiệt gửi thông tin và nhận kết quả trực tiếp. Không đưa mật khẩu hoặc URL kết nối vào Git.

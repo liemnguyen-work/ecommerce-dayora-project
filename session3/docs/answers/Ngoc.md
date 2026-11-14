@@ -1,8 +1,3 @@
-# Bản nháp tham khảo — Ngọc
-
-**AI soạn theo phân công dự kiến; chưa phải câu trả lời cá nhân, chưa được Ngọc xác nhận.** Đề yêu cầu mỗi người tự trả lời và hiểu phần của mình. Hãy thay nội dung gợi ý bằng cách diễn đạt, ví dụ, kết quả kiểm tra và bằng chứng thực tế của bạn; không nhận phần việc chưa làm.
-
-Vai trò theo kế hoạch: QA. Gợi ý khu vực để đối chiếu: Kiểm thử responsive, đường dẫn và kết quả sửa lỗi; chọn đoạn mã bạn thực sự tham gia.
 
 ## Câu 1 — Giải thích mã nguồn
 
@@ -45,4 +40,40 @@ Gợi ý: mở DevTools, đặt viewport 390 px; kiểm tra phần tử rộng c
 - Bạn đã kiểm như thế nào, kết quả ra sao? [tự bổ sung minh chứng].
 - Bài học rút ra: [tự viết].
 
-Trạng thái: **NHÁP — chờ Ngọc tự hoàn thiện, xác nhận và giải thích**.
+# Kiểm tra kiến thức — HW-P1-QA-1.6
+
+## 1. Giỏ hàng đúng ở một trang nhưng sai ở trang khác
+
+Mình sẽ so sánh dữ liệu trong khóa `cart` với số lượng và sản phẩm hiển thị ở hai trang. Nếu dữ liệu lưu đã đúng mà một trang vẫn hiện sai, mình sẽ kiểm tra cách trang đó đọc giỏ và cập nhật giao diện sau khi thêm hoặc xóa sản phẩm.
+
+## 2. Kiểm tra đoạn mã do AI đề xuất
+
+Mình đọc xem đoạn mã thay đổi gì, rồi chạy thử cả trường hợp bình thường lẫn trường hợp biên. Ví dụ với giỏ hàng, mình thử thêm một món, tải lại trang và thử dữ liệu giỏ bị hỏng để xem kết quả có đúng như mong đợi không.
+
+## 3. Dùng Chrome DevTools để kiểm tra JavaScript và `localStorage`
+
+Mình mở **Console** để xem thông báo lỗi và bấm vào tên file, số dòng nếu cần tìm chỗ phát sinh lỗi. Để xem dữ liệu giỏ, mình vào **Application → Local Storage**, chọn đúng địa chỉ trang đang chạy rồi xem khóa `cart`.
+
+## 4. Vì sao cần lập danh sách ca kiểm thử?
+
+Mình lập `kiem-thu.md` để biết trước cần thử gì, thao tác ra sao và kết quả nào được tính là đạt. Nếu chỉ bấm thử theo luồng mua hàng bình thường, mình dễ quên các ca như mở trang chi tiết với ID sản phẩm không tồn tại.
+
+## 5. Vì sao cần chạy kiểm thử chức năng và ghi kết quả thực tế?
+
+Mình chạy từng ca rồi ghi lại điều thực sự xảy ra để đối chiếu với kết quả mong đợi. Chẳng hạn khi thử dữ liệu giỏ hỏng, trang vẫn hiện giỏ trống nhưng Console có cảnh báo. Nếu chỉ nhìn giao diện, mình sẽ bỏ qua chi tiết đó.
+
+## 6. Vì sao cần kiểm tra giao diện ở ba kích thước và lưu ảnh?
+
+Mình kiểm tra 5 trang ở 1366, 768 và 390 px vì cùng một trang có thể hiển thị ổn ở kích thước này nhưng bị lệch ở kích thước khác. Lỗi nút **Xóa** bị ngắt chữ ở 768 px là ví dụ mình phát hiện được khi thử trên tablet, và ảnh giúp Đạt nhìn thấy đúng hiện tượng.
+
+## 7. Vì sao cần kiểm tra tích hợp?
+
+Mình muốn biết các trang có cập nhật giỏ nhất quán khi dùng chung dữ liệu không. Mình đã mở hai tab, thêm hàng ở một tab rồi xem tab giỏ hàng có tự cập nhật số lượng không. Nếu thử từng trang riêng, mình dễ bỏ sót lỗi đồng bộ này.
+
+## 8. Vì sao cần lập danh sách lỗi?
+
+Mình ghi bước tái hiện, ảnh, người phụ trách và trạng thái để theo dõi lỗi từ lúc phát hiện đến lúc kiểm tra lại. Với `BUG-01`, mình báo Đạt rồi thử lại trên bản sửa trước khi cập nhật trạng thái. Nếu chỉ nhắn báo lỗi, sau đó rất dễ quên mình đã xác nhận bản sửa hay chưa.
+
+## 9. Một lỗi đã gặp, nguyên nhân và cách sửa
+
+Ở 768 px, chỗ hiển thị giá và các nút trong bảng giỏ bị chật nên ký hiệu `₫`, chữ **Xóa** và nút tăng giảm bị tách dòng. Đạt chỉnh bố cục bảng cho tablet. Mình chạy lại ở 768 × 1024 px và thấy cả ba chỗ đều hiển thị đúng.

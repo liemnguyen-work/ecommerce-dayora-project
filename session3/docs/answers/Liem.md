@@ -1,48 +1,38 @@
-# Bản nháp tham khảo — Liêm
 
-**AI soạn theo phân công dự kiến; chưa phải câu trả lời cá nhân, chưa được Liêm xác nhận.** Đề yêu cầu mỗi người tự trả lời và hiểu phần của mình. Hãy thay nội dung gợi ý bằng cách diễn đạt, ví dụ, kết quả kiểm tra và bằng chứng thực tế của bạn; không nhận phần việc chưa làm.
+# Kiểm tra kiến thức Buổi 3 — Liêm
 
-Vai trò theo kế hoạch: PM. Gợi ý khu vực để đối chiếu: Kế hoạch và tài liệu; đối chiếu với đoạn HTML/CSS bạn thực sự tham gia.
+## 1. Thêm chức năng mới
+Nhóm xác định những thành phần cần sửa như thế nào?
+Xác định chức năng tác động đến trang nào, dữ liệu nào, phần giao diện và xử lý nào. Sau đó đối chiếu phần việc của từng người, thống nhất cách các phần kết nối và cách kiểm thử.
 
-## Câu 1 — Giải thích mã nguồn
+## 2. Tích hợp GitHub
+Nhóm xử lý xung đột mã nguồn và tích hợp bằng GitHub như thế nào?
+Mỗi người làm trên nhánh riêng, đưa thay đổi vào PR. Khi có xung đột, những người liên quan cùng xem các phần khác nhau, thống nhất nội dung cần giữ, giải quyết xung đột và kiểm tra lại trước khi merge.
 
-- Đoạn HTML thực sự tham gia: [dẫn file và đoạn mã]. Thẻ [tên thẻ] có vai trò [tự giải thích].
-- Đoạn CSS thực sự tham gia: [dẫn file và đoạn mã]. Ba thuộc tính cần giải thích: [1], [2], [3]; tác động lên giao diện: [tự mô tả].
-- Nếu bạn chưa trực tiếp làm phần mã, hãy chọn phần bạn thực sự tham gia hoặc hỏi giảng viên/người phụ trách cách trình bày; không tự nhận mã của người khác.
+## 3. Quy ước chung
+Vì sao phải thống nhất tên hàm và khóa `cart` trước khi code? Nếu không thì có thể xảy ra lỗi gì?
+Tên hàm và khóa cart là cách các phần của các thành viên giao tiếp với nhau. Nếu một bên lưu dưới tên khác hoặc gọi sai tên hàm, trang khác có thể không đọc được giỏ hoặc gặp lỗi khi gọi hàm.
 
-## Câu 2 — Dự đoán thay đổi Grid
+## 4. Kế hoạch
+`docs/ke-hoach.md` dùng để làm gì? Nếu bỏ qua thì ảnh hưởng gì?
+Giúp biết ai làm gì, bàn giao gì và phải chờ ai. Nếu không có, nhóm dễ chồng chéo hoặc làm sai thứ tự; bản thân việc thiếu file kế hoạch không nhất thiết làm website bị hỏng.
 
-Gợi ý: `repeat(4, 1fr)` tạo bốn cột bằng nhau; đổi thành `repeat(2, 1fr)` làm còn hai cột, mỗi cột có thêm không gian và thẻ chuyển xuống các hàng tiếp theo.
+## 5. Quy ước
+`docs/quy-uoc.md` dùng để làm gì? Nếu bỏ qua thì ảnh hưởng gì?
+Ghi lại cách các phần JavaScript dùng chung dữ liệu, tên hàm và sự kiện. Nếu không thống nhất, lúc ghép code có thể xảy ra lỗi không nhận dữ liệu hoặc gọi sai hàm.
 
-- Dự đoán bằng lời của bạn: [tự viết trước khi thử].
-- Cách thử và ảnh trước/sau: [tự thực hiện trên bản thử, ghi bằng chứng].
-- Kết quả quan sát và so với dự đoán: [chưa thực hiện/chờ bổ sung].
+## 6. README
+`session3/README.md` dùng để làm gì? Nếu bỏ qua thì ảnh hưởng gì?
+Giới thiệu sản phẩm, cách chạy, cách kiểm tra và các minh chứng. Nếu thiếu, người xem khó hiểu và chạy lại bài; website không nhất thiết bị lỗi chỉ vì thiếu README.
 
-## Câu 3 — Ảnh bị kéo giãn
+## 7. Kịch bản trình bày
+`docs/trinh-bay.md` dùng để làm gì? Nếu bỏ qua thì ảnh hưởng gì?
+Giúp chia thời gian, phân vai và sắp xếp thứ tự demo. Nếu không chuẩn bị, nhóm có thể nói thiếu, chuyển màn hình lúng túng hoặc quá giờ; đây không phải lỗi chức năng của website.
 
-Gợi ý: kiểm tra tỉ lệ thực của ảnh và kích thước khung. `object-fit: cover` có thể giữ tỉ lệ khi lấp đầy khung nhưng sẽ cắt phần ảnh; `contain` giữ toàn ảnh nhưng có thể để trống. Có thể cân nhắc chiều cao tự động tùy thiết kế.
+## 8. Bảng nộp bài
+Bảng nộp bài dùng để làm gì? Nếu bỏ qua thì ảnh hưởng gì?
+Giúp rà từng hạng mục và dẫn đến minh chứng trước khi nộp. Nếu bỏ qua, nhóm dễ bỏ sót file, ảnh hoặc link lỗi.
 
-- Phương án bạn chọn và lý do: [tự viết].
-- Cách xác minh ảnh không bị méo: [tự thử, ghi kết quả].
-
-## Câu 4 — Quyết định Grid hay Flexbox
-
-- Khu vực bạn thực sự tham gia: [tên file và thành phần].
-- Kỹ thuật đang dùng và lý do: [tự đối chiếu CSS].
-- Trường hợp kỹ thuật còn lại phù hợp hơn: [tự nêu ví dụ].
-
-## Câu 5 — Kiểm tra responsive 390 px
-
-Gợi ý: mở DevTools, đặt viewport 390 px; kiểm tra phần tử rộng cố định, menu, ảnh, lưới và nội dung dài; xem phần tử nào vượt mép.
-
-- Cách bạn kiểm tra: [tự mô tả].
-- Trường hợp thực tế và kết quả: [chưa xác minh/chờ bổ sung].
-
-## Câu 6 — Đánh giá AI
-
-- Đề xuất AI thực sự liên quan công việc của bạn: [mô tả và dẫn mã mục trong log cá nhân].
-- Bạn đã sử dụng, điều chỉnh hay loại bỏ? [tự xác nhận và giải thích].
-- Bạn đã kiểm như thế nào, kết quả ra sao? [tự bổ sung minh chứng].
-- Bài học rút ra: [tự viết].
-
-Trạng thái: **NHÁP — chờ Liêm tự hoàn thiện, xác nhận và giải thích**.
+## 9. Lỗi đã gặp
+Chọn một lỗi bạn gặp: nguyên nhân là gì và bạn đã xử lý như thế nào?
+Lúc kiểm tra bảng, đã tích [x] nhưng git diff còn hiện [ ] vì file chưa được lưu; sau đó lưu bằng Ctrl + S rồi chạy lại git diff để kiểm tra thì thành công.
