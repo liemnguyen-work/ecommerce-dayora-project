@@ -1065,3 +1065,307 @@ Hoàn tự thực hiện và lưu việc xóa phần nháp Buổi 2. Codex đố
 - Các commit đã tồn tại cho bước 1–5: `cbe6e89`, `eb81e27`, `45bde61`, `6483a15`, `d7781d3`.
 - Nguồn nhận xét: ảnh issue #547 do Hoàn cung cấp; chưa xác minh trực tiếp trên GitHub.
 - Tiêu chí biểu tượng giỏ tăng 3 vẫn chưa được xác nhận tại thời điểm ghi; xem `hoan-20261108-r6k2-11` và `hoan-20261108-r6k2-12`.
+
+---
+
+## Phase 1 / hoan-20261114-tdd1-01
+
+* Thời gian ghi: 2026-11-14T16:24:57+07:00
+* Thời gian thực hiện: Hồi cứu hoạt động từ phiên trao đổi; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: hoan-20261114-tdd1
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-1.1; issue #98
+
+### Công cụ
+
+Codex, VS Code, Git và Vitest.
+
+### Mục đích
+
+Chuẩn bị test nghiệm thu trước khi triển khai chức năng đăng ký, đăng nhập và guard của DAYORA; tìm hiểu cách đọc kết quả test và đưa thay đổi lên nhánh làm việc.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp nội dung task và tài liệu lộ trình, yêu cầu Codex hướng dẫn thực hiện theo TDD. Ban đầu Hoàn muốn làm và học từng bước; sau đó yêu cầu Codex hoàn thiện phần kiểm thử để cùng học lại các phần đã làm.
+
+### Kết quả đề xuất
+
+Codex hỗ trợ viết và sắp xếp `apps/api/src/auth/auth.spec.ts` với sáu ca dự kiến: băm và xác minh mật khẩu; kiểm tra JWT; đăng ký trùng email; kiểm tra DTO; từ chối đăng nhập không hợp lệ; kiểm tra cookie và phân quyền.
+
+Trong quá trình chỉnh sửa có xung đột giữa bản đang mở trong VS Code và bản trên máy; Codex và Hoàn xử lý để tiếp tục. Hoàn tạo commit `b408f66` chỉ chứa file test và push nhánh `prj/p1-bd1-1` lên repo nhóm.
+
+### Phản biện
+
+Khi chạy `npm.cmd test -w api -- auth`, Vitest dừng vì chưa tìm thấy `./password.js` và báo 0 test được chạy. Đây là lỗi nạp module, chưa chứng minh từng ca kiểm thử đã chạy và FAIL theo tiêu chí issue.
+
+Codex đã từng hướng dẫn tiếp tục commit khi chưa đạt rõ tiêu chí “các ca FAIL”, sau đó đính chính. Nội dung test do Codex hỗ trợ viết cần được Hoàn đọc, hiểu và cùng QA kiểm tra; chưa có bằng chứng các assertion đã được thực thi.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu tiếp tục và cho biết Châu đã đồng ý bỏ qua bước review. Nội dung trao đổi và phạm vi đồng ý cụ thể của Châu đối với kết quả 0 test chưa được xác minh trực tiếp; không ghi nhận đây là xác nhận chính thức rằng tiêu chí test đã đạt.
+
+### Người kiểm tra
+
+Codex đã đối chiếu tài liệu do Hoàn cung cấp và chạy thử lệnh test. Hoàn kiểm tra trạng thái Git, tạo commit và push. Kết quả QA duyệt nội dung test và quyết định nghiệm thu chưa được xác minh trực tiếp.
+
+### Kiểm tra và minh chứng
+
+- Tệp test: `apps/api/src/auth/auth.spec.ts`.
+- Commit: [`b408f66`](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/b408f66), nội dung `Task: PRJ-P1-BD1-1.1`.
+- Nhánh `prj/p1-bd1-1` đã push lên `origin`, theo kết quả terminal Hoàn cung cấp.
+- PowerShell chặn `npm.ps1`; dùng `npm.cmd` để gọi lệnh test.
+- Lần chạy qua Codex: Vitest báo thiếu `./password.js`, 0 test được chạy. Chưa xác nhận các ca FAIL ở mức assertion.
+- Sau khi Hoàn fetch và đối chiếu, `git log --oneline HEAD..origin/main` không hiển thị commit mới mà nhánh đang thiếu.
+- Chưa xác minh trực tiếp trạng thái comment, đóng issue hoặc PR trên GitHub.
+
+---
+
+## Phase 1 / hoan-20261114-tdd1-02
+
+* Thời gian ghi: 2026-11-14T16:28:52+07:00
+* Thời gian thực hiện: 14/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: hoan-20261114-tdd1
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261114-tdd1-01; PRJ-P1-BD1-1.2
+
+### Công cụ
+
+Codex, Node.js, Vitest và Git.
+
+### Mục đích
+
+Triển khai hai hàm băm và xác minh mật khẩu theo task sau khi Hoàn xem phương án.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp nội dung task, yêu cầu xem hướng dẫn và mã trước khi làm; sau khi xem, Hoàn đồng ý triển khai và để các file chức năng khác cho bước sau.
+
+### Kết quả đề xuất
+
+Codex tạo `apps/api/src/auth/password.ts`: `hashPassword` tạo salt ngẫu nhiên và băm bằng scrypt; `verifyPassword` kiểm tra định dạng, băm lại và so sánh bằng timingSafeEqual. Không tạo các file auth chức năng khác, không sửa test nghiệm thu.
+
+### Phản biện
+
+Lệnh nghiệm thu chưa chạy được test mật khẩu vì file test import các module chưa có. Kiểm tra riêng hai hàm không thay thế kết quả Vitest mà issue yêu cầu.
+
+### Quyết định của nhóm
+
+Hoàn đồng ý phương án và yêu cầu để các file chức năng khác cho bước sau. Chưa có xác nhận review hoặc nghiệm thu của nhóm.
+
+### Người kiểm tra
+
+Codex chạy kiểm tra riêng và lệnh Vitest; chờ Hoàn xem lại và reviewer kiểm tra.
+
+### Kiểm tra và minh chứng
+
+- Kiểm tra riêng bằng Node: hai kết quả băm cùng mật khẩu khác nhau; mật khẩu đúng được chấp nhận, sai và dữ liệu lưu không hợp lệ bị từ chối.
+- `npm.cmd test -w api -- auth -t "random salt"`: Vitest báo thiếu `./auth.service.js`, 0 test được chạy; chưa đạt tiêu chí test xanh của task.
+- Các tệp thay đổi: `apps/api/src/auth/password.ts`, `docs/ai-logs/hoan.md`. Chưa tạo commit cho bước này.
+
+---
+
+## Phase 1 / hoan-20261114-tdd1-03
+
+* Thời gian ghi: 2026-11-14T16:37:18+07:00
+* Thời gian thực hiện: 14/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: hoan-20261114-tdd1
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261114-tdd1-02; PRJ-P1-BD1-1.2
+
+### Công cụ
+
+Codex, VS Code, Node.js, Vitest và Git.
+
+### Mục đích
+
+Triển khai chức năng băm và xác minh mật khẩu bằng `scrypt` theo task. Hoàn muốn xem hướng dẫn và phương án trước, sau đó mới đồng ý để Codex tạo file; đồng thời cần hiểu kết quả kiểm thử trước khi đưa code lên nhánh nhóm.
+
+### Prompt
+
+Tóm lược quá trình yêu cầu:
+
+1. Hoàn cung cấp nội dung task `PRJ-P1-BD1-1.2`, yêu cầu hướng dẫn và trình bày cách thực hiện để xem trước.
+2. Sau khi xem phương án, Hoàn đồng ý tạo `password.ts`; đề nghị để các file chức năng khác cho những bước sau.
+3. Hoàn hỏi lại yêu cầu của bước và gửi ảnh kết quả chạy test để cùng xác định lỗi.
+4. Hoàn yêu cầu commit, push và soạn AI log để xem trước khi ghi.
+
+### Kết quả đề xuất
+
+Codex trình bày phương án gồm hai hàm:
+
+- `hashPassword`: tạo salt ngẫu nhiên, dùng `scrypt` băm mật khẩu và trả về chuỗi theo dạng `salt:hash`.
+- `verifyPassword`: kiểm tra định dạng chuỗi đã lưu, băm lại mật khẩu nhập vào bằng salt tương ứng, rồi dùng `timingSafeEqual` để so sánh.
+
+Sau khi Hoàn đồng ý, Codex tạo `apps/api/src/auth/password.ts`. Codex kiểm tra riêng hai hàm bằng Node: hai lần băm cùng mật khẩu cho kết quả khác nhau; mật khẩu đúng được chấp nhận; mật khẩu sai và dữ liệu lưu không hợp lệ bị từ chối.
+
+Codex chạy lệnh Vitest của task, sau đó Hoàn cũng chạy lại và gửi ảnh kết quả. Cả hai lần đều dừng ở lỗi không tìm thấy `auth.service.js` và báo 0 test được chạy.
+
+Theo yêu cầu tiếp theo của Hoàn, Codex tạo commit `5596159`, chỉ chứa `password.ts`, rồi push nhánh `prj/p1-bd1-1` lên repo nhóm.
+
+### Phản biện
+
+Hoàn nhận thấy `auth.service.ts` và các file liên quan thuộc các bước sau, nên đề nghị không tạo sớm chỉ để xử lý lỗi hiện tại. Hoàn cũng hỏi liệu ở bước này có thể xem việc tạo `password.ts` là đủ và chưa cần chạy lại test hay không.
+
+Codex giải thích: việc để các file chức năng khác cho bước sau phù hợp với phạm vi Hoàn muốn giữ. Tuy nhiên, issue 1.2 vẫn yêu cầu ca test mật khẩu chạy và PASS. Vì Vitest chưa chạy được ca nào, kết quả đỏ hiện tại là lỗi nạp module; không thể kết luận hàm sai hay test đã xanh từ kết quả đó.
+
+Lần kiểm tra riêng bằng Node giúp kiểm tra một số hành vi của hai hàm, nhưng không thay thế lệnh nghiệm thu Vitest. Codex không sửa test đã commit và không tạo file chức năng của bước sau để làm kết quả trông như đã đạt.
+
+### Quyết định của nhóm
+
+Hoàn đồng ý tạo `password.ts`, để các file chức năng khác cho bước sau và yêu cầu commit, push phần đã làm. Chưa có xác nhận nghiệm thu của reviewer hoặc quyết định chung của nhóm về việc chấp nhận kết quả test hiện tại.
+
+### Người kiểm tra
+
+- Hoàn: xem phương án trước khi đồng ý triển khai; tự chạy lệnh Vitest và cung cấp ảnh kết quả.
+- Codex: kiểm tra riêng hai hàm bằng Node, chạy lệnh Vitest, kiểm tra file được staging và kết quả push.
+- Reviewer/QA: chưa có kết quả kiểm tra hoặc nghiệm thu được xác minh.
+
+### Kiểm tra và minh chứng
+
+- File chức năng: `apps/api/src/auth/password.ts`.
+- Test dự kiến: `apps/api/src/auth/auth.spec.ts` — ca `hashes with random salt and verifies passwords safely`.
+- Kiểm tra riêng bằng Node: các trường hợp đã kiểm tra đều pass; xem thêm mục `hoan-20261114-tdd1-02`.
+- Lệnh `npm.cmd test -w api -- auth -t "random salt"`: dừng vì không tìm thấy `./auth.service.js`, báo 0 test.
+- Commit: [`5596159`](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/5596159), chỉ chứa `password.ts`.
+- Đã push lên `origin/prj/p1-bd1-1`.
+- Chưa có bằng chứng ca test Vitest xanh; chưa xác nhận task được nghiệm thu hoặc đóng.
+
+---
+
+## Phase 1 / hoan-20261114-tdd1-04
+
+* Thời gian ghi: 2026-11-14T17:12:34+07:00
+* Thời gian thực hiện: 14/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: hoan-20261114-tdd1
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261114-tdd1-03; PRJ-P1-BD1-1.3; PR #648
+
+### Công cụ
+
+Codex, VS Code, Node.js, Vitest, ESLint, npm và Git.
+
+### Mục đích
+
+Triển khai phần tạo và xác minh JWT trong `auth.service.ts`: yêu cầu có `JWT_SECRET`, ký token bằng HS256 và kiểm tra thời hạn 7 ngày. Hoàn muốn xem phương án trước khi đồng ý thực hiện, sau đó tìm hiểu vai trò của phần này trong luồng đăng nhập.
+
+### Prompt
+
+Tóm lược quá trình yêu cầu:
+
+1. Hoàn cung cấp nội dung sub-issue 1.3, yêu cầu Codex trình bày cách thực hiện để kiểm tra và duyệt trước; chưa ghi AI log.
+2. Sau khi xem phương án, Hoàn đồng ý để Codex triển khai.
+3. Hoàn hỏi mục đích của bước này, tác dụng của việc xác minh token trong thực tế và mối liên hệ giữa test, `password.ts` và `auth.service.ts`.
+4. Sau khi kiểm tra thay đổi, Hoàn yêu cầu Codex commit và push.
+5. Hoàn hỏi về phần màu đỏ trên giao diện GitHub và yêu cầu soạn AI log để xem trước.
+
+### Kết quả đề xuất
+
+Codex trình bày phương án tạo `auth.service.ts` với ba phần: kiểm tra `JWT_SECRET` trong constructor, tạo token bằng `signToken` và kiểm tra token bằng `verifyToken`.
+
+Sau khi Hoàn đồng ý, Codex:
+
+- Tạo `apps/api/src/auth/auth.service.ts`: token được ký bằng HS256, có thời hạn 7 ngày; phần xác minh kiểm tra cấu trúc, chữ ký, thuật toán, ID người dùng và thời hạn.
+- Cài `@nestjs/config` cho workspace API, cập nhật `apps/api/package.json` và `package-lock.json`.
+- Chạy ESLint cho file service và kiểm tra riêng một số tình huống JWT bằng Node.
+- Chạy lệnh Vitest theo yêu cầu của task.
+- Sau khi Hoàn kiểm tra và yêu cầu tiếp tục, tạo commit `5647408` và push lên nhánh `prj/p1-bd1-1`.
+
+Codex cũng giải thích sự khác nhau giữa kiểm tra mật khẩu và xác minh token: mật khẩu được kiểm tra khi đăng nhập; token hỗ trợ nhận biết người dùng trong các yêu cầu tiếp theo. Các phần này chưa được nối thành luồng đăng nhập hoàn chỉnh tại thời điểm ghi.
+
+### Phản biện
+
+Hoàn yêu cầu xem phương án trước khi thực hiện; hỏi rõ bước này nhằm làm gì, việc xác minh token có tác dụng gì trong thực tế và xác nhận lại cách liên kết giữa test, mật khẩu và phiên đăng nhập.
+
+Codex giải thích JWT là token do server ký, chứa ID và thời hạn; server cần kiểm tra chữ ký và hạn trước khi dùng thông tin. Token hợp lệ giúp xác thực danh tính nhưng chưa tự quyết định quyền truy cập; việc kiểm tra vai trò thuộc phần guard ở bước sau.
+
+Codex cũng lưu ý `auth.spec.ts` import các file chưa được tạo. Vì vậy, dù phần service đã được viết, lệnh Vitest vẫn dừng tại lỗi thiếu `auth.dto.js` và báo 0 test được chạy. Kiểm tra riêng JWT không thay thế kết quả test nghiệm thu của task.
+
+Khi Hoàn hỏi về dòng màu đỏ trong ảnh commit, Codex giải thích đó là dòng bị xóa trong phần so sánh GitHub; dòng trống đầu `package.json` được xóa khi cập nhật dependency, không phải thông báo lỗi CI.
+
+### Quyết định của nhóm
+
+Hoàn duyệt phương án, yêu cầu triển khai rồi commit và push sau khi kiểm tra. Chưa có xác nhận nghiệm thu của reviewer hoặc quyết định chung của nhóm rằng bước 1.3 đã đạt tiêu chí test xanh.
+
+### Người kiểm tra
+
+- Hoàn: xem và duyệt phương án, kiểm tra thay đổi trước khi yêu cầu commit và push.
+- Codex: kiểm tra riêng các tình huống JWT, chạy ESLint và Vitest; kiểm tra file staging, commit và kết quả push.
+- Reviewer/QA: chưa có kết quả review hoặc nghiệm thu bước 1.3 được xác minh.
+
+### Kiểm tra và minh chứng
+
+- Tệp chức năng: `apps/api/src/auth/auth.service.ts`.
+- Dependency: `@nestjs/config`; tệp thay đổi gồm `apps/api/package.json` và `package-lock.json`.
+- Kiểm tra riêng bằng Node: pass các trường hợp thiếu secret, token hợp lệ, token ký sai khóa, payload bị sửa, token sai định dạng và token hết hạn.
+- ESLint cho `auth.service.ts`: pass.
+- `npm.cmd test -w api -- auth -t "expired or incorrectly signed"`: dừng vì thiếu `auth.dto.js`, báo 0 test; chưa đạt tiêu chí Vitest xanh.
+- Khi cài dependency, npm báo tổng cộng 16 lỗ hổng trong các package được kiểm tra; chưa xác định các package liên quan và chưa chạy lệnh tự sửa.
+- Commit: [`5647408`](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/5647408) — `Task: PRJ-P1-BD1-1.3`.
+- Đã push lên `origin/prj/p1-bd1-1`; commit thuộc [PR #648](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/648).
+- Chưa xác nhận task 1.3 được nghiệm thu hoặc đóng.
+
+---
+
+## Phase 1 / hoan-20261114-tdd1-05
+
+* Thời gian ghi: 2026-11-14T17:20:06+07:00
+* Thời gian thực hiện: 14/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: hoan-20261114-tdd1
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261114-tdd1-04; PRJ-P1-BD1-1.4
+
+### Công cụ
+
+Codex, VS Code, Node.js, Vitest, ESLint và npm.
+
+### Mục đích
+
+Thực hiện phần kiểm tra dữ liệu đăng nhập, đăng ký và tạo tài khoản: chuẩn hóa email, kiểm tra dữ liệu đầu vào, băm mật khẩu và xử lý email trùng.
+
+### Prompt
+
+Tóm lược quá trình yêu cầu:
+
+1. Hoàn cung cấp nội dung sub-issue 1.4 và yêu cầu tiếp tục theo cách xem phương án trước khi thực hiện.
+2. Hoàn hỏi bước này có phải dùng để xác nhận email thuộc về người dùng hay không, rồi hỏi thêm về tác dụng của việc kiểm tra định dạng email.
+3. Sau khi hiểu và xem phương án, Hoàn đồng ý để Codex triển khai.
+4. Hoàn yêu cầu soạn nhật ký AI để xem trước, sau đó yêu cầu cập nhật nhật ký, commit và push.
+
+### Kết quả đề xuất
+
+Codex trình bày phương án tạo `LoginDto`, `RegisterDto` để kiểm tra dữ liệu và chuẩn hóa email; bổ sung `register` để kiểm tra email trùng, băm mật khẩu, tạo người dùng bằng Prisma và không chọn `passwordHash` trong dữ liệu trả về.
+
+Sau khi Hoàn đồng ý, Codex tạo `apps/api/src/auth/auth.dto.ts`, bổ sung `register` trong `auth.service.ts` và thêm `class-validator`, `class-transformer` vào dependency của API. Codex tạo commit `3216e55` cho bốn tệp code và dependency; kết quả push sẽ được xác minh sau khi thực hiện.
+
+### Phản biện
+
+Hoàn hỏi liệu bước này có xác nhận địa chỉ email thực sự thuộc về khách hàng không, rồi diễn giải lại rằng bước này kiểm tra định dạng email để hệ thống có thể báo khách nhập lại nếu dữ liệu không hợp lệ.
+
+Codex làm rõ rằng kiểm tra email đúng định dạng không chứng minh quyền sở hữu hộp thư. Việc xác nhận quyền sở hữu cần cơ chế bổ sung như gửi OTP hoặc link xác nhận; task 1.4 chưa yêu cầu phần đó.
+
+Codex cũng giải thích email trùng cần được xử lý khi đã tìm thấy trước khi tạo tài khoản hoặc khi database trả `P2002` lúc có yêu cầu tạo cùng email gần như đồng thời. Cả hai được xử lý thành lỗi 409 Conflict theo yêu cầu task.
+
+### Quyết định của nhóm
+
+Hoàn xem và đồng ý với phương án trước khi Codex triển khai; sau đó yêu cầu cập nhật nhật ký, commit và push. Chưa có xác nhận review hoặc nghiệm thu của nhóm đối với thay đổi này.
+
+### Người kiểm tra
+
+- Hoàn: xem phương án và trao đổi để làm rõ mục đích kiểm tra email.
+- Codex: kiểm tra riêng dữ liệu DTO và hàm đăng ký bằng Prisma giả; chạy ESLint và Vitest.
+- Reviewer/QA: chưa có kết quả kiểm tra hoặc nghiệm thu được xác minh.
+
+### Kiểm tra và minh chứng
+
+- Tệp thay đổi: `apps/api/src/auth/auth.dto.ts`, `apps/api/src/auth/auth.service.ts`, `apps/api/package.json`, `package-lock.json`.
+- Kiểm tra riêng bằng Node với Prisma giả: pass các trường hợp chuẩn hóa email, email sai định dạng, mật khẩu ngắn, đăng ký, email trùng, lỗi `P2002` và chuyển tiếp lỗi khác.
+- Đã kiểm tra mật khẩu được băm trước khi tạo và phần `select` không chọn `passwordHash`.
+- ESLint cho `auth.dto.ts` và `auth.service.ts`: pass.
+- Vitest dừng vì chưa tìm thấy `auth.guard.js`, báo 0 test được chạy; chưa đạt tiêu chí test xanh của task.
+- Npm báo tổng cộng 16 lỗ hổng trong các package được kiểm tra; chưa xác định package liên quan và chưa chạy lệnh tự sửa.
+- Commit code: [`3216e55`](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/3216e55). Chưa xác nhận task 1.4 được nghiệm thu hoặc đóng.
