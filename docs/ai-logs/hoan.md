@@ -1469,3 +1469,54 @@ Codex chạy Vitest, TypeScript và ESLint; Hoàn xem phương án và kết qu�
 - Ba ca kiểm tra guard bổ sung tạm thời pass: thiếu cookie, tài khoản không hoạt động, quyền CUSTOMER/ADMIN và route không yêu cầu role; file tạm được xóa sau kiểm tra.
 - ESLint cho guard và service, `tsc --noEmit`: pass sau khi chỉnh dependency.
 - Commit code: [`a385fbd`](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/a385fbd). Chưa xác nhận task được reviewer nghiệm thu hoặc đóng.
+
+---
+
+## Phase 1 / hoan-20261114-tdd1-08
+
+* Thời gian ghi: 2026-11-14T17:45:21+07:00
+* Thời gian thực hiện: 14/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: hoan-20261114-tdd1
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261114-tdd1-07; PRJ-P1-BD1-1.7
+
+### Công cụ
+
+Codex, Node.js, npm, Vitest, TypeScript, ESLint và Git.
+
+### Mục đích
+
+Kết nối chức năng đăng ký, đăng nhập, đăng xuất và xem thông tin người dùng với API; kiểm tra cookie và xác thực dữ liệu đầu vào.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp task, yêu cầu xem phương án và hỏi tác dụng thực tế của các API trước khi đồng ý thực hiện. Sau khi xem kết quả, Hoàn yêu cầu commit, push và cập nhật nhật ký.
+
+### Kết quả đề xuất
+
+Codex tạo `auth.controller.ts`, `auth.module.ts` và `prisma.module.ts`; kết nối module trong `app.module.ts`, cấu hình ValidationPipe trong `main.ts`, thêm `@types/express` làm dependency phát triển. Controller cung cấp các route register, login, logout và me, đặt cookie với các thuộc tính theo task.
+
+Codex tạo commit code `c988167`. Kết quả push chưa được xác nhận tại thời điểm ghi.
+
+### Phản biện
+
+Hoàn hỏi controller có tạo API để giao diện gửi dữ liệu tới đúng phần xử lý TypeScript không. Codex giải thích luồng giao diện gửi yêu cầu, controller gọi service và trả kết quả.
+
+Task nêu `AuthRateLimit`, nhưng class chưa có và quy tắc chưa được xác định rõ trong phạm vi hiện tại; Codex không tự tạo giới hạn. Kiểm tra HTTP dùng service giả, không thay thế thử curl với tài khoản và database thật theo tiêu chí task.
+
+### Quyết định của nhóm
+
+Hoàn đồng ý triển khai và yêu cầu commit, push, cập nhật nhật ký. Chưa có xác nhận nhóm về quy tắc rate limit hoặc nghiệm thu task 1.7.
+
+### Người kiểm tra
+
+Codex chạy test auth, TypeScript, lint và kiểm tra HTTP nội bộ với dữ liệu giả. Hoàn trao đổi và yêu cầu đưa phần đã làm lên nhánh; reviewer/QA chưa được xác minh đã nghiệm thu.
+
+### Kiểm tra và minh chứng
+
+- Test auth hiện có: 6/6 pass. Kiểm tra HTTP tạm với dữ liệu giả: login đặt cookie HttpOnly, SameSite=Lax, path /; me yêu cầu phiên; logout xóa cookie; dữ liệu thừa bị từ chối.
+- `tsc --noEmit` và lint API: pass. File kiểm tra HTTP tạm đã được xóa sau khi chạy.
+- Chưa thử curl với tài khoản và database thật; chưa triển khai `AuthRateLimit`. Chưa xác nhận đủ điều kiện đóng task.
+- npm báo 16 lỗ hổng trong các package được kiểm tra; chưa xác định package liên quan và chưa chạy tự sửa.
+- Commit code: [`c988167`](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/c988167).
