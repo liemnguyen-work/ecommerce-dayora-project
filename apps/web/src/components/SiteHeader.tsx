@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import { useAuth } from '../lib/auth.tsx';
 
 const navigation = [
   { label: 'Trang chủ', href: '/' },
@@ -10,6 +11,9 @@ const navigation = [
 ];
 
 export default function SiteHeader() {
+  const { user, loading } = useAuth();
+  const accountHref = user ? '/tai-khoan' : '/dang-nhap';
+  const accountLabel = loading ? 'Đang tải…' : user ? 'Tài khoản' : 'Đăng nhập';
   const [open, setOpen] = useState(false);
   const drawer = useRef<HTMLDialogElement>(null);
 
@@ -34,8 +38,8 @@ export default function SiteHeader() {
           <Link to="/gio-hang" aria-label="Giỏ hàng" className="flex min-h-11 items-center gap-1.5 rounded-full px-2 text-xs font-semibold hover:bg-leaf focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink lg:px-3 lg:text-sm">
             <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M3 4h2l2 11h10l3-8H6"/><circle cx="9" cy="20" r="1"/><circle cx="17" cy="20" r="1"/></svg><span className="hidden lg:inline">Giỏ hàng</span>
           </Link>
-          <Link to="/tai-khoan" aria-label="Tài khoản" className="flex min-h-11 items-center gap-1.5 rounded-full px-2 text-xs font-semibold hover:bg-leaf focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink lg:px-3 lg:text-sm">
-            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-4 3-6 7-6s7 2 7 6"/></svg><span className="hidden lg:inline">Tài khoản</span>
+          <Link to={accountHref} aria-label={accountLabel} className="flex min-h-11 items-center gap-1.5 rounded-full px-2 text-xs font-semibold hover:bg-leaf focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink lg:px-3 lg:text-sm">
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-4 3-6 7-6s7 2 7 6"/></svg><span className="hidden lg:inline">{accountLabel}</span>
           </Link>
           <button type="button" aria-label="Mở menu" aria-expanded={open} aria-controls="site-menu" onClick={() => setOpen(true)} className="grid min-h-11 min-w-11 place-items-center rounded-full border border-ink/20 hover:bg-leaf focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink md:hidden">
             <span aria-hidden="true" className="text-xl leading-none">☰</span>
@@ -50,7 +54,7 @@ export default function SiteHeader() {
         <nav aria-label="Điều hướng di động" className="mt-6 flex flex-col gap-1 border-t border-ink/10 pt-4">
           {navigation.map(item => <Link key={item.href} to={item.href} onClick={() => setOpen(false)} className="rounded-xl px-3 py-3 font-semibold hover:bg-leaf focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink">{item.label}</Link>)}
           <Link to="/gio-hang" onClick={() => setOpen(false)} className="rounded-xl px-3 py-3 font-semibold hover:bg-leaf focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink">Giỏ hàng</Link>
-          <Link to="/tai-khoan" onClick={() => setOpen(false)} className="rounded-xl px-3 py-3 font-semibold hover:bg-leaf focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink">Tài khoản</Link>
+          <Link to={accountHref} onClick={() => setOpen(false)} className="rounded-xl px-3 py-3 font-semibold hover:bg-leaf focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink">{accountLabel}</Link>
         </nav>
       </dialog>
     </header>
