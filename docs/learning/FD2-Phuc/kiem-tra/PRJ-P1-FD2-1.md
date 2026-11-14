@@ -1,0 +1,7 @@
+**Bước 1 — `lib/auth.tsx`:** Quản lý và chia sẻ trạng thái đăng nhập, cung cấp các hàm đăng nhập, đăng ký, đăng xuất; gọi `/auth/me` để lấy lại tài khoản khi tải trang. Nếu bỏ, các component dùng `useAuth()` không hoạt động và luồng khôi phục trạng thái đăng nhập sau F5 bị thiếu.
+
+1. **Bước 2 — Bọc trong `main.tsx`:** Đặt ứng dụng bên trong `AuthProvider` để header và các trang truy cập được thông tin xác thực. Nếu bỏ provider mà vẫn gọi `useAuth()`, ứng dụng sẽ báo lỗi `useAuth must be used inside AuthProvider`.
+2. **Bước 3 — `LoginPage.tsx`:** Cung cấp form nhập thông tin, kiểm tra dữ liệu và gọi hàm xác thực; dùng chung `AuthPage` cho đăng nhập và đăng ký để tránh lặp code. Nếu bỏ, hai route không còn form hoạt động để người dùng đăng nhập hoặc tạo tài khoản.
+3. **Bước 4 — Hiện lỗi và khóa nút:** Giúp người dùng biết API từ chối vì lý do gì và ngăn gửi nhiều yêu cầu khi đang xử lý. Nếu bỏ, người dùng có thể không biết đăng nhập thất bại; nếu thiếu mở khóa trong `finally`, form có thể bị khóa mãi sau lỗi.
+4. **Bước 5 — `?next=`:** Giữ trang đích để chuyển người dùng tới đó sau khi đăng nhập thành công. Nếu bỏ, người dùng luôn về `/`; nếu giữ chuyển hướng nhưng bỏ kiểm tra `safeNext`, giá trị không an toàn có thể dẫn tới hành vi chuyển hướng ngoài ý muốn.
+5. **Chỗ khó nhất — cần ghi theo trải nghiệm thật của bạn:** Trong phiên này, vướng mắc là hướng dẫn P1 có `oauthLogin` trong khi roadmap đặt OAuth ở P6; Phúc đã đối chiếu tài liệu và triển khai phần email/mật khẩu.
