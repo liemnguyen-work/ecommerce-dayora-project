@@ -5,12 +5,14 @@ import { LoginDto, RegisterDto } from './auth.dto.js';
 import { JwtAuthGuard } from './auth.guard.js';
 import type { AuthRequest } from './auth.guard.js';
 import { AuthService } from './auth.service.js';
+import { AuthRateLimit, LoginRateLimitException } from './auth-rate-limit.js';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly auth: AuthService,
     private readonly config: ConfigService,
+    private readonly rateLimit: AuthRateLimit,
   ) {}
 
   private cookieOptions() {
@@ -29,7 +31,15 @@ export class AuthController {
 
   @Post('login')
   async login(@Body() dto: LoginDto, @Res({ passthrough: true }) response: Response) {
-    const user = await this.auth.login(dto);
+    let user: Awaited<ReturnType<AuthService['login']>>;
+    try {
+      user = await this.rateLimit.attempt(dto.email, () => this.auth.login(dto));
+    } catch (error: unknown) {
+      if (error instanceof LoginRateLimitException) {
+        response.setHeader('Retry-After', String(error.retryAfterSeconds));
+      }
+      throw error;
+    }
     response.cookie('access_token', this.auth.signToken(user.id), {
       ...this.cookieOptions(),
       maxAge: 7 * 24 * 60 * 60 * 1000,
