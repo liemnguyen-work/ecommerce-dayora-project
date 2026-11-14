@@ -3,6 +3,8 @@ import { useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import SiteHeader from './components/SiteHeader';
 import SiteFooter from './components/SiteFooter';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 import './motion.css';
 
 function ScrollOnNavigation() {
@@ -126,8 +128,8 @@ export default function App() {
         <Route path="/" element={<Styleguide />} />
         <Route path="/san-pham" element={<Placeholder title="Sản phẩm" />} />
         <Route path="/san-pham/:slug" element={<Placeholder title="Chi tiết sản phẩm" />} />
-        <Route path="/dang-nhap" element={<Placeholder title="Đăng nhập" />} />
-        <Route path="/dang-ky" element={<Placeholder title="Đăng ký" />} />
+        <Route path="/dang-nhap" element={<LoginPage />} />
+        <Route path="/dang-ky" element={<RegisterPage />} />
         <Route path="/ve-chung-toi" element={<Placeholder title="Về chúng tôi" />} />
         <Route path="/tao-bo" element={<Placeholder title="Tạo bộ" />} />
         <Route path="/gio-hang" element={<Placeholder title="Giỏ hàng" />} />
