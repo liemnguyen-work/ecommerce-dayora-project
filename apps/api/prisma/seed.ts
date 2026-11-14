@@ -2,7 +2,7 @@
 import 'dotenv/config';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '../src/generated/prisma/client.js';
-
+import { hashPassword } from '../src/auth/password.js';
 const prisma = new PrismaClient({
   adapter: new PrismaPg({
     connectionString: process.env.DATABASE_URL,
@@ -618,6 +618,46 @@ function validateCatalog(): void {
   console.log('Catalog validated: 30 SKUs and 26 Products');
 }
 
+async function seedAdmin(): Promise<boolean> {
+  const email = process.env.SEED_ADMIN_EMAIL?.trim().toLowerCase();
+  const password = process.env.SEED_ADMIN_PASSWORD;
+
+  if (!email || !password) {
+    console.log(
+      'Thiếu SEED_ADMIN_EMAIL hoặc SEED_ADMIN_PASSWORD; bỏ qua admin và RuleSet'
+    );
+    return false;
+  }
+
+  if (password.length < 8) {
+    throw new Error('SEED_ADMIN_PASSWORD phải có ít nhất 8 ký tự');
+  }
+
+  const existingAdmin = await prisma.user.findUnique({
+    where: { email },
+    select: { id: true },
+  });
+
+  const passwordHash = existingAdmin
+    ? undefined
+    : await hashPassword(password);
+
+  await prisma.user.upsert({
+    where: { email },
+    update: {
+      role: 'ADMIN',
+    },
+    create: {
+      email,
+      passwordHash: passwordHash!,
+      fullName: 'Admin',
+      role: 'ADMIN',
+    },
+  });
+
+  console.log('Admin seed completed');
+  return true;
+}
 // Kiểm tra dữ liệu thực tế sau khi upsert
 async function verifyCatalogInDatabase(): Promise<void> {
   const [dbProducts, dbSkus] = await Promise.all([
@@ -772,6 +812,11 @@ async function main(): Promise<void> {
   await verifyCatalogInDatabase();
 
   // TODO: Bước 4 - Admin
+  const adminReady = await seedAdmin();
+
+  if (adminReady) {
+    // TODO: Task #153 - Seed RuleSet v1
+  }
   // TODO: Bước 5 - RuleSet v1
 }
 
