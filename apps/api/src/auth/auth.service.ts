@@ -2,8 +2,8 @@ import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/co
 import { ConfigService } from '@nestjs/config';
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import { PrismaService } from '../prisma/prisma.service.js';
-import type { RegisterDto } from './auth.dto.js';
-import { hashPassword } from './password.js';
+import type { LoginDto, RegisterDto } from './auth.dto.js';
+import { hashPassword, verifyPassword } from './password.js';
 
 // Thời hạn token tính bằng giây.
 const TOKEN_LIFETIME = 7 * 24 * 60 * 60;
@@ -56,6 +56,25 @@ export class AuthService {
       }
       throw error;
     }
+  }
+
+  async login(dto: LoginDto) {
+    const email = dto.email.trim().toLowerCase();
+    const user = await this.prisma.user.findUnique({ where: { email } });
+
+    if (!user || !user.isActive || !(await verifyPassword(dto.password, user.passwordHash))) {
+      throw new UnauthorizedException('Email hoặc mật khẩu không đúng');
+    }
+
+    return {
+      id: user.id,
+      email: user.email,
+      fullName: user.fullName,
+      phone: user.phone,
+      role: user.role,
+      isActive: user.isActive,
+      createdAt: user.createdAt,
+    };
   }
 
   signToken(id: string): string {
