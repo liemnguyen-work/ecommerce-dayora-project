@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react';
+import { useRef, useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../lib/auth.tsx';
 
@@ -13,10 +13,12 @@ export function AuthPage({ register = false }: { register?: boolean }) {
   const [errors, setErrors] = useState<FormErrors>({});
   const [serverError, setServerError] = useState('');
   const [sending, setSending] = useState(false);
+  // Khóa ngay lập tức, kể cả khi React chưa render lại nút disabled.
+  const submitting = useRef(false);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (sending) return;
+    if (submitting.current) return;
 
     const nextErrors: FormErrors = {};
     const normalizedEmail = email.trim();
@@ -33,6 +35,7 @@ export function AuthPage({ register = false }: { register?: boolean }) {
     setServerError('');
     if (Object.keys(nextErrors).length) return;
 
+    submitting.current = true;
     setSending(true);
     try {
       if (register) {
@@ -44,6 +47,7 @@ export function AuthPage({ register = false }: { register?: boolean }) {
     } catch (error: unknown) {
       setServerError(error instanceof Error ? error.message : 'Không thể gửi yêu cầu. Vui lòng thử lại.');
     } finally {
+      submitting.current = false;
       setSending(false);
     }
   }
@@ -58,6 +62,8 @@ export function AuthPage({ register = false }: { register?: boolean }) {
         <p className="mt-3 text-sm">{register ? 'Tạo tài khoản để chuẩn bị cho những chuyến đi cùng DAYORA.' : 'Chào mừng bạn trở lại DAYORA.'}</p>
 
         <form noValidate onSubmit={submit} aria-busy={sending} className="mt-8 space-y-5">
+          <fieldset disabled={sending} className="min-w-0 space-y-5 border-0 p-0">
+            <legend className="sr-only">{register ? 'Thông tin đăng ký' : 'Thông tin đăng nhập'}</legend>
           {register && (
             <div>
               <label htmlFor="auth-full-name" className="font-semibold">Họ và tên</label>
@@ -76,10 +82,11 @@ export function AuthPage({ register = false }: { register?: boolean }) {
             <p id="auth-password-help" className="mt-2 text-sm">Ít nhất 8 ký tự.</p>
             <p id="auth-password-error" className="mt-1 text-sm text-berry">{errors.password}</p>
           </div>
-          {serverError && <p role="alert" className="rounded-xl border border-berry/30 p-3 text-sm text-berry">{serverError}</p>}
+          {serverError && <p role="alert" className="border-l-2 border-berry bg-berry/10 px-4 py-3 text-left text-sm leading-6 text-ink">{serverError}</p>}
           <button type="submit" disabled={sending} className="min-h-12 w-full rounded-full bg-berry px-6 py-3 font-semibold text-paper hover:bg-[#A93A30] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink disabled:cursor-wait disabled:opacity-60">
-            {sending ? 'Đang gửi…' : register ? 'Tạo tài khoản' : 'Đăng nhập'}
+            {sending ? 'Đang xử lý…' : register ? 'Tạo tài khoản' : 'Đăng nhập'}
           </button>
+          </fieldset>
         </form>
 
         <p className="mt-6 text-sm">
