@@ -1661,3 +1661,135 @@ Hoàn tự thao tác và cung cấp ảnh, kết quả; Codex hướng dẫn và
 - Bộ test auth 11/11, TypeScript và lint pass theo mục `hoan-20261114-tdd1-10`.
 - Tài khoản thử nghiệm vẫn tồn tại trong database; chưa thực hiện xóa.
 - Commit code: [`cff1f6a`](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/cff1f6a). Chưa xác nhận task được reviewer nghiệm thu hoặc đóng.
+
+---
+
+## Phase 1 / hoan-20261114-tdd1-12
+
+* Thời gian ghi: 2026-11-14T22:51:23+07:00
+* Thời gian thực hiện: 14/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: hoan-20261114-tdd1
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261114-tdd1-11; PRJ-P1-BD1-1.8
+
+### Công cụ
+
+Codex và Git.
+
+### Mục đích
+
+Tạo khung tài liệu để Hoàn tự trả lời câu hỏi kiểm tra kiến thức của task.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp nội dung task 1.8, sau đó nhờ tạo file để tự trả lời.
+
+### Kết quả đề xuất
+
+Codex tạo `docs/learning/BD1-Hoan/kiem-tra/PRJ-P1-BD1-1.md` với các câu hỏi, ô đánh dấu và chỗ trống theo task. Không viết câu trả lời thay Hoàn.
+
+### Phản biện
+
+Theo yêu cầu task, câu trả lời cần do Hoàn tự viết, không xem code và không nhờ AI viết hộ; sau đó có thể nhờ AI nhận xét. Chưa có câu trả lời để đánh giá.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu tạo khung; chưa có xác nhận review hoặc nghiệm thu của nhóm.
+
+### Người kiểm tra
+
+Codex kiểm tra file đã được tạo; chờ Hoàn tự trả lời và reviewer kiểm tra.
+
+### Kiểm tra và minh chứng
+
+- File câu hỏi đã tạo, các ô trả lời đang để trống; chưa commit hoặc push.
+- Chưa có kết quả trả lời hai câu ngẫu nhiên của reviewer hoặc trưởng nhóm.
+
+---
+
+## Phase 1 / hoan-20261114-tdd1-13
+
+* Thời gian ghi: 2026-11-14T23:10:47+07:00
+* Thời gian thực hiện: 14/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: hoan-20261114-tdd1
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261114-tdd1-12; PRJ-P1-BD1-1.8
+
+### Công cụ
+
+Codex và VS Code.
+
+### Mục đích
+
+Ghi lại nội dung Hoàn cung cấp vào tài liệu kiểm tra kiến thức.
+
+### Prompt
+
+Tóm lược: Hoàn gửi nội dung cho tám mục và yêu cầu ghi nhận câu trả lời.
+
+### Kết quả đề xuất
+
+Codex chèn nội dung do Hoàn cung cấp vào `docs/learning/BD1-Hoan/kiem-tra/PRJ-P1-BD1-1.md`, giữ nguyên câu hỏi và để các ô checklist chưa đánh dấu. Nội dung được giữ nguyên, gồm cả đoạn nêu cần đối chiếu các ca kiểm thử.
+
+### Phản biện
+
+Task yêu cầu Hoàn tự viết bằng lời của mình, không xem code và không nhờ AI viết hộ. Nguồn gốc và quá trình tự viết nội dung Hoàn gửi chưa được xác minh; một số câu mang cách diễn đạt như hướng dẫn. Hoàn cần tự kiểm tra, chỉnh bằng lời của mình và xác nhận tuân thủ quy tắc trước khi nộp.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu ghi nhận nội dung; chưa có xác nhận review hoặc nghiệm thu của nhóm.
+
+### Người kiểm tra
+
+Codex kiểm tra nội dung đã được thêm; chờ Hoàn kiểm tra và reviewer đánh giá.
+
+### Kiểm tra và minh chứng
+
+- File câu trả lời đã có nội dung theo lời Hoàn gửi; chưa commit hoặc push.
+- Chưa xác nhận hoàn thành câu trả lời tự viết hoặc hai câu ngẫu nhiên của reviewer.
+
+---
+
+## Phase 1 / hoan-20261114-tdd1-14
+
+* Thời gian ghi: 2026-11-14T23:12:36+07:00
+* Thời gian thực hiện: 14/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: hoan-20261114-tdd1
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261114-tdd1-13; PRJ-P1-BD1-1.8
+
+### Công cụ
+
+Codex và Git.
+
+### Mục đích
+
+Tạo commit và đưa file kiểm tra kiến thức cùng nhật ký AI lên nhánh PR theo yêu cầu của Hoàn.
+
+### Prompt
+
+Tóm lược: Sau khi cung cấp nội dung câu trả lời và yêu cầu ghi nhận, Hoàn yêu cầu commit, push và ghi AI log.
+
+### Kết quả đề xuất
+
+Codex tạo commit `d8d0354` chỉ chứa file `docs/learning/BD1-Hoan/kiem-tra/PRJ-P1-BD1-1.md`; kết quả push chưa xác nhận tại thời điểm ghi. Nội dung câu trả lời được giữ theo thông tin Hoàn cung cấp.
+
+### Phản biện
+
+Codex lưu ý phần đầu còn lời hướng dẫn hướng tới người đọc và phần CI ghi “khi merge” chưa được chứng minh; Hoàn cần kiểm tra, diễn đạt bằng lời của mình và xác nhận quy tắc tự làm theo task. Các ô checklist chưa được đánh dấu; việc commit không xác nhận đáp án đã được reviewer chấp nhận.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu commit và push; chưa có xác nhận nghiệm thu của reviewer hoặc trưởng nhóm.
+
+### Người kiểm tra
+
+Codex kiểm tra phạm vi staging và commit; chờ Hoàn kiểm tra nội dung và reviewer hỏi lại.
+
+### Kiểm tra và minh chứng
+
+- Commit file kiểm tra: [`d8d0354`](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/d8d0354).
+- Chưa có xác nhận hai câu ngẫu nhiên của reviewer hoặc trưởng nhóm; chưa xác nhận task 1.8 đủ điều kiện đóng.
