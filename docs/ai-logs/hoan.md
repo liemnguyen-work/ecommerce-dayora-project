@@ -2080,3 +2080,124 @@ Hoàn xem phương án, trao đổi để hiểu vai trò của pipe, đồng ý
 - `npm.cmd test -w api -- catalog.spec.ts -t "CatalogQueryPipe"`: dừng vì thiếu `catalog.service.js`, 0 test được chạy.
 - Chưa xác nhận hai ca Vitest xanh; kiểm tra riêng không thay thế tiêu chí nghiệm thu.
 - Commit pipe: [`4d4519d`](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/4d4519d). Chưa xác nhận push tại thời điểm ghi.
+
+---
+
+## Phase 1 / hoan-20261115-cat1-06
+
+* Thời gian ghi: 2026-11-15T01:33:09+07:00
+* Thời gian thực hiện: 15/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: hoan-20261115-cat1
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261115-cat1-05; PRJ-P1-BD1-2.3
+
+### Công cụ
+
+Codex, VS Code, Node.js, Prisma, Vitest, TypeScript, ESLint và Git.
+
+### Mục đích
+
+Thực hiện phần tìm kiếm và lọc danh sách sản phẩm trong `CatalogService`: chỉ lấy sản phẩm và SKU đang hoạt động, áp dụng các bộ lọc trên cùng một SKU và trả danh sách sản phẩm phù hợp.
+
+### Prompt
+
+Tóm lược quá trình trao đổi:
+
+1. Hoàn cung cấp nội dung task 2.3 và yêu cầu tiếp tục.
+2. Codex trình bày phương án truy vấn sản phẩm, lọc SKU và kiểm tra trước khi thực hiện.
+3. Hoàn hỏi bước này có phải giúp truy vấn sản phẩm khi khách hàng tìm kiếm trong thực tế không.
+4. Codex giải thích luồng từ điều kiện khách nhập, qua `CatalogQueryPipe`, đến `CatalogService` và kết quả trả về.
+5. Hoàn đồng ý cho Codex triển khai.
+6. Khi task chưa nói rõ bộ lọc kích thước là chính xác hay tối thiểu, Codex hỏi Hoàn; Hoàn chọn kích thước tối thiểu.
+7. Sau khi xem kết quả, Hoàn yêu cầu commit và push, rồi yêu cầu soạn AI log để xem trước và đồng ý cập nhật.
+
+### Kết quả đề xuất
+
+Codex tạo `apps/api/src/catalog/catalog.service.ts` với hàm `list`:
+
+- Tạo điều kiện Prisma cho sản phẩm ACTIVE có ít nhất một SKU ACTIVE.
+- Đưa từ khóa, nhóm hàng, tình huống và chất liệu vào bộ lọc Prisma khi được cung cấp.
+- Kiểm tra giá, sức chứa và kích thước trên cùng một SKU; loại sản phẩm không còn SKU phù hợp.
+- Tính tồn khả dụng từ `stock - reserved`, không trả trực tiếp hai trường này trong SKU kết quả.
+- Trả về `{ items, total }`.
+
+Sau khi Hoàn xác nhận, bộ lọc kích thước được hiểu là tối thiểu: mỗi chiều của SKU cần lớn hơn hoặc bằng chiều tương ứng khách chọn.
+
+Codex tạo commit `f8d27b7` chỉ chứa `catalog.service.ts` và push lên nhánh `prj/p1-bd1-2`.
+
+### Phản biện
+
+Hoàn hỏi liệu chức năng này có giúp truy vấn sản phẩm khi khách hàng tìm kiếm trên website không. Codex giải thích service là phần backend tìm và lọc sản phẩm; pipe kiểm tra dữ liệu trước đó, còn controller và API sẽ được kết nối ở bước sau để giao diện sử dụng.
+
+Về kích thước: task nêu “kích thước khớp” nhưng chưa làm rõ là khớp chính xác hay tối thiểu. Codex hỏi; Hoàn chọn cách hiểu tối thiểu. Đây là lựa chọn Hoàn xác nhận trong phiên, chưa được ghi nhận là quyết định chung của cả nhóm.
+
+Về kiểm thử: kiểm tra riêng bằng Prisma giả giúp xem một số hành vi của service, nhưng Vitest trong `catalog.spec.ts` chưa chạy được vì thiếu controller/module. Vì vậy chưa thể nói bốn test nghiệm thu đã xanh.
+
+### Quyết định của nhóm
+
+Hoàn đồng ý triển khai, chọn cách hiểu kích thước tối thiểu và yêu cầu commit, push. Chưa có xác nhận reviewer hoặc nhóm nghiệm thu task 2.3.
+
+### Người kiểm tra
+
+- Hoàn: xem phương án, hỏi về tác dụng thực tế và chọn cách hiểu kích thước.
+- Codex: triển khai, kiểm tra riêng bằng dữ liệu giả, chạy ESLint, TypeScript và Vitest; tạo commit và push.
+- QA/reviewer: chưa có kết quả review hoặc nghiệm thu được xác minh.
+
+### Kiểm tra và minh chứng
+
+- Tệp chức năng: `apps/api/src/catalog/catalog.service.ts`.
+- Kiểm tra riêng bằng Prisma giả: pass các tình huống bộ lọc Prisma, SKU phải đáp ứng đồng thời điều kiện, SKU rỗng, giá giảm bằng 0, kích thước tối thiểu và tồn khả dụng.
+- ESLint cho file service: pass.
+- TypeScript kiểm tra riêng file service: pass.
+- TypeScript toàn bộ API chưa pass vì các file và chức năng catalog thuộc bước sau chưa có.
+- Vitest báo 0 test do thiếu `catalog.controller.js`; chưa đạt tiêu chí bốn ca CatalogService xanh.
+- Commit: [`f8d27b7`](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/f8d27b7), chỉ chứa `catalog.service.ts`.
+- Đã push lên nhánh `prj/p1-bd1-2`.
+- Chưa xác nhận QA duyệt bộ test hoặc task 2.3 đủ điều kiện đóng.
+
+---
+
+## Phase 1 / hoan-20261115-cat1-07
+
+* Thời gian ghi: 2026-11-15T01:37:18+07:00
+* Thời gian thực hiện: 15/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: hoan-20261115-cat1
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261115-cat1-06; PRJ-P1-BD1-2.4
+
+### Công cụ
+
+Codex, VS Code, Node.js, Prisma giả, Vitest, TypeScript, ESLint và Git.
+
+### Mục đích
+
+Bổ sung giá có hiệu lực và sắp xếp sản phẩm theo giá nhỏ nhất của SKU đáp ứng bộ lọc.
+
+### Prompt
+
+Tóm lược quá trình: Hoàn cung cấp task 2.4 và yêu cầu xem phương án. Codex trình bày cách dùng giá giảm, giá nhỏ nhất của các SKU khớp và sắp xếp ổn định. Hoàn đồng ý triển khai, sau đó yêu cầu commit, push và cập nhật AI log.
+
+### Kết quả đề xuất
+
+Codex bổ sung `effectivePrice` cho SKU bằng `salePrice ?? price`, tính `minPrice` từ các SKU còn lại sau lọc và sắp xếp tăng hoặc giảm theo yêu cầu; giá bằng nhau được phân định theo ID. Codex tạo commit code `73a6023`; kết quả push chưa được xác nhận tại thời điểm ghi.
+
+### Phản biện
+
+Codex lưu ý giá giảm bằng 0 là giá hợp lệ và không được dùng toán tử `||` làm rơi về giá gốc. Giá của SKU không khớp điều kiện không được dùng để sắp xếp. Kiểm tra riêng bằng Prisma giả không thay thế hai ca Vitest nghiệm thu.
+
+### Quyết định của nhóm
+
+Hoàn xem phương án và đồng ý triển khai, sau đó yêu cầu commit, push và ghi nhật ký. Chưa có xác nhận reviewer nghiệm thu task 2.4.
+
+### Người kiểm tra
+
+Codex kiểm tra riêng bằng Node, chạy ESLint, kiểm tra TypeScript file service và thử Vitest. Hoàn xem phương án và kết quả tóm tắt; QA/reviewer chưa được xác minh đã duyệt.
+
+### Kiểm tra và minh chứng
+
+- Kiểm tra riêng với Prisma giả: pass giá giảm 0, giá gốc/giảm, SKU khớp, sắp xếp tăng/giảm, đồng giá và danh sách rỗng.
+- ESLint và TypeScript riêng cho service: pass.
+- Vitest hai ca giá/sắp xếp: dừng do thiếu `catalog.controller.js`, 0 test được chạy; chưa đạt tiêu chí task.
+- Commit code: [`73a6023`](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/73a6023).
