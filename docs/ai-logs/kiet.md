@@ -944,3 +944,24 @@ Chưa xác nhận người review hoặc kết quả Approve.
 - git log xác nhận hai commit ecc6aa9 và 24da76e.
 - Chưa nhận link PR, kết quả CI hoặc xác nhận Approve/merge.
 - Không kết luận toàn bộ task hoàn thành ở thời điểm ghi log.
+## P1 — Tạo Supabase cho nhóm / PRJ-P1-DO-1.1
+
+- Kiệt tạo Organization DAYORA Team (gói Free) và project DAYORA tại Singapore (`ap-southeast-1`).
+- Đã gửi lời mời cho 7 thành viên còn lại; ảnh trang Team hiển thị tổng 8 người gồm cả Kiệt.
+- Trạng thái lúc chụp: 7 lời mời đang chờ; quyền Owner cần được kiểm tra lại theo phân công nhóm.
+- AI hỗ trợ chọn vùng Singapore, giải thích Data API và cách kiểm tra danh sách thành viên. Kiệt trực tiếp tạo project, gửi lời mời và kiểm tra trên Supabase.
+
+## P1 — Chuỗi kết nối / PRJ-P1-DO-1.2
+
+- Kiệt cấu hình DATABASE_URL bằng Transaction pooler cổng 6543 với pgbouncer=true; DIRECT_URL bằng Session pooler cổng 5432 trong apps/api/.env cục bộ.
+- git check-ignore xác nhận apps/api/.env được Git bỏ qua.
+- npm run prisma:validate -w api: schema hợp lệ.
+- npm run db:migrate -w api: áp dụng migration 20261108183740_init; database đồng bộ với schema; Prisma Client 6.19.3 được sinh thành công.
+- AI giải thích cách chọn pooler và vị trí đặt biến. Kiệt tự lấy chuỗi, lưu mật khẩu và chạy lệnh. Nhật ký không chứa thông tin kết nối thật.
+
+## P1 — Thử trên máy thành viên / PRJ-P1-DO-1.3
+
+- Kiệt gửi hướng dẫn và hai chuỗi kết nối qua kênh riêng cho thành viên cần chạy dự án.
+- Theo xác nhận của Kiệt, hai thành viên khác đã chạy thử thành công.
+- Tên hai người, các lệnh họ đã chạy và ảnh/log minh chứng: bổ sung vào phần mô tả PR khi có thông tin đối chiếu.
+- AI hỗ trợ soạn hướng dẫn thử trên máy mới; Kiệt gửi thông tin và nhận kết quả trực tiếp. Không đưa mật khẩu hoặc URL kết nối vào Git.
