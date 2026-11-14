@@ -1369,3 +1369,53 @@ Hoàn xem và đồng ý với phương án trước khi Codex triển khai; sau
 - Vitest dừng vì chưa tìm thấy `auth.guard.js`, báo 0 test được chạy; chưa đạt tiêu chí test xanh của task.
 - Npm báo tổng cộng 16 lỗ hổng trong các package được kiểm tra; chưa xác định package liên quan và chưa chạy lệnh tự sửa.
 - Commit code: [`3216e55`](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/3216e55). Chưa xác nhận task 1.4 được nghiệm thu hoặc đóng.
+
+---
+
+## Phase 1 / hoan-20261114-tdd1-06
+
+* Thời gian ghi: 2026-11-14T17:28:05+07:00
+* Thời gian thực hiện: 14/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: hoan-20261114-tdd1
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261114-tdd1-05; PRJ-P1-BD1-1.5
+
+### Công cụ
+
+Codex, Node.js, Vitest, ESLint và Git.
+
+### Mục đích
+
+Triển khai kiểm tra thông tin đăng nhập, từ chối các trường hợp không hợp lệ bằng cùng thông báo và tránh trả mật khẩu băm.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp task đăng nhập và yêu cầu tiếp tục; sau khi xem phương án, Hoàn hỏi về kiểm tra thông tin, khóa tài khoản và thông báo cho khách hàng. Hoàn đồng ý triển khai, sau đó yêu cầu commit, push và cập nhật nhật ký.
+
+### Kết quả đề xuất
+
+Codex bổ sung `login` trong `apps/api/src/auth/auth.service.ts`: chuẩn hóa email, tìm người dùng, kiểm tra trạng thái và mật khẩu; ba trường hợp email không tồn tại, sai mật khẩu hoặc tài khoản khóa đều nhận lỗi 401 cùng thông báo. Khi thành công, hàm chỉ trả các trường công khai.
+
+Codex tạo commit `57c6dda` chỉ chứa `auth.service.ts`; kết quả push chưa được xác nhận tại thời điểm ghi.
+
+### Phản biện
+
+Hoàn hỏi liệu nhập sai nhiều lần có tự khóa tài khoản không. Codex làm rõ task chỉ kiểm tra `isActive`, chưa triển khai đếm lần thất bại hoặc tự khóa. Codex cũng giải thích backend trả lỗi, còn giao diện cần xử lý để hiển thị thông báo.
+
+ESLint ban đầu báo biến tách `passwordHash` không được dùng. Codex đổi sang chọn tường minh các trường công khai và kiểm tra lại. Vitest chưa chạy được ca nào vì thiếu guard; kiểm tra riêng không thay thế kiểm thử nghiệm thu.
+
+### Quyết định của nhóm
+
+Hoàn duyệt phương án và yêu cầu triển khai, commit, push, cập nhật nhật ký. Chưa có xác nhận reviewer hoặc nhóm nghiệm thu bước 1.5.
+
+### Người kiểm tra
+
+Codex kiểm tra riêng bằng Prisma giả, chạy ESLint và Vitest; Hoàn xem kết quả trao đổi. Chưa có kết quả review của QA được xác minh.
+
+### Kiểm tra và minh chứng
+
+- Kiểm tra riêng bằng Node với Prisma giả: pass đăng nhập đúng, chuẩn hóa email, ba trường hợp lỗi 401 cùng thông báo và không trả `passwordHash`.
+- ESLint `auth.service.ts`: pass sau khi sửa lỗi biến không dùng.
+- `npm.cmd test -w api -- auth -t "same message"`: dừng vì chưa tìm thấy `auth.guard.js`, 0 test được chạy; chưa đạt tiêu chí test xanh.
+- Commit code: [`57c6dda`](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/57c6dda). Chưa xác nhận task 1.5 được nghiệm thu hoặc đóng.
