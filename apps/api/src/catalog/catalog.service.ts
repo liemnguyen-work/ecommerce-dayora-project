@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import type { Prisma } from '../generated/prisma/client.js';
 import { PrismaService } from '../prisma/prisma.service.js';
 import type { CatalogQuery } from './catalog-query.pipe.js';
@@ -62,6 +62,51 @@ function matchesSku(sku: CatalogSku, query: CatalogQuery): boolean {
 @Injectable()
 export class CatalogService {
   constructor(private readonly prisma: PrismaService) {}
+
+  async detail(slug: string) {
+    if (slug.length > 200 || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
+      throw new NotFoundException('Không tìm thấy sản phẩm');
+    }
+
+    const product = await this.prisma.product.findFirst({
+      where: { slug, status: 'ACTIVE', skus: { some: { status: 'ACTIVE' } } },
+      select: productSelect,
+    });
+    if (!product) {
+      throw new NotFoundException('Không tìm thấy sản phẩm');
+    }
+
+    const related = await this.prisma.product.findMany({
+      where: {
+        categoryId: product.category.id,
+        id: { not: product.id },
+        status: 'ACTIVE',
+        skus: { some: { status: 'ACTIVE' } },
+      },
+      select: productSelect,
+      orderBy: [{ isFeatured: 'desc' }, { name: 'asc' }],
+      take: 4,
+    });
+
+    const publicSkus = (skus: CatalogSku[]) => skus.map(({ stock, reserved, ...sku }) => {
+      const availableStock = Math.max(0, stock - reserved);
+      return {
+        ...sku,
+        lengthCm: sku.lengthCm === null ? null : Number(sku.lengthCm),
+        widthCm: sku.widthCm === null ? null : Number(sku.widthCm),
+        heightCm: sku.heightCm === null ? null : Number(sku.heightCm),
+        effectivePrice: sku.salePrice ?? sku.price,
+        availableStock,
+        inStock: availableStock > 0,
+      };
+    });
+
+    return {
+      ...product,
+      skus: publicSkus(product.skus),
+      related: related.map((item) => ({ ...item, skus: publicSkus(item.skus) })),
+    };
+  }
 
   async list(query: CatalogQuery) {
     const where: Prisma.ProductWhereInput = {
