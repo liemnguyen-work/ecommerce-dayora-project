@@ -1,6 +1,6 @@
 
 import { useEffect } from 'react';
-import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import SiteHeader from './components/SiteHeader';
 import SiteFooter from './components/SiteFooter';
 import './motion.css';
@@ -119,7 +119,7 @@ function Placeholder({ title }: { title: string }) {
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <>
       <ScrollOnNavigation />
       <SiteHeader />
       <Routes>
@@ -135,6 +135,6 @@ export default function App() {
         <Route path="*" element={<main className="p-8"><h1>404 - Không tìm thấy trang</h1></main>} />
       </Routes>
       <SiteFooter />
-    </BrowserRouter>
+    </>
   );
 }
