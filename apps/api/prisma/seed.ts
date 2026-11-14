@@ -618,7 +618,7 @@ function validateCatalog(): void {
   console.log('Catalog validated: 30 SKUs and 26 Products');
 }
 
-async function seedAdmin(): Promise<boolean> {
+async function seedAdmin(): Promise<string | null> {
   const email = process.env.SEED_ADMIN_EMAIL?.trim().toLowerCase();
   const password = process.env.SEED_ADMIN_PASSWORD;
 
@@ -626,37 +626,29 @@ async function seedAdmin(): Promise<boolean> {
     console.log(
       'Thiếu SEED_ADMIN_EMAIL hoặc SEED_ADMIN_PASSWORD; bỏ qua admin và RuleSet'
     );
-    return false;
+    return null;
   }
 
   if (password.length < 8) {
     throw new Error('SEED_ADMIN_PASSWORD phải có ít nhất 8 ký tự');
   }
+  const passwordHash = await hashPassword(password);
 
-  const existingAdmin = await prisma.user.findUnique({
-    where: { email },
-    select: { id: true },
-  });
-
-  const passwordHash = existingAdmin
-    ? undefined
-    : await hashPassword(password);
-
-  await prisma.user.upsert({
+  const admin = await prisma.user.upsert({
     where: { email },
     update: {
       role: 'ADMIN',
     },
     create: {
       email,
-      passwordHash: passwordHash!,
+      passwordHash,
       fullName: 'Admin',
       role: 'ADMIN',
     },
   });
 
   console.log('Admin seed completed');
-  return true;
+  return admin.id;
 }
 // Kiểm tra dữ liệu thực tế sau khi upsert
 async function verifyCatalogInDatabase(): Promise<void> {
@@ -699,6 +691,193 @@ async function verifyCatalogInDatabase(): Promise<void> {
   console.log('Database verified: 26 Products and 30 SKUs');
 }
 
+
+type Scenario = 'PICNIC' | 'DATE' | 'BEACH';
+
+type KitRule = {
+  scenario: Scenario;
+  useType: string;
+  essential: boolean;
+  mode: 'shared' | 'per_person';
+  perPerson: number;
+  unit: string;
+};
+
+const scenarios: Scenario[] = ['PICNIC', 'DATE', 'BEACH'];
+
+// Task #153: RuleSet v1
+// Định mức demo theo tài liệu KIT-RULES-PROPOSAL.
+// TC mặc định không được tự thêm vào bộ kit.
+
+const ruleTemplates = [
+  {
+    useType: 'seating',
+    mode: 'shared',
+    perPerson: 1,
+    unit: 'người được đáp ứng',
+  },
+  {
+    useType: 'drink_personal',
+    mode: 'per_person',
+    perPerson: 1,
+    unit: 'bình',
+  },
+  {
+    useType: 'food_container',
+    mode: 'per_person',
+    perPerson: 1,
+    unit: 'hộp',
+  },
+  {
+    useType: 'utensils',
+    mode: 'per_person',
+    perPerson: 1,
+    unit: 'bộ',
+  },
+  {
+    useType: 'drink_cup',
+    mode: 'per_person',
+    perPerson: 1,
+    unit: 'ly',
+  },
+  {
+    useType: 'tissue',
+    mode: 'per_person',
+    perPerson: 5,
+    unit: 'tờ',
+  },
+  {
+    useType: 'trash_bag',
+    mode: 'per_person',
+    perPerson: 1,
+    unit: 'túi rời',
+  },
+] as const;
+
+// Phân loại thiết yếu theo tài liệu đã chọn
+const essentialByScenario: Record<Scenario, string[]> = {
+  PICNIC: [
+    'seating',
+    'drink_personal',
+    'food_container',
+    'tissue',
+    'trash_bag',
+  ],
+  DATE: [
+    'seating',
+    'drink_personal',
+    'tissue',
+    'trash_bag',
+  ],
+  BEACH: [
+    'seating',
+    'drink_personal',
+    'tissue',
+    'trash_bag',
+  ],
+};
+
+// Tạo 21 quy tắc: 3 tình huống x 7 công dụng
+const rules: KitRule[] = scenarios.flatMap((scenario) =>
+  ruleTemplates.map((template) => ({
+    ...template,
+    scenario,
+    essential: essentialByScenario[scenario].includes(
+      template.useType
+    ),
+
+    // BEACH cần 10 tờ khăn giấy/người
+    perPerson:
+      scenario === 'BEACH' && template.useType === 'tissue'
+        ? 10
+        : template.perPerson,
+  }))
+);
+
+function validateRules(rulesToValidate: KitRule[]): void {
+  if (rulesToValidate.length !== 21) {
+    throw new Error('RuleSet v1 must contain exactly 21 rules');
+  }
+
+  for (const scenario of scenarios) {
+    const scenarioRules = rulesToValidate.filter(
+      (rule) => rule.scenario === scenario
+    );
+
+    if (scenarioRules.length !== 7) {
+      throw new Error(
+        `${scenario} must contain exactly 7 rules`
+      );
+    }
+
+    const useTypes = scenarioRules.map(
+      (rule) => rule.useType
+    );
+
+    if (new Set(useTypes).size !== 7) {
+      throw new Error(
+        `Duplicate useType in scenario ${scenario}`
+      );
+    }
+
+    for (const rule of scenarioRules) {
+      if (
+        !Number.isFinite(rule.perPerson) ||
+        rule.perPerson <= 0 ||
+        !rule.unit.trim()
+      ) {
+        throw new Error(
+          `Invalid rule: ${scenario}/${rule.useType}`
+        );
+      }
+    }
+  }
+
+  console.log('RuleSet validated: 21 rules');
+}
+
+async function seedRuleSet(adminId: string): Promise<void> {
+  validateRules(rules);
+
+  const existing = await prisma.ruleSet.findUnique({
+    where: { version: 1 },
+  });
+
+  if (existing) {
+    if (
+      existing.status !== 'PUBLISHED' ||
+      !Array.isArray(existing.rules) ||
+      existing.rules.length !== 21
+    ) {
+      throw new Error(
+        'RuleSet v1 already exists with unexpected data. Review it before publishing.'
+      );
+    }
+
+    console.log('RuleSet v1 already published');
+    return;
+  }
+
+  await prisma.ruleSet.upsert({
+    where: { version: 1 },
+    update: {},
+    create: {
+      version: 1,
+      status: 'PUBLISHED',
+      rules: rules.map((rule) => ({ ...rule })),
+      createdById: adminId,
+      publishedAt: new Date(),
+      logs: {
+        create: {
+          actorId: adminId,
+          action: 'PUBLISH',
+        },
+      },
+    },
+  });
+
+  console.log('RuleSet v1 published: 21 rules');
+}
 async function main(): Promise<void> {
   // Kiểm tra dữ liệu trước khi ghi vào database
   validateCatalog();
@@ -805,19 +984,22 @@ async function main(): Promise<void> {
       },
     });
   }
-
   console.log('Product and Sku seed completed');
 
   // Kiểm tra số lượng và mã SKU thực tế trong database
   await verifyCatalogInDatabase();
 
   // TODO: Bước 4 - Admin
-  const adminReady = await seedAdmin();
+  // Task #152: Seed Admin
+  const adminId = await seedAdmin();
 
-  if (adminReady) {
-    // TODO: Task #153 - Seed RuleSet v1
+  // Task #153: Seed RuleSet v1
+  if (adminId) {
+    await seedRuleSet(adminId);
+  } else {
+    console.warn(
+      'Không có Admin từ biến môi trường; bỏ qua RuleSet v1'
+    );
   }
-  // TODO: Bước 5 - RuleSet v1
 }
-
 await main().finally(() => prisma.$disconnect());
