@@ -2201,3 +2201,53 @@ Codex kiểm tra riêng bằng Node, chạy ESLint, kiểm tra TypeScript file s
 - ESLint và TypeScript riêng cho service: pass.
 - Vitest hai ca giá/sắp xếp: dừng do thiếu `catalog.controller.js`, 0 test được chạy; chưa đạt tiêu chí task.
 - Commit code: [`73a6023`](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/73a6023).
+
+---
+
+## Phase 1 / hoan-20261115-cat1-08
+
+* Thời gian ghi: 2026-11-15T01:44:47+07:00
+* Thời gian thực hiện: 15/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: hoan-20261115-cat1
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261115-cat1-07; PRJ-P1-BD1-2.5
+
+### Công cụ
+
+Codex, VS Code, Node.js, Prisma giả, Vitest, TypeScript, ESLint và Git.
+
+### Mục đích
+
+Bổ sung chức năng lấy chi tiết sản phẩm, tồn khả dụng theo SKU và sản phẩm liên quan.
+
+### Prompt
+
+Tóm lược quá trình: Hoàn cung cấp task 2.5 và yêu cầu tiếp tục; Codex trình bày phương án kiểm tra slug, truy vấn sản phẩm và xử lý tồn kho để Hoàn xem trước. Hoàn yêu cầu thực hiện, sau đó yêu cầu commit, push và ghi AI log.
+
+### Kết quả đề xuất
+
+Codex bổ sung `detail(slug)` trong `catalog.service.ts`: kiểm tra slug; chỉ tìm sản phẩm và SKU ACTIVE; trả 404 khi không hợp lệ hoặc không tìm thấy; tính tồn khả dụng, chuyển số đo sang number, bỏ stock và reserved khỏi SKU trả về; truy vấn tối đa bốn sản phẩm liên quan cùng nhóm, khác sản phẩm hiện tại.
+
+Codex tạo commit code `683f949`; kết quả push chưa được xác nhận tại thời điểm ghi.
+
+### Phản biện
+
+Trong nội dung task được dán, đoạn code mẫu có dấu sao bị escape; phần mô tả và giá trị cụ thể thể hiện regex với dấu sao thông thường. Codex sử dụng regex theo phần mô tả để cho phép slug gồm nhiều phần cách nhau bằng dấu gạch ngang.
+
+Kiểm tra riêng dùng Prisma giả không thay thế hai ca Vitest nghiệm thu; Vitest chưa nạp được file test vì controller catalog chưa có.
+
+### Quyết định của nhóm
+
+Hoàn xem phương án và yêu cầu thực hiện, commit, push và cập nhật log. Chưa có xác nhận QA hoặc reviewer nghiệm thu task 2.5.
+
+### Người kiểm tra
+
+Codex chạy kiểm tra riêng bằng Prisma giả, ESLint, TypeScript file service và thử Vitest. Chờ Hoàn và reviewer kiểm tra kết quả.
+
+### Kiểm tra và minh chứng
+
+- Kiểm tra riêng: pass slug sai, không tìm thấy sản phẩm, tồn khả dụng, chuyển số đo và điều kiện truy vấn sản phẩm liên quan.
+- ESLint và TypeScript riêng cho service: pass.
+- Vitest ca chi tiết: dừng do thiếu `catalog.controller.js`, 0 test được chạy; chưa đạt tiêu chí hai test xanh.
+- Commit code: [`683f949`](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/683f949).
