@@ -2260,3 +2260,23 @@ Thành tự trả lời, Codex đối chiếu với thao tác đã trao đổi.
 
 ### Kiểm tra và minh chứng
 Thành giải thích đưa trang mới về đầu để xem thông tin từ trên xuống, và khi bật reduce thấy hiệu ứng chuyển động giảm. Chưa xác nhận kiểm tra /health với backend thật.
+
+## P1 / THANH-20261115-PRJ-P1-FD1-3-01
+
+### Mục đích
+Thực hiện bước 3.1: kiểu dữ liệu và tiện ích truy vấn danh mục.
+
+### Prompt
+Thành giải thích đưa từ khóa lên URL giúp giữ trạng thái khi tải lại, quay lại và chia sẻ; sau đó yêu cầu Codex triển khai.
+
+### Kết quả đề xuất
+Codex bổ sung các kiểu dữ liệu catalog, danh sách bộ lọc, catalogQuery và formatPrice trên nhánh danh mục.
+
+### Phản biện
+Theo kết quả thử cục bộ, query và định dạng giá hoạt động với ví dụ issue; chưa tích hợp giao diện danh mục hoặc được reviewer duyệt.
+
+### Người kiểm tra
+Codex chạy thử hàm, lint và build web; Thành xem lại kết quả.
+
+### Kiểm tra và minh chứng
+Query tiếng Việt trả q=th%E1%BA%A3m&sort=price_asc, giá 150000 hiển thị 150.000 ₫; lint và build web thành công. Chưa commit.
