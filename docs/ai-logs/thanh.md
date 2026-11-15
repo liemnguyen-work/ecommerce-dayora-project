@@ -2515,3 +2515,20 @@ Codex chạy lint và build web thành công; chờ Thành kiểm tra. Chưa com
 
 ### Kết quả Thành kiểm tra bổ sung
 Thành xác nhận không có tràn ngang trên màn hình nhỏ và gửi ảnh phần thông số, sản phẩm liên quan ở màn hình rộng và hẹp. Ảnh chưa thể hiện đầy đủ cổng và kích thước của bản mẫu; chưa xác nhận reviewer duyệt.
+
+## P1 / THANH-20261115-PRJ-P1-FD1-4-06
+
+### Mục đích
+Ghi nhận tự đánh giá bước 4.6.
+
+### Prompt
+Thành tự trả lời sáu câu sau khi yêu cầu gợi ý, điều chỉnh câu trả lời và yêu cầu commit.
+
+### Kết quả đề xuất
+Codex ghi nguyên câu Thành cung cấp vào file, bổ sung ghi chú Codex chạy kiểm tra SKU giả lập.
+
+### Phản biện
+Issue yêu cầu tự trả lời không nhờ AI viết hộ; Thành tự cung cấp câu trả lời nhưng có nhận từ khóa gợi ý và góp ý từ Codex. Reviewer chưa hỏi và đánh giá hai câu.
+
+### Người kiểm tra
+Thành trả lời, Codex ghi nhận; chờ reviewer đánh giá.
