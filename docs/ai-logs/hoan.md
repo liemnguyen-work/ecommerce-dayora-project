@@ -3041,3 +3041,47 @@ Codex chạy test; chờ Hoàn và QA xem xét.
 
 - `npm.cmd test -w api -- me.spec.ts -t 'yêu cầu đăng nhập'`: 1 ca fail vì thiếu `me.module.js`, 5 ca bỏ qua; chưa chạy đến assertion.
 - Chưa tạo service, module hay các endpoint còn lại; chưa commit hoặc push bước 4.2.
+
+---
+
+## Phase 1 / hoan-20261115-me-04
+
+* Thời gian ghi: 2026-11-15T17:04:41+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-me
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-4.3; hoan-20261115-me-03
+
+### Công cụ
+
+Codex, Vitest và VS Code.
+
+### Mục đích
+
+Xây dựng chức năng xem và cập nhật hồ sơ mà không trả hash mật khẩu.
+
+### Prompt
+
+Hoàn hỏi lý do không trả `passwordHash`, sau đó yêu cầu thực hiện bước 4.3.
+
+### Kết quả đề xuất
+
+Codex tạo `me.service.ts` với `profile`, `updateProfile` và danh sách trường công khai; hồ sơ không tồn tại được báo 404.
+
+### Phản biện
+
+Test sử dụng Prisma giả, chưa xác nhận endpoint HTTP hoặc database thật. Bước 4.2 vẫn chưa có test xanh do `MeModule` chưa tạo; chưa có xác nhận QA đã duyệt bộ test.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu thực hiện từng bước và giữ `MeModule` cho bước 4.5.
+
+### Người kiểm tra
+
+Codex chạy ca test hồ sơ; chờ Hoàn và QA/reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api -- me.spec.ts -t 'xem và sửa hồ sơ'`: 1 ca pass, 5 ca bỏ qua do lọc tên.
+- Chưa commit hoặc push bước 4.3; chưa kiểm tra kết nối database thật.
