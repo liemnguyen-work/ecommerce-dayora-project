@@ -2403,3 +2403,26 @@ Codex giữ route trang chủ và route danh mục, giữ các mục nhật ký 
 
 ### Kiểm tra và giới hạn
 Codex chạy lint và build web thành công. Chưa kiểm tra giao diện hợp nhất trong trình duyệt hoặc xác nhận reviewer duyệt. Thay đổi nhật ký chưa commit trong bản làm việc cũ được giữ nguyên ngoài merge này.
+
+## P1 / THANH-20261115-PRJ-P1-FD1-4-01
+
+### Mục đích
+Thực hiện bước 4.1: trang chi tiết sản phẩm theo slug.
+
+### Prompt
+Thành cung cấp issue #206 và yêu cầu làm task mới.
+
+### Kết quả đề xuất
+Codex tạo trang đọc slug, gọi API, hiển thị thông tin cơ bản hoặc trạng thái chưa khả dụng với nút thử lại và liên kết về danh mục.
+
+### Phản biện
+Chưa kiểm tra thực tế slug đúng, slug sai hoặc thử lại trên trình duyệt. Biến thể và số lượng thuộc các bước sau.
+
+### Người kiểm tra
+Codex chạy lint và build web; chờ Thành kiểm tra.
+
+### Kiểm tra và minh chứng
+npm.cmd run lint -w web và npm.cmd run build -w web thành công. Chưa commit hoặc push.
+
+### Kết quả Thành kiểm tra bổ sung
+Thành gửi ảnh sản phẩm bình nước hiển thị tên, ảnh và giá; phần mô tả báo đang cập nhật. Thành xác nhận slug không tồn tại hiện thông báo và liên kết về danh mục hoạt động. Chưa có ảnh chứng minh mô tả thực tế của sản phẩm mẫu trong issue.
