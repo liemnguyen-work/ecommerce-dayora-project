@@ -4,6 +4,8 @@ import ProductCard from '../catalog/ProductCard';
 import { api } from '../../lib/api';
 import type { Product } from '../../lib/catalog';
 import { selectFeaturedProducts } from './featured-products';
+import { FaqItem } from './FaqItem';
+import { faqs } from './faqs';
 import './home-sections.css';
 
 type Promotion = { id: string; title: string; imageUrl: string | null };
@@ -65,8 +67,7 @@ export default function HomeSections() {
       </section>
       <section className="home-section home-faq" id="faq">
         <p className="home-kicker">CÂU HỎI THƯỜNG GẶP</p><h2>Chuẩn bị chuyến đi cùng DAYORA.</h2>
-        <details><summary>DAYORA phù hợp với chuyến đi nào?</summary><p>DAYORA dành cho những chuyến đi trong ngày như picnic, hẹn hò và đi biển.</p></details>
-        <details><summary>Tôi có thể tự chọn đồ dùng không?</summary><p>Bạn có thể xem danh sách sản phẩm và chọn những món phù hợp.</p></details>
+        {faqs.map((faq) => <FaqItem key={faq.question} {...faq} />)}
       </section>
       <section className="home-cta" id="cta"><p className="home-kicker">SẴN SÀNG LÊN ĐƯỜNG?</p><h2>Gói gọn đồ dùng,<br />mở trọn cuộc vui.</h2><Link to="/tao-bo">Tạo bộ cho chuyến đi →</Link></section>
     </div>
