@@ -1,0 +1,12 @@
+.catalog-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+.catalog-card { min-width: 0; height: 100%; overflow: hidden; border: 1px solid #dde8c9; border-radius: 16px; background: #fff; }
+.catalog-card__link { display: flex; height: 100%; flex-direction: column; color: #23412e; text-decoration: none; }
+.catalog-card__link:focus-visible { outline: 3px solid #c8483c; outline-offset: -3px; }
+.catalog-image { display: grid; place-items: center; width: 100%; aspect-ratio: 4 / 3; overflow: hidden; background: #f5f2e8; color: #4a5f51; text-align: center; font-size: 0.8rem; }
+.catalog-image img { width: 100%; height: 100%; object-fit: cover; }
+.catalog-card__body { display: flex; flex: 1; flex-direction: column; gap: 0.8rem; padding: 1rem; }
+.catalog-card h3 { display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 2.8em; margin: 0; font-size: 1rem; line-height: 1.4; }
+.catalog-card__price { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: baseline; margin: auto 0 0; color: #c8483c; font-weight: 700; }
+.catalog-card__price del { color: #59645c; font-size: 0.875rem; font-weight: 400; }
+@media (max-width: 1280px) { .catalog-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 768px) { .catalog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; } }
