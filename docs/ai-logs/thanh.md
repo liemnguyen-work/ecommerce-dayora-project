@@ -2475,3 +2475,23 @@ Thành xác nhận đã thử giới hạn số lượng; đã thử nhập ngo�
 
 ### Thành xác nhận
 Thành đã xem lại giao diện tồn kho và liên kết về danh mục sau chỉnh, đồng ý commit.
+
+## P1 / THANH-20261115-PRJ-P1-FD1-4-04
+
+### Mục đích
+Hiển thị thông số và sản phẩm liên quan ở trang chi tiết.
+
+### Prompt
+Thành cung cấp issue bước 4.4 và yêu cầu tiếp tục.
+
+### Kết quả đề xuất
+Codex bổ sung danh sách thông số theo SKU, hiển thị sản phẩm liên quan do API trả về bằng ProductCard và giữ query khi điều hướng.
+
+### Phản biện
+Chưa thử dữ liệu thông số hoặc bấm sản phẩm liên quan trên trình duyệt; số lượng sản phẩm phụ thuộc API.
+
+### Kiểm tra và minh chứng
+Codex chạy lint và build web thành công; chờ Thành kiểm tra. Chưa commit.
+
+### Kết quả Thành kiểm tra
+Thành xác nhận thông số hiển thị và bấm sản phẩm liên quan mở đúng trang.

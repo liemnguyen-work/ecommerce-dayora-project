@@ -1,17 +1,21 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { api } from '../lib/api';
-import { formatPrice, type Category, type Sku } from '../lib/catalog';
+import { formatPrice, type Category, type Product, type Sku } from '../lib/catalog';
+import ProductCard from '../components/catalog/ProductCard';
 
 type ProductDetail = {
   id: string;
   name: string;
   description: string | null;
+  material: string | null;
   category: Category;
-  skus: (Sku & { unit: string })[];
+  skus: (Sku & { unit: string; lengthCm: number | null; widthCm: number | null; heightCm: number | null; volumeMl: number | null; capacityPeople: number | null })[];
+  related: Product[];
 };
 
 function ProductDetails({ product }: { product: ProductDetail }) {
+  const { search } = useLocation();
   const [selectedId, setSelectedId] = useState(product.skus[0]?.id);
   const [quantity, setQuantity] = useState(1);
   const [quantityInput, setQuantityInput] = useState('1');
@@ -19,12 +23,18 @@ function ProductDetails({ product }: { product: ProductDetail }) {
   const sku = product.skus.find((item) => item.id === selectedId);
   const available = Boolean(sku?.inStock && sku.availableStock > 0);
   const maxQty = Math.max(1, Math.min(99, sku?.availableStock ?? 1));
+  const specs: [string, string | number | null | undefined][] = [
+    ['Mã biến thể', sku?.code], ['Màu sắc', sku?.color], ['Chất liệu', product.material],
+    ['Dài (cm)', sku?.lengthCm], ['Rộng (cm)', sku?.widthCm], ['Cao (cm)', sku?.heightCm],
+    ['Dung tích (ml)', sku?.volumeMl], ['Sức chứa (người)', sku?.capacityPeople],
+  ];
   function updateQuantity(value: number) {
     const next = Math.max(1, Math.min(maxQty, value));
     setQuantity(next);
     setQuantityInput(String(next));
   }
   return (
+    <>
     <article className="grid gap-8 md:grid-cols-2">
       <div className="overflow-hidden rounded-3xl bg-leaf">
         {sku?.imageUrl ? <img className="h-full w-full object-cover" src={sku.imageUrl} alt={product.name} /> : <p className="p-8">Ảnh sản phẩm đang cập nhật.</p>}
@@ -58,6 +68,16 @@ function ProductDetails({ product }: { product: ProductDetail }) {
         {notice && <p role="status" className="text-sm">{notice}</p>}
       </div>
     </article>
+    <section aria-labelledby="product-specs" className="mt-16">
+      <h2 id="product-specs" className="mb-5 text-2xl font-bold">Thông số sản phẩm</h2>
+      <dl className="overflow-hidden rounded-2xl border border-leaf bg-white">
+        {specs.filter(([, value]) => value !== null && value !== undefined && value !== '').map(([label, value]) => (
+          <div key={label} className="grid grid-cols-2 gap-4 border-b border-leaf px-5 py-3 last:border-b-0"><dt className="font-semibold">{label}</dt><dd>{value}</dd></div>
+        ))}
+      </dl>
+    </section>
+    {product.related?.length > 0 && <section aria-labelledby="related-products" className="mt-16"><h2 id="related-products" className="mb-6 text-2xl font-bold">Cùng bạn ra ngoài</h2><div className="catalog-grid">{product.related.map((item) => <ProductCard key={item.id} product={item} search={search} />)}</div></section>}
+    </>
   );
 }
 
