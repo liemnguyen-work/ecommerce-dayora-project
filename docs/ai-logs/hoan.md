@@ -2909,3 +2909,93 @@ Codex kiểm tra và chạy lệnh; chờ reviewer và CI xem lại.
 - `npm.cmd run lint -w api`: pass.
 - `npm.cmd test -w api`: 33/33 pass.
 - `npm.cmd run build -w api`: pass.
+
+---
+
+## Phase 1 / hoan-20261115-authfix-01
+
+* Thời gian ghi: 2026-11-15T23:02:37+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-authfix
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-FIX.1
+
+### Công cụ
+
+Codex, Git, Vitest và VS Code.
+
+### Mục đích
+
+Điều chỉnh giới hạn đăng nhập theo IP và email, tránh từ chối mọi khóa mới khi bộ nhớ đầy.
+
+### Prompt
+
+Hoàn cung cấp task fix sau review và yêu cầu tiếp tục thực hiện.
+
+### Kết quả đề xuất
+
+Codex tạo nhánh `fix/p1-bd1-auth-hardening` từ `origin/main` tại `c5bf2d0`; controller kết hợp IP với email đã chuẩn hóa, limiter xóa mục cũ nhất khi đầy, và bổ sung test cho hai trường hợp yêu cầu.
+
+### Phản biện
+
+Giới hạn theo IP và email không ngăn mọi hình thức tấn công; `request.ip` có thể là IP proxy nếu hạ tầng chưa cấu hình phù hợp. Khi xóa mục cũ nhất, bộ đếm cũ có thể bị loại trước khi hết hạn. Chưa kiểm tra cách triển khai proxy hoặc chạy build toàn dự án.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu thực hiện bước fix; chưa có xác nhận reviewer duyệt thay đổi.
+
+### Người kiểm tra
+
+Codex chạy test và lint API; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api -- auth-rate-limit`: 7/7 pass.
+- `npm.cmd test -w api`: 35/35 pass; `npm.cmd run lint -w api`: pass.
+- Chưa commit hoặc push; chưa kiểm tra proxy thực tế và build toàn dự án.
+
+---
+
+## Phase 1 / hoan-20261115-authfix-02
+
+* Thời gian ghi: 2026-11-15T23:07:49+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-authfix
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-FIX.2; hoan-20261115-authfix-01
+
+### Công cụ
+
+Codex, Vitest và VS Code.
+
+### Mục đích
+
+Giảm chênh lệch thời gian xử lý khi đăng nhập bằng email không tồn tại.
+
+### Prompt
+
+Hoàn tạm hoãn kiểm tra proxy thực tế và yêu cầu tiếp tục bước tiếp theo.
+
+### Kết quả đề xuất
+
+Codex thêm hash giả tạo một lần và gọi xác minh mật khẩu cả khi không có user; trường hợp tài khoản bị khóa cũng đi qua xác minh. Bổ sung ca test quan sát lời gọi verifyPassword khi email không tồn tại.
+
+### Phản biện
+
+Test xác nhận lời gọi, không chứng minh thời gian phản hồi bằng nhau hay loại bỏ hoàn toàn khả năng dò tài khoản. Đây là ca test bổ sung vào file nghiệm thu, cần thông báo QA để review; các ca cũ không bị nới lỏng. Bước 1 vẫn chưa commit.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu tạm bỏ qua kiểm tra proxy và tiếp tục; chưa có xác nhận QA hoặc reviewer duyệt.
+
+### Người kiểm tra
+
+Codex chạy test auth và lint API; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api -- auth.spec.ts`: 7/7 pass.
+- `npm.cmd run lint -w api`: pass.
+- Bước 1 và 2 chưa commit hoặc push; chưa chạy build toàn dự án.
