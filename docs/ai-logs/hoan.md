@@ -3089,3 +3089,48 @@ Codex chạy test và lint API; chờ Hoàn và reviewer xem xét.
 - `npm.cmd test -w api`: 44/44 pass.
 - `npm.cmd run lint -w api`: pass.
 - Chưa chạy build toàn dự án; chưa commit hoặc push bước 5.
+
+---
+
+## Phase 1 / hoan-20261115-authfix-05
+
+* Thời gian ghi: 2026-11-15T23:24:46+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-authfix
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-FIX; hoan-20261115-authfix-04
+
+### Công cụ
+
+Codex, npm và VS Code.
+
+### Mục đích
+
+Kiểm tra lint, test và build toàn dự án trước PR.
+
+### Prompt
+
+Hoàn hỏi task fix đã hoàn tất để đóng và mở PR merge chưa.
+
+### Kết quả đề xuất
+
+Codex chạy các kiểm tra toàn dự án. Build web ban đầu thiếu package `motion` đã khai báo; sau khi đồng bộ dependencies bằng npm install không chạy script, build lại thành công.
+
+### Phản biện
+
+Kiểm tra cục bộ không thay thế CI, QA và review. Chưa kiểm tra IP proxy thực tế. Bước tối ưu catalog là tùy chọn và chưa thực hiện; chưa xác nhận PR được tạo hay merge.
+
+### Quyết định của nhóm
+
+Chưa có xác nhận reviewer duyệt PR hoặc task được đóng.
+
+### Người kiểm tra
+
+Codex chạy kiểm tra; chờ Hoàn và reviewer xác nhận.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd run lint`: pass; `npm.cmd test`: 44/44 pass.
+- `npm.cmd run build`: pass sau khi đồng bộ dependencies.
+- AI log này chưa commit hoặc push.
