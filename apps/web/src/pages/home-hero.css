@@ -5,6 +5,7 @@ html { scrollbar-gutter: stable; }
 .home-hero-copy { position: relative; z-index: 1; width: min(100% - 48px, 1200px); margin: 0 auto; padding: 5rem 0; }
 .home-hero-eyebrow { color: #f2c14e; font-size: 0.8rem; font-weight: 800; letter-spacing: 0.13em; }
 .home-hero-copy h1 { max-width: 780px; margin: 1rem 0; color: #fffdf7; font-size: clamp(2.5rem, 5.8vw, 5rem); line-height: 1.15; font-weight: 800; }
+.hero-word { display: inline-block; padding-top: 0.22em; }
 .home-hero-copy > p:not(.home-hero-eyebrow) { max-width: 38rem; font-size: clamp(1rem, 1.5vw, 1.2rem); }
 .home-hero-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; }
 .home-hero-actions a, .home-hero-skip { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0.8rem 1.4rem; border-radius: 999px; font-weight: 600; text-decoration: none; }

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import StaggeredText from '../components/home/StaggeredText';
 import './home-hero.css';
 
 let introSeenThisLoad = false;
@@ -43,7 +44,11 @@ export default function HomePage() {
         {ready ? (
           <div className="home-hero-copy">
             <p className="home-hero-eyebrow">PICNIC · HẸN HÒ · ĐI BIỂN</p>
-            <h1>Gói gọn đồ dùng,<br />mở trọn cuộc vui.</h1>
+            <h1 aria-label="Gói gọn đồ dùng, mở trọn cuộc vui.">
+              <StaggeredText text="Gói gọn đồ dùng," />
+              <br />
+              <StaggeredText text="mở trọn cuộc vui." offset={0.4} />
+            </h1>
             <p>Chuẩn bị cho chuyến đi trong ngày theo cách thật nhẹ nhàng.</p>
             <div className="home-hero-actions">
               <Link to="/tao-bo">Tạo bộ cho chuyến đi <span aria-hidden="true">→</span></Link>
