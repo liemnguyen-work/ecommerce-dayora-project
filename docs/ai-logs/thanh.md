@@ -2495,3 +2495,23 @@ Codex chạy lint và build web thành công; chờ Thành kiểm tra. Chưa com
 
 ### Kết quả Thành kiểm tra
 Thành xác nhận thông số hiển thị và bấm sản phẩm liên quan mở đúng trang.
+
+## P1 / THANH-20261115-PRJ-P1-FD1-4-05
+
+### Mục đích
+Kiểm tra và điều chỉnh trang chi tiết cho màn hình 390 px.
+
+### Prompt
+Thành cung cấp issue bước 4.5 và yêu cầu tiếp tục.
+
+### Kết quả đề xuất
+Codex giữ bố cục một cột ở màn nhỏ, thêm giới hạn co giãn và chiều cao tối thiểu 44px cho nút mua.
+
+### Phản biện
+Chưa đo tràn ngang hoặc đối chiếu hình 390/1366 với bản mẫu trên trình duyệt; chưa có xác nhận reviewer.
+
+### Kiểm tra và minh chứng
+Codex chạy lint và build web thành công; chờ Thành kiểm tra. Chưa commit.
+
+### Kết quả Thành kiểm tra bổ sung
+Thành xác nhận không có tràn ngang trên màn hình nhỏ và gửi ảnh phần thông số, sản phẩm liên quan ở màn hình rộng và hẹp. Ảnh chưa thể hiện đầy đủ cổng và kích thước của bản mẫu; chưa xác nhận reviewer duyệt.

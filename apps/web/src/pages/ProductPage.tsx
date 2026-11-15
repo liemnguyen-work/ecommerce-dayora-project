@@ -35,11 +35,11 @@ function ProductDetails({ product }: { product: ProductDetail }) {
   }
   return (
     <>
-    <article className="grid gap-8 md:grid-cols-2">
-      <div className="overflow-hidden rounded-3xl bg-leaf">
+    <article className="grid min-w-0 gap-8 md:grid-cols-2">
+      <div className="min-w-0 overflow-hidden rounded-3xl bg-leaf">
         {sku?.imageUrl ? <img className="h-full w-full object-cover" src={sku.imageUrl} alt={product.name} /> : <p className="p-8">Ảnh sản phẩm đang cập nhật.</p>}
       </div>
-      <div className="space-y-4">
+      <div className="min-w-0 space-y-4 break-words">
         <p className="font-semibold text-berry">{product.category.name}</p>
         <h1 className="text-3xl font-bold">{product.name}</h1>
         {sku && <p className="text-2xl font-bold text-berry">{formatPrice(sku.effectivePrice)}</p>}
@@ -62,7 +62,7 @@ function ProductDetails({ product }: { product: ProductDetail }) {
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-4">
-          <button type="button" disabled={!available} onClick={() => setNotice('Chức năng thêm vào giỏ đang được phát triển.')} className="rounded-full bg-berry px-6 py-3 font-semibold text-white disabled:cursor-not-allowed disabled:bg-ink/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink">{available ? 'Thêm vào giỏ' : 'Tạm hết hàng'}</button>
+          <button type="button" disabled={!available} onClick={() => setNotice('Chức năng thêm vào giỏ đang được phát triển.')} className="min-h-11 rounded-full bg-berry px-6 py-3 font-semibold text-white disabled:cursor-not-allowed disabled:bg-ink/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink">{available ? 'Thêm vào giỏ' : 'Tạm hết hàng'}</button>
           <Link className="rounded-full px-3 py-2 font-semibold text-ink underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-berry" to="/san-pham">← Về danh mục</Link>
         </div>
         {notice && <p role="status" className="text-sm">{notice}</p>}
