@@ -693,3 +693,289 @@ Nội dung học tập của PRJ-P1-FD2-2 tập trung vào việc xây dựng kh
 Các nội dung quan trọng nhất cần nắm là sự khác biệt giữa ẩn giao diện và bảo vệ API, cách tái sử dụng logic qua `useLoad`, cách cập nhật từng phần bằng `PATCH`, ý nghĩa của ẩn mềm và cách chứng minh dữ liệu đã được đồng bộ sau thao tác quản trị.
 
 Việc hoàn tất nhiệm vụ cần được xác nhận bằng mã nguồn, các commit của từng sub-issue, kết quả kiểm tra lint/build, minh chứng giao diện và quy trình review/merge theo yêu cầu dự án.
+
+# AI USAGE LOG — PRJ-P1-FD2-1
+
+## Đăng nhập, đăng ký và trạng thái đăng nhập
+
+**Thông tin người thực hiện**
+
+| Nội dung             | Thông tin                                  |
+| -------------------- | ------------------------------------------ |
+| Họ và tên            | Nguyễn Hồng Phúc                           |
+| Vai trò              | FD2 – Phúc                                 |
+| Dự án                | DAYORA – Website thương mại điện tử        |
+| Nhiệm vụ             | PRJ-P1-FD2-1 (#29)                         |
+| Repository           | `liemnguyen-work/ecommerce-dayora-project` |
+| Branch               | `prj/p1-fd2-1`                             |
+| Reviewer             | FD1 – Thành                                |
+| Công cụ AI | ChatGPT / Codex                            |
+
+---
+
+## 1. Mục đích sử dụng AI
+
+Trong quá trình thực hiện PRJ-P1-FD2-1, tôi sử dụng AI để tìm hiểu cách xây dựng hệ thống đăng nhập và quản lý trạng thái xác thực trong ứng dụng React kết hợp TypeScript.
+
+Mục đích sử dụng AI bao gồm:
+
+- Phân tích yêu cầu của sáu sub-issue và xác định thứ tự triển khai phù hợp.
+- Giải thích cơ chế Context API, AuthProvider và custom hook `useAuth`.
+- Hỗ trợ tìm hiểu cách xây dựng form đăng nhập, xử lý dữ liệu và gọi API.
+- Phân tích cách hiển thị lỗi từ server và quản lý trạng thái loading.
+- Đánh giá cơ chế chuyển hướng sau đăng nhập bằng `?next=`.
+- Hỗ trợ tự review, phát hiện các trường hợp ngoại lệ và chuẩn bị kiểm tra kiến thức.
+
+AI được sử dụng như một công cụ hỗ trợ học tập và phân tích giải pháp kỹ thuật. Các đề xuất cần được đối chiếu với yêu cầu của issue, cấu trúc repository và kết quả kiểm thử thực tế.
+
+## 2. Nhật ký sử dụng AI
+
+### 2.1. Phân tích yêu cầu và chuẩn bị môi trường
+
+**Liên quan:** PRJ-P1-FD2-1 (#29)
+
+**Mục tiêu:** Xác định phạm vi nhiệm vụ, các thành phần phụ thuộc và những file cần chỉnh sửa trước khi lập trình.
+
+**Prompt:**
+
+> Tôi đang thực hiện task PRJ-P1-FD2-1 gồm sáu sub-issue liên quan đến đăng nhập và trạng thái xác thực. Hãy giúp tôi phân tích thứ tự thực hiện, những kiến thức React cần nắm và các phụ thuộc từ frontend, backend. Tôi muốn hạn chế chỉnh sửa những phần không thuộc nhiệm vụ của mình.
+
+**Phản hồi AI:**
+
+- Kiểm tra việc tích hợp router, layout và API từ task FD1.
+- Xác định các endpoint xác thực do backend cung cấp.
+- Triển khai `auth.tsx` trước khi xây dựng giao diện đăng nhập.
+- Tích hợp AuthProvider tại cấp ứng dụng.
+- Xây dựng LoginPage, xử lý lỗi và bổ sung điều hướng.
+- Thực hiện kiểm tra kiến thức sau khi hoàn thành các bước chức năng.
+
+**Phản biện và xử lý của người thực hiện:**
+
+Tôi nhận thấy không nên triển khai LoginPage ngay khi chưa xác định được cách lưu và chia sẻ trạng thái đăng nhập. Nếu mỗi trang tự quản lý thông tin người dùng thì có thể xảy ra tình trạng dữ liệu không đồng bộ.
+
+Tôi cũng lưu ý rằng task này phụ thuộc vào router và API backend. Vì vậy, việc tự tạo thêm endpoint hoặc thay đổi cấu trúc router khi chưa kiểm tra phần việc của các thành viên khác có thể gây xung đột.
+
+**Quyết định:** Giữ đúng phạm vi FD2, triển khai lần lượt sáu sub-issue và ưu tiên tái sử dụng các thành phần đã có trong dự án.
+
+---
+
+### 2.2. Xây dựng `lib/auth.tsx`
+
+**Sub-issue:** PRJ-P1-FD2-1.1
+
+**Mục tiêu:** Xây dựng cơ chế quản lý trạng thái xác thực dùng chung cho ứng dụng.
+
+**Prompt:**
+
+> Theo tôi hiểu, AuthContext giúp các component truy cập trạng thái đăng nhập mà không phải truyền props qua nhiều cấp. Tôi dự định tạo AuthProvider để quản lý user và hàm login, sau đó dùng useAuth ở những component cần thiết. Hãy kiểm tra cách hiểu này và giải thích các trường hợp dễ phát sinh lỗi.
+
+**Phản hồi AI:**
+
+- Sử dụng Context API để chia sẻ trạng thái xác thực.
+- Tạo AuthProvider quản lý thông tin người dùng và các thao tác xác thực.
+- Tạo custom hook `useAuth` để các component truy cập Context.
+- Xử lý trường hợp component gọi useAuth ngoài phạm vi Provider.
+- Phân biệt trạng thái chưa đăng nhập với trạng thái đang khôi phục phiên đăng nhập.
+
+**Phản biện và xử lý của người thực hiện:**
+
+Tôi đồng ý với cách sử dụng Context API nhưng nhận thấy AI mới giải thích cơ chế chia sẻ trạng thái ở frontend, chưa đủ để kết luận hệ thống đã xác thực an toàn.
+
+Nếu chỉ kiểm tra biến `user` khác null thì giao diện có thể cho rằng người dùng đã đăng nhập, trong khi phiên xác thực thực tế có thể đã hết hạn hoặc không còn hợp lệ.
+
+Tôi cũng cân nhắc việc không đưa quá nhiều logic giao diện vào AuthContext để tránh làm Context khó bảo trì.
+
+**Quyết định:** Tập trung logic quản lý trạng thái và thao tác xác thực trong `lib/auth.tsx`, đồng thời để backend quyết định tính hợp lệ của phiên đăng nhập.
+
+**Kiểm chứng cần thực hiện:** Kiểm tra cách useAuth hoạt động trong và ngoài Provider, phản hồi khi đăng nhập thất bại và trạng thái sau khi tải lại trang.
+
+---
+
+### 2.3. Tích hợp AuthProvider trong `main.tsx`
+
+**Sub-issue:** PRJ-P1-FD2-1.2
+
+**Mục tiêu:** Đảm bảo các component cần xác thực có thể sử dụng chung AuthContext.
+
+**Prompt:**
+
+> Tôi đã có AuthProvider và muốn bọc ứng dụng trong main.tsx. Theo tôi, cách này giúp Header, LoginPage và các trang khác sử dụng cùng trạng thái đăng nhập. Nếu chỉ đặt Provider trong LoginPage thì có vấn đề gì? Hãy review vị trí đặt Provider.
+
+**Phản hồi AI:**
+
+AuthProvider nên bao bọc các component cần sử dụng Context. Nếu Provider chỉ nằm trong LoginPage, các component bên ngoài sẽ không truy cập được trạng thái từ Provider đó.
+
+**Phản biện và xử lý của người thực hiện:**
+
+Ban đầu tôi nghĩ chỉ cần Provider ở trang đăng nhập vì đây là nơi gửi thông tin tài khoản. Tuy nhiên, khi xét đến Header và các trang yêu cầu xác thực, tôi nhận thấy trạng thái đăng nhập phải được chia sẻ xuyên suốt ứng dụng.
+
+Tôi cũng lưu ý rằng vị trí Provider cần phù hợp với cấu trúc router hiện có. Không nên thay đổi toàn bộ cách tổ chức ứng dụng chỉ để thêm một Context.
+
+**Quyết định:** Tích hợp AuthProvider ở cấp ứng dụng trong `main.tsx`, giữ nguyên các Provider và cấu trúc router khác nếu không có yêu cầu thay đổi.
+
+**Kiểm chứng cần thực hiện:** Kiểm tra LoginPage và các component sử dụng useAuth có nhận được cùng trạng thái hay không.
+
+---
+
+### 2.4. Xây dựng `LoginPage.tsx`
+
+**Sub-issue:** PRJ-P1-FD2-1.3
+
+**Mục tiêu:** Xây dựng giao diện đăng nhập và kết nối với logic xác thực.
+
+**Prompt:**
+
+> Tôi muốn xây dựng form đăng nhập bằng React với hai trường email và mật khẩu. Tôi dự định dùng useState để quản lý dữ liệu, gọi login từ useAuth khi submit và điều hướng sau khi server xác nhận thành công. Hãy phân tích cách tổ chức form và những lỗi thường gặp, không viết lại toàn bộ ứng dụng.
+
+**Phản hồi AI:**
+
+- Sử dụng controlled input để quản lý dữ liệu form.
+- Xử lý submit thông qua sự kiện `onSubmit`.
+- Ngăn hành vi tải lại trang mặc định.
+- Gọi hàm login bất đồng bộ từ AuthContext.
+- Chỉ điều hướng sau khi đăng nhập thành công.
+- Tách phần giao diện khỏi logic gọi API.
+
+**Phản biện và xử lý của người thực hiện:**
+
+Tôi nhận thấy việc sử dụng useState phù hợp với form có ít trường dữ liệu, chưa cần bổ sung thư viện quản lý form phức tạp.
+
+Tuy nhiên, tôi không lựa chọn phương án chỉ kiểm tra email và mật khẩu ở frontend rồi tự cập nhật trạng thái đăng nhập. Cách này không phản ánh kết quả xác thực thực tế từ server.
+
+Tôi cũng lưu ý việc giữ nguyên cấu trúc giao diện và các quy ước CSS của dự án thay vì tạo một trang đăng nhập hoàn toàn độc lập.
+
+**Quyết định:** Xây dựng LoginPage theo hướng sử dụng logic từ useAuth, không lặp lại cơ chế gọi API xác thực trong từng component.
+
+**Kiểm chứng cần thực hiện:** Kiểm tra nhập liệu, submit bằng Enter, đăng nhập thành công và đăng nhập thất bại.
+
+---
+
+### 2.5. Hiển thị lỗi từ server và khóa nút khi đang gửi
+
+**Sub-issue:** PRJ-P1-FD2-1.4
+
+**Mục tiêu:** Cải thiện xử lý lỗi và hạn chế gửi request trùng lặp.
+
+**Prompt:**
+
+> Khi người dùng nhập sai mật khẩu hoặc sử dụng email đã tồn tại trong luồng đăng ký, tôi muốn giao diện hiển thị lỗi phù hợp từ server. Tôi dự định sử dụng loading để khóa nút submit khi request đang xử lý. Hãy review cách làm này và chỉ ra những trường hợp có thể bị bỏ sót.
+
+**Phản hồi AI:**
+
+- Quản lý riêng trạng thái `loading` và `error`.
+- Xóa thông báo lỗi cũ khi bắt đầu một lần submit mới.
+- Sử dụng `try/catch/finally` để xử lý request.
+- Vô hiệu hóa nút submit trong thời gian chờ.
+- Chuyển thông báo lỗi kỹ thuật thành nội dung dễ hiểu khi cần thiết.
+
+**Phản biện và xử lý của người thực hiện:**
+
+Tôi nhận thấy việc chỉ đổi nội dung nút thành “Đang đăng nhập...” không ngăn được người dùng tiếp tục gửi request. Vì vậy, cần kiểm soát cả trạng thái disabled và logic submit.
+
+Ngoài ra, không nên hiển thị nguyên văn tất cả thông báo lỗi từ server, đặc biệt khi thông báo chứa thông tin kỹ thuật hoặc dữ liệu không phù hợp với người dùng cuối.
+
+Tôi cũng nhận thấy nếu không đặt lại loading khi xảy ra exception, nút đăng nhập có thể bị khóa vĩnh viễn.
+
+**Quyết định:** Sử dụng loading để kiểm soát quá trình submit và đảm bảo trạng thái được khôi phục sau khi request kết thúc.
+
+**Kiểm chứng cần thực hiện:** Thử sai mật khẩu, lỗi mạng, gửi form liên tục và gửi lại sau khi thất bại.
+
+---
+
+### 2.6. Xử lý chuyển hướng bằng `?next=`
+
+**Sub-issue:** PRJ-P1-FD2-1.5
+
+**Mục tiêu:** Đưa người dùng quay lại trang dự định truy cập sau khi đăng nhập.
+
+**Prompt:**
+
+> Tôi muốn sử dụng query parameter next để ghi nhớ trang người dùng đang truy cập trước khi bị chuyển đến LoginPage. Theo tôi, sau khi đăng nhập thành công chỉ cần đọc next và dùng navigate để chuyển trang. Hãy kiểm tra phương án này và phân tích những rủi ro bảo mật có thể xảy ra.
+
+**Phản hồi AI:**
+
+- Đọc query parameter bằng `URLSearchParams`.
+- Điều hướng đến trang được chỉ định sau khi đăng nhập thành công.
+- Sử dụng đường dẫn mặc định nếu không có next.
+- Kiểm tra giá trị next trước khi điều hướng.
+- Không chấp nhận URL ngoài hệ thống hoặc đường dẫn không hợp lệ.
+
+**Phản biện và xử lý của người thực hiện:**
+
+Ban đầu tôi cho rằng next chỉ là một đường dẫn nội bộ nên có thể sử dụng trực tiếp. Tuy nhiên, query parameter có thể bị thay đổi thủ công trên thanh địa chỉ.
+
+Tôi nhận thấy nếu không kiểm tra next, hệ thống có thể phát sinh lỗi open redirect. Việc điều hướng đến một trang cũng không đồng nghĩa người dùng đã có quyền truy cập dữ liệu của trang đó.
+
+**Quyết định:** Kiểm tra giá trị next, chỉ chấp nhận đường dẫn nội bộ phù hợp và sử dụng đường dẫn mặc định khi giá trị không hợp lệ.
+
+**Kiểm chứng cần thực hiện:** Thử next hợp lệ, thiếu next, next chứa URL bên ngoài và trường hợp trang đích yêu cầu quyền truy cập.
+
+---
+
+### 2.7. Kiểm tra kiến thức và tự review
+
+**Sub-issue:** PRJ-P1-FD2-1.6
+
+**Mục tiêu:** Tự giải thích các kiến thức đã sử dụng và xác định những điểm cần kiểm tra trước khi gửi review.
+
+**Prompt:**
+
+> Tôi đã triển khai các bước liên quan đến AuthContext, AuthProvider, LoginPage, xử lý lỗi và điều hướng sau đăng nhập. Hãy đóng vai reviewer frontend, đưa ra các câu hỏi kiểm tra kiến thức và nhận xét những rủi ro có thể còn tồn tại. Không mặc định code đã đúng khi chưa có kết quả kiểm thử.
+
+**Phản hồi AI:**
+
+Tập trung kiểm tra các vấn đề: phạm vi chia sẻ Context, xử lý bất đồng bộ, phân biệt xác thực frontend/backend, khôi phục phiên đăng nhập, trạng thái lỗi và kiểm tra đường dẫn điều hướng.
+
+**Phản biện và xử lý của người thực hiện:**
+
+Tôi nhận thấy một chức năng có thể hoạt động trong trường hợp đăng nhập thành công nhưng vẫn còn lỗi ở các tình huống khác như mất kết nối, tải lại trang hoặc phiên đăng nhập hết hạn.
+
+Tôi cũng không xem việc AI nhận xét code hợp lý là bằng chứng đã hoàn thành task. Cần kiểm tra trực tiếp bằng công cụ của dự án và đối chiếu với tiêu chí nghiệm thu.
+
+**Quyết định:** Tự giải thích lại từng phần code, kiểm tra các trường hợp ngoại lệ và chỉ gửi review sau khi có kết quả kiểm thử thực tế.
+
+---
+
+## 3. Đánh giá và kiểm chứng kết quả
+
+Theo thông tin issue được cung cấp, cả sáu sub-issue đều ở trạng thái Closed. Tuy nhiên, trạng thái issue không thay thế cho bằng chứng kiểm thử mã nguồn.
+
+| Tiêu chí | Cách kiểm tra | Trạng thái |
+|---|---|---|
+| Hoàn thành 6 sub-issue | Kiểm tra sáu sub-issue | Closed theo dữ liệu cung cấp |
+| AuthContext và useAuth | Đọc `lib/auth.tsx` | Chưa đối chiếu code |
+| AuthProvider | Kiểm tra `main.tsx` | Chưa đối chiếu code |
+| LoginPage | Kiểm tra giao diện và API | Chưa xác minh |
+| Hiển thị lỗi server | Thử sai thông tin đăng nhập | Chưa xác minh |
+| Khóa nút khi submit | Thử request đang xử lý | Chưa xác minh |
+| Điều hướng `?next=` | Thử URL hợp lệ và không hợp lệ | Chưa xác minh |
+| Kiểm tra lint | `npm run lint` | Chưa có output |
+| Kiểm tra build | `npm run build` | Chưa có output |
+| Kiểm tra PR | Xem PR và lịch sử merge | Chưa có mã PR |
+| Review của FD1 Thành | Kiểm tra nhận xét reviewer | Chưa có minh chứng |
+
+**Lưu ý:** Không tự chuyển các trạng thái chưa xác minh thành Pass chỉ dựa trên kết quả AI đề xuất hoặc việc issue đã được đóng.
+
+## 4. Tự đánh giá quá trình sử dụng AI
+
+Thông qua việc tham khảo AI cho nhiệm vụ PRJ-P1-FD2-1, tôi nhận thấy các câu hỏi hiệu quả nhất không chỉ yêu cầu AI giải thích cách viết code mà còn yêu cầu phân tích những trường hợp có thể xảy ra lỗi.
+
+Một số nguyên tắc cần áp dụng:
+
+- Đọc yêu cầu sub-issue và xác định phạm vi trước khi tham khảo AI.
+- Nêu cách hiểu ban đầu để AI có cơ sở phản biện.
+- Ưu tiên giải thích nguyên nhân và hướng xử lý thay vì sao chép giải pháp.
+- Đối chiếu các đề xuất với API, router và cấu trúc code hiện có.
+- Phân biệt rõ kiểm tra ở frontend và xác thực quyền ở backend.
+- Không xem kết quả AI review là kết quả kiểm thử thực tế.
+- Ghi nhận rõ phần AI hỗ trợ, phần tự thực hiện và những nội dung chưa xác minh.
+
+**Bài học rút ra:** Xây dựng chức năng đăng nhập không chỉ là tạo form và gửi request. Người lập trình cần hiểu cách chia sẻ trạng thái, xử lý bất đồng bộ, quản lý lỗi, bảo vệ luồng điều hướng và phối hợp với cơ chế xác thực của backend.
+
+## 5. Kết luận
+
+Nhật ký này tổng hợp nội dung học tập và trao đổi với AI theo sáu bước của PRJ-P1-FD2-1, từ phân tích yêu cầu đến kiểm tra kiến thức.
+
+Các nội dung phản biện tập trung vào việc đánh giá tính phù hợp của phản hồi AI với dự án DAYORA, xác định rủi ro và lựa chọn hướng xử lý có cơ sở kỹ thuật.
+
+Các kết quả kiểm thử, commit và nhận xét reviewer chỉ được cập nhật khi có minh chứng tương ứng.

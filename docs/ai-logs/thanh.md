@@ -2403,3 +2403,219 @@ Codex giữ route trang chủ và route danh mục, giữ các mục nhật ký 
 
 ### Kiểm tra và giới hạn
 Codex chạy lint và build web thành công. Chưa kiểm tra giao diện hợp nhất trong trình duyệt hoặc xác nhận reviewer duyệt. Thay đổi nhật ký chưa commit trong bản làm việc cũ được giữ nguyên ngoài merge này.
+
+## P1 / THANH-20261115-PRJ-P1-FD1-4-01
+
+### Mục đích
+Thực hiện bước 4.1: trang chi tiết sản phẩm theo slug.
+
+### Prompt
+Thành cung cấp issue #206 và yêu cầu làm task mới.
+
+### Kết quả đề xuất
+Codex tạo trang đọc slug, gọi API, hiển thị thông tin cơ bản hoặc trạng thái chưa khả dụng với nút thử lại và liên kết về danh mục.
+
+### Phản biện
+Chưa kiểm tra thực tế slug đúng, slug sai hoặc thử lại trên trình duyệt. Biến thể và số lượng thuộc các bước sau.
+
+### Người kiểm tra
+Codex chạy lint và build web; chờ Thành kiểm tra.
+
+### Kiểm tra và minh chứng
+npm.cmd run lint -w web và npm.cmd run build -w web thành công. Chưa commit hoặc push.
+
+### Kết quả Thành kiểm tra bổ sung
+Thành gửi ảnh sản phẩm bình nước hiển thị tên, ảnh và giá; phần mô tả báo đang cập nhật. Thành xác nhận slug không tồn tại hiện thông báo và liên kết về danh mục hoạt động. Chưa có ảnh chứng minh mô tả thực tế của sản phẩm mẫu trong issue.
+
+## P1 / THANH-20261115-PRJ-P1-FD1-4-02
+
+### Mục đích
+Bổ sung chọn SKU và hiển thị giá, ảnh, tồn.
+
+### Prompt
+Thành cung cấp yêu cầu bước 4.2 và đề nghị tiếp tục.
+
+### Kết quả đề xuất
+Codex thêm nút chọn biến thể có aria-pressed; cập nhật ảnh, giá, tồn theo SKU. Nút giỏ hàng tạm khóa vì chưa kết nối chức năng giỏ hàng.
+
+### Phản biện
+Chưa kiểm tra đổi giá hoặc SKU hết hàng với dữ liệu thực tế trên trình duyệt. Chưa có chức năng chọn số lượng của bước sau.
+
+### Kiểm tra và minh chứng
+Codex chạy lint và build web thành công; chờ Thành kiểm tra. Chưa commit.
+
+### Điều chỉnh và kết quả bổ sung
+Thành cung cấp ảnh hai SKU thảm: ảnh thay đổi, giá và tồn cùng giá trị. Codex kiểm tra API: các sản phẩm nhiều SKU hiện có cùng giá giữa các SKU và không có SKU hết hàng, nên chưa xác minh hai trường hợp này trên giao diện. Codex sửa nút: SKU còn hàng có thể bấm và báo giỏ hàng đang phát triển; SKU hết hàng bị khóa. Chưa kết nối chức năng giỏ hàng. Lint và build web thành công sau sửa; chưa thử dữ liệu giả lập.
+
+### Kiểm tra dữ liệu giả lập
+Theo yêu cầu của Thành, Codex tự kiểm tra với hai SKU giả lập: một giá 100.000 còn 4, một giá 200.000 hết hàng. Render độc lập từng SKU cho thấy giá, ảnh, tồn tương ứng và nút SKU hết hàng bị khóa. Đây là kiểm tra render, chưa mô phỏng bấm đổi SKU trong trình duyệt; Thành trước đó đã thử chuyển SKU thật và thấy ảnh đổi.
+
+## P1 / THANH-20261115-PRJ-P1-FD1-4-03
+
+### Mục đích
+Bước 4.3: giới hạn số lượng theo tồn SKU.
+
+### Prompt
+Thành cung cấp yêu cầu điều khiển số lượng.
+
+### Kết quả đề xuất
+Codex thêm nút tăng giảm, giới hạn 1 đến số tồn tối đa 99, khóa khi hết hàng và đặt lại số lượng khi đổi biến thể.
+
+### Phản biện
+Chưa thử thao tác đến giới hạn trong trình duyệt. Chức năng thêm giỏ hàng chưa kết nối.
+
+### Kiểm tra và minh chứng
+Codex chạy lint và build web thành công; chờ Thành kiểm tra thực tế. Chưa commit.
+
+### Bổ sung theo yêu cầu Thành
+Thành muốn khách có thể xóa và nhập trực tiếp số lượng. Codex thêm ô nhập, chuẩn hóa về 1 đến tồn (tối đa 99) khi rời ô; giữ nút tăng giảm và reset khi đổi SKU. Lint và build web thành công; chưa thử thao tác nhập trên trình duyệt.
+
+### Kết quả kiểm tra và chỉnh giao diện
+Thành xác nhận đã thử giới hạn số lượng; đã thử nhập ngoài khoảng và thấy số trở về giới hạn. Theo yêu cầu của Thành, Codex chỉnh nhãn tồn kho và khoảng cách liên kết về danh mục. Lint và build web thành công sau chỉnh; chưa được Thành kiểm tra giao diện mới.
+
+### Thành xác nhận
+Thành đã xem lại giao diện tồn kho và liên kết về danh mục sau chỉnh, đồng ý commit.
+
+## P1 / THANH-20261115-PRJ-P1-FD1-4-04
+
+### Mục đích
+Hiển thị thông số và sản phẩm liên quan ở trang chi tiết.
+
+### Prompt
+Thành cung cấp issue bước 4.4 và yêu cầu tiếp tục.
+
+### Kết quả đề xuất
+Codex bổ sung danh sách thông số theo SKU, hiển thị sản phẩm liên quan do API trả về bằng ProductCard và giữ query khi điều hướng.
+
+### Phản biện
+Chưa thử dữ liệu thông số hoặc bấm sản phẩm liên quan trên trình duyệt; số lượng sản phẩm phụ thuộc API.
+
+### Kiểm tra và minh chứng
+Codex chạy lint và build web thành công; chờ Thành kiểm tra. Chưa commit.
+
+### Kết quả Thành kiểm tra
+Thành xác nhận thông số hiển thị và bấm sản phẩm liên quan mở đúng trang.
+
+## P1 / THANH-20261115-PRJ-P1-FD1-4-05
+
+### Mục đích
+Kiểm tra và điều chỉnh trang chi tiết cho màn hình 390 px.
+
+### Prompt
+Thành cung cấp issue bước 4.5 và yêu cầu tiếp tục.
+
+### Kết quả đề xuất
+Codex giữ bố cục một cột ở màn nhỏ, thêm giới hạn co giãn và chiều cao tối thiểu 44px cho nút mua.
+
+### Phản biện
+Chưa đo tràn ngang hoặc đối chiếu hình 390/1366 với bản mẫu trên trình duyệt; chưa có xác nhận reviewer.
+
+### Kiểm tra và minh chứng
+Codex chạy lint và build web thành công; chờ Thành kiểm tra. Chưa commit.
+
+### Kết quả Thành kiểm tra bổ sung
+Thành xác nhận không có tràn ngang trên màn hình nhỏ và gửi ảnh phần thông số, sản phẩm liên quan ở màn hình rộng và hẹp. Ảnh chưa thể hiện đầy đủ cổng và kích thước của bản mẫu; chưa xác nhận reviewer duyệt.
+
+## P1 / THANH-20261115-PRJ-P1-FD1-4-06
+
+### Mục đích
+Ghi nhận tự đánh giá bước 4.6.
+
+### Prompt
+Thành tự trả lời sáu câu sau khi yêu cầu gợi ý, điều chỉnh câu trả lời và yêu cầu commit.
+
+### Kết quả đề xuất
+Codex ghi nguyên câu Thành cung cấp vào file, bổ sung ghi chú Codex chạy kiểm tra SKU giả lập.
+
+### Phản biện
+Issue yêu cầu tự trả lời không nhờ AI viết hộ; Thành tự cung cấp câu trả lời nhưng có nhận từ khóa gợi ý và góp ý từ Codex. Reviewer chưa hỏi và đánh giá hai câu.
+
+### Người kiểm tra
+Thành trả lời, Codex ghi nhận; chờ reviewer đánh giá.
+
+## P1 / THANH-20261116-FAQ-SHARED-001
+
+### Thời gian và loại hoạt động
+2026-11-16 00:38 UTC+07:00 — hỗ trợ tích hợp frontend.
+
+### Công cụ
+Codex.
+
+### Mục đích
+Kiểm tra yêu cầu dùng chung FAQ, hiệu ứng Rise và bố cục Catalog.
+
+### Prompt
+Thành cung cấp đề nghị của thành viên nhóm về FAQ dùng chung, Rise và CatalogLayout.
+
+### Kết quả đề xuất
+Codex tách FaqItem và dữ liệu faqs để tái sử dụng; trang chủ tiếp tục dùng details. Kiểm tra thấy App hiện có header và footer, motion.css có hiệu ứng dùng chung.
+
+### Phản biện
+Chưa có xác nhận nhóm về Rise và CatalogLayout; không tạo layout trùng hoặc khẳng định đã thống nhất kiến trúc.
+
+### Quyết định của nhóm
+Chưa có quyết định nhóm mới được xác nhận.
+
+### Người kiểm tra
+Codex chạy lint và build web; chờ Thành kiểm tra giao diện FAQ.
+
+### Kiểm tra và minh chứng
+Lint web đạt sau khi tách dữ liệu sang file riêng. Build web đạt trước lần tách file dữ liệu; chưa kiểm tra trên trình duyệt. Chưa commit hoặc push.
+
+## P1 / THANH-20261116-FAQ-SHARED-002
+
+### Thời gian và loại hoạt động
+2026-11-16 (UTC+07:00) — kiểm tra hỗ trợ FAQ dùng chung.
+
+### Công cụ
+Codex.
+
+### Mục đích
+Kiểm tra lại thay đổi FAQ sau khi Thành gửi ảnh trang chủ.
+
+### Prompt
+Thành nhờ tiếp tục thực hiện và gửi ảnh hai câu FAQ đang mở.
+
+### Kết quả đề xuất
+Giữ FAQ trang chủ và cung cấp FaqItem, faqs để trang About có thể import.
+
+### Phản biện
+Ảnh chỉ cho thấy nội dung đang mở; chưa chứng minh thao tác đóng và mở. Rise và CatalogLayout chưa được nhóm xác nhận.
+
+### Quyết định của nhóm
+Chưa có quyết định mới được xác nhận.
+
+### Người kiểm tra
+Thành cung cấp ảnh; Codex chạy lint và build web.
+
+### Kiểm tra và minh chứng
+npm run lint -w web và npm run build -w web đều thành công sau khi tách file dữ liệu. Chưa commit, push hoặc kiểm tra trên trình duyệt bằng Codex.
+
+## P1 / THANH-20261116-SHARED-COMPONENTS-003
+
+### Thời gian và loại hoạt động
+2026-11-16 (UTC+07:00) — triển khai thành phần frontend dùng chung.
+
+### Công cụ
+Codex.
+
+### Mục đích
+Hỗ trợ tích hợp FAQ, Rise và bố cục nội dung dùng chung cho trang giới thiệu.
+
+### Prompt
+Thành báo Liêm đã xác nhận và yêu cầu hoàn thiện, kiểm tra, commit một lần.
+
+### Kết quả đề xuất
+Codex tách FAQ, thêm Rise tôn trọng giảm chuyển động và CatalogLayout bọc nội dung; header/footer hiện vẫn do App quản lý.
+
+### Phản biện
+Ảnh Thành cung cấp chỉ cho thấy FAQ đang mở; chưa xác minh tích hợp trang About, hành vi đóng mở và hiệu ứng trên trình duyệt. Nội dung xác nhận chi tiết của Liêm chưa được cung cấp đầy đủ.
+
+### Quyết định của nhóm
+Thành báo Liêm đã xác nhận; cần các thành viên đối chiếu giao diện import và kiểm tra tích hợp thực tế.
+
+### Người kiểm tra
+Codex chạy lint và build web; chờ Thành và thành viên phụ trách About kiểm tra tích hợp.
+
+### Kiểm tra và minh chứng
+npm run lint -w web, npm run build -w web và git diff --check thành công; chưa kiểm thử trang About.
