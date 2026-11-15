@@ -6,6 +6,7 @@ import type { Reflector } from '@nestjs/core';
 import { describe, it, expect, vi } from 'vitest';
 import type { PrismaService } from '../prisma/prisma.service.js';
 import { hashPassword, verifyPassword } from './password.js';
+import * as passwordModule from './password.js';
 import { AuthService } from './auth.service.js';
 import { LoginDto } from './auth.dto.js';
 import { JwtAuthGuard, RolesGuard } from './auth.guard.js';
@@ -15,6 +16,19 @@ const configGia = {
 } as unknown as ConfigService;
 
 describe('Auth', () => {
+  it('verifies a dummy hash when the email does not exist', async () => {
+    const prismaGia = { user: { findUnique: vi.fn().mockResolvedValue(null) } };
+    const auth = new AuthService(prismaGia as unknown as PrismaService, configGia);
+    const spy = vi.spyOn(passwordModule, 'verifyPassword');
+    try {
+      await expect(auth.login({ email: 'missing@example.com', password: 'MatKhau123' }))
+        .rejects.toThrow('Email hoặc mật khẩu không đúng');
+      expect(spy).toHaveBeenCalledOnce();
+      expect(spy).toHaveBeenCalledWith('MatKhau123', expect.any(String));
+    } finally {
+      spy.mockRestore();
+    }
+  });
   it('hashes with random salt and verifies passwords safely', async () => {
     const password = 'MatKhau123';
     const hash1 = await hashPassword(password);
