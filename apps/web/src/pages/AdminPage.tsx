@@ -189,6 +189,96 @@ function Products() {
   );
 }
 
+type AdminUser = {
+  id: string;
+  email: string;
+  fullName: string;
+  role: 'ADMIN' | 'CUSTOMER';
+  isActive: boolean;
+  orderCount: number;
+  createdAt: string;
+};
+
+function Users() {
+  const { user: actor } = useAuth();
+  const { data, error, loading, reload } = useLoad<{
+    items: AdminUser[];
+    total: number;
+    page: number;
+  }>('/admin/users');
+  const [saving, setSaving] = useState(false);
+  const [msg, setMsg] = useState('');
+  const [actionError, setActionError] = useState('');
+  const locked = useRef(false);
+
+  async function toggle(id: string, isActive: boolean) {
+    if (locked.current) return;
+    locked.current = true;
+    setSaving(true);
+    setMsg('');
+    setActionError('');
+    try {
+      await api(`/admin/users/${encodeURIComponent(id)}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ isActive }),
+      });
+      setMsg(isActive ? 'Đã mở tài khoản.' : 'Đã khóa tài khoản.');
+      await reload();
+    } catch (error: unknown) {
+      setActionError(errText(error));
+    } finally {
+      locked.current = false;
+      setSaving(false);
+    }
+  }
+
+  return (
+    <div className="mt-4 space-y-4" aria-busy={loading || saving}>
+      {msg && <p role="status">{msg}</p>}
+      {actionError && <p role="alert" className="text-berry">{actionError}</p>}
+      {loading && <p role="status">Đang tải…</p>}
+      {error && <p role="alert" className="text-berry">{error}</p>}
+      {data && <>
+        <p>Tổng số: {data.total} tài khoản. Trang {data.page}, hiển thị {data.items.length} tài khoản.</p>
+        {data.items.length === 0 ? <p>Chưa có tài khoản.</p> : (
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse text-left">
+              <caption className="sr-only">Danh sách tài khoản và trạng thái hoạt động</caption>
+              <thead><tr>{['Họ tên và email', 'Vai trò', 'Số đơn hàng', 'Ngày tạo', 'Hoạt động'].map(label => <th key={label} scope="col" className="border-b border-ink/20 p-3">{label}</th>)}</tr></thead>
+              <tbody>{data.items.map(account => (
+                <tr key={account.id} className="border-b border-ink/15">
+                  <th scope="row" className="p-3 text-left font-normal"><span className="block font-semibold">{account.fullName}</span><span className="break-all text-sm">{account.email}</span></th>
+                  <td className="p-3"><span className="whitespace-nowrap rounded-full bg-leaf px-3 py-1 text-sm">{account.role === 'ADMIN' ? 'Quản trị' : 'Khách'}</span></td>
+                  <td className="p-3">{account.orderCount}</td>
+                  <td className="whitespace-nowrap p-3"><time dateTime={account.createdAt}>{new Date(account.createdAt).toLocaleDateString('vi-VN')}</time></td>
+                  <td className="p-3">
+                    <label className="inline-flex min-h-11 cursor-pointer items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={account.isActive}
+                        disabled={saving || loading || account.id === actor?.id}
+                        onChange={event => { void toggle(account.id, event.target.checked); }}
+                        aria-label={`Khóa hoặc mở tài khoản ${account.email}`}
+                        aria-describedby={account.id === actor?.id ? 'admin-self-lock-help' : undefined}
+                        className="h-5 w-5 accent-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+                      />
+                      <span className="whitespace-nowrap">{account.isActive ? 'Đang mở' : 'Đã khóa'}</span>
+                    </label>
+                    {account.id === actor?.id && <p id="admin-self-lock-help" className="text-sm">Không thể tự khóa tài khoản đang đăng nhập.</p>}
+                  </td>
+                </tr>
+              ))}</tbody>
+            </table>
+          </div>
+        )}
+      </>}
+      <button type="button" disabled={loading || saving} onClick={() => { void reload(); }} className="min-h-11 rounded-full border border-ink/30 px-5 py-2 font-semibold hover:bg-leaf focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink disabled:cursor-wait disabled:opacity-60">
+        {loading ? 'Đang tải…' : error ? 'Thử lại' : 'Tải lại'}
+      </button>
+    </div>
+  );
+}
+
 export default function AdminPage() {
   const { user, loading } = useAuth();
   const [params, setParams] = useSearchParams();
@@ -236,7 +326,9 @@ export default function AdminPage() {
           <h1 id="admin-section-title" className="text-3xl font-extrabold">{title}</h1>
           {section === 'san-pham'
             ? <Products />
-            : <p className="mt-4">Mục {title} đang được xây dựng.</p>}
+            : section === 'tai-khoan'
+              ? <Users />
+              : <p className="mt-4">Mục {title} đang được xây dựng.</p>}
         </section>
       </div>
     </main>
