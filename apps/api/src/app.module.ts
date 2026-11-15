@@ -11,6 +11,10 @@ import { AdminUsersModule } from './admin-users/admin-users.module.js';
     AuthModule,
     AdminUsersModule,
   ],
+import { CatalogModule } from './catalog/catalog.module';
+
+@Module({
+  imports: [ConfigModule.forRoot({ isGlobal: true }), AuthModule, CatalogModule],
   controllers: [AppController],
 })
 export class AppModule {}
