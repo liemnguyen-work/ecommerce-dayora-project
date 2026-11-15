@@ -8,11 +8,14 @@ type ProductDetail = {
   name: string;
   description: string | null;
   category: Category;
-  skus: Sku[];
+  skus: (Sku & { unit: string })[];
 };
 
 function ProductDetails({ product }: { product: ProductDetail }) {
-  const sku = product.skus[0];
+  const [selectedId, setSelectedId] = useState(product.skus[0]?.id);
+  const [notice, setNotice] = useState('');
+  const sku = product.skus.find((item) => item.id === selectedId);
+  const available = Boolean(sku?.inStock && sku.availableStock > 0);
   return (
     <article className="grid gap-8 md:grid-cols-2">
       <div className="overflow-hidden rounded-3xl bg-leaf">
@@ -23,6 +26,17 @@ function ProductDetails({ product }: { product: ProductDetail }) {
         <h1 className="text-3xl font-bold">{product.name}</h1>
         {sku && <p className="text-2xl font-bold text-berry">{formatPrice(sku.effectivePrice)}</p>}
         <p>{product.description || 'Thông tin sản phẩm đang cập nhật.'}</p>
+        <fieldset className="space-y-3">
+          <legend className="font-bold">Chọn biến thể</legend>
+          <div className="flex flex-wrap gap-2">{product.skus.map((item) => (
+            <button key={item.id} type="button" aria-pressed={item.id === selectedId} onClick={() => { setSelectedId(item.id); setNotice(''); }} className="rounded-full border border-ink px-4 py-2 aria-pressed:bg-ink aria-pressed:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-berry">
+              {item.color || item.code}{(!item.inStock || item.availableStock <= 0) && ' · Hết hàng'}
+            </button>
+          ))}</div>
+        </fieldset>
+        <p>{available ? `Còn ${sku?.availableStock} ${sku?.unit}` : 'Tạm hết hàng'}</p>
+        <button type="button" disabled={!available} onClick={() => setNotice('Chức năng thêm vào giỏ đang được phát triển.')} className="rounded-full bg-berry px-6 py-3 font-semibold text-white disabled:cursor-not-allowed disabled:bg-ink/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink">{available ? 'Thêm vào giỏ' : 'Tạm hết hàng'}</button>
+        {notice && <p role="status" className="text-sm">{notice}</p>}
         <Link className="inline-block underline" to="/san-pham">← Về danh mục</Link>
       </div>
     </article>

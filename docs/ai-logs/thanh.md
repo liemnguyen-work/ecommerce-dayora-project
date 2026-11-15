@@ -2426,3 +2426,26 @@ npm.cmd run lint -w web và npm.cmd run build -w web thành công. Chưa commit 
 
 ### Kết quả Thành kiểm tra bổ sung
 Thành gửi ảnh sản phẩm bình nước hiển thị tên, ảnh và giá; phần mô tả báo đang cập nhật. Thành xác nhận slug không tồn tại hiện thông báo và liên kết về danh mục hoạt động. Chưa có ảnh chứng minh mô tả thực tế của sản phẩm mẫu trong issue.
+
+## P1 / THANH-20261115-PRJ-P1-FD1-4-02
+
+### Mục đích
+Bổ sung chọn SKU và hiển thị giá, ảnh, tồn.
+
+### Prompt
+Thành cung cấp yêu cầu bước 4.2 và đề nghị tiếp tục.
+
+### Kết quả đề xuất
+Codex thêm nút chọn biến thể có aria-pressed; cập nhật ảnh, giá, tồn theo SKU. Nút giỏ hàng tạm khóa vì chưa kết nối chức năng giỏ hàng.
+
+### Phản biện
+Chưa kiểm tra đổi giá hoặc SKU hết hàng với dữ liệu thực tế trên trình duyệt. Chưa có chức năng chọn số lượng của bước sau.
+
+### Kiểm tra và minh chứng
+Codex chạy lint và build web thành công; chờ Thành kiểm tra. Chưa commit.
+
+### Điều chỉnh và kết quả bổ sung
+Thành cung cấp ảnh hai SKU thảm: ảnh thay đổi, giá và tồn cùng giá trị. Codex kiểm tra API: các sản phẩm nhiều SKU hiện có cùng giá giữa các SKU và không có SKU hết hàng, nên chưa xác minh hai trường hợp này trên giao diện. Codex sửa nút: SKU còn hàng có thể bấm và báo giỏ hàng đang phát triển; SKU hết hàng bị khóa. Chưa kết nối chức năng giỏ hàng. Lint và build web thành công sau sửa; chưa thử dữ liệu giả lập.
+
+### Kiểm tra dữ liệu giả lập
+Theo yêu cầu của Thành, Codex tự kiểm tra với hai SKU giả lập: một giá 100.000 còn 4, một giá 200.000 hết hàng. Render độc lập từng SKU cho thấy giá, ảnh, tồn tương ứng và nút SKU hết hàng bị khóa. Đây là kiểm tra render, chưa mô phỏng bấm đổi SKU trong trình duyệt; Thành trước đó đã thử chuyển SKU thật và thấy ảnh đổi.
