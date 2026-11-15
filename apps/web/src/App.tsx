@@ -9,6 +9,7 @@ import HomePage from './pages/HomePage';
 import CatalogPage from './pages/CatalogPage';
 import AdminPage from './pages/AdminPage';
 import ProductPage from './pages/ProductPage';
+import AboutPage from './pages/AboutPage';
 import './motion.css';
 
 function ScrollOnNavigation() {
@@ -64,7 +65,8 @@ export default function App() {
         <Route path="/san-pham/:slug" element={<ProductPage />} />
         <Route path="/dang-nhap" element={<LoginPage />} />
         <Route path="/dang-ky" element={<RegisterPage />} />
-        <Route path="/ve-chung-toi" element={<Placeholder title="Về chúng tôi" />} />
+        <Route path="/ve-chung-toi" element={<AboutPage />} />
+        <Route path="/about" element={<AboutPage />} />
         <Route path="/tao-bo" element={<Placeholder title="Tạo bộ" />} />
         <Route path="/gio-hang" element={<Placeholder title="Giỏ hàng" />} />
         <Route path="/tai-khoan" element={<Placeholder title="Tài khoản" />} />
