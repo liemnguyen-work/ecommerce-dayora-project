@@ -2613,3 +2613,91 @@ Codex quan sát kết quả; Hoàn kiểm tra cùng.
 
 - `npm.cmd run start:dev -w api`: biên dịch 0 lỗi, sau đó ứng dụng dừng với lỗi module Prisma; Node v26.13.1.
 - Không gọi thành công API, không xác nhận database hay dữ liệu ưu đãi; chưa sửa cấu hình để khắc phục.
+
+---
+
+## Phase 1 / hoan-20261115-promo-08
+
+* Thời gian ghi: 2026-11-15T11:30:07+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-promo
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-3.5; hoan-20261115-promo-07
+
+### Công cụ
+
+Codex và VS Code.
+
+### Mục đích
+
+Chuẩn bị khung tự đánh giá kiến thức API ưu đãi.
+
+### Prompt
+
+Hoàn cung cấp yêu cầu bước 3.5, bao gồm tự trả lời và ghi tóm tắt vào AI log, rồi yêu cầu tiếp tục.
+
+### Kết quả đề xuất
+
+Codex tạo tài liệu `docs/learning/BD1-Hoan/kiem-tra/PRJ-P1-BD1-3.md` gồm các câu hỏi, checklist và chỗ trống để Hoàn tự trả lời.
+
+### Phản biện
+
+Theo yêu cầu task, Hoàn tự trả lời không xem code hoặc nhờ AI viết hộ; tài liệu khung chưa chứng minh kiến thức hoặc reviewer đã duyệt. Vấn đề khởi động Prisma tại hoan-20261115-promo-07 chưa được xác nhận đã xử lý.
+
+### Quyết định của nhóm
+
+Chưa có xác nhận reviewer đánh giá bước tự kiểm tra hay quyết định sửa cấu hình Prisma chung.
+
+### Người kiểm tra
+
+Codex tạo khung; Hoàn tự trả lời và reviewer kiểm tra.
+
+### Kiểm tra và minh chứng
+
+- Khung có năm câu hỏi với checklist chưa đánh dấu; chưa có câu trả lời.
+- Chưa commit hoặc push thay đổi của bước này; chưa xác nhận hai câu hỏi của reviewer.
+
+---
+
+## Phase 1 / hoan-20261115-promo-09
+
+* Thời gian ghi: 2026-11-15T12:09:54+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-promo
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-3.5; hoan-20261115-promo-08
+
+### Công cụ
+
+Codex và VS Code.
+
+### Mục đích
+
+Ghi nhận câu trả lời Hoàn cung cấp vào tài liệu tự đánh giá và làm rõ khác biệt giữa schema và task.
+
+### Prompt
+
+Hoàn cung cấp câu trả lời cho năm câu hỏi và hai câu luyện tập, sau đó yêu cầu Codex bổ sung các chi tiết còn thiếu trong câu về khó khăn thực tế.
+
+### Kết quả đề xuất
+
+Codex ghi bốn câu trả lời đầu do Hoàn gửi, đồng thời hỗ trợ chỉnh câu năm về `Promotion`, `linkUrl`, `subtitle` và ý nghĩa thời gian null.
+
+### Phản biện
+
+Task yêu cầu tự trả lời bằng lời của Hoàn, không nhờ AI viết hộ; câu năm được Codex chỉnh theo yêu cầu nên cần Hoàn tự xem lại và diễn đạt. Các checklist để trống; hai câu luyện tập với AI không thay thế việc reviewer hỏi hai câu trong PR.
+
+### Quyết định của nhóm
+
+Theo Hoàn, nhóm thống nhất giữ schema và coi đầu thời gian null là không giới hạn; chưa có xác nhận reviewer nghiệm thu bài tự đánh giá.
+
+### Người kiểm tra
+
+Hoàn cung cấp câu trả lời; Codex nhận xét và ghi nhận; chờ reviewer kiểm tra.
+
+### Kiểm tra và minh chứng
+
+- `docs/learning/BD1-Hoan/kiem-tra/PRJ-P1-BD1-3.md` có năm câu trả lời và ghi chú về hỗ trợ AI ở câu năm.
+- Hai câu hỏi luyện tập đã được Hoàn trả lời trong cuộc trao đổi; chưa commit hoặc push thay đổi này.
