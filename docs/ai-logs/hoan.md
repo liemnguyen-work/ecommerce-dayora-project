@@ -3044,3 +3044,48 @@ Codex chạy test và lint API; chờ Hoàn và reviewer xem xét.
 - `npm.cmd test -w api`: 37/37 ca pass.
 - `npm.cmd run lint -w api`: pass.
 - Chưa chạy build toàn dự án; chưa commit hoặc push bước 3.
+
+---
+
+## Phase 1 / hoan-20261115-authfix-04
+
+* Thời gian ghi: 2026-11-15T23:18:36+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-authfix
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-FIX.5; hoan-20261115-authfix-03
+
+### Công cụ
+
+Codex, Vitest, Supertest và VS Code.
+
+### Mục đích
+
+Bổ sung các ca test catalog và auth theo review.
+
+### Prompt
+
+Hoàn yêu cầu tiếp tục task fix.
+
+### Kết quả đề xuất
+
+Codex thêm test lọc size, sắp xếp giá giảm dần, HTTP catalog với Prisma giả, vai trò admin và khách chưa đăng nhập, đăng ký thành công, JWT sai thuật toán hoặc định dạng, và tài khoản bị khóa.
+
+### Phản biện
+
+Test bổ sung vào các file nghiệm thu hiện có, cần QA review; các assertion cũ không bị nới lỏng. Test HTTP dùng Prisma giả; chưa kiểm tra database thật. Bước 4 tối ưu catalog là tùy chọn và chưa thực hiện.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu tiếp tục; chưa có xác nhận reviewer hoặc QA duyệt các test mới.
+
+### Người kiểm tra
+
+Codex chạy test và lint API; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api`: 44/44 pass.
+- `npm.cmd run lint -w api`: pass.
+- Chưa chạy build toàn dự án; chưa commit hoặc push bước 5.
