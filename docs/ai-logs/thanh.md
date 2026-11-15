@@ -2283,3 +2283,123 @@ Thành tự giải thích, vẽ và cung cấp ảnh; Codex đối chiếu cấu
 
 ### Kiểm tra và minh chứng
 Sơ đồ do Thành gửi thể hiện video, hero, nhóm hàng, Story, tạo bộ, sản phẩm, ba chuyến đi, ưu đãi/giao hàng, lời mời và footer. Không xác nhận thử nghiệm khác ngoài bằng chứng nêu trên.
+
+## P1 / THANH-20261115-PRJ-P1-FD1-3-01
+
+### Mục đích
+Thực hiện bước 3.1: kiểu dữ liệu và tiện ích truy vấn danh mục.
+
+### Prompt
+Thành giải thích đưa từ khóa lên URL giúp giữ trạng thái khi tải lại, quay lại và chia sẻ; sau đó yêu cầu Codex triển khai.
+
+### Kết quả đề xuất
+Codex bổ sung các kiểu dữ liệu catalog, danh sách bộ lọc, catalogQuery và formatPrice trên nhánh danh mục.
+
+### Phản biện
+Theo kết quả thử cục bộ, query và định dạng giá hoạt động với ví dụ issue; chưa tích hợp giao diện danh mục hoặc được reviewer duyệt.
+
+### Người kiểm tra
+Codex chạy thử hàm, lint và build web; Thành xem lại kết quả.
+
+### Kiểm tra và minh chứng
+Query tiếng Việt trả q=th%E1%BA%A3m&sort=price_asc, giá 150000 hiển thị 150.000 ₫; lint và build web thành công. Chưa commit.
+
+## P1 / THANH-20261115-PRJ-P1-FD1-3-02
+
+### Mục đích
+Thực hiện bước 3.2: đồng bộ URL và tải danh mục sản phẩm.
+
+### Prompt
+Thành cung cấp issue #201 và yêu cầu tiếp tục.
+
+### Kết quả đề xuất
+Codex tạo trang danh mục đọc search params, cập nhật URL từ biểu mẫu tạm, gọi API sản phẩm và hiển thị kết quả, trạng thái tải, lỗi hoặc rỗng.
+
+### Phản biện
+Bộ lọc hiện tạm dùng mã danh mục; bộ lọc trái đầy đủ thuộc bước sau. Chưa xác nhận thử sao chép URL qua tab mới hoặc dữ liệu API thật.
+
+### Người kiểm tra
+Codex chạy lint và build web; chờ Thành kiểm tra trình duyệt.
+
+### Kiểm tra và minh chứng
+npm.cmd run lint -w web và npm.cmd run build -w web thành công. Chưa commit hoặc push bước 3.2.
+
+### Kết quả Thành kiểm tra bổ sung
+Thành chạy API, nhập mã TM và bấm Lọc: hiển thị 4 sản phẩm thảm. Thành mở URL có `?category=TM` ở tab mới và gửi ảnh cho thấy cùng 4 sản phẩm. Lỗi CORS cổng 5175 được xử lý bằng biến môi trường cho phiên API; lỗi font 403 đã thấy trước đó chưa được xác minh lại.
+
+## P1 / THANH-20261115-PRJ-P1-FD1-3-03
+
+### Mục đích
+Xây dựng bộ lọc danh mục cho bước 3.3.
+
+### Prompt
+Thành cung cấp yêu cầu bộ lọc trái và tiếp tục task.
+
+### Kết quả đề xuất
+Codex bổ sung các trường lọc, lấy nhóm hàng từ API, kiểm tra khoảng giá và đóng/mở bộ lọc theo màn hình.
+
+### Phản biện
+API hiện chỉ chấp nhận sort price_asc và price_desc, chưa hỗ trợ newest nên chưa thêm lựa chọn này. Chưa kiểm tra giao diện, dữ liệu và thao tác thực tế trong trình duyệt.
+
+### Người kiểm tra
+Codex chạy lint và build web; chờ Thành kiểm tra.
+
+### Kiểm tra và minh chứng
+npm.cmd run lint -w web và npm.cmd run build -w web thành công. Chưa commit.
+
+### Kết quả Thành kiểm tra bổ sung
+Thành thử khoảng giá tối thiểu 500000 và tối đa 100000: thông báo lỗi hiển thị. Thành xác nhận thao tác gập/mở ở màn hình hẹp; ảnh cho thấy bộ lọc đang mở. Thành chọn nhóm Bình nước và ly kết hợp khoảng giá, ảnh hiển thị một ly picnic giá 79.000 ₫. Chưa có xác nhận API hỗ trợ sort=newest.
+
+## P1 / THANH-20261115-PRJ-P1-FD1-3-05
+
+### Mục đích
+Bổ sung trạng thái tải, rỗng và lỗi cho danh mục.
+
+### Prompt
+Thành cung cấp issue bước 3.5 và yêu cầu tiếp tục.
+
+### Kết quả đề xuất
+Codex thêm thông báo tải, trạng thái rỗng và xóa bộ lọc, hộp lỗi và nút thử lại.
+
+### Phản biện
+Chưa thử tắt API hoặc kiểm tra trạng thái rỗng trên trình duyệt; cần Thành xác nhận trước khi kết luận điều kiện hoàn thành.
+
+### Người kiểm tra
+Codex chạy lint và build web; chờ Thành thử trên trình duyệt.
+
+### Kiểm tra và minh chứng
+npm.cmd run lint -w web và npm.cmd run build -w web thành công. Chưa commit hoặc push.
+
+### Kết quả Thành kiểm tra bổ sung
+Thành thử lọc không có kết quả và thấy nút Xóa bộ lọc; xác nhận bấm xóa thì danh sách trở lại. Sau khi tắt API, ảnh cho thấy hộp lỗi và nút Thử lại, trang không trắng. Thành xác nhận bật lại API và thử lại thì chạy lại.
+
+## P1 / THANH-20261115-PRJ-P1-FD1-3-06
+
+### Mục đích
+Ghi nhận câu trả lời tự đánh giá bước 3.6.
+
+### Prompt
+Thành trả lời sáu câu, yêu cầu dàn ý hỗ trợ, tự sửa các điểm được góp ý và yêu cầu ghi file, commit.
+
+### Kết quả đề xuất
+Codex ghi nguyên câu Thành cung cấp; Codex trước đó góp ý và đưa dàn ý. Phần khó khăn ghi việc xử lý CORS qua biến môi trường tạm.
+
+### Phản biện
+Issue yêu cầu tự trả lời không nhờ AI viết hộ; Thành tự cung cấp và sửa câu trả lời nhưng có sử dụng dàn ý và góp ý AI. Chưa có xác nhận reviewer hỏi và đánh giá hai câu.
+
+### Người kiểm tra
+Thành trả lời và tự sửa; Codex ghi lại, chờ reviewer đánh giá.
+
+## P1 / THANH-20261115-PRJ-P1-FD1-2-CONFLICT
+
+### Mục đích
+Xử lý xung đột PR trang chủ với main sau khi danh mục được cập nhật.
+
+### Prompt
+Thành gửi ảnh các file xung đột và đồng ý để Codex xử lý.
+
+### Kết quả đề xuất
+Codex giữ route trang chủ và route danh mục, giữ các mục nhật ký từ hai nhánh, đồng thời nhận các thay đổi main được Git tự hợp nhất.
+
+### Kiểm tra và giới hạn
+Codex chạy lint và build web thành công. Chưa kiểm tra giao diện hợp nhất trong trình duyệt hoặc xác nhận reviewer duyệt. Thay đổi nhật ký chưa commit trong bản làm việc cũ được giữ nguyên ngoài merge này.
