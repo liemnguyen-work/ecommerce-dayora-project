@@ -53,11 +53,11 @@ export default function HomeSections() {
       </section>
       <section className="home-section" id="products">
         <div className="home-section-head"><div><p className="home-kicker">CỬA HÀNG</p><h2>Chọn món cho chuyến đi</h2></div><Link to="/san-pham">Xem tất cả →</Link></div>
-        {products.loading ? <p role="status">Đang tải sản phẩm...</p> : products.error ? <p role="alert">Chưa tải được sản phẩm. <button type="button" onClick={products.retry}>Thử lại</button></p> : !featured.length ? <p>Hiện chưa có sản phẩm nổi bật.</p> : <div className="catalog-grid">{featured.map((product) => <ProductCard key={product.id} product={product} />)}</div>}
+        {products.loading ? <p role="status">Đang tải sản phẩm...</p> : products.error ? <p role="alert">Chưa tải được sản phẩm. <button type="button" onClick={products.retry}>Thử lại</button></p> : !featured.length ? <p>Hiện chưa có sản phẩm nổi bật.</p> : <div className="catalog-grid" role="region" aria-label="Danh sách sản phẩm" tabIndex={0}>{featured.map((product) => <ProductCard key={product.id} product={product} />)}</div>}
       </section>
       <section className="home-section" id="trips-title">
         <p className="home-kicker">BA CHUYẾN ĐI</p><h2>Mỗi cuộc hẹn, một niềm vui.</h2>
-        <div className="home-trip-grid">{trips.map((trip) => <article className="home-trip" key={trip.title}><img src={trip.image} alt="" loading="lazy" /><h3>{trip.title}</h3></article>)}</div>
+        <div className="home-trip-grid" role="region" aria-label="Danh sách chuyến đi" tabIndex={0}>{trips.map((trip) => <article className="home-trip" key={trip.title}><img src={trip.image} alt="" loading="lazy" /><h3>{trip.title}</h3></article>)}</div>
       </section>
       <section className="home-section home-offers" id="promotions">
         <p className="home-kicker">ƯU ĐÃI</p><h2>Thêm niềm vui cho chuyến đi.</h2>
