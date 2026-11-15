@@ -8,7 +8,7 @@ import type { PrismaService } from '../prisma/prisma.service.js';
 import { hashPassword, verifyPassword } from './password.js';
 import * as passwordModule from './password.js';
 import { AuthService } from './auth.service.js';
-import { LoginDto } from './auth.dto.js';
+import { LoginDto, RegisterDto } from './auth.dto.js';
 import { JwtAuthGuard, RolesGuard } from './auth.guard.js';
 
 const configGia = {
@@ -16,6 +16,17 @@ const configGia = {
 } as unknown as ConfigService;
 
 describe('Auth', () => {
+  it('rejects overly long login and registration fields with 400', async () => {
+    const pipe = new ValidationPipe({ transform: true, whitelist: true, forbidNonWhitelisted: true });
+    const login = { type: 'body' as const, metatype: LoginDto };
+    const register = { type: 'body' as const, metatype: RegisterDto };
+    const valid = { email: 'user@example.com', password: 'a'.repeat(128) };
+    await expect(pipe.transform(valid, login)).resolves.toBeInstanceOf(LoginDto);
+    await expect(pipe.transform({ ...valid, password: 'a'.repeat(129) }, login)).rejects.toMatchObject({ status: 400 });
+    await expect(pipe.transform({ ...valid, password: 'a'.repeat(129), fullName: 'Hoan' }, register)).rejects.toMatchObject({ status: 400 });
+    await expect(pipe.transform({ ...valid, fullName: 'a'.repeat(101) }, register)).rejects.toMatchObject({ status: 400 });
+    await expect(pipe.transform({ ...valid, fullName: 'Hoan', phone: '1'.repeat(21) }, register)).rejects.toMatchObject({ status: 400 });
+  });
   it('verifies a dummy hash when the email does not exist', async () => {
     const prismaGia = { user: { findUnique: vi.fn().mockResolvedValue(null) } };
     const auth = new AuthService(prismaGia as unknown as PrismaService, configGia);
