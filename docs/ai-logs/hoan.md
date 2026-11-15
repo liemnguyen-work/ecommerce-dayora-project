@@ -3085,3 +3085,47 @@ Codex chạy ca test hồ sơ; chờ Hoàn và QA/reviewer xem xét.
 
 - `npm.cmd test -w api -- me.spec.ts -t 'xem và sửa hồ sơ'`: 1 ca pass, 5 ca bỏ qua do lọc tên.
 - Chưa commit hoặc push bước 4.3; chưa kiểm tra kết nối database thật.
+
+---
+
+## Phase 1 / hoan-20261115-me-05
+
+* Thời gian ghi: 2026-11-15T21:48:41+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-me
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-4.4; hoan-20261115-me-04
+
+### Công cụ
+
+Codex, Vitest và VS Code.
+
+### Mục đích
+
+Xử lý đổi mật khẩu và tránh ghi đè khi mật khẩu thay đổi đồng thời.
+
+### Prompt
+
+Hoàn trao đổi về phản hồi khi khách đổi mật khẩu và yêu cầu thực hiện.
+
+### Kết quả đề xuất
+
+Codex bổ sung hàm `password` trong `me.service.ts`: xác minh mật khẩu cũ, băm mật khẩu mới và cập nhật có điều kiện theo hash cũ.
+
+### Phản biện
+
+Test dùng Prisma giả; chưa kiểm tra qua endpoint hoặc database thật. Module và các route còn lại sẽ làm ở bước sau; chưa xác nhận QA duyệt test.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu thực hiện bước 4.4; giữ module cho bước 4.5 theo trao đổi trước.
+
+### Người kiểm tra
+
+Codex chạy test; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api -- me.spec.ts -t 'mật khẩu'`: 2 ca pass, 4 ca bỏ qua do lọc tên.
+- Chưa commit hoặc push bước 4.4; chưa kiểm tra API HTTP hoặc database thật.
