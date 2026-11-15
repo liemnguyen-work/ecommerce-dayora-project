@@ -2326,3 +2326,26 @@ npm.cmd run lint -w web và npm.cmd run build -w web thành công. Chưa commit.
 
 ### Kết quả Thành kiểm tra bổ sung
 Thành thử khoảng giá tối thiểu 500000 và tối đa 100000: thông báo lỗi hiển thị. Thành xác nhận thao tác gập/mở ở màn hình hẹp; ảnh cho thấy bộ lọc đang mở. Thành chọn nhóm Bình nước và ly kết hợp khoảng giá, ảnh hiển thị một ly picnic giá 79.000 ₫. Chưa có xác nhận API hỗ trợ sort=newest.
+
+## P1 / THANH-20261115-PRJ-P1-FD1-3-05
+
+### Mục đích
+Bổ sung trạng thái tải, rỗng và lỗi cho danh mục.
+
+### Prompt
+Thành cung cấp issue bước 3.5 và yêu cầu tiếp tục.
+
+### Kết quả đề xuất
+Codex thêm thông báo tải, trạng thái rỗng và xóa bộ lọc, hộp lỗi và nút thử lại.
+
+### Phản biện
+Chưa thử tắt API hoặc kiểm tra trạng thái rỗng trên trình duyệt; cần Thành xác nhận trước khi kết luận điều kiện hoàn thành.
+
+### Người kiểm tra
+Codex chạy lint và build web; chờ Thành thử trên trình duyệt.
+
+### Kiểm tra và minh chứng
+npm.cmd run lint -w web và npm.cmd run build -w web thành công. Chưa commit hoặc push.
+
+### Kết quả Thành kiểm tra bổ sung
+Thành thử lọc không có kết quả và thấy nút Xóa bộ lọc; xác nhận bấm xóa thì danh sách trở lại. Sau khi tắt API, ảnh cho thấy hộp lỗi và nút Thử lại, trang không trắng. Thành xác nhận bật lại API và thử lại thì chạy lại.

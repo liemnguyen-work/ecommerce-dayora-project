@@ -11,6 +11,7 @@ export default function CatalogPage() {
   const [result, setResult] = useState<CatalogResult | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
   const [categories, setCategories] = useState<Category[]>([]);
   const [categoryError, setCategoryError] = useState(false);
   const [formError, setFormError] = useState('');
@@ -38,7 +39,12 @@ export default function CatalogPage() {
       .catch(() => { if (active) { setResult(null); setError(true); } })
       .finally(() => { if (active) setLoading(false); });
     return () => { active = false; };
-  }, [query]);
+  }, [query, retryCount]);
+
+  function retry() {
+    setLoading(true);
+    setRetryCount((count) => count + 1);
+  }
 
   function applyFilters(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -76,7 +82,7 @@ export default function CatalogPage() {
             </form>
           </details>
         </aside>
-        <section aria-label="Danh sách sản phẩm">{loading ? <p role="status">Đang tải sản phẩm...</p> : error ? <p role="alert">Chưa tải được sản phẩm. Vui lòng thử lại.</p> : !result?.items.length ? <p>Không tìm thấy sản phẩm phù hợp.</p> : <><p className="catalog-count">{result.total} sản phẩm</p><div className="catalog-grid">{result.items.map((product) => <ProductCard key={product.id} product={product} search={query ? `?${query}` : ''} />)}</div></>}</section>
+        <section aria-label="Danh sách sản phẩm" aria-busy={loading}>{loading ? <div className="catalog-message" role="status">Đang tìm sản phẩm phù hợp…</div> : error ? <div className="catalog-message catalog-message-error" role="alert"><h2>Chưa tải được danh mục sản phẩm</h2><p>Kết nối đang gián đoạn.</p><button type="button" onClick={retry}>Thử lại</button></div> : !result?.items.length ? <div className="catalog-message" role="status"><h2>Không có sản phẩm phù hợp với bộ lọc hiện tại</h2><p>Hãy thử xóa bớt tiêu chí lọc.</p>{query && <button type="button" onClick={() => { setFormError(''); setLoading(true); setParams(new URLSearchParams()); }}>Xóa bộ lọc</button>}</div> : <><p className="catalog-count">{result.total} sản phẩm</p><div className="catalog-grid">{result.items.map((product) => <ProductCard key={product.id} product={product} search={query ? `?${query}` : ''} />)}</div></>}</section>
       </div>
     </main>
   );
