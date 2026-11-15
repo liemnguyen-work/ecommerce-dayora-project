@@ -4,7 +4,7 @@ import { AuthRateLimit, LoginRateLimitException } from './auth-rate-limit.js';
 import { AuthController } from './auth.controller.js';
 import type { AuthService } from './auth.service.js';
 import type { ConfigService } from '@nestjs/config';
-import type { Response } from 'express';
+import type { Request, Response } from 'express';
 
 describe('AuthRateLimit', () => {
   afterEach(() => vi.useRealTimers());
@@ -67,13 +67,41 @@ describe('AuthRateLimit', () => {
       new AuthRateLimit(),
     );
     const dto = { email: 'a@example.com', password: 'wrongpass' };
+    const request = { ip: '192.0.2.1' } as Request;
     for (let i = 0; i < 5; i += 1) {
-      await expect(controller.login(dto, response as unknown as Response))
+      await expect(controller.login(dto, response as unknown as Response, request))
         .rejects.toBeInstanceOf(UnauthorizedException);
     }
-    await expect(controller.login(dto, response as unknown as Response))
+    await expect(controller.login(dto, response as unknown as Response, request))
       .rejects.toMatchObject({ status: 429 });
     expect(response.setHeader).toHaveBeenCalledWith('Retry-After', '900');
     expect(response.cookie).not.toHaveBeenCalled();
+  });
+
+  it('allows a new key when the storage is full of unexpired entries', async () => {
+    const limiter = new AuthRateLimit();
+    const failure = async () => { throw new UnauthorizedException(); };
+    for (let i = 0; i < 10000; i += 1) {
+      try { await limiter.attempt(`192.0.2.1|user${i}@example.com`, failure); } catch (error) {
+        if (!(error instanceof UnauthorizedException)) throw error;
+      }
+    }
+    await expect(limiter.attempt('192.0.2.1|new@example.com', async () => 'ok')).resolves.toBe('ok');
+  });
+
+  it('keeps the same email separate for different IP addresses', async () => {
+    const auth = { login: vi.fn().mockRejectedValue(new UnauthorizedException()), signToken: vi.fn().mockReturnValue('token') };
+    const controller = new AuthController(auth as unknown as AuthService, { get: vi.fn() } as unknown as ConfigService, new AuthRateLimit());
+    const response = { setHeader: vi.fn(), cookie: vi.fn() } as unknown as Response;
+    const dto = { email: 'user@example.com', password: 'wrongpass' };
+    const first = { ip: '192.0.2.1' } as Request;
+    const second = { ip: '192.0.2.2' } as Request;
+    for (let i = 0; i < 5; i += 1) {
+      await expect(controller.login(dto, response, first)).rejects.toBeInstanceOf(UnauthorizedException);
+    }
+    await expect(controller.login(dto, response, first)).rejects.toBeInstanceOf(LoginRateLimitException);
+    const user = { id: 'user-1' };
+    auth.login.mockResolvedValueOnce(user);
+    await expect(controller.login(dto, response, second)).resolves.toEqual(user);
   });
 });

@@ -2302,3 +2302,1233 @@ Codex chạy test, kiểm tra HTTP bằng dữ liệu giả, TypeScript, lint v�
 - TypeScript và lint API: pass.
 - Build toàn dự án: chưa pass do lỗi Prisma EPERM và thiếu react-router-dom trong môi trường web như trên.
 - Commit code: [`bfb5220`](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/bfb5220). Chưa xác nhận review hoặc đóng task.
+
+---
+
+## Phase 1 / hoan-20261115-promo-01
+
+* Thời gian ghi: 2026-11-15T10:38:03+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-promo
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-3.1 và PRJ-P1-BD1-3.2
+
+### Công cụ
+
+Codex, Git và VS Code.
+
+### Mục đích
+
+Chuẩn bị nhánh và kiểm tra điều kiện trước khi viết test API ưu đãi.
+
+### Prompt
+
+Hoàn cung cấp các bước của task, đồng ý với ba ca test dự kiến và yêu cầu kiểm tra nhánh phụ thuộc, cập nhật dữ liệu mới và thực hiện.
+
+### Kết quả đề xuất
+
+Codex fetch origin và tạo nhánh `prj/p1-bd1-3` từ `origin/main` tại `4a808cf`. Model `Promotion` có trong schema của main.
+
+### Phản biện
+
+Schema có `linkUrl`, không có `subtitle`, còn `startsAt` và `endsAt` cho phép null; mô tả task yêu cầu `link`, `subtitle` và khoảng thời gian xác định. Cần làm rõ hợp đồng với nhóm trước khi quyết định kiểm thử hoặc triển khai phần phụ thuộc các trường này.
+
+### Quyết định của nhóm
+
+Chưa có xác nhận của nhóm về sự khác biệt; chưa sửa schema hoặc merge nhánh phụ thuộc.
+
+### Người kiểm tra
+
+Codex kiểm tra schema và Git; Hoàn và nhóm cần thống nhất nghiệp vụ.
+
+### Kiểm tra và minh chứng
+
+- `origin/main` đã cập nhật từ `cfe17ba` lên `4a808cf`; nhánh mới dựa trên commit này.
+- Đã thấy model `Promotion` trong schema; chưa xác minh trạng thái đóng issue phụ thuộc trên GitHub.
+- Chưa viết hoặc chạy test; chưa commit hay push nhánh mới.
+
+---
+
+## Phase 1 / hoan-20261115-promo-02
+
+* Thời gian ghi: 2026-11-15T10:55:23+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-promo
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261115-promo-01; PRJ-P1-BD1-3.1
+
+### Công cụ
+
+Codex, Vitest và VS Code.
+
+### Mục đích
+
+Viết kiểm thử trước khi triển khai API ưu đãi.
+
+### Prompt
+
+Hoàn cho biết nhóm đồng ý giữ schema hiện tại và thời gian bắt đầu hoặc kết thúc null được xem là không giới hạn; tiếp tục công việc đã yêu cầu.
+
+### Kết quả đề xuất
+
+Viết ba ca trong `apps/api/src/promotions/promotions.spec.ts`: truy vấn ưu đãi, cập nhật thời gian và truyền lỗi DB, API công khai qua Nest với Prisma giả. Test dùng `linkUrl` và kiểm tra các đầu thời gian null.
+
+### Phản biện
+
+Ba ca đã được Vitest thu thập nhưng thất bại vì module service và module ưu đãi chưa tồn tại; các assertion chưa được thực thi. Test đang xác định cấu trúc truy vấn Prisma cụ thể, cần QA xem xét trước khi chốt; chưa xác nhận reviewer đã duyệt.
+
+### Quyết định của nhóm
+
+Theo Hoàn, nhóm chọn giữ schema hiện tại và coi đầu thời gian null là không giới hạn. Chưa có xác nhận về các quyết định khác.
+
+### Người kiểm tra
+
+Codex chạy test; chờ Hoàn và QA kiểm tra nội dung.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api -- promotions`: thu thập ba ca; ba ca FAIL do chưa có `promotions.service.js` hoặc `promotions.module.js`, chưa chứng minh assertion thất bại.
+- Lần chạy đầu bị sandbox chặn ghi file tạm; chạy lại với quyền phù hợp cho kết quả trên.
+- Chưa commit hoặc push test và nhật ký.
+
+---
+
+## Phase 1 / hoan-20261115-promo-03
+
+* Thời gian ghi: 2026-11-15T10:59:38+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-promo
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261115-promo-02; PRJ-P1-BD1-3.1
+
+### Công cụ
+
+Codex, Vitest và VS Code.
+
+### Mục đích
+
+Ghi nhận Hoàn chạy lại test và chuẩn bị thay đổi cho QA xem xét.
+
+### Prompt
+
+Hoàn gửi ảnh kết quả chạy test và yêu cầu commit, push và cập nhật AI log.
+
+### Kết quả đề xuất
+
+Ảnh cho thấy Vitest nhận ba ca và ba ca thất bại; có lỗi không tìm thấy module ưu đãi chưa được tạo. Codex chuẩn bị commit test và log riêng.
+
+### Phản biện
+
+Lỗi thiếu module xảy ra trước các assertion, vì vậy chưa chứng minh hành vi nghiệp vụ sai hay từng assertion hoạt động. Cần QA duyệt test; không tự xác nhận bước đã nghiệm thu hoặc đóng issue.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu đưa thay đổi lên nhánh; chưa có xác nhận QA đã duyệt test.
+
+### Người kiểm tra
+
+Hoàn chạy lệnh và cung cấp ảnh; Codex đối chiếu, chờ QA xem xét.
+
+### Kiểm tra và minh chứng
+
+- Ảnh terminal cho thấy ba test thất bại; lỗi được hiển thị bao gồm module `promotions.module.js` chưa tồn tại.
+- Kết quả kiểm tra trước đó được ghi tại `hoan-20261115-promo-02`.
+
+---
+
+## Phase 1 / hoan-20261115-promo-04
+
+* Thời gian ghi: 2026-11-15T11:05:13+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-promo
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-3.2; hoan-20261115-promo-03
+
+### Công cụ
+
+Codex, Vitest và VS Code.
+
+### Mục đích
+
+Triển khai truy vấn danh sách ưu đãi công khai theo trạng thái và thời gian.
+
+### Prompt
+
+Sau khi trao đổi ý nghĩa ưu đãi hết hạn, Hoàn yêu cầu tiến hành bước 3.2; trước đó Hoàn cho biết nhóm giữ schema và coi đầu thời gian null là không giới hạn.
+
+### Kết quả đề xuất
+
+Codex thêm `promotions.service.ts`: lấy một thời điểm trong `list`, lọc ưu đãi đang bật, xử lý hai đầu thời gian null, chọn trường công khai trong schema và sắp xếp theo thời gian bắt đầu rồi ID.
+
+### Phản biện
+
+Ca test này kiểm tra truy vấn qua Prisma giả, chưa chứng minh kết quả truy vấn trên database thật. Chưa có xác nhận QA đã duyệt bộ test; file test không được sửa trong bước này.
+
+### Quyết định của nhóm
+
+Theo Hoàn, nhóm đồng ý giữ schema và coi đầu thời gian null là không giới hạn. Hoàn yêu cầu triển khai service.
+
+### Người kiểm tra
+
+Codex chạy ca test; chờ Hoàn và QA/reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api -- promotions.spec.ts -t 'lọc active'`: 1 ca pass, 2 ca khác được bỏ qua do lọc tên.
+- Chưa kiểm tra API HTTP hoặc database thật; chưa commit hay push bước này.
+
+---
+
+## Phase 1 / hoan-20261115-promo-05
+
+* Thời gian ghi: 2026-11-15T11:07:40+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-promo
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-3.3; hoan-20261115-promo-04
+
+### Công cụ
+
+Codex, Vitest và VS Code.
+
+### Mục đích
+
+Kiểm tra thời gian mới cho từng lần gọi và việc truyền lỗi database của service ưu đãi.
+
+### Prompt
+
+Hoàn cung cấp yêu cầu bước 3.3 và yêu cầu tiếp tục.
+
+### Kết quả đề xuất
+
+Codex đối chiếu `promotions.service.ts`: `new Date()` nằm trong `list()` và lỗi từ Prisma được truyền ra ngoài. Hai hành vi này đã được viết trong commit service của bước 3.2; không sửa lại code.
+
+### Phản biện
+
+Test dùng Prisma giả kiểm tra hai lần gọi và lỗi reject, không phải kiểm tra HTTP 500 hoặc kết nối database thật. Chưa có xác nhận QA đã duyệt bộ test.
+
+### Quyết định của nhóm
+
+Chưa có quyết định về cách ghi nhận commit riêng cho bước 3.3 khi code đã nằm trong commit bước 3.2.
+
+### Người kiểm tra
+
+Codex đối chiếu và chạy test; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api -- promotions.spec.ts -t 'lấy thời gian mới mỗi request'`: 1 ca pass, 2 ca bỏ qua do lọc tên.
+- Không sửa file chức năng hoặc file test; chưa commit mục log này.
+
+---
+
+## Phase 1 / hoan-20261115-promo-06
+
+* Thời gian ghi: 2026-11-15T11:17:32+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-promo
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-3.4; hoan-20261115-promo-05
+
+### Công cụ
+
+Codex, Vitest và VS Code.
+
+### Mục đích
+
+Tạo endpoint công khai để giao diện lấy danh sách ưu đãi.
+
+### Prompt
+
+Hoàn hỏi cách API phục vụ khách có hoặc chưa đăng nhập, sau đó yêu cầu thực hiện bước 3.4.
+
+### Kết quả đề xuất
+
+Codex tạo controller và module ưu đãi, đăng ký module trong AppModule; endpoint gọi service và không gắn guard đăng nhập.
+
+### Phản biện
+
+Test HTTP dùng Prisma giả, không xác nhận truy vấn với database thật. Endpoint phục vụ hiển thị ưu đãi, không kiểm tra hay áp dụng mã giảm giá cho đơn hàng. Chưa có xác nhận QA duyệt test.
+
+### Quyết định của nhóm
+
+Hoàn đồng ý thực hiện bước 3.4; các quy tắc dữ liệu theo thỏa thuận được ghi tại hoan-20261115-promo-02.
+
+### Người kiểm tra
+
+Codex chạy kiểm thử; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api -- promotions`: 3/3 ca pass, bao gồm HTTP với Prisma giả.
+- `npm.cmd run lint -w api`: pass.
+- Chưa kiểm tra với database thật, chưa chạy build toàn dự án và chưa commit hoặc push bước này.
+
+---
+
+## Phase 1 / hoan-20261115-promo-07
+
+* Thời gian ghi: 2026-11-15T11:21:35+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-promo
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-3.4; hoan-20261115-promo-06
+
+### Công cụ
+
+Codex, NestJS và VS Code.
+
+### Mục đích
+
+Thử khởi động API để kiểm tra ưu đãi với database hiện tại theo hướng chỉ đọc.
+
+### Prompt
+
+Hoàn yêu cầu thử để có thể tự kiểm tra.
+
+### Kết quả đề xuất
+
+Codex kiểm tra cổng 3000 chưa phản hồi, chạy `npm.cmd run start:dev -w api`; TypeScript báo không có lỗi nhưng tiến trình ứng dụng gặp lỗi `exports is not defined in ES module scope` tại Prisma Client trong dist, nên đã dừng watch.
+
+### Phản biện
+
+API chưa khởi động, chưa thể kết luận kết nối database hoặc kết quả ưu đãi; chưa có thao tác thêm, sửa hay xóa dữ liệu. Cần chẩn đoán sự khác nhau giữa định dạng module của Prisma Client và ứng dụng.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu thử; chưa có quyết định thay đổi cấu hình module hoặc dữ liệu database.
+
+### Người kiểm tra
+
+Codex quan sát kết quả; Hoàn kiểm tra cùng.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd run start:dev -w api`: biên dịch 0 lỗi, sau đó ứng dụng dừng với lỗi module Prisma; Node v26.13.1.
+- Không gọi thành công API, không xác nhận database hay dữ liệu ưu đãi; chưa sửa cấu hình để khắc phục.
+
+---
+
+## Phase 1 / hoan-20261115-promo-08
+
+* Thời gian ghi: 2026-11-15T11:30:07+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-promo
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-3.5; hoan-20261115-promo-07
+## Phase 1 / hoan-20261115-cat1-10
+
+* Thời gian ghi: 2026-11-15T01:56:10+07:00
+* Thời gian thực hiện: 15/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: hoan-20261115-cat1
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261115-cat1-09; PRJ-P1-BD1-2.7
+
+### Công cụ
+
+Codex và VS Code.
+
+### Mục đích
+
+Chuẩn bị khung tự đánh giá kiến thức API ưu đãi.
+
+### Prompt
+
+Hoàn cung cấp yêu cầu bước 3.5, bao gồm tự trả lời và ghi tóm tắt vào AI log, rồi yêu cầu tiếp tục.
+
+### Kết quả đề xuất
+
+Codex tạo tài liệu `docs/learning/BD1-Hoan/kiem-tra/PRJ-P1-BD1-3.md` gồm các câu hỏi, checklist và chỗ trống để Hoàn tự trả lời.
+
+### Phản biện
+
+Theo yêu cầu task, Hoàn tự trả lời không xem code hoặc nhờ AI viết hộ; tài liệu khung chưa chứng minh kiến thức hoặc reviewer đã duyệt. Vấn đề khởi động Prisma tại hoan-20261115-promo-07 chưa được xác nhận đã xử lý.
+
+### Quyết định của nhóm
+
+Chưa có xác nhận reviewer đánh giá bước tự kiểm tra hay quyết định sửa cấu hình Prisma chung.
+
+### Người kiểm tra
+
+Codex tạo khung; Hoàn tự trả lời và reviewer kiểm tra.
+
+### Kiểm tra và minh chứng
+
+- Khung có năm câu hỏi với checklist chưa đánh dấu; chưa có câu trả lời.
+- Chưa commit hoặc push thay đổi của bước này; chưa xác nhận hai câu hỏi của reviewer.
+
+---
+
+## Phase 1 / hoan-20261115-promo-09
+
+* Thời gian ghi: 2026-11-15T12:09:54+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-promo
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-3.5; hoan-20261115-promo-08
+Chuẩn bị tài liệu để Hoàn tự kiểm tra kiến thức về API catalog trước khi reviewer hỏi lại.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp task 2.7, trong đó yêu cầu tự viết câu trả lời, không xem code hoặc nhờ AI viết hộ, và ghi tóm tắt phiên vào AI log; Hoàn yêu cầu tiếp tục.
+
+### Kết quả đề xuất
+
+Codex tạo khung `docs/learning/BD1-Hoan/kiem-tra/PRJ-P1-BD1-2.md` gồm các câu hỏi, checklist và ô trả lời trống theo nội dung task. Codex không điền đáp án.
+
+### Phản biện
+
+Task yêu cầu Hoàn tự trả lời bằng lời của mình; sau khi Hoàn hoàn thành, AI có thể nhận xét và đặt hai câu hỏi luyện tập. Việc tạo khung không chứng minh Hoàn đã trả lời hoặc reviewer đã đánh giá.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu tiếp tục task; chưa có xác nhận reviewer hoặc trưởng nhóm nghiệm thu bước kiểm tra kiến thức.
+
+### Người kiểm tra
+
+Codex tạo tài liệu; chờ Hoàn tự trả lời và reviewer kiểm tra.
+
+### Kiểm tra và minh chứng
+
+- Tệp câu hỏi được tạo; các ô câu trả lời và checklist để trống.
+- Chưa commit hoặc push tài liệu này; chưa có kết quả hai câu hỏi của reviewer.
+- Build toàn dự án vẫn chưa pass theo mục `hoan-20261115-cat1-09`.
+
+---
+
+## Phase 1 / hoan-20261115-cat1-11
+
+* Thời gian ghi: 2026-11-15T10:20:55+07:00
+* Thời gian thực hiện: 15/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: hoan-20261115-cat1
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261115-cat1-10; PRJ-P1-BD1-2.7
+
+### Công cụ
+
+Codex và VS Code.
+
+### Mục đích
+
+Ghi nhận câu trả lời Hoàn cung cấp vào tài liệu tự đánh giá và làm rõ khác biệt giữa schema và task.
+
+### Prompt
+
+Hoàn cung cấp câu trả lời cho năm câu hỏi và hai câu luyện tập, sau đó yêu cầu Codex bổ sung các chi tiết còn thiếu trong câu về khó khăn thực tế.
+
+### Kết quả đề xuất
+
+Codex ghi bốn câu trả lời đầu do Hoàn gửi, đồng thời hỗ trợ chỉnh câu năm về `Promotion`, `linkUrl`, `subtitle` và ý nghĩa thời gian null.
+
+### Phản biện
+
+Task yêu cầu tự trả lời bằng lời của Hoàn, không nhờ AI viết hộ; câu năm được Codex chỉnh theo yêu cầu nên cần Hoàn tự xem lại và diễn đạt. Các checklist để trống; hai câu luyện tập với AI không thay thế việc reviewer hỏi hai câu trong PR.
+
+### Quyết định của nhóm
+
+Theo Hoàn, nhóm thống nhất giữ schema và coi đầu thời gian null là không giới hạn; chưa có xác nhận reviewer nghiệm thu bài tự đánh giá.
+
+### Người kiểm tra
+
+Hoàn cung cấp câu trả lời; Codex nhận xét và ghi nhận; chờ reviewer kiểm tra.
+
+### Kiểm tra và minh chứng
+
+- `docs/learning/BD1-Hoan/kiem-tra/PRJ-P1-BD1-3.md` có năm câu trả lời và ghi chú về hỗ trợ AI ở câu năm.
+- Hai câu hỏi luyện tập đã được Hoàn trả lời trong cuộc trao đổi; chưa commit hoặc push thay đổi này.
+
+---
+
+## Phase 1 / hoan-20261115-promo-10
+
+* Thời gian ghi: 2026-11-15T12:34:23+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-promo
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261115-promo-07; PRJ-P1-BD1-3
+
+### Công cụ
+
+Codex, Prisma, NestJS và Vitest.
+
+### Mục đích
+
+Khắc phục lỗi khởi động API để kiểm tra endpoint ưu đãi với database đang cấu hình.
+
+### Prompt
+
+Hoàn hỏi mức ảnh hưởng đến thành viên khác và đồng ý sửa nếu ảnh hưởng không lớn.
+
+### Kết quả đề xuất
+
+Codex thử sinh Prisma Client CommonJS ở thư mục tạm, sau đó đổi `moduleFormat` từ `esm` sang `cjs` trong generator schema và sinh lại client. Ứng dụng khởi động và endpoint ưu đãi trả HTTP 200 cùng mảng rỗng.
+
+### Phản biện
+
+Generator Prisma dùng chung backend nên thay đổi cần reviewer nhóm xem xét. Mảng rỗng không chứng minh các ca lọc ưu đãi thực tế; chưa chạy kiểm tra Node 24 như CI hoặc build toàn dự án. Không chạy migration, không chủ động thêm sửa xóa dữ liệu.
+
+### Quyết định của nhóm
+
+Hoàn cho phép sửa khi ảnh hưởng phù hợp; chưa có xác nhận các thành viên khác duyệt thay đổi cấu hình chung.
+
+### Người kiểm tra
+
+Codex chạy API, test và lint; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd run prisma:generate -w api`: thành công; khởi động API bằng Node 26.13.1 thành công.
+- `GET /api/promotions`: HTTP 200, trả `[]` từ database hiện cấu hình; không kiểm tra thêm bản ghi hoặc tạo dữ liệu thử.
+- `npm.cmd test -w api`: 28/28 pass; `npm.cmd run lint -w api`: pass.
+- Chưa commit hoặc push thay đổi cấu hình và log.
+
+---
+
+## Phase 1 / hoan-20261115-promo-11
+
+* Thời gian ghi: 2026-11-15T12:37:42+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-promo
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261115-promo-10; PRJ-P1-BD1-3
+
+### Công cụ
+
+Codex, npm và Git.
+
+### Mục đích
+
+Kiểm tra thay đổi Prisma trước khi đưa lên nhánh và chuẩn bị pull request.
+
+### Prompt
+
+Hoàn yêu cầu commit, push và hỗ trợ đưa task lên PR.
+
+### Kết quả đề xuất
+
+Codex kiểm tra thay đổi cấu hình và chạy build toàn dự án trước khi chuẩn bị commit, push.
+
+### Phản biện
+
+Build chưa pass: Prisma gặp lỗi EPERM khi đổi tên engine trên Windows; web không tìm thấy `react-router-dom`, kèm lỗi kiểu phát sinh. Chưa xác định đầy đủ nguyên nhân hay kiểm tra lại bằng Node của CI. Cần reviewer xem thay đổi generator dùng chung.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu đưa thay đổi lên nhánh; chưa xác nhận reviewer hoặc QA chấp thuận.
+
+### Người kiểm tra
+
+Codex chạy build; chờ Hoàn và reviewer xem kết quả.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd run build`: thất bại ở bước generate Prisma với EPERM và ở build web do thiếu `react-router-dom`.
+- Các kết quả test và API đã ghi ở hoan-20261115-promo-10; chưa xác nhận PR đã tạo hoặc merge.
+Ghi nhận nội dung Hoàn gửi vào tài liệu kiểm tra kiến thức catalog và chuẩn bị đưa thay đổi lên nhánh làm việc.
+
+### Prompt
+
+Hoàn gửi nội dung về các ca test, query pipe, danh sách, giá, chi tiết, danh mục và một tình huống mẫu; yêu cầu ghi nhận, sau đó yêu cầu cập nhật AI log, commit, push và soạn mô tả PR.
+
+### Kết quả đề xuất
+
+Codex đưa nội dung được gửi vào khung kiểm tra, giữ ghi chú về hai ca test chưa xác định và tình huống mẫu; các ô checklist vẫn chưa đánh dấu hoàn thành.
+
+### Phản biện
+
+Bài tự đánh giá yêu cầu Hoàn tự trả lời và giải thích không cần xem code. Nội dung được gửi còn lời hướng dẫn và tình huống mẫu, chưa đủ để xác nhận đã hoàn thành yêu cầu đó; cần Hoàn tự bổ sung, đối chiếu và reviewer hỏi lại.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu ghi nhận nội dung và đưa lên nhánh; chưa có xác nhận nghiệm thu của reviewer cho bước 2.7.
+
+### Người kiểm tra
+
+Codex ghi nhận nội dung; Hoàn cần tự hoàn thiện và reviewer cần đánh giá.
+
+### Kiểm tra và minh chứng
+
+- File kiểm tra có nội dung Hoàn gửi nhưng danh sách test và câu về khó khăn còn cần hoàn thiện.
+- Chưa xác nhận reviewer đã hỏi và nhận câu trả lời cho hai câu bất kỳ.
+- Trạng thái build toàn dự án gần nhất chưa pass như mục `hoan-20261115-cat1-09`; chưa chạy lại trong bước ghi nhận này.
+
+---
+
+## Phase 1 / hoan-20261115-promo-12
+
+* Thời gian ghi: 2026-11-15T15:50:42+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-promo
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-3; PR #658
+
+### Công cụ
+
+Codex, Git, npm, Vitest và VS Code.
+
+### Mục đích
+
+Giải quyết conflict giữa nhánh PR ưu đãi và main mới nhất.
+
+### Prompt
+
+Hoàn cung cấp ảnh conflict tại `app.module.ts` và yêu cầu tiến hành xử lý.
+
+### Kết quả đề xuất
+
+Codex merge `origin/main` vào nhánh PR, giữ AuthModule, CatalogModule, AdminCatalogModule, AdminUsersModule và PromotionsModule trong một khối `@Module`. Dependencies được đồng bộ sau khi main thêm các gói kiểm thử.
+
+### Phản biện
+
+Lần chạy test đầu thiếu `@nestjs/testing` trong node_modules; sau khi cài các dependency theo cấu hình hiện có, test chạy thành công. Chưa xác nhận trạng thái PR hoặc CI sau push.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu giải quyết conflict; chưa có xác nhận review hoặc merge PR sau thay đổi này.
+
+### Người kiểm tra
+
+Codex kiểm tra và chạy lệnh; chờ reviewer và CI xem lại.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd run lint -w api`: pass.
+- `npm.cmd test -w api`: 33/33 pass.
+- `npm.cmd run build -w api`: pass.
+
+---
+
+## Phase 1 / hoan-20261115-me-01
+
+* Thời gian ghi: 2026-11-15T16:45:08+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-me
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-4.1
+
+### Công cụ
+
+Codex, Git và VS Code.
+
+### Mục đích
+
+Kiểm tra điều kiện phụ thuộc và chuẩn bị nhánh viết test hồ sơ, đổi mật khẩu, sản phẩm đã xem.
+
+### Prompt
+
+Hoàn cung cấp task cha và yêu cầu tiếp tục công việc.
+
+### Kết quả đề xuất
+
+Codex fetch GitHub, xác nhận main có module admin-users và chứa đầu nhánh `prj/p1-bd2-2`, rồi tạo nhánh `prj/p1-bd1-4` từ `origin/main` tại `7bdc7d1`.
+
+### Phản biện
+
+Test cần được viết trước chức năng và QA duyệt; nội dung các bước được Hoàn cung cấp nêu năm tên ca nhưng lộ trình đặt mục tiêu sáu ca, cần làm rõ và xem xét trước khi chốt.
+
+### Quyết định của nhóm
+
+Chưa xác nhận QA duyệt test cho task mới; chưa viết chức năng hoặc tạo test.
+
+### Người kiểm tra
+
+Codex kiểm tra Git; chờ Hoàn và QA xem xét kế hoạch kiểm thử.
+
+### Kiểm tra và minh chứng
+
+- `origin/main` tại `7bdc7d1` có các tệp `apps/api/src/admin-users/` và chứa đầu nhánh phụ thuộc.
+- Chưa chạy test `me`, chưa commit hoặc push nhánh task mới.
+
+---
+
+## Phase 1 / hoan-20261115-me-02
+
+* Thời gian ghi: 2026-11-15T16:51:53+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-me
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-4.1; hoan-20261115-me-01
+
+### Công cụ
+
+Codex, Vitest và VS Code.
+
+### Mục đích
+
+Chuẩn bị kiểm thử nghiệm thu trước khi viết chức năng hồ sơ, mật khẩu và sản phẩm đã xem.
+
+### Prompt
+
+Hoàn cung cấp yêu cầu bước 4.1 và yêu cầu bắt đầu task test.
+
+### Kết quả đề xuất
+
+Codex tạo sáu ca test trong `apps/api/src/me/me.spec.ts`: xác thực và phân quyền, hồ sơ, đổi mật khẩu, cập nhật đồng thời, ghi lượt xem và danh sách đã xem. Ca cập nhật mật khẩu đồng thời là ca bổ sung để kiểm tra yêu cầu `updateMany`.
+
+### Phản biện
+
+Sáu ca được Vitest nhận diện nhưng dừng vì module và service `me` chưa tồn tại; chưa kiểm tra được các assertion. Ca danh sách đã xem bổ sung kiểm tra dữ liệu thẻ sau lần chạy ban đầu; cần QA duyệt hình dạng dữ liệu trả về và toàn bộ test trước khi chốt.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu bắt đầu test; chưa có xác nhận QA duyệt hoặc thống nhất hình dạng phản hồi sản phẩm đã xem.
+
+### Người kiểm tra
+
+Codex viết và chạy test; chờ Hoàn và QA xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api -- me.spec.ts`: 6 ca FAIL do thiếu `me.module.js` và `me.service.js`; không phải lỗi assertion.
+- Sau lần chạy đã bổ sung assertion dữ liệu thẻ; chưa chạy lại, chưa commit hoặc push.
+
+---
+
+## Phase 1 / hoan-20261115-me-03
+
+* Thời gian ghi: 2026-11-15T16:57:53+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-me
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-4.2; hoan-20261115-me-02
+
+### Công cụ
+
+Codex, Vitest và VS Code.
+
+### Mục đích
+
+Thực hiện DTO và controller hồ sơ trong phạm vi bước 4.2 và ghi nhận kết quả test.
+
+### Prompt
+
+Hoàn yêu cầu thực hiện theo từng bước và báo tình hình thực tế của bước này.
+
+### Kết quả đề xuất
+
+Codex tạo DTO kiểm tra dữ liệu hồ sơ, mật khẩu và sản phẩm đã xem; tạo controller gắn JwtAuthGuard ở cấp lớp và endpoint profile lấy ID từ người đã xác thực. Các endpoint khác và service chưa được triển khai.
+
+### Phản biện
+
+Ca test hiện phụ thuộc `MeModule` dự kiến ở bước 4.5; controller cũng phụ thuộc service sẽ làm ở bước sau. Chưa thể xác nhận kiểm tra bảo vệ HTTP hay tiêu chí test xanh; không sửa test hoặc tạo module ngoài bước để che lỗi.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu tiếp tục từng bước; chưa có xác nhận QA duyệt test.
+
+### Người kiểm tra
+
+Codex chạy test; chờ Hoàn và QA xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api -- me.spec.ts -t 'yêu cầu đăng nhập'`: 1 ca fail vì thiếu `me.module.js`, 5 ca bỏ qua; chưa chạy đến assertion.
+- Chưa tạo service, module hay các endpoint còn lại; chưa commit hoặc push bước 4.2.
+
+---
+
+## Phase 1 / hoan-20261115-me-04
+
+* Thời gian ghi: 2026-11-15T17:04:41+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-me
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-4.3; hoan-20261115-me-03
+
+### Công cụ
+
+Codex, Vitest và VS Code.
+
+### Mục đích
+
+Xây dựng chức năng xem và cập nhật hồ sơ mà không trả hash mật khẩu.
+
+### Prompt
+
+Hoàn hỏi lý do không trả `passwordHash`, sau đó yêu cầu thực hiện bước 4.3.
+
+### Kết quả đề xuất
+
+Codex tạo `me.service.ts` với `profile`, `updateProfile` và danh sách trường công khai; hồ sơ không tồn tại được báo 404.
+
+### Phản biện
+
+Test sử dụng Prisma giả, chưa xác nhận endpoint HTTP hoặc database thật. Bước 4.2 vẫn chưa có test xanh do `MeModule` chưa tạo; chưa có xác nhận QA đã duyệt bộ test.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu thực hiện từng bước và giữ `MeModule` cho bước 4.5.
+
+### Người kiểm tra
+
+Codex chạy ca test hồ sơ; chờ Hoàn và QA/reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api -- me.spec.ts -t 'xem và sửa hồ sơ'`: 1 ca pass, 5 ca bỏ qua do lọc tên.
+- Chưa commit hoặc push bước 4.3; chưa kiểm tra kết nối database thật.
+
+---
+
+## Phase 1 / hoan-20261115-me-05
+
+* Thời gian ghi: 2026-11-15T21:48:41+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-me
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-4.4; hoan-20261115-me-04
+
+### Công cụ
+
+Codex, Vitest và VS Code.
+
+### Mục đích
+
+Xử lý đổi mật khẩu và tránh ghi đè khi mật khẩu thay đổi đồng thời.
+
+### Prompt
+
+Hoàn trao đổi về phản hồi khi khách đổi mật khẩu và yêu cầu thực hiện.
+
+### Kết quả đề xuất
+
+Codex bổ sung hàm `password` trong `me.service.ts`: xác minh mật khẩu cũ, băm mật khẩu mới và cập nhật có điều kiện theo hash cũ.
+
+### Phản biện
+
+Test dùng Prisma giả; chưa kiểm tra qua endpoint hoặc database thật. Module và các route còn lại sẽ làm ở bước sau; chưa xác nhận QA duyệt test.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu thực hiện bước 4.4; giữ module cho bước 4.5 theo trao đổi trước.
+
+### Người kiểm tra
+
+Codex chạy test; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api -- me.spec.ts -t 'mật khẩu'`: 2 ca pass, 4 ca bỏ qua do lọc tên.
+- Chưa commit hoặc push bước 4.4; chưa kiểm tra API HTTP hoặc database thật.
+
+---
+
+## Phase 1 / hoan-20261115-me-06
+
+* Thời gian ghi: 2026-11-15T22:04:20+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-me
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-4.5; hoan-20261115-me-05
+
+### Công cụ
+
+Codex, Vitest, TypeScript và VS Code.
+
+### Mục đích
+
+Hoàn thiện lịch sử sản phẩm đã xem và kết nối module hồ sơ.
+
+### Prompt
+
+Sau khi xem kế hoạch, Hoàn yêu cầu thực hiện bước 4.5.
+
+### Kết quả đề xuất
+
+Codex thêm ghi nhận và truy vấn sản phẩm đã xem, hoàn thiện route hồ sơ, mật khẩu và lịch sử xem; tạo MeModule và đăng ký trong AppModule. Bổ sung ConfigModule vào AuthModule để khởi tạo module xác thực độc lập trong test.
+
+### Phản biện
+
+Test ban đầu báo thiếu ConfigService khi khởi tạo AuthModule; sau khi khai báo ConfigModule, sáu ca pass. Test dùng Prisma giả, chưa xác nhận kết quả với database thật; thay đổi AuthModule cần reviewer xem xét. Không sửa file test nghiệm thu.
+
+### Quyết định của nhóm
+
+Hoàn đồng ý thực hiện theo kế hoạch; chưa có xác nhận QA duyệt test hoặc reviewer duyệt thay đổi.
+
+### Người kiểm tra
+
+Codex chạy test, lint và TypeScript; chờ Hoàn và reviewer kiểm tra.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api -- me`: 6/6 ca pass sau khi bổ sung dependency.
+- `npm.cmd run lint -w api`: pass; `npx.cmd tsc --noEmit -p apps/api/tsconfig.build.json`: pass.
+- Chưa kiểm tra database thật hoặc build toàn dự án; chưa commit hoặc push bước này.
+
+---
+
+## Phase 1 / hoan-20261115-me-07
+
+* Thời gian ghi: 2026-11-15T22:14:40+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-me
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-4.6; hoan-20261115-me-06
+
+### Công cụ
+
+Codex và VS Code.
+
+### Mục đích
+
+Chuẩn bị khung tự đánh giá kiến thức cho task hồ sơ.
+
+### Prompt
+
+Hoàn cung cấp yêu cầu bước tự kiểm tra kiến thức 4.6.
+
+### Kết quả đề xuất
+
+Codex tạo `docs/learning/BD1-Hoan/kiem-tra/PRJ-P1-BD1-4.md` với câu hỏi, checklist và chỗ trống để Hoàn tự trả lời.
+
+### Phản biện
+
+Task yêu cầu tự viết bằng lời của Hoàn, không nhìn code hoặc nhờ AI viết hộ; việc tạo khung chưa chứng minh kiến thức hoặc reviewer đã kiểm tra.
+
+### Quyết định của nhóm
+
+Chưa có xác nhận reviewer đánh giá phần tự kiểm tra.
+
+### Người kiểm tra
+
+Codex tạo khung; Hoàn tự trả lời và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- Tài liệu gồm sáu câu hỏi, các câu trả lời và checklist để trống.
+- Chưa commit hoặc push bước 4.6; chưa có kết quả hai câu hỏi của reviewer.
+
+---
+
+## Phase 1 / hoan-20261115-me-08
+
+* Thời gian ghi: 2026-11-15T22:28:28+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-me
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-4.6; hoan-20261115-me-07
+
+### Công cụ
+
+Codex và VS Code.
+
+### Mục đích
+
+Ghi nhận các câu trả lời tự kiểm tra về hồ sơ, đổi mật khẩu và sản phẩm đã xem.
+
+### Prompt
+
+Hoàn cung cấp câu trả lời, trả lời hai câu luyện tập về ID từ phiên đăng nhập và upsert, sau đó yêu cầu ghi vào tài liệu, commit và push.
+
+### Kết quả đề xuất
+
+Codex ghi các câu trả lời Hoàn cung cấp; điều chỉnh ngắn câu test hồ sơ và câu mật khẩu đồng thời để sát phạm vi test và phần giải thích đã trao đổi. Ghi câu khó khăn về việc phân biệt kiểm thử giả và dữ liệu Supabase.
+
+### Phản biện
+
+Hoàn cần tự xem lại nội dung đã được Codex chỉnh; các ô checklist chưa đánh dấu. Hai câu luyện tập với AI không thay thế hai câu hỏi của reviewer trên PR. Chưa xác nhận QA duyệt bộ test.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu ghi nhận và đưa thay đổi lên nhánh; chưa có xác nhận reviewer nghiệm thu bước tự đánh giá.
+
+### Người kiểm tra
+
+Hoàn cung cấp câu trả lời; Codex nhận xét và ghi lại; chờ reviewer kiểm tra.
+
+### Kiểm tra và minh chứng
+
+- Tài liệu `docs/learning/BD1-Hoan/kiem-tra/PRJ-P1-BD1-4.md` có sáu phần trả lời; checklist vẫn chưa đánh dấu.
+- Chưa xác nhận reviewer hỏi hai câu trên PR; chưa kiểm tra bổ sung database thật.
+
+---
+
+## Phase 1 / hoan-20261115-authfix-01
+
+* Thời gian ghi: 2026-11-15T23:02:37+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-authfix
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-FIX.1
+
+### Công cụ
+
+Codex, Git, Vitest và VS Code.
+
+### Mục đích
+
+Điều chỉnh giới hạn đăng nhập theo IP và email, tránh từ chối mọi khóa mới khi bộ nhớ đầy.
+
+### Prompt
+
+Hoàn cung cấp task fix sau review và yêu cầu tiếp tục thực hiện.
+
+### Kết quả đề xuất
+
+Codex tạo nhánh `fix/p1-bd1-auth-hardening` từ `origin/main` tại `c5bf2d0`; controller kết hợp IP với email đã chuẩn hóa, limiter xóa mục cũ nhất khi đầy, và bổ sung test cho hai trường hợp yêu cầu.
+
+### Phản biện
+
+Giới hạn theo IP và email không ngăn mọi hình thức tấn công; `request.ip` có thể là IP proxy nếu hạ tầng chưa cấu hình phù hợp. Khi xóa mục cũ nhất, bộ đếm cũ có thể bị loại trước khi hết hạn. Chưa kiểm tra cách triển khai proxy hoặc chạy build toàn dự án.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu thực hiện bước fix; chưa có xác nhận reviewer duyệt thay đổi.
+
+### Người kiểm tra
+
+Codex chạy test và lint API; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api -- auth-rate-limit`: 7/7 pass.
+- `npm.cmd test -w api`: 35/35 pass; `npm.cmd run lint -w api`: pass.
+- Chưa commit hoặc push; chưa kiểm tra proxy thực tế và build toàn dự án.
+
+---
+
+## Phase 1 / hoan-20261115-authfix-02
+
+* Thời gian ghi: 2026-11-15T23:07:49+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-authfix
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-FIX.2; hoan-20261115-authfix-01
+
+### Công cụ
+
+Codex, Vitest và VS Code.
+
+### Mục đích
+
+Giảm chênh lệch thời gian xử lý khi đăng nhập bằng email không tồn tại.
+
+### Prompt
+
+Hoàn tạm hoãn kiểm tra proxy thực tế và yêu cầu tiếp tục bước tiếp theo.
+
+### Kết quả đề xuất
+
+Codex thêm hash giả tạo một lần và gọi xác minh mật khẩu cả khi không có user; trường hợp tài khoản bị khóa cũng đi qua xác minh. Bổ sung ca test quan sát lời gọi verifyPassword khi email không tồn tại.
+
+### Phản biện
+
+Test xác nhận lời gọi, không chứng minh thời gian phản hồi bằng nhau hay loại bỏ hoàn toàn khả năng dò tài khoản. Đây là ca test bổ sung vào file nghiệm thu, cần thông báo QA để review; các ca cũ không bị nới lỏng. Bước 1 vẫn chưa commit.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu tạm bỏ qua kiểm tra proxy và tiếp tục; chưa có xác nhận QA hoặc reviewer duyệt.
+
+### Người kiểm tra
+
+Codex chạy test auth và lint API; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api -- auth.spec.ts`: 7/7 pass.
+- `npm.cmd run lint -w api`: pass.
+- Bước 1 và 2 chưa commit hoặc push; chưa chạy build toàn dự án.
+
+---
+
+## Phase 1 / hoan-20261115-authfix-03
+
+* Thời gian ghi: 2026-11-15T23:14:12+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-authfix
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-FIX.3; hoan-20261115-authfix-02
+
+### Công cụ
+
+Codex, Vitest và VS Code.
+
+### Mục đích
+
+Giới hạn độ dài thông tin đăng ký và đăng nhập theo yêu cầu review.
+
+### Prompt
+
+Hoàn yêu cầu tiếp tục task fix sau khi đã commit hai bước trước.
+
+### Kết quả đề xuất
+
+Codex thêm giới hạn mật khẩu 128, họ tên 100 và số điện thoại 20 ký tự; bổ sung ca test ValidationPipe cho dữ liệu vượt giới hạn và mật khẩu 128 ký tự hợp lệ.
+
+### Phản biện
+
+Kiểm tra 400 được thực hiện trực tiếp qua ValidationPipe, chưa kiểm tra HTTP thật. Ca test được thêm vào file nghiệm thu hiện có để đáp ứng task fix, cần QA xem lại; các assertion cũ không được nới lỏng.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu tiếp tục; chưa có xác nhận QA hoặc reviewer duyệt bổ sung test.
+
+### Người kiểm tra
+
+Codex chạy test và lint API; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api`: 37/37 ca pass.
+- `npm.cmd run lint -w api`: pass.
+- Chưa chạy build toàn dự án; chưa commit hoặc push bước 3.
+
+---
+
+## Phase 1 / hoan-20261115-authfix-04
+
+* Thời gian ghi: 2026-11-15T23:18:36+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-authfix
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-FIX.5; hoan-20261115-authfix-03
+
+### Công cụ
+
+Codex, Vitest, Supertest và VS Code.
+
+### Mục đích
+
+Bổ sung các ca test catalog và auth theo review.
+
+### Prompt
+
+Hoàn yêu cầu tiếp tục task fix.
+
+### Kết quả đề xuất
+
+Codex thêm test lọc size, sắp xếp giá giảm dần, HTTP catalog với Prisma giả, vai trò admin và khách chưa đăng nhập, đăng ký thành công, JWT sai thuật toán hoặc định dạng, và tài khoản bị khóa.
+
+### Phản biện
+
+Test bổ sung vào các file nghiệm thu hiện có, cần QA review; các assertion cũ không bị nới lỏng. Test HTTP dùng Prisma giả; chưa kiểm tra database thật. Bước 4 tối ưu catalog là tùy chọn và chưa thực hiện.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu tiếp tục; chưa có xác nhận reviewer hoặc QA duyệt các test mới.
+
+### Người kiểm tra
+
+Codex chạy test và lint API; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api`: 44/44 pass.
+- `npm.cmd run lint -w api`: pass.
+- Chưa chạy build toàn dự án; chưa commit hoặc push bước 5.
+
+---
+
+## Phase 1 / hoan-20261115-authfix-05
+
+* Thời gian ghi: 2026-11-15T23:24:46+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-authfix
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-FIX; hoan-20261115-authfix-04
+
+### Công cụ
+
+Codex, npm và VS Code.
+
+### Mục đích
+
+Kiểm tra lint, test và build toàn dự án trước PR.
+
+### Prompt
+
+Hoàn hỏi task fix đã hoàn tất để đóng và mở PR merge chưa.
+
+### Kết quả đề xuất
+
+Codex chạy các kiểm tra toàn dự án. Build web ban đầu thiếu package `motion` đã khai báo; sau khi đồng bộ dependencies bằng npm install không chạy script, build lại thành công.
+
+### Phản biện
+
+Kiểm tra cục bộ không thay thế CI, QA và review. Chưa kiểm tra IP proxy thực tế. Bước tối ưu catalog là tùy chọn và chưa thực hiện; chưa xác nhận PR được tạo hay merge.
+
+### Quyết định của nhóm
+
+Chưa có xác nhận reviewer duyệt PR hoặc task được đóng.
+
+### Người kiểm tra
+
+Codex chạy kiểm tra; chờ Hoàn và reviewer xác nhận.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd run lint`: pass; `npm.cmd test`: 44/44 pass.
+- `npm.cmd run build`: pass sau khi đồng bộ dependencies.
+- AI log này chưa commit hoặc push.
+
+---
+
+## Phase 1 / hoan-20261115-authfix-06
+
+* Thời gian ghi: 2026-11-15T23:36:45+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-authfix
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-FIX; hoan-20261115-authfix-05
+
+### Công cụ
+
+Codex, Git, npm và VS Code.
+
+### Mục đích
+
+Giải quyết conflict nhật ký AI giữa nhánh fix và main.
+
+### Prompt
+
+Hoàn gửi ảnh PR báo conflict trong `docs/ai-logs/hoan.md` và nhờ hỗ trợ.
+
+### Kết quả đề xuất
+
+Codex gộp main mới nhất, đối chiếu các mục trùng và giữ các mục của cả hai nhánh, rồi chạy kiểm tra toàn dự án.
+
+### Phản biện
+
+Conflict được ghép theo các mục nguyên vẹn; cần kiểm tra CI và trạng thái PR sau push. Chưa có xác nhận review hoặc merge.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu hỗ trợ xử lý conflict; chưa có xác nhận reviewer duyệt.
+
+### Người kiểm tra
+
+Codex đối chiếu nhật ký, chạy test, lint và build; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- Đối chiếu thấy năm mục authfix chỉ có ở nhánh fix, tám mục me chỉ có ở main; các mục chung không khác nhau.
+- `npm.cmd run lint`: pass; `npm.cmd test`: 50/50 pass; `npm.cmd run build`: pass.
+- Chưa xác nhận CI hay trạng thái PR sau push.
