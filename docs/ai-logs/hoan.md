@@ -2909,3 +2909,91 @@ Codex kiểm tra và chạy lệnh; chờ reviewer và CI xem lại.
 - `npm.cmd run lint -w api`: pass.
 - `npm.cmd test -w api`: 33/33 pass.
 - `npm.cmd run build -w api`: pass.
+
+---
+
+## Phase 1 / hoan-20261115-me-01
+
+* Thời gian ghi: 2026-11-15T16:45:08+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-me
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-4.1
+
+### Công cụ
+
+Codex, Git và VS Code.
+
+### Mục đích
+
+Kiểm tra điều kiện phụ thuộc và chuẩn bị nhánh viết test hồ sơ, đổi mật khẩu, sản phẩm đã xem.
+
+### Prompt
+
+Hoàn cung cấp task cha và yêu cầu tiếp tục công việc.
+
+### Kết quả đề xuất
+
+Codex fetch GitHub, xác nhận main có module admin-users và chứa đầu nhánh `prj/p1-bd2-2`, rồi tạo nhánh `prj/p1-bd1-4` từ `origin/main` tại `7bdc7d1`.
+
+### Phản biện
+
+Test cần được viết trước chức năng và QA duyệt; nội dung các bước được Hoàn cung cấp nêu năm tên ca nhưng lộ trình đặt mục tiêu sáu ca, cần làm rõ và xem xét trước khi chốt.
+
+### Quyết định của nhóm
+
+Chưa xác nhận QA duyệt test cho task mới; chưa viết chức năng hoặc tạo test.
+
+### Người kiểm tra
+
+Codex kiểm tra Git; chờ Hoàn và QA xem xét kế hoạch kiểm thử.
+
+### Kiểm tra và minh chứng
+
+- `origin/main` tại `7bdc7d1` có các tệp `apps/api/src/admin-users/` và chứa đầu nhánh phụ thuộc.
+- Chưa chạy test `me`, chưa commit hoặc push nhánh task mới.
+
+---
+
+## Phase 1 / hoan-20261115-me-02
+
+* Thời gian ghi: 2026-11-15T16:51:53+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-me
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-4.1; hoan-20261115-me-01
+
+### Công cụ
+
+Codex, Vitest và VS Code.
+
+### Mục đích
+
+Chuẩn bị kiểm thử nghiệm thu trước khi viết chức năng hồ sơ, mật khẩu và sản phẩm đã xem.
+
+### Prompt
+
+Hoàn cung cấp yêu cầu bước 4.1 và yêu cầu bắt đầu task test.
+
+### Kết quả đề xuất
+
+Codex tạo sáu ca test trong `apps/api/src/me/me.spec.ts`: xác thực và phân quyền, hồ sơ, đổi mật khẩu, cập nhật đồng thời, ghi lượt xem và danh sách đã xem. Ca cập nhật mật khẩu đồng thời là ca bổ sung để kiểm tra yêu cầu `updateMany`.
+
+### Phản biện
+
+Sáu ca được Vitest nhận diện nhưng dừng vì module và service `me` chưa tồn tại; chưa kiểm tra được các assertion. Ca danh sách đã xem bổ sung kiểm tra dữ liệu thẻ sau lần chạy ban đầu; cần QA duyệt hình dạng dữ liệu trả về và toàn bộ test trước khi chốt.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu bắt đầu test; chưa có xác nhận QA duyệt hoặc thống nhất hình dạng phản hồi sản phẩm đã xem.
+
+### Người kiểm tra
+
+Codex viết và chạy test; chờ Hoàn và QA xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api -- me.spec.ts`: 6 ca FAIL do thiếu `me.module.js` và `me.service.js`; không phải lỗi assertion.
+- Sau lần chạy đã bổ sung assertion dữ liệu thẻ; chưa chạy lại, chưa commit hoặc push.
