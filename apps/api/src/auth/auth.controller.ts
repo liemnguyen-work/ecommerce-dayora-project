@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import type { Response } from 'express';
+import type { Request, Response } from 'express';
 import { LoginDto, RegisterDto } from './auth.dto.js';
 import { JwtAuthGuard } from './auth.guard.js';
 import type { AuthRequest } from './auth.guard.js';
@@ -30,10 +30,10 @@ export class AuthController {
   }
 
   @Post('login')
-  async login(@Body() dto: LoginDto, @Res({ passthrough: true }) response: Response) {
+  async login(@Body() dto: LoginDto, @Res({ passthrough: true }) response: Response, @Req() request: Request) {
     let user: Awaited<ReturnType<AuthService['login']>>;
     try {
-      user = await this.rateLimit.attempt(dto.email, () => this.auth.login(dto));
+      user = await this.rateLimit.attempt(`${request.ip ?? 'unknown'}|${dto.email.trim().toLowerCase()}`, () => this.auth.login(dto));
     } catch (error: unknown) {
       if (error instanceof LoginRateLimitException) {
         response.setHeader('Retry-After', String(error.retryAfterSeconds));
