@@ -1,6 +1,7 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { hashPassword, verifyPassword } from '../auth/password.js';
 import { PrismaService } from '../prisma/prisma.service.js';
-import type { ProfileDto } from './me.dto.js';
+import type { PasswordDto, ProfileDto } from './me.dto.js';
 
 const profileSelect = {
   id: true,
@@ -26,5 +27,25 @@ export class MeService {
       data: { fullName: dto.fullName, phone: dto.phone },
       select: profileSelect,
     });
+  }
+
+  async password(id: string, dto: PasswordDto) {
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+      select: { passwordHash: true },
+    });
+    if (!user || !(await verifyPassword(dto.currentPassword, user.passwordHash))) {
+      throw new BadRequestException('Mật khẩu hiện tại không đúng');
+    }
+
+    const passwordHash = await hashPassword(dto.newPassword);
+    const result = await this.prisma.user.updateMany({
+      where: { id, passwordHash: user.passwordHash },
+      data: { passwordHash },
+    });
+    if (result.count === 0) {
+      throw new BadRequestException('Mật khẩu hiện tại đã thay đổi');
+    }
+    return { message: 'Đã đổi mật khẩu' };
   }
 }
