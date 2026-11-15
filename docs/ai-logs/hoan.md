@@ -3262,3 +3262,273 @@ Hoàn cung cấp câu trả lời; Codex nhận xét và ghi lại; chờ review
 
 - Tài liệu `docs/learning/BD1-Hoan/kiem-tra/PRJ-P1-BD1-4.md` có sáu phần trả lời; checklist vẫn chưa đánh dấu.
 - Chưa xác nhận reviewer hỏi hai câu trên PR; chưa kiểm tra bổ sung database thật.
+
+---
+
+## Phase 1 / hoan-20261115-authfix-01
+
+* Thời gian ghi: 2026-11-15T23:02:37+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-authfix
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-FIX.1
+
+### Công cụ
+
+Codex, Git, Vitest và VS Code.
+
+### Mục đích
+
+Điều chỉnh giới hạn đăng nhập theo IP và email, tránh từ chối mọi khóa mới khi bộ nhớ đầy.
+
+### Prompt
+
+Hoàn cung cấp task fix sau review và yêu cầu tiếp tục thực hiện.
+
+### Kết quả đề xuất
+
+Codex tạo nhánh `fix/p1-bd1-auth-hardening` từ `origin/main` tại `c5bf2d0`; controller kết hợp IP với email đã chuẩn hóa, limiter xóa mục cũ nhất khi đầy, và bổ sung test cho hai trường hợp yêu cầu.
+
+### Phản biện
+
+Giới hạn theo IP và email không ngăn mọi hình thức tấn công; `request.ip` có thể là IP proxy nếu hạ tầng chưa cấu hình phù hợp. Khi xóa mục cũ nhất, bộ đếm cũ có thể bị loại trước khi hết hạn. Chưa kiểm tra cách triển khai proxy hoặc chạy build toàn dự án.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu thực hiện bước fix; chưa có xác nhận reviewer duyệt thay đổi.
+
+### Người kiểm tra
+
+Codex chạy test và lint API; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api -- auth-rate-limit`: 7/7 pass.
+- `npm.cmd test -w api`: 35/35 pass; `npm.cmd run lint -w api`: pass.
+- Chưa commit hoặc push; chưa kiểm tra proxy thực tế và build toàn dự án.
+
+---
+
+## Phase 1 / hoan-20261115-authfix-02
+
+* Thời gian ghi: 2026-11-15T23:07:49+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-authfix
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-FIX.2; hoan-20261115-authfix-01
+
+### Công cụ
+
+Codex, Vitest và VS Code.
+
+### Mục đích
+
+Giảm chênh lệch thời gian xử lý khi đăng nhập bằng email không tồn tại.
+
+### Prompt
+
+Hoàn tạm hoãn kiểm tra proxy thực tế và yêu cầu tiếp tục bước tiếp theo.
+
+### Kết quả đề xuất
+
+Codex thêm hash giả tạo một lần và gọi xác minh mật khẩu cả khi không có user; trường hợp tài khoản bị khóa cũng đi qua xác minh. Bổ sung ca test quan sát lời gọi verifyPassword khi email không tồn tại.
+
+### Phản biện
+
+Test xác nhận lời gọi, không chứng minh thời gian phản hồi bằng nhau hay loại bỏ hoàn toàn khả năng dò tài khoản. Đây là ca test bổ sung vào file nghiệm thu, cần thông báo QA để review; các ca cũ không bị nới lỏng. Bước 1 vẫn chưa commit.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu tạm bỏ qua kiểm tra proxy và tiếp tục; chưa có xác nhận QA hoặc reviewer duyệt.
+
+### Người kiểm tra
+
+Codex chạy test auth và lint API; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api -- auth.spec.ts`: 7/7 pass.
+- `npm.cmd run lint -w api`: pass.
+- Bước 1 và 2 chưa commit hoặc push; chưa chạy build toàn dự án.
+
+---
+
+## Phase 1 / hoan-20261115-authfix-03
+
+* Thời gian ghi: 2026-11-15T23:14:12+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-authfix
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-FIX.3; hoan-20261115-authfix-02
+
+### Công cụ
+
+Codex, Vitest và VS Code.
+
+### Mục đích
+
+Giới hạn độ dài thông tin đăng ký và đăng nhập theo yêu cầu review.
+
+### Prompt
+
+Hoàn yêu cầu tiếp tục task fix sau khi đã commit hai bước trước.
+
+### Kết quả đề xuất
+
+Codex thêm giới hạn mật khẩu 128, họ tên 100 và số điện thoại 20 ký tự; bổ sung ca test ValidationPipe cho dữ liệu vượt giới hạn và mật khẩu 128 ký tự hợp lệ.
+
+### Phản biện
+
+Kiểm tra 400 được thực hiện trực tiếp qua ValidationPipe, chưa kiểm tra HTTP thật. Ca test được thêm vào file nghiệm thu hiện có để đáp ứng task fix, cần QA xem lại; các assertion cũ không được nới lỏng.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu tiếp tục; chưa có xác nhận QA hoặc reviewer duyệt bổ sung test.
+
+### Người kiểm tra
+
+Codex chạy test và lint API; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api`: 37/37 ca pass.
+- `npm.cmd run lint -w api`: pass.
+- Chưa chạy build toàn dự án; chưa commit hoặc push bước 3.
+
+---
+
+## Phase 1 / hoan-20261115-authfix-04
+
+* Thời gian ghi: 2026-11-15T23:18:36+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-authfix
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-FIX.5; hoan-20261115-authfix-03
+
+### Công cụ
+
+Codex, Vitest, Supertest và VS Code.
+
+### Mục đích
+
+Bổ sung các ca test catalog và auth theo review.
+
+### Prompt
+
+Hoàn yêu cầu tiếp tục task fix.
+
+### Kết quả đề xuất
+
+Codex thêm test lọc size, sắp xếp giá giảm dần, HTTP catalog với Prisma giả, vai trò admin và khách chưa đăng nhập, đăng ký thành công, JWT sai thuật toán hoặc định dạng, và tài khoản bị khóa.
+
+### Phản biện
+
+Test bổ sung vào các file nghiệm thu hiện có, cần QA review; các assertion cũ không bị nới lỏng. Test HTTP dùng Prisma giả; chưa kiểm tra database thật. Bước 4 tối ưu catalog là tùy chọn và chưa thực hiện.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu tiếp tục; chưa có xác nhận reviewer hoặc QA duyệt các test mới.
+
+### Người kiểm tra
+
+Codex chạy test và lint API; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api`: 44/44 pass.
+- `npm.cmd run lint -w api`: pass.
+- Chưa chạy build toàn dự án; chưa commit hoặc push bước 5.
+
+---
+
+## Phase 1 / hoan-20261115-authfix-05
+
+* Thời gian ghi: 2026-11-15T23:24:46+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-authfix
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-FIX; hoan-20261115-authfix-04
+
+### Công cụ
+
+Codex, npm và VS Code.
+
+### Mục đích
+
+Kiểm tra lint, test và build toàn dự án trước PR.
+
+### Prompt
+
+Hoàn hỏi task fix đã hoàn tất để đóng và mở PR merge chưa.
+
+### Kết quả đề xuất
+
+Codex chạy các kiểm tra toàn dự án. Build web ban đầu thiếu package `motion` đã khai báo; sau khi đồng bộ dependencies bằng npm install không chạy script, build lại thành công.
+
+### Phản biện
+
+Kiểm tra cục bộ không thay thế CI, QA và review. Chưa kiểm tra IP proxy thực tế. Bước tối ưu catalog là tùy chọn và chưa thực hiện; chưa xác nhận PR được tạo hay merge.
+
+### Quyết định của nhóm
+
+Chưa có xác nhận reviewer duyệt PR hoặc task được đóng.
+
+### Người kiểm tra
+
+Codex chạy kiểm tra; chờ Hoàn và reviewer xác nhận.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd run lint`: pass; `npm.cmd test`: 44/44 pass.
+- `npm.cmd run build`: pass sau khi đồng bộ dependencies.
+- AI log này chưa commit hoặc push.
+
+---
+
+## Phase 1 / hoan-20261115-authfix-06
+
+* Thời gian ghi: 2026-11-15T23:36:45+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-authfix
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-FIX; hoan-20261115-authfix-05
+
+### Công cụ
+
+Codex, Git, npm và VS Code.
+
+### Mục đích
+
+Giải quyết conflict nhật ký AI giữa nhánh fix và main.
+
+### Prompt
+
+Hoàn gửi ảnh PR báo conflict trong `docs/ai-logs/hoan.md` và nhờ hỗ trợ.
+
+### Kết quả đề xuất
+
+Codex gộp main mới nhất, đối chiếu các mục trùng và giữ các mục của cả hai nhánh, rồi chạy kiểm tra toàn dự án.
+
+### Phản biện
+
+Conflict được ghép theo các mục nguyên vẹn; cần kiểm tra CI và trạng thái PR sau push. Chưa có xác nhận review hoặc merge.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu hỗ trợ xử lý conflict; chưa có xác nhận reviewer duyệt.
+
+### Người kiểm tra
+
+Codex đối chiếu nhật ký, chạy test, lint và build; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- Đối chiếu thấy năm mục authfix chỉ có ở nhánh fix, tám mục me chỉ có ở main; các mục chung không khác nhau.
+- `npm.cmd run lint`: pass; `npm.cmd test`: 50/50 pass; `npm.cmd run build`: pass.
+- Chưa xác nhận CI hay trạng thái PR sau push.

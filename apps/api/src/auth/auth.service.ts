@@ -7,6 +7,8 @@ import { hashPassword, verifyPassword } from './password.js';
 
 // Thời hạn token tính bằng giây.
 const TOKEN_LIFETIME = 7 * 24 * 60 * 60;
+// Hash giả dùng chung để vẫn chạy xác minh khi không tìm thấy tài khoản.
+const DUMMY_HASH = hashPassword('dayora-dummy-password');
 const publicUser = {
   id: true,
   email: true,
@@ -73,7 +75,8 @@ export class AuthService {
     const email = dto.email.trim().toLowerCase();
     const user = await this.prisma.user.findUnique({ where: { email } });
 
-    if (!user || !user.isActive || !(await verifyPassword(dto.password, user.passwordHash))) {
+    const passwordMatches = await verifyPassword(dto.password, user?.passwordHash ?? await DUMMY_HASH);
+    if (!user || !user.isActive || !passwordMatches) {
       throw new UnauthorizedException('Email hoặc mật khẩu không đúng');
     }
 

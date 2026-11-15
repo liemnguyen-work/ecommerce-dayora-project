@@ -18,9 +18,9 @@ export class AuthRateLimit {
   private readonly attempts = new Map<string, AttemptState>();
   private readonly queues = new Map<string, Promise<void>>();
 
-  // Xử lý tuần tự theo email để các yêu cầu đồng thời không vượt qua bộ đếm.
-  async attempt<T>(email: string, operation: () => Promise<T>): Promise<T> {
-    const key = email.trim().toLowerCase();
+  // Xử lý tuần tự theo khóa IP và email để các yêu cầu đồng thời không vượt bộ đếm.
+  async attempt<T>(identity: string, operation: () => Promise<T>): Promise<T> {
+    const key = identity.trim().toLowerCase();
     const previous = this.queues.get(key) ?? Promise.resolve();
     let release!: () => void;
     const current = new Promise<void>((resolve) => { release = resolve; });
@@ -42,14 +42,15 @@ export class AuthRateLimit {
         throw new LoginRateLimitException(Math.ceil((state.blockedUntil - now) / 1000));
       }
 
-      // Giới hạn bộ nhớ; không xóa trạng thái còn hiệu lực khi quá tải.
+      // Giới hạn bộ nhớ, ưu tiên xóa trạng thái hết hạn.
       if (!state && this.attempts.size >= MAX_ENTRIES) {
         for (const [storedKey, entry] of this.attempts) {
           const expiresAt = entry.blockedUntil ?? entry.startedAt + WINDOW_MS;
           if (expiresAt <= now) this.attempts.delete(storedKey);
         }
         if (this.attempts.size >= MAX_ENTRIES) {
-          throw new LoginRateLimitException(Math.ceil(WINDOW_MS / 1000));
+          const oldestKey = this.attempts.keys().next().value;
+          if (oldestKey !== undefined) this.attempts.delete(oldestKey);
         }
       }
 
