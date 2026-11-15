@@ -2532,3 +2532,90 @@ Issue yêu cầu tự trả lời không nhờ AI viết hộ; Thành tự cung 
 
 ### Người kiểm tra
 Thành trả lời, Codex ghi nhận; chờ reviewer đánh giá.
+
+## P1 / THANH-20261116-FAQ-SHARED-001
+
+### Thời gian và loại hoạt động
+2026-11-16 00:38 UTC+07:00 — hỗ trợ tích hợp frontend.
+
+### Công cụ
+Codex.
+
+### Mục đích
+Kiểm tra yêu cầu dùng chung FAQ, hiệu ứng Rise và bố cục Catalog.
+
+### Prompt
+Thành cung cấp đề nghị của thành viên nhóm về FAQ dùng chung, Rise và CatalogLayout.
+
+### Kết quả đề xuất
+Codex tách FaqItem và dữ liệu faqs để tái sử dụng; trang chủ tiếp tục dùng details. Kiểm tra thấy App hiện có header và footer, motion.css có hiệu ứng dùng chung.
+
+### Phản biện
+Chưa có xác nhận nhóm về Rise và CatalogLayout; không tạo layout trùng hoặc khẳng định đã thống nhất kiến trúc.
+
+### Quyết định của nhóm
+Chưa có quyết định nhóm mới được xác nhận.
+
+### Người kiểm tra
+Codex chạy lint và build web; chờ Thành kiểm tra giao diện FAQ.
+
+### Kiểm tra và minh chứng
+Lint web đạt sau khi tách dữ liệu sang file riêng. Build web đạt trước lần tách file dữ liệu; chưa kiểm tra trên trình duyệt. Chưa commit hoặc push.
+
+## P1 / THANH-20261116-FAQ-SHARED-002
+
+### Thời gian và loại hoạt động
+2026-11-16 (UTC+07:00) — kiểm tra hỗ trợ FAQ dùng chung.
+
+### Công cụ
+Codex.
+
+### Mục đích
+Kiểm tra lại thay đổi FAQ sau khi Thành gửi ảnh trang chủ.
+
+### Prompt
+Thành nhờ tiếp tục thực hiện và gửi ảnh hai câu FAQ đang mở.
+
+### Kết quả đề xuất
+Giữ FAQ trang chủ và cung cấp FaqItem, faqs để trang About có thể import.
+
+### Phản biện
+Ảnh chỉ cho thấy nội dung đang mở; chưa chứng minh thao tác đóng và mở. Rise và CatalogLayout chưa được nhóm xác nhận.
+
+### Quyết định của nhóm
+Chưa có quyết định mới được xác nhận.
+
+### Người kiểm tra
+Thành cung cấp ảnh; Codex chạy lint và build web.
+
+### Kiểm tra và minh chứng
+npm run lint -w web và npm run build -w web đều thành công sau khi tách file dữ liệu. Chưa commit, push hoặc kiểm tra trên trình duyệt bằng Codex.
+
+## P1 / THANH-20261116-SHARED-COMPONENTS-003
+
+### Thời gian và loại hoạt động
+2026-11-16 (UTC+07:00) — triển khai thành phần frontend dùng chung.
+
+### Công cụ
+Codex.
+
+### Mục đích
+Hỗ trợ tích hợp FAQ, Rise và bố cục nội dung dùng chung cho trang giới thiệu.
+
+### Prompt
+Thành báo Liêm đã xác nhận và yêu cầu hoàn thiện, kiểm tra, commit một lần.
+
+### Kết quả đề xuất
+Codex tách FAQ, thêm Rise tôn trọng giảm chuyển động và CatalogLayout bọc nội dung; header/footer hiện vẫn do App quản lý.
+
+### Phản biện
+Ảnh Thành cung cấp chỉ cho thấy FAQ đang mở; chưa xác minh tích hợp trang About, hành vi đóng mở và hiệu ứng trên trình duyệt. Nội dung xác nhận chi tiết của Liêm chưa được cung cấp đầy đủ.
+
+### Quyết định của nhóm
+Thành báo Liêm đã xác nhận; cần các thành viên đối chiếu giao diện import và kiểm tra tích hợp thực tế.
+
+### Người kiểm tra
+Codex chạy lint và build web; chờ Thành và thành viên phụ trách About kiểm tra tích hợp.
+
+### Kiểm tra và minh chứng
+npm run lint -w web, npm run build -w web và git diff --check thành công; chưa kiểm thử trang About.
