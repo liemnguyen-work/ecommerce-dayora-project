@@ -7,6 +7,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import HomePage from './pages/HomePage';
 import CatalogPage from './pages/CatalogPage';
+import AdminPage from './pages/AdminPage';
 import ProductPage from './pages/ProductPage';
 import './motion.css';
 
@@ -67,6 +68,7 @@ export default function App() {
         <Route path="/tao-bo" element={<Placeholder title="Tạo bộ" />} />
         <Route path="/gio-hang" element={<Placeholder title="Giỏ hàng" />} />
         <Route path="/tai-khoan" element={<Placeholder title="Tài khoản" />} />
+        <Route path="/admin" element={<AdminPage />} />
         <Route path="*" element={<main className="p-8"><h1>404 - Không tìm thấy trang</h1></main>} />
       </Routes>
       <SiteFooter />

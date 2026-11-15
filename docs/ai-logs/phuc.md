@@ -156,7 +156,7 @@ Codex đã đọc diff, kiểm tra cú pháp và chạy mô phỏng Node như m�
 
 ---
 
-## Buổi 3 — PHUC-20261108-A7D392-002
+## Buổi 3 — Bổ sung bản tự thuật do Phúc cung cấp / PHUC-20261108-A7D392-002
 
 * Thời gian ghi: 2026-11-08T16:01:30+07:00
 * Thời gian thực hiện: Tổng hợp hồi cứu; thời gian thực hiện từng hoạt động trong bản cung cấp chưa xác minh.
@@ -197,6 +197,7 @@ Codex kiểm tra thao tác chỉ nối thêm; Phúc là người cung cấp bả
 
 Nguồn nội dung được giữ nguyên văn dưới đây; thời gian ghi thực tế lấy từ đồng hồ UTC chuyển sang UTC+07:00. Kiểm tra phần byte cũ của log không thay đổi sau khi nối và chạy `git diff --check`. Các kiểm thử chức năng/commit trước đó xem mục 001; không chạy lại hoặc tuyên bố thêm kết quả trình duyệt trong lần ghi này. Phản hồi hoặc đính chính sau đó phải nối mục mới dẫn mã 002.
 
+### Bản tự thuật nguyên văn do Phúc cung cấp
 
 # AI USAGE LOG – BUỔI 3
 ## Hiển thị danh sách sản phẩm từ dữ liệu JavaScript
@@ -376,6 +377,322 @@ Trong Buổi 3, tôi sử dụng ChatGPT để hỗ trợ phân tích yêu cầu
 Tôi chủ động cung cấp dữ liệu thực tế của dự án, đối chiếu các đề xuất của AI với yêu cầu kỹ thuật và giới hạn phạm vi chỉnh sửa theo từng sub-issue.
 
 AI đóng vai trò là công cụ hỗ trợ học tập và tham khảo giải pháp. Tôi chịu trách nhiệm kiểm tra, hiểu, xác nhận tính đúng đắn và hoàn thiện sản phẩm trước khi commit và gửi reviewer.
+
+---
+
+**Người thực hiện:** Nguyễn Hồng Phúc  
+**Task:** HW-P1-FD2-1 – Buổi 3  
+**Phạm vi ghi nhận:** Quá trình trao đổi và hỗ trợ AI đối với bước HW-P1-FD2-1.1.
+# AI USAGE LOG — PRJ-P1-FD2-2
+
+## Khung quản trị, sản phẩm và tài khoản
+
+**Thông tin người thực hiện**
+
+| Nội dung | Thông tin |
+| --- | --- |
+| Họ và tên | Nguyễn Hồng Phúc |
+| Vai trò | FD2 – Phúc |
+| Dự án | DAYORA – Website thương mại điện tử |
+| Nhiệm vụ | PRJ-P1-FD2-2 (#30) |
+| Repository | `liemnguyen-work/ecommerce-dayora-project` |
+| Branch | `prj/p1-fd2-2` |
+| Reviewer | FD1 – Thành |
+| Công cụ AI | ChatGPT / Codex |
+
+---
+
+## 1. Mục đích sử dụng AI
+
+Trong nhiệm vụ PRJ-P1-FD2-2, tôi sử dụng AI để tìm hiểu cách tổ chức trang quản trị của DAYORA, kết nối dữ liệu danh mục, sản phẩm, SKU và tài khoản từ API, đồng thời phân tích các yêu cầu về phân quyền và cập nhật dữ liệu.
+
+Mục đích sử dụng AI bao gồm:
+
+- Xác định thứ tự thực hiện công việc dựa trên các phần phụ thuộc từ chức năng đăng nhập và API quản trị.
+- Tìm hiểu cách chia `AdminPage` thành khung chung, các tab và những phần chức năng riêng để hạn chế file quá dài.
+- Hiểu cách tự viết custom hook `useLoad` cho thao tác tải dữ liệu, quản lý loading và error.
+- Phân biệt ẩn liên kết quản trị trên giao diện với kiểm tra quyền truy cập dữ liệu ở backend.
+- Tìm hiểu cách hiển thị, chỉnh sửa danh mục, sản phẩm, SKU và tài khoản thông qua các API phù hợp.
+- Phân tích form sửa inline, phương thức `PATCH`, tải lại dữ liệu và cơ chế ẩn mềm.
+- Tự kiểm tra kiến thức, chuẩn bị nội dung review, kiểm tra lint/build và đối chiếu yêu cầu nghiệm thu.
+
+AI được sử dụng để giải thích khái niệm, phân tích phương án và chỉ ra rủi ro trong quá trình triển khai. Các thay đổi chức năng và kết quả kiểm tra cần được đối chiếu với mã nguồn, phản hồi API và quá trình kiểm thử của dự án.
+
+## 2. Nhật ký sử dụng AI
+
+### 2.1. Phân tích yêu cầu và kiểm tra các phần phụ thuộc
+
+**Liên quan:** PRJ-P1-FD2-2 (#30)
+
+**Mục tiêu:** Xác định phạm vi khung quản trị, dữ liệu cần hiển thị và các điều kiện cần có trước khi triển khai.
+
+**Prompt:**
+
+> Tôi phụ trách frontend task PRJ-P1-FD2-2 của website DAYORA, gồm khung quản trị, sản phẩm và tài khoản. Task này phụ thuộc vào phần đăng nhập PRJ-P1-FD2-1 và hai nhóm API admin danh mục, sản phẩm, SKU và tài khoản. Hãy giúp tôi phân tích thứ tự thực hiện, kiến thức cần học trước và những trường hợp phải kiểm tra khi kết nối frontend với backend. Tôi muốn hiểu cách làm, không cần viết toàn bộ mã nguồn.
+
+**Phản hồi AI:**
+
+- Kiểm tra cơ chế xác thực và trạng thái người dùng đã được tích hợp ở frontend.
+- Đối chiếu endpoint, phương thức HTTP, dữ liệu trả về và điều kiện phân quyền của API quản trị.
+- Xây dựng khung `AdminPage` trước, sau đó tách các phần hiển thị và thao tác dữ liệu theo nhóm chức năng.
+- Dùng một cơ chế nhất quán để xử lý tải dữ liệu, lỗi và trạng thái đang xử lý.
+- Kiểm tra riêng hai tình huống: người dùng không thấy đường dẫn quản trị và người dùng không có quyền truy cập API quản trị.
+- Hoàn thiện các thao tác chỉnh sửa, tải lại, ẩn mềm rồi mới thực hiện kiểm tra kiến thức và review.
+
+**Phản biện và xử lý của người thực hiện:**
+
+Tôi nhận thấy chức năng quản trị phụ thuộc trực tiếp vào API backend, nên việc chỉ thiết kế giao diện theo dữ liệu tự tạo sẽ không đủ để hoàn thành yêu cầu. Tôi cần phân biệt rõ API lấy danh sách, API cập nhật và API thay đổi trạng thái để tránh gọi nhầm phương thức.
+
+Ngoài ra, tôi không nên chỉnh sửa phần xác thực hoặc tự định nghĩa API mới khi các phần đó đã có người phụ trách. Nếu dữ liệu trả về khác với dự kiến, cần kiểm tra hợp đồng API trước khi sửa giao diện.
+
+**Quyết định:** Ưu tiên đọc cấu trúc project và các endpoint có sẵn, triển khai giao diện theo từng nhóm chức năng và kiểm tra quyền truy cập xuyên suốt quá trình thực hiện.
+
+---
+
+### 2.2. Xây dựng khung trang quản trị và tổ chức module
+
+**Sub-issue:** PRJ-P1-FD2-2.1
+
+**Mục tiêu:** Tạo khung trang quản trị có điều hướng theo tab và cấu trúc component dễ mở rộng.
+
+**Prompt:**
+
+> Tôi đang xây dựng AdminPage cho DAYORA. Theo tôi, trang quản trị nên có một khung chung và các tab cho danh mục, sản phẩm, SKU, tài khoản. Nếu viết toàn bộ giao diện và hàm xử lý trong một file thì sẽ khó theo dõi. Hãy giải thích cách tổ chức component, import/export và cách tách module mà không thay đổi hành vi đang có.
+
+**Phản hồi AI:**
+
+- Sử dụng `AdminPage` làm thành phần điều phối và quản lý tab đang được chọn.
+- Tách giao diện từng nghiệp vụ thành component hoặc module riêng khi kích thước file bắt đầu lớn.
+- Giữ phần điều hướng, tiêu đề, trạng thái chung tại khung trang; chuyển phần render danh sách và form về đúng module nghiệp vụ.
+- Chỉ truyền xuống các dữ liệu và callback cần thiết, tránh để các component phụ phụ thuộc ngược vào toàn bộ trang quản trị.
+- Kiểm tra lại import/export mặc định và import/export có tên để tránh lỗi build.
+
+**Phản biện và xử lý của người thực hiện:**
+
+Tôi đồng ý với hướng tách module nhưng không muốn chia quá nhiều file ngay từ đầu vì cấu trúc sẽ trở nên khó tìm nếu mỗi component nhỏ đều nằm trong một file riêng. Việc chia module cần dựa trên trách nhiệm rõ ràng: khung điều hướng, phần sản phẩm và phần tài khoản.
+
+Tôi cũng nhận thấy việc tách file chỉ là thay đổi cách tổ chức mã nguồn. Nếu thao tác đổi tab, tải dữ liệu hoặc gửi form bị thay đổi thì chưa thể coi là tách module thành công.
+
+**Quyết định:** Xây dựng khung `AdminPage` trước; tổ chức các phần chức năng theo trách nhiệm và giữ nguyên hành vi khi tách các phần `Products` và `Users` ra module riêng.
+
+**Kiểm chứng:** So sánh giao diện, dữ liệu hiển thị và thao tác chuyển tab trước/sau khi tách module; kiểm tra lại đường dẫn import và lỗi TypeScript.
+
+---
+
+### 2.3. Tìm hiểu và áp dụng custom hook `useLoad`
+
+**Sub-issue:** PRJ-P1-FD2-2.2
+
+**Mục tiêu:** Quản lý nhất quán quá trình tải danh sách dữ liệu và xử lý lỗi khi gọi API.
+
+**Prompt:**
+
+> Tôi thấy trang quản trị có nhiều tab đều phải gọi API để tải dữ liệu. Theo tôi, các tab sẽ lặp lại logic loading, error và gọi lại API sau khi cập nhật. Tôi muốn viết hook useLoad để dùng lại phần logic này. Hãy giải thích khi nào nên dùng custom hook, cách tránh gọi API lặp không cần thiết và cần lưu ý gì với useEffect.
+
+**Phản hồi AI:**
+
+- Custom hook phù hợp để gom logic React được sử dụng lặp lại giữa các component.
+- `useLoad` có thể quản lý trạng thái dữ liệu, trạng thái đang tải, thông báo lỗi và một hàm tải lại.
+- Những thành phần dùng hook cần biết khi nào phải gọi lại sau khi tạo, cập nhật hoặc ẩn một bản ghi.
+- Cần kiểm soát dependency của `useEffect` để tránh vòng lặp gọi API.
+- Nên xử lý trường hợp component unmount hoặc phản hồi cũ đến sau phản hồi mới nếu việc tải dữ liệu có thể xảy ra đồng thời.
+
+**Phản biện và xử lý của người thực hiện:**
+
+Tôi nhận thấy không phải mọi thao tác gọi API đều nên đưa vào một hook chung. Việc tải danh sách phù hợp để tái sử dụng, nhưng các thao tác chỉnh sửa sản phẩm và tài khoản có yêu cầu kiểm tra dữ liệu khác nhau.
+
+Tôi cũng lưu ý rằng chỉ cần thêm sai một dependency hoặc định nghĩa lại callback ở mỗi lần render thì có thể khiến API bị gọi lặp. Vì vậy, cần xem lại luồng tải dữ liệu trước khi áp dụng hook trên toàn bộ trang.
+
+**Quyết định:** Sử dụng `useLoad` cho phần đọc và tải lại dữ liệu, còn các thao tác cập nhật sẽ được xử lý tại module nghiệp vụ tương ứng.
+
+**Kiểm chứng:** Kiểm tra lần tải đầu tiên, trạng thái loading, lỗi API, chuyển tab và trường hợp tải lại sau khi cập nhật thành công.
+
+---
+
+### 2.4. Xây dựng chức năng quản lý danh mục và sản phẩm
+
+**Sub-issue:** PRJ-P1-FD2-2.3
+
+**Mục tiêu:** Hiển thị dữ liệu quản trị từ backend và xử lý đúng trạng thái của danh mục, sản phẩm.
+
+**Prompt:**
+
+> Tôi đang làm các tab quản lý danh mục và sản phẩm cho AdminPage. Dữ liệu được lấy từ API backend. Hãy hướng dẫn cách phân biệt dữ liệu hiển thị với dữ liệu gửi khi cập nhật, cách xử lý danh sách trống và lỗi từ server, đồng thời giải thích vì sao không nên chỉ sửa một phần tử trong giao diện rồi coi như đã lưu thành công.
+
+**Phản hồi AI:**
+
+- Xác định cấu trúc dữ liệu API trước khi map thành hàng hoặc thẻ trong giao diện.
+- Hiển thị rõ các trạng thái đang tải, không có dữ liệu và lỗi khi truy xuất.
+- Phân biệt mã định danh bản ghi với nội dung người dùng có thể sửa.
+- Khi cập nhật, cần gửi request đến backend và chỉ xác nhận thành công sau khi server phản hồi phù hợp.
+- Sau thao tác thành công, tải lại danh sách hoặc cập nhật state dựa trên dữ liệu đã được server xác nhận.
+- Không bỏ qua việc xử lý quyền truy cập và lỗi xác thực từ API quản trị.
+
+**Phản biện và xử lý của người thực hiện:**
+
+Tôi nhận thấy việc chỉ cập nhật state ở frontend có thể khiến giao diện hiển thị dữ liệu mới trong khi backend chưa lưu. Khi người dùng tải lại trang, các thay đổi sẽ mất và tạo cảm giác chức năng hoạt động không ổn định.
+
+Tôi cũng lưu ý dữ liệu danh mục và sản phẩm có quan hệ với nhau. Nếu sản phẩm phụ thuộc vào danh mục, việc hiển thị tên danh mục hoặc lọc dữ liệu cần dựa trên mã liên kết thực tế, không nên ghép theo vị trí của phần tử trong mảng.
+
+**Quyết định:** Lấy dữ liệu từ API làm nguồn chính; phản ánh trạng thái request rõ ràng và làm mới danh sách sau khi thao tác được server xác nhận.
+
+**Kiểm chứng:** Kiểm tra dữ liệu danh mục/sản phẩm, trường hợp không có bản ghi, lỗi API và khả năng giữ kết quả cập nhật sau khi tải lại trang.
+
+---
+
+### 2.5. Chỉnh sửa sản phẩm và SKU bằng form inline, `PATCH`
+
+**Sub-issue:** PRJ-P1-FD2-2.4
+
+**Mục tiêu:** Cho phép chỉnh sửa thông tin cần thiết ngay tại danh sách và đồng bộ dữ liệu với backend.
+
+**Prompt:**
+
+> Tôi cần làm chức năng sửa inline trong trang quản trị, đặc biệt là cập nhật giá SKU. Theo tôi, người dùng chọn dòng cần sửa, thay đổi giá, bấm Lưu thì frontend gọi PATCH; nếu thành công sẽ tải lại dữ liệu. Hãy phân tích luồng này, cách quản lý trạng thái đang sửa và những lỗi có thể xảy ra khi gửi giá từ input.
+
+**Phản hồi AI:**
+
+- Giữ riêng giá trị gốc và giá trị đang chỉnh sửa để có thể hủy thay đổi.
+- Chỉ mở form tại dòng được chọn, tránh nhầm giá trị giữa nhiều SKU.
+- Chuyển đổi và kiểm tra dữ liệu nhập trước khi gửi request, đặc biệt với giá và các trường kiểu số.
+- Dùng đúng endpoint cùng phương thức `PATCH` theo API hiện có.
+- Khóa nút lưu hoặc biểu thị trạng thái đang xử lý trong lúc request chưa hoàn tất.
+- Khi thành công, thoát chế độ chỉnh sửa và tải lại dữ liệu để nhận trạng thái mới nhất từ server.
+- Khi thất bại, giữ dữ liệu người dùng vừa nhập và hiển thị thông báo có thể hiểu được.
+
+**Phản biện và xử lý của người thực hiện:**
+
+Tôi nhận thấy `input` dạng số vẫn có thể cung cấp dữ liệu dạng chuỗi và có thể xuất hiện giá trị rỗng hoặc không hợp lệ. Nếu gửi thẳng giá trị này lên API thì lỗi có thể chỉ xuất hiện ở server.
+
+Tôi cũng phân biệt `PATCH` với việc ghi đè toàn bộ sản phẩm: thao tác sửa giá SKU chỉ nên tác động đến trường và đối tượng mà API cho phép. Tuy vậy, việc kiểm tra dữ liệu ở frontend không thay thế được xác thực và kiểm tra hợp lệ ở backend.
+
+**Quyết định:** Tổ chức form inline với khả năng lưu/hủy; gửi dữ liệu theo API `PATCH` và tải lại bản ghi hoặc danh sách sau khi cập nhật thành công.
+
+**Kiểm chứng:** Thử giá hợp lệ, giá rỗng, giá không hợp lệ và lỗi server; đặc biệt kiểm tra rằng khi giá SKU được cập nhật thành công, trang sản phẩm phía người mua cũng hiển thị giá mới từ cùng nguồn dữ liệu.
+
+---
+
+### 2.6. Quản lý tài khoản và xử lý ẩn mềm
+
+**Sub-issue:** PRJ-P1-FD2-2.5
+
+**Mục tiêu:** Hiển thị danh sách tài khoản, thực hiện thao tác quản trị được cấp quyền và hiểu cơ chế ẩn mềm.
+
+**Prompt:**
+
+> Tôi đang xây dựng tab quản lý tài khoản cho AdminPage. Hãy giải thích cách triển khai thao tác cập nhật trạng thái tài khoản, sự khác nhau giữa xóa vĩnh viễn và ẩn mềm, và cách thể hiện trạng thái đã ẩn trên giao diện. Tôi muốn tránh việc người dùng bấm nhầm làm mất dữ liệu hoặc frontend hiển thị sai kết quả.
+
+**Phản hồi AI:**
+
+- Hiển thị các trường tài khoản cần thiết cho nghiệp vụ quản trị, không đưa dữ liệu nhạy cảm không cần thiết lên giao diện.
+- Dùng mã định danh ổn định để thực hiện thao tác trên đúng tài khoản.
+- Với ẩn mềm, bản ghi thường được giữ ở hệ thống nhưng có cờ hoặc trạng thái để không còn xuất hiện trong một số danh sách hoạt động.
+- Cần phân biệt việc đổi trạng thái với xóa bản ghi vĩnh viễn.
+- Hiển thị xác nhận khi thao tác có ảnh hưởng lớn đến tài khoản.
+- Gọi API quản trị, kiểm tra phản hồi và tải lại dữ liệu sau khi cập nhật.
+- Không tự quyết định quyền thực hiện thao tác chỉ bằng cách ẩn hoặc hiện nút trong giao diện.
+
+**Phản biện và xử lý của người thực hiện:**
+
+Tôi nhận thấy khái niệm ẩn mềm không đồng nghĩa với xóa một phần tử khỏi state. Nếu frontend chỉ lọc bản ghi ra khỏi danh sách mà backend chưa cập nhật thì dữ liệu sẽ xuất hiện trở lại sau khi tải trang.
+
+Tôi cũng lưu ý rằng các tài khoản có vai trò khác nhau có thể chịu những giới hạn thao tác khác nhau. Frontend cần phản ánh quyền của người đang đăng nhập, còn backend phải quyết định thao tác đó có được phép hay không.
+
+**Quyết định:** Xử lý trạng thái tài khoản theo phản hồi API; không thực hiện xóa vĩnh viễn khi yêu cầu chỉ là ẩn mềm và không hiển thị thông tin nhạy cảm không cần thiết.
+
+**Kiểm chứng:** Kiểm tra việc thay đổi trạng thái tài khoản, tải lại trang, thông báo lỗi khi thao tác thất bại và phản hồi khi tài khoản không đủ quyền thực hiện thao tác.
+
+---
+
+### 2.7. Phân quyền quản trị và kiểm tra kiến thức
+
+**Sub-issue:** PRJ-P1-FD2-2.6
+
+**Mục tiêu:** Giải thích được cấu trúc AdminPage, custom hook, phân quyền frontend/backend và cơ chế đồng bộ dữ liệu.
+
+**Prompt:**
+
+> Tôi đã tìm hiểu khung AdminPage, các tab chức năng, custom hook useLoad, cập nhật bằng PATCH và ẩn mềm. Hãy đóng vai reviewer kiểm tra kiến thức của tôi qua các tình huống sau: khách tự gõ /admin; API trả 403; giá một SKU thay đổi; tách Products và Users ra file riêng. Hãy chỉ ra những nhầm lẫn thường gặp và cách tự chứng minh chức năng hoạt động đúng.
+
+**Phản hồi AI:**
+
+- `AdminPage` là khung điều phối tab và các phần chức năng; module hóa giúp giới hạn trách nhiệm và dễ bảo trì.
+- `useLoad` giúp tái sử dụng logic tải dữ liệu nhưng không thay thế logic chỉnh sửa chuyên biệt ở từng nghiệp vụ.
+- Ẩn liên kết “Quản trị” trên giao diện chỉ ảnh hưởng đến điều hướng; người dùng vẫn có thể gõ trực tiếp `/admin`.
+- Backend cần xác thực phiên và kiểm tra quyền cho từng API quản trị. Khi không đủ quyền, API phải từ chối, thường bằng mã `403 Forbidden`.
+- Để chứng minh việc sửa giá SKU có hiệu lực, cần kiểm tra dữ liệu lưu ở backend và xác nhận trang sản phẩm phía người mua nhận giá mới.
+- Khi tách `Products` và `Users` ra file riêng, hành vi chuyển tab, tải dữ liệu và thao tác form phải được giữ nguyên.
+
+**Phản biện và xử lý của người thực hiện:**
+
+Tôi nhận thấy dễ nhầm giữa hai khái niệm: không nhìn thấy trang quản trị và không lấy được dữ liệu quản trị. Chặn điều hướng chỉ là một phần trải nghiệm người dùng; nếu API không kiểm tra quyền thì dữ liệu vẫn có thể bị truy cập trực tiếp.
+
+Tương tự, tôi không thể kết luận cập nhật SKU thành công chỉ vì bảng quản trị đã đổi giá. Cần đối chiếu phản hồi từ server, tải lại dữ liệu và kiểm tra trang sản phẩm để xác nhận luồng dữ liệu thực sự đồng bộ.
+
+**Quyết định:** Dùng các tình huống kiểm tra thực tế để chứng minh kiến thức; tập trung vào phân quyền phía server, vòng đời tải dữ liệu và tính nhất quán sau cập nhật.
+
+**Kiểm chứng:** Tự giải thích khung tab và các phần chức năng của `AdminPage`, kiểm tra phản hồi `403`, thử đổi giá SKU và kiểm tra lại trang sản phẩm, sau đó tách module mà không làm thay đổi hành vi.
+
+---
+
+## 3. Đánh giá và kiểm chứng kết quả
+
+### 3.1. Đối chiếu yêu cầu chức năng
+
+| Nội dung đánh giá | Yêu cầu cần đáp ứng | Cách kiểm chứng |
+| --- | --- | --- |
+| Khung quản trị | Có `AdminPage`, điều hướng tab và các phần chức năng tương ứng | Mở trang quản trị và thao tác qua từng tab |
+| Cấu trúc mã nguồn | Các phần `Products`, `Users` có thể tách thành module mà không đổi hành vi | Kiểm tra import/export và so sánh chức năng trước/sau khi tách |
+| Custom hook `useLoad` | Xử lý việc tải dữ liệu và hỗ trợ tải lại | Kiểm tra lần tải đầu, lỗi API và thao tác tải lại |
+| Danh mục và sản phẩm | Dữ liệu quản trị được hiển thị theo API thực tế | Đối chiếu dữ liệu trên giao diện với phản hồi API |
+| SKU và giá bán | Cập nhật bằng `PATCH` và phản ánh giá mới | Sửa giá SKU, tải lại và xem giá ở trang sản phẩm |
+| Quản lý tài khoản | Có thao tác quản trị được cấp quyền và xử lý trạng thái | Kiểm tra danh sách, cập nhật và tình huống lỗi |
+| Ẩn mềm | Thay đổi trạng thái mà không xóa vĩnh viễn bản ghi | Kiểm tra trạng thái sau khi tải lại và đối chiếu API |
+| Phân quyền | Khách không có quyền không thể lấy dữ liệu quản trị | Gọi API quản trị khi chưa đăng nhập hoặc không đủ quyền; kiểm tra `403` theo quy định của backend |
+| Kiểm tra mã nguồn | Lint và build thành công | Chạy `npm run lint` và `npm run build` |
+| Quy trình GitHub | Mỗi sub-issue có commit riêng, PR được review | Kiểm tra lịch sử commit, nội dung PR và kết quả merge |
+
+### 3.2. Các tình huống cần đặc biệt lưu ý
+
+**Trường hợp 1 — Truy cập trái phép trang quản trị:** Việc ẩn đường dẫn quản trị không thể thay thế kiểm tra quyền tại API. Người dùng có thể thử nhập trực tiếp URL, vì vậy cần xác nhận server chặn truy xuất dữ liệu khi không đủ quyền.
+
+**Trường hợp 2 — Cập nhật giá SKU:** Nếu bảng quản trị thể hiện giá mới nhưng trang sản phẩm vẫn hiển thị giá cũ, cần kiểm tra request cập nhật, dữ liệu trả về, cơ chế tải lại và nơi trang sản phẩm lấy giá.
+
+**Trường hợp 3 — Ẩn mềm tài khoản hoặc bản ghi:** Không xem việc ẩn một dòng trên frontend là bằng chứng backend đã lưu trạng thái. Cần kiểm tra dữ liệu sau khi tải lại.
+
+**Trường hợp 4 — Tách module:** Việc chuyển code sang file khác phải giữ nguyên hành vi. Cần kiểm tra cả chuyển tab, gọi API, xử lý lỗi và thao tác chỉnh sửa.
+
+**Trường hợp 5 — Kết nối với các task phụ thuộc:** Chỉ đánh giá tích hợp hoàn chỉnh khi xác thực và API admin của các task liên quan đã sẵn sàng trên nhánh tích hợp phù hợp.
+
+### 3.3. Kiểm tra trước khi gửi PR
+
+Các lệnh kiểm tra theo yêu cầu task:
+
+```bash
+npm run lint
+npm run build
+```
+
+Khi mở PR, cần ghi kết quả chạy thực tế của hai lệnh, các sub-issue đã xử lý, ảnh giao diện liên quan, phần so sánh với code mẫu và đường dẫn đến mục nhật ký AI trong `docs/ai-logs/phuc.md`. Không ghi “pass” khi chưa có kết quả chạy lệnh. Mỗi sub-issue cần được thể hiện bằng commit riêng; sau review, quy trình yêu cầu **Rebase and merge**, không dùng Squash merge.
+
+## 4. Tự đánh giá quá trình sử dụng AI
+
+Qua quá trình tìm hiểu PRJ-P1-FD2-2, tôi rút ra một số kinh nghiệm khi dùng AI hỗ trợ lập trình:
+
+- **Nêu rõ mục tiêu trước khi hỏi:** Thay vì xin toàn bộ trang quản trị, tôi chia vấn đề theo nhóm kiến thức như module, `useLoad`, `PATCH`, ẩn mềm và phân quyền.
+- **Kiểm tra cách hiểu của bản thân:** Tôi đưa ra nhận định ban đầu để AI phân tích đúng/sai, đặc biệt ở các vấn đề dễ nhầm như ẩn link quản trị và bảo vệ dữ liệu bằng backend.
+- **Không đồng nhất giao diện với dữ liệu đã lưu:** Kết quả thao tác chỉ đáng tin cậy khi được backend xác nhận và kiểm tra lại sau khi tải dữ liệu.
+- **Chú ý giới hạn trách nhiệm của frontend:** Frontend có thể hỗ trợ trải nghiệm và giảm lỗi nhập liệu, nhưng không thay thế xác thực, phân quyền và kiểm tra dữ liệu tại server.
+- **Giữ code dễ kiểm tra:** Việc phân tách module và tái sử dụng hook có ý nghĩa khi giúp code rõ ràng hơn, chứ không phải chỉ để tăng số lượng file.
+- **Sử dụng AI có chọn lọc:** Các gợi ý của AI cần được xem xét dựa trên code thực tế, hợp đồng API và tiêu chí nghiệm thu của dự án.
+
+## 5. Kết luận
+
+Nội dung học tập của PRJ-P1-FD2-2 tập trung vào việc xây dựng khung quản trị, tổ chức component, tải và cập nhật dữ liệu danh mục, sản phẩm, SKU, tài khoản, cũng như kiểm soát quyền truy cập.
+
+Các nội dung quan trọng nhất cần nắm là sự khác biệt giữa ẩn giao diện và bảo vệ API, cách tái sử dụng logic qua `useLoad`, cách cập nhật từng phần bằng `PATCH`, ý nghĩa của ẩn mềm và cách chứng minh dữ liệu đã được đồng bộ sau thao tác quản trị.
+
+Việc hoàn tất nhiệm vụ cần được xác nhận bằng mã nguồn, các commit của từng sub-issue, kết quả kiểm tra lint/build, minh chứng giao diện và quy trình review/merge theo yêu cầu dự án.
 
 # AI USAGE LOG — PRJ-P1-FD2-1
 
@@ -662,4 +979,3 @@ Nhật ký này tổng hợp nội dung học tập và trao đổi với AI the
 Các nội dung phản biện tập trung vào việc đánh giá tính phù hợp của phản hồi AI với dự án DAYORA, xác định rủi ro và lựa chọn hướng xử lý có cơ sở kỹ thuật.
 
 Các kết quả kiểm thử, commit và nhận xét reviewer chỉ được cập nhật khi có minh chứng tương ứng.
-
