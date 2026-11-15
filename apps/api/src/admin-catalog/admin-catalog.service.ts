@@ -83,7 +83,7 @@ export class AdminCatalogService {
 
   async listProducts() {
     // Admin xem cả ACTIVE và INACTIVE.
-    return this.prisma.product.findMany({});
+    return this.prisma.product.findMany({ include: { skus: true } });
   }
 
   async createProduct(dto: CreateProductDto) {
