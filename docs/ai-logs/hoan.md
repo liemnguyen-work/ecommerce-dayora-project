@@ -2701,3 +2701,93 @@ Hoàn cung cấp câu trả lời; Codex nhận xét và ghi nhận; chờ revie
 
 - `docs/learning/BD1-Hoan/kiem-tra/PRJ-P1-BD1-3.md` có năm câu trả lời và ghi chú về hỗ trợ AI ở câu năm.
 - Hai câu hỏi luyện tập đã được Hoàn trả lời trong cuộc trao đổi; chưa commit hoặc push thay đổi này.
+
+---
+
+## Phase 1 / hoan-20261115-promo-10
+
+* Thời gian ghi: 2026-11-15T12:34:23+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-promo
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261115-promo-07; PRJ-P1-BD1-3
+
+### Công cụ
+
+Codex, Prisma, NestJS và Vitest.
+
+### Mục đích
+
+Khắc phục lỗi khởi động API để kiểm tra endpoint ưu đãi với database đang cấu hình.
+
+### Prompt
+
+Hoàn hỏi mức ảnh hưởng đến thành viên khác và đồng ý sửa nếu ảnh hưởng không lớn.
+
+### Kết quả đề xuất
+
+Codex thử sinh Prisma Client CommonJS ở thư mục tạm, sau đó đổi `moduleFormat` từ `esm` sang `cjs` trong generator schema và sinh lại client. Ứng dụng khởi động và endpoint ưu đãi trả HTTP 200 cùng mảng rỗng.
+
+### Phản biện
+
+Generator Prisma dùng chung backend nên thay đổi cần reviewer nhóm xem xét. Mảng rỗng không chứng minh các ca lọc ưu đãi thực tế; chưa chạy kiểm tra Node 24 như CI hoặc build toàn dự án. Không chạy migration, không chủ động thêm sửa xóa dữ liệu.
+
+### Quyết định của nhóm
+
+Hoàn cho phép sửa khi ảnh hưởng phù hợp; chưa có xác nhận các thành viên khác duyệt thay đổi cấu hình chung.
+
+### Người kiểm tra
+
+Codex chạy API, test và lint; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd run prisma:generate -w api`: thành công; khởi động API bằng Node 26.13.1 thành công.
+- `GET /api/promotions`: HTTP 200, trả `[]` từ database hiện cấu hình; không kiểm tra thêm bản ghi hoặc tạo dữ liệu thử.
+- `npm.cmd test -w api`: 28/28 pass; `npm.cmd run lint -w api`: pass.
+- Chưa commit hoặc push thay đổi cấu hình và log.
+
+---
+
+## Phase 1 / hoan-20261115-promo-11
+
+* Thời gian ghi: 2026-11-15T12:37:42+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-promo
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261115-promo-10; PRJ-P1-BD1-3
+
+### Công cụ
+
+Codex, npm và Git.
+
+### Mục đích
+
+Kiểm tra thay đổi Prisma trước khi đưa lên nhánh và chuẩn bị pull request.
+
+### Prompt
+
+Hoàn yêu cầu commit, push và hỗ trợ đưa task lên PR.
+
+### Kết quả đề xuất
+
+Codex kiểm tra thay đổi cấu hình và chạy build toàn dự án trước khi chuẩn bị commit, push.
+
+### Phản biện
+
+Build chưa pass: Prisma gặp lỗi EPERM khi đổi tên engine trên Windows; web không tìm thấy `react-router-dom`, kèm lỗi kiểu phát sinh. Chưa xác định đầy đủ nguyên nhân hay kiểm tra lại bằng Node của CI. Cần reviewer xem thay đổi generator dùng chung.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu đưa thay đổi lên nhánh; chưa xác nhận reviewer hoặc QA chấp thuận.
+
+### Người kiểm tra
+
+Codex chạy build; chờ Hoàn và reviewer xem kết quả.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd run build`: thất bại ở bước generate Prisma với EPERM và ở build web do thiếu `react-router-dom`.
+- Các kết quả test và API đã ghi ở hoan-20261115-promo-10; chưa xác nhận PR đã tạo hoặc merge.
