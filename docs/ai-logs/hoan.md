@@ -3174,3 +3174,91 @@ Codex chạy test, lint và TypeScript; chờ Hoàn và reviewer kiểm tra.
 - `npm.cmd test -w api -- me`: 6/6 ca pass sau khi bổ sung dependency.
 - `npm.cmd run lint -w api`: pass; `npx.cmd tsc --noEmit -p apps/api/tsconfig.build.json`: pass.
 - Chưa kiểm tra database thật hoặc build toàn dự án; chưa commit hoặc push bước này.
+
+---
+
+## Phase 1 / hoan-20261115-me-07
+
+* Thời gian ghi: 2026-11-15T22:14:40+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-me
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-4.6; hoan-20261115-me-06
+
+### Công cụ
+
+Codex và VS Code.
+
+### Mục đích
+
+Chuẩn bị khung tự đánh giá kiến thức cho task hồ sơ.
+
+### Prompt
+
+Hoàn cung cấp yêu cầu bước tự kiểm tra kiến thức 4.6.
+
+### Kết quả đề xuất
+
+Codex tạo `docs/learning/BD1-Hoan/kiem-tra/PRJ-P1-BD1-4.md` với câu hỏi, checklist và chỗ trống để Hoàn tự trả lời.
+
+### Phản biện
+
+Task yêu cầu tự viết bằng lời của Hoàn, không nhìn code hoặc nhờ AI viết hộ; việc tạo khung chưa chứng minh kiến thức hoặc reviewer đã kiểm tra.
+
+### Quyết định của nhóm
+
+Chưa có xác nhận reviewer đánh giá phần tự kiểm tra.
+
+### Người kiểm tra
+
+Codex tạo khung; Hoàn tự trả lời và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- Tài liệu gồm sáu câu hỏi, các câu trả lời và checklist để trống.
+- Chưa commit hoặc push bước 4.6; chưa có kết quả hai câu hỏi của reviewer.
+
+---
+
+## Phase 1 / hoan-20261115-me-08
+
+* Thời gian ghi: 2026-11-15T22:28:28+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-me
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-4.6; hoan-20261115-me-07
+
+### Công cụ
+
+Codex và VS Code.
+
+### Mục đích
+
+Ghi nhận các câu trả lời tự kiểm tra về hồ sơ, đổi mật khẩu và sản phẩm đã xem.
+
+### Prompt
+
+Hoàn cung cấp câu trả lời, trả lời hai câu luyện tập về ID từ phiên đăng nhập và upsert, sau đó yêu cầu ghi vào tài liệu, commit và push.
+
+### Kết quả đề xuất
+
+Codex ghi các câu trả lời Hoàn cung cấp; điều chỉnh ngắn câu test hồ sơ và câu mật khẩu đồng thời để sát phạm vi test và phần giải thích đã trao đổi. Ghi câu khó khăn về việc phân biệt kiểm thử giả và dữ liệu Supabase.
+
+### Phản biện
+
+Hoàn cần tự xem lại nội dung đã được Codex chỉnh; các ô checklist chưa đánh dấu. Hai câu luyện tập với AI không thay thế hai câu hỏi của reviewer trên PR. Chưa xác nhận QA duyệt bộ test.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu ghi nhận và đưa thay đổi lên nhánh; chưa có xác nhận reviewer nghiệm thu bước tự đánh giá.
+
+### Người kiểm tra
+
+Hoàn cung cấp câu trả lời; Codex nhận xét và ghi lại; chờ reviewer kiểm tra.
+
+### Kiểm tra và minh chứng
+
+- Tài liệu `docs/learning/BD1-Hoan/kiem-tra/PRJ-P1-BD1-4.md` có sáu phần trả lời; checklist vẫn chưa đánh dấu.
+- Chưa xác nhận reviewer hỏi hai câu trên PR; chưa kiểm tra bổ sung database thật.
