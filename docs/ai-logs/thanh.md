@@ -2349,3 +2349,20 @@ npm.cmd run lint -w web và npm.cmd run build -w web thành công. Chưa commit 
 
 ### Kết quả Thành kiểm tra bổ sung
 Thành thử lọc không có kết quả và thấy nút Xóa bộ lọc; xác nhận bấm xóa thì danh sách trở lại. Sau khi tắt API, ảnh cho thấy hộp lỗi và nút Thử lại, trang không trắng. Thành xác nhận bật lại API và thử lại thì chạy lại.
+
+## P1 / THANH-20261115-PRJ-P1-FD1-3-06
+
+### Mục đích
+Ghi nhận câu trả lời tự đánh giá bước 3.6.
+
+### Prompt
+Thành trả lời sáu câu, yêu cầu dàn ý hỗ trợ, tự sửa các điểm được góp ý và yêu cầu ghi file, commit.
+
+### Kết quả đề xuất
+Codex ghi nguyên câu Thành cung cấp; Codex trước đó góp ý và đưa dàn ý. Phần khó khăn ghi việc xử lý CORS qua biến môi trường tạm.
+
+### Phản biện
+Issue yêu cầu tự trả lời không nhờ AI viết hộ; Thành tự cung cấp và sửa câu trả lời nhưng có sử dụng dàn ý và góp ý AI. Chưa có xác nhận reviewer hỏi và đánh giá hai câu.
+
+### Người kiểm tra
+Thành trả lời và tự sửa; Codex ghi lại, chờ reviewer đánh giá.
