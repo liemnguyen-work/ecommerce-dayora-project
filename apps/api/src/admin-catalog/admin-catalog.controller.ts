@@ -74,6 +74,11 @@ export class AdminCatalogController {
     return this.service.updateProduct(id, dto);
   }
 
+  @Patch('products/:id/hide')
+  hideProduct(@Param('id') id: string) {
+    return this.service.hideProduct(id);
+  }
+
   // SKU
 
   @Get('skus')
@@ -92,5 +97,10 @@ export class AdminCatalogController {
     @Body() dto: UpdateSkuDto,
   ) {
     return this.service.updateSku(id, dto);
+  }
+
+  @Patch('skus/:id/hide')
+  hideSku(@Param('id') id: string) {
+    return this.service.hideSku(id);
   }
 }

@@ -26,7 +26,9 @@ export class AdminCatalogService {
     private readonly prisma: PrismaService,
   ) {}
 
+  // =========================
   // CATEGORY
+  // =========================
 
   async listCategories() {
     return this.prisma.category.findMany({});
@@ -52,7 +54,9 @@ export class AdminCatalogService {
     );
   }
 
+  // =========================
   // PRODUCT
+  // =========================
 
   async listProducts() {
     // Admin xem cả ACTIVE và INACTIVE.
@@ -79,7 +83,16 @@ export class AdminCatalogService {
     );
   }
 
+  async hideProduct(id: string) {
+    return this.prisma.product.update({
+      where: { id },
+      data: { status: 'INACTIVE' },
+    });
+  }
+
+  // =========================
   // SKU
+  // =========================
 
   async listSkus() {
     throw new NotImplementedException(
@@ -96,7 +109,6 @@ export class AdminCatalogService {
   }
 
   async updateSku(id: string, dto: UpdateSkuDto) {
-    // 1. Lay thong tin SKU hien tai.
     const current = await this.prisma.sku.findUnique({
       where: { id },
     });
@@ -105,7 +117,7 @@ export class AdminCatalogService {
       throw new NotFoundException('SKU not found');
     }
 
-    // 2. Khong cho ton kho thap hon so luong dang giu.
+    // Stock moi khong duoc nho hon reserved.
     if (
       dto.stock !== undefined &&
       dto.stock < current.reserved
@@ -115,7 +127,6 @@ export class AdminCatalogService {
       );
     }
 
-    // 3. Tinh gia sau khi cap nhat.
     const nextPrice =
       dto.price !== undefined
         ? dto.price
@@ -126,7 +137,7 @@ export class AdminCatalogService {
         ? dto.salePrice
         : current.salePrice;
 
-    // Gia giam neu co phai nho hon gia niem yet.
+    // Gia giam phai nho hon gia niem yet.
     if (
       nextSalePrice !== null &&
       nextSalePrice !== undefined &&
@@ -136,33 +147,60 @@ export class AdminCatalogService {
         'Giá giảm phải nhỏ hơn giá niêm yết',
       );
     }
-    // 4. Optimistic locking:
-    // Chi cap nhat neu du lieu chua thay doi.
-   
-const result = await this.prisma.sku.updateMany({
-  where: {
-    id,
-    price: current.price,
-    salePrice: current.salePrice,
-    stock: current.stock,
-    reserved: current.reserved,
-  },
-  data: {
-    ...dto,
-    color: dto.color ?? undefined,
-    unit: dto.unit ?? undefined,
-    useType: dto.useType ?? undefined,
-    unitQty: dto.unitQty ?? undefined,
-  },
-});
 
-    // 5. Khong cap nhat duoc -> HTTP 409.
+    // Optimistic locking.
+    const result = await this.prisma.sku.updateMany({
+      where: {
+        id,
+        price: current.price,
+        salePrice: current.salePrice,
+        stock: current.stock,
+        reserved: current.reserved,
+      },
+      data: {
+        ...dto,
+        color: dto.color ?? undefined,
+        unit: dto.unit ?? undefined,
+        useType: dto.useType ?? undefined,
+        unitQty: dto.unitQty ?? undefined,
+      },
+    });
+
     if (result.count !== 1) {
-      throw new ConflictException(
-        'SKU changed; retry',
-      );
+      throw new ConflictException('SKU changed; retry');
     }
-    // 6. Tra ve SKU sau khi cap nhat.
+
+    return this.prisma.sku.findUniqueOrThrow({
+      where: { id },
+    });
+  }
+
+  async hideSku(id: string) {
+    const current = await this.prisma.sku.findUnique({
+      where: { id },
+    });
+
+    if (!current) {
+      throw new NotFoundException('SKU not found');
+    }
+
+    const result = await this.prisma.sku.updateMany({
+      where: {
+        id,
+        price: current.price,
+        salePrice: current.salePrice,
+        stock: current.stock,
+        reserved: current.reserved,
+      },
+      data: {
+        status: 'INACTIVE',
+      },
+    });
+
+    if (result.count !== 1) {
+      throw new ConflictException('SKU changed; retry');
+    }
+
     return this.prisma.sku.findUniqueOrThrow({
       where: { id },
     });
