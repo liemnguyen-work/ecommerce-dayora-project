@@ -2624,6 +2624,14 @@ Codex quan sát kết quả; Hoàn kiểm tra cùng.
 * Người prompt: Hoàn
 * Loại mục: Hoạt động
 * Liên quan: PRJ-P1-BD1-3.5; hoan-20261115-promo-07
+## Phase 1 / hoan-20261115-cat1-10
+
+* Thời gian ghi: 2026-11-15T01:56:10+07:00
+* Thời gian thực hiện: 15/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: hoan-20261115-cat1
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261115-cat1-09; PRJ-P1-BD1-2.7
 
 ### Công cụ
 
@@ -2668,6 +2676,44 @@ Codex tạo khung; Hoàn tự trả lời và reviewer kiểm tra.
 * Người prompt: Hoàn
 * Loại mục: Hoạt động
 * Liên quan: PRJ-P1-BD1-3.5; hoan-20261115-promo-08
+Chuẩn bị tài liệu để Hoàn tự kiểm tra kiến thức về API catalog trước khi reviewer hỏi lại.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp task 2.7, trong đó yêu cầu tự viết câu trả lời, không xem code hoặc nhờ AI viết hộ, và ghi tóm tắt phiên vào AI log; Hoàn yêu cầu tiếp tục.
+
+### Kết quả đề xuất
+
+Codex tạo khung `docs/learning/BD1-Hoan/kiem-tra/PRJ-P1-BD1-2.md` gồm các câu hỏi, checklist và ô trả lời trống theo nội dung task. Codex không điền đáp án.
+
+### Phản biện
+
+Task yêu cầu Hoàn tự trả lời bằng lời của mình; sau khi Hoàn hoàn thành, AI có thể nhận xét và đặt hai câu hỏi luyện tập. Việc tạo khung không chứng minh Hoàn đã trả lời hoặc reviewer đã đánh giá.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu tiếp tục task; chưa có xác nhận reviewer hoặc trưởng nhóm nghiệm thu bước kiểm tra kiến thức.
+
+### Người kiểm tra
+
+Codex tạo tài liệu; chờ Hoàn tự trả lời và reviewer kiểm tra.
+
+### Kiểm tra và minh chứng
+
+- Tệp câu hỏi được tạo; các ô câu trả lời và checklist để trống.
+- Chưa commit hoặc push tài liệu này; chưa có kết quả hai câu hỏi của reviewer.
+- Build toàn dự án vẫn chưa pass theo mục `hoan-20261115-cat1-09`.
+
+---
+
+## Phase 1 / hoan-20261115-cat1-11
+
+* Thời gian ghi: 2026-11-15T10:20:55+07:00
+* Thời gian thực hiện: 15/11/2026; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: hoan-20261115-cat1
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261115-cat1-10; PRJ-P1-BD1-2.7
 
 ### Công cụ
 
@@ -2791,3 +2837,30 @@ Codex chạy build; chờ Hoàn và reviewer xem kết quả.
 
 - `npm.cmd run build`: thất bại ở bước generate Prisma với EPERM và ở build web do thiếu `react-router-dom`.
 - Các kết quả test và API đã ghi ở hoan-20261115-promo-10; chưa xác nhận PR đã tạo hoặc merge.
+Ghi nhận nội dung Hoàn gửi vào tài liệu kiểm tra kiến thức catalog và chuẩn bị đưa thay đổi lên nhánh làm việc.
+
+### Prompt
+
+Hoàn gửi nội dung về các ca test, query pipe, danh sách, giá, chi tiết, danh mục và một tình huống mẫu; yêu cầu ghi nhận, sau đó yêu cầu cập nhật AI log, commit, push và soạn mô tả PR.
+
+### Kết quả đề xuất
+
+Codex đưa nội dung được gửi vào khung kiểm tra, giữ ghi chú về hai ca test chưa xác định và tình huống mẫu; các ô checklist vẫn chưa đánh dấu hoàn thành.
+
+### Phản biện
+
+Bài tự đánh giá yêu cầu Hoàn tự trả lời và giải thích không cần xem code. Nội dung được gửi còn lời hướng dẫn và tình huống mẫu, chưa đủ để xác nhận đã hoàn thành yêu cầu đó; cần Hoàn tự bổ sung, đối chiếu và reviewer hỏi lại.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu ghi nhận nội dung và đưa lên nhánh; chưa có xác nhận nghiệm thu của reviewer cho bước 2.7.
+
+### Người kiểm tra
+
+Codex ghi nhận nội dung; Hoàn cần tự hoàn thiện và reviewer cần đánh giá.
+
+### Kiểm tra và minh chứng
+
+- File kiểm tra có nội dung Hoàn gửi nhưng danh sách test và câu về khó khăn còn cần hoàn thiện.
+- Chưa xác nhận reviewer đã hỏi và nhận câu trả lời cho hai câu bất kỳ.
+- Trạng thái build toàn dự án gần nhất chưa pass như mục `hoan-20261115-cat1-09`; chưa chạy lại trong bước ghi nhận này.
