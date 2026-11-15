@@ -2449,3 +2449,29 @@ Thành cung cấp ảnh hai SKU thảm: ảnh thay đổi, giá và tồn cùng 
 
 ### Kiểm tra dữ liệu giả lập
 Theo yêu cầu của Thành, Codex tự kiểm tra với hai SKU giả lập: một giá 100.000 còn 4, một giá 200.000 hết hàng. Render độc lập từng SKU cho thấy giá, ảnh, tồn tương ứng và nút SKU hết hàng bị khóa. Đây là kiểm tra render, chưa mô phỏng bấm đổi SKU trong trình duyệt; Thành trước đó đã thử chuyển SKU thật và thấy ảnh đổi.
+
+## P1 / THANH-20261115-PRJ-P1-FD1-4-03
+
+### Mục đích
+Bước 4.3: giới hạn số lượng theo tồn SKU.
+
+### Prompt
+Thành cung cấp yêu cầu điều khiển số lượng.
+
+### Kết quả đề xuất
+Codex thêm nút tăng giảm, giới hạn 1 đến số tồn tối đa 99, khóa khi hết hàng và đặt lại số lượng khi đổi biến thể.
+
+### Phản biện
+Chưa thử thao tác đến giới hạn trong trình duyệt. Chức năng thêm giỏ hàng chưa kết nối.
+
+### Kiểm tra và minh chứng
+Codex chạy lint và build web thành công; chờ Thành kiểm tra thực tế. Chưa commit.
+
+### Bổ sung theo yêu cầu Thành
+Thành muốn khách có thể xóa và nhập trực tiếp số lượng. Codex thêm ô nhập, chuẩn hóa về 1 đến tồn (tối đa 99) khi rời ô; giữ nút tăng giảm và reset khi đổi SKU. Lint và build web thành công; chưa thử thao tác nhập trên trình duyệt.
+
+### Kết quả kiểm tra và chỉnh giao diện
+Thành xác nhận đã thử giới hạn số lượng; đã thử nhập ngoài khoảng và thấy số trở về giới hạn. Theo yêu cầu của Thành, Codex chỉnh nhãn tồn kho và khoảng cách liên kết về danh mục. Lint và build web thành công sau chỉnh; chưa được Thành kiểm tra giao diện mới.
+
+### Thành xác nhận
+Thành đã xem lại giao diện tồn kho và liên kết về danh mục sau chỉnh, đồng ý commit.

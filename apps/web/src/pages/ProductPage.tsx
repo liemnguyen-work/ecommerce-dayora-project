@@ -13,9 +13,17 @@ type ProductDetail = {
 
 function ProductDetails({ product }: { product: ProductDetail }) {
   const [selectedId, setSelectedId] = useState(product.skus[0]?.id);
+  const [quantity, setQuantity] = useState(1);
+  const [quantityInput, setQuantityInput] = useState('1');
   const [notice, setNotice] = useState('');
   const sku = product.skus.find((item) => item.id === selectedId);
   const available = Boolean(sku?.inStock && sku.availableStock > 0);
+  const maxQty = Math.max(1, Math.min(99, sku?.availableStock ?? 1));
+  function updateQuantity(value: number) {
+    const next = Math.max(1, Math.min(maxQty, value));
+    setQuantity(next);
+    setQuantityInput(String(next));
+  }
   return (
     <article className="grid gap-8 md:grid-cols-2">
       <div className="overflow-hidden rounded-3xl bg-leaf">
@@ -29,15 +37,25 @@ function ProductDetails({ product }: { product: ProductDetail }) {
         <fieldset className="space-y-3">
           <legend className="font-bold">Chọn biến thể</legend>
           <div className="flex flex-wrap gap-2">{product.skus.map((item) => (
-            <button key={item.id} type="button" aria-pressed={item.id === selectedId} onClick={() => { setSelectedId(item.id); setNotice(''); }} className="rounded-full border border-ink px-4 py-2 aria-pressed:bg-ink aria-pressed:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-berry">
+            <button key={item.id} type="button" aria-pressed={item.id === selectedId} onClick={() => { setSelectedId(item.id); setQuantity(1); setQuantityInput('1'); setNotice(''); }} className="rounded-full border border-ink px-4 py-2 aria-pressed:bg-ink aria-pressed:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-berry">
               {item.color || item.code}{(!item.inStock || item.availableStock <= 0) && ' · Hết hàng'}
             </button>
           ))}</div>
         </fieldset>
-        <p>{available ? `Còn ${sku?.availableStock} ${sku?.unit}` : 'Tạm hết hàng'}</p>
-        <button type="button" disabled={!available} onClick={() => setNotice('Chức năng thêm vào giỏ đang được phát triển.')} className="rounded-full bg-berry px-6 py-3 font-semibold text-white disabled:cursor-not-allowed disabled:bg-ink/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink">{available ? 'Thêm vào giỏ' : 'Tạm hết hàng'}</button>
+        <p className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold ${available ? 'bg-leaf text-ink' : 'bg-red-50 text-red-800'}`}><span aria-hidden="true" className={`h-2 w-2 rounded-full ${available ? 'bg-green-700' : 'bg-red-700'}`} />{available ? `Còn ${sku?.availableStock} ${sku?.unit}` : 'Tạm hết hàng'}</p>
+        <div className="space-y-2">
+          <p className="font-bold">Số lượng</p>
+          <div className="inline-flex items-center overflow-hidden rounded-full border border-ink/30" aria-label="Chọn số lượng">
+            <button type="button" aria-label="Giảm số lượng" disabled={!available || quantity <= 1} onClick={() => updateQuantity(quantity - 1)} className="h-11 w-11 text-xl disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-berry">−</button>
+            <input type="text" inputMode="numeric" aria-label="Số lượng" disabled={!available} value={quantityInput} onChange={(event) => { const value = event.target.value; if (/^\d*$/.test(value)) { setQuantityInput(value); if (value) setQuantity(Math.max(1, Math.min(maxQty, Number(value) || 1))); } }} onBlur={() => updateQuantity(quantityInput ? Number(quantityInput) || 1 : 1)} className="w-14 bg-transparent text-center font-semibold focus-visible:outline-2 focus-visible:outline-berry" />
+            <button type="button" aria-label="Tăng số lượng" disabled={!available || quantity >= maxQty} onClick={() => updateQuantity(quantity + 1)} className="h-11 w-11 text-xl disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-berry">+</button>
+          </div>
+        </div>
+        <div className="flex flex-wrap items-center gap-4">
+          <button type="button" disabled={!available} onClick={() => setNotice('Chức năng thêm vào giỏ đang được phát triển.')} className="rounded-full bg-berry px-6 py-3 font-semibold text-white disabled:cursor-not-allowed disabled:bg-ink/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink">{available ? 'Thêm vào giỏ' : 'Tạm hết hàng'}</button>
+          <Link className="rounded-full px-3 py-2 font-semibold text-ink underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-berry" to="/san-pham">← Về danh mục</Link>
+        </div>
         {notice && <p role="status" className="text-sm">{notice}</p>}
-        <Link className="inline-block underline" to="/san-pham">← Về danh mục</Link>
       </div>
     </article>
   );
