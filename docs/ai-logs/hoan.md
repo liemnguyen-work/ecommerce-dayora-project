@@ -2302,3 +2302,137 @@ Codex chạy test, kiểm tra HTTP bằng dữ liệu giả, TypeScript, lint v�
 - TypeScript và lint API: pass.
 - Build toàn dự án: chưa pass do lỗi Prisma EPERM và thiếu react-router-dom trong môi trường web như trên.
 - Commit code: [`bfb5220`](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/bfb5220). Chưa xác nhận review hoặc đóng task.
+
+---
+
+## Phase 1 / hoan-20261115-promo-01
+
+* Thời gian ghi: 2026-11-15T10:38:03+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-promo
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-3.1 và PRJ-P1-BD1-3.2
+
+### Công cụ
+
+Codex, Git và VS Code.
+
+### Mục đích
+
+Chuẩn bị nhánh và kiểm tra điều kiện trước khi viết test API ưu đãi.
+
+### Prompt
+
+Hoàn cung cấp các bước của task, đồng ý với ba ca test dự kiến và yêu cầu kiểm tra nhánh phụ thuộc, cập nhật dữ liệu mới và thực hiện.
+
+### Kết quả đề xuất
+
+Codex fetch origin và tạo nhánh `prj/p1-bd1-3` từ `origin/main` tại `4a808cf`. Model `Promotion` có trong schema của main.
+
+### Phản biện
+
+Schema có `linkUrl`, không có `subtitle`, còn `startsAt` và `endsAt` cho phép null; mô tả task yêu cầu `link`, `subtitle` và khoảng thời gian xác định. Cần làm rõ hợp đồng với nhóm trước khi quyết định kiểm thử hoặc triển khai phần phụ thuộc các trường này.
+
+### Quyết định của nhóm
+
+Chưa có xác nhận của nhóm về sự khác biệt; chưa sửa schema hoặc merge nhánh phụ thuộc.
+
+### Người kiểm tra
+
+Codex kiểm tra schema và Git; Hoàn và nhóm cần thống nhất nghiệp vụ.
+
+### Kiểm tra và minh chứng
+
+- `origin/main` đã cập nhật từ `cfe17ba` lên `4a808cf`; nhánh mới dựa trên commit này.
+- Đã thấy model `Promotion` trong schema; chưa xác minh trạng thái đóng issue phụ thuộc trên GitHub.
+- Chưa viết hoặc chạy test; chưa commit hay push nhánh mới.
+
+---
+
+## Phase 1 / hoan-20261115-promo-02
+
+* Thời gian ghi: 2026-11-15T10:55:23+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-promo
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261115-promo-01; PRJ-P1-BD1-3.1
+
+### Công cụ
+
+Codex, Vitest và VS Code.
+
+### Mục đích
+
+Viết kiểm thử trước khi triển khai API ưu đãi.
+
+### Prompt
+
+Hoàn cho biết nhóm đồng ý giữ schema hiện tại và thời gian bắt đầu hoặc kết thúc null được xem là không giới hạn; tiếp tục công việc đã yêu cầu.
+
+### Kết quả đề xuất
+
+Viết ba ca trong `apps/api/src/promotions/promotions.spec.ts`: truy vấn ưu đãi, cập nhật thời gian và truyền lỗi DB, API công khai qua Nest với Prisma giả. Test dùng `linkUrl` và kiểm tra các đầu thời gian null.
+
+### Phản biện
+
+Ba ca đã được Vitest thu thập nhưng thất bại vì module service và module ưu đãi chưa tồn tại; các assertion chưa được thực thi. Test đang xác định cấu trúc truy vấn Prisma cụ thể, cần QA xem xét trước khi chốt; chưa xác nhận reviewer đã duyệt.
+
+### Quyết định của nhóm
+
+Theo Hoàn, nhóm chọn giữ schema hiện tại và coi đầu thời gian null là không giới hạn. Chưa có xác nhận về các quyết định khác.
+
+### Người kiểm tra
+
+Codex chạy test; chờ Hoàn và QA kiểm tra nội dung.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api -- promotions`: thu thập ba ca; ba ca FAIL do chưa có `promotions.service.js` hoặc `promotions.module.js`, chưa chứng minh assertion thất bại.
+- Lần chạy đầu bị sandbox chặn ghi file tạm; chạy lại với quyền phù hợp cho kết quả trên.
+- Chưa commit hoặc push test và nhật ký.
+
+---
+
+## Phase 1 / hoan-20261115-promo-03
+
+* Thời gian ghi: 2026-11-15T10:59:38+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-promo
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261115-promo-02; PRJ-P1-BD1-3.1
+
+### Công cụ
+
+Codex, Vitest và VS Code.
+
+### Mục đích
+
+Ghi nhận Hoàn chạy lại test và chuẩn bị thay đổi cho QA xem xét.
+
+### Prompt
+
+Hoàn gửi ảnh kết quả chạy test và yêu cầu commit, push và cập nhật AI log.
+
+### Kết quả đề xuất
+
+Ảnh cho thấy Vitest nhận ba ca và ba ca thất bại; có lỗi không tìm thấy module ưu đãi chưa được tạo. Codex chuẩn bị commit test và log riêng.
+
+### Phản biện
+
+Lỗi thiếu module xảy ra trước các assertion, vì vậy chưa chứng minh hành vi nghiệp vụ sai hay từng assertion hoạt động. Cần QA duyệt test; không tự xác nhận bước đã nghiệm thu hoặc đóng issue.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu đưa thay đổi lên nhánh; chưa có xác nhận QA đã duyệt test.
+
+### Người kiểm tra
+
+Hoàn chạy lệnh và cung cấp ảnh; Codex đối chiếu, chờ QA xem xét.
+
+### Kiểm tra và minh chứng
+
+- Ảnh terminal cho thấy ba test thất bại; lỗi được hiển thị bao gồm module `promotions.module.js` chưa tồn tại.
+- Kết quả kiểm tra trước đó được ghi tại `hoan-20261115-promo-02`.
