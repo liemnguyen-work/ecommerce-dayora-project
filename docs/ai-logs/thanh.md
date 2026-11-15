@@ -2261,6 +2261,29 @@ Thành tự trả lời, Codex đối chiếu với thao tác đã trao đổi.
 ### Kiểm tra và minh chứng
 Thành giải thích đưa trang mới về đầu để xem thông tin từ trên xuống, và khi bật reduce thấy hiệu ứng chuyển động giảm. Chưa xác nhận kiểm tra /health với backend thật.
 
+## P1 / THANH-20261115-PRJ-P1-FD1-2-04
+
+### Mục đích
+Ghi nhận kết quả bước #193: tìm hiểu sơ đồ trang chủ.
+
+### Prompt
+Thành giải thích luồng intro, thứ tự các khối, vai trò header; gửi ảnh sơ đồ và xác nhận tự vẽ.
+
+### Kết quả đề xuất
+Codex đối chiếu cấu trúc tĩnh HomePage và HomeSections trong ZIP mẫu; ghi nhận sơ đồ Thành vẽ theo thứ tự khối.
+
+### Phản biện
+Issue nhắc FAQ trên trang chủ, trong ZIP FAQ được định nghĩa trong HomeSections nhưng sử dụng tại AboutPage; cần làm rõ khi đến bước triển khai section. Chưa kiểm tra video mẫu chạy trên trình duyệt.
+
+### Quyết định của nhóm
+Chưa có quyết định chung mới.
+
+### Người kiểm tra
+Thành tự giải thích, vẽ và cung cấp ảnh; Codex đối chiếu cấu trúc tĩnh.
+
+### Kiểm tra và minh chứng
+Sơ đồ do Thành gửi thể hiện video, hero, nhóm hàng, Story, tạo bộ, sản phẩm, ba chuyến đi, ưu đãi/giao hàng, lời mời và footer. Không xác nhận thử nghiệm khác ngoài bằng chứng nêu trên.
+
 ## P1 / THANH-20261115-PRJ-P1-FD1-3-01
 
 ### Mục đích
@@ -2366,3 +2389,17 @@ Issue yêu cầu tự trả lời không nhờ AI viết hộ; Thành tự cung 
 
 ### Người kiểm tra
 Thành trả lời và tự sửa; Codex ghi lại, chờ reviewer đánh giá.
+
+## P1 / THANH-20261115-PRJ-P1-FD1-2-CONFLICT
+
+### Mục đích
+Xử lý xung đột PR trang chủ với main sau khi danh mục được cập nhật.
+
+### Prompt
+Thành gửi ảnh các file xung đột và đồng ý để Codex xử lý.
+
+### Kết quả đề xuất
+Codex giữ route trang chủ và route danh mục, giữ các mục nhật ký từ hai nhánh, đồng thời nhận các thay đổi main được Git tự hợp nhất.
+
+### Kiểm tra và giới hạn
+Codex chạy lint và build web thành công. Chưa kiểm tra giao diện hợp nhất trong trình duyệt hoặc xác nhận reviewer duyệt. Thay đổi nhật ký chưa commit trong bản làm việc cũ được giữ nguyên ngoài merge này.
