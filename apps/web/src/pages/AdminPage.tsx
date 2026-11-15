@@ -137,8 +137,8 @@ function Products() {
       product.status === 'ACTIVE' ? undefined : { status: 'ACTIVE' });
   }
 
-  const inputClass = 'w-32 rounded-lg border border-ink/30 bg-paper px-3 py-2 focus-visible:outline-2 focus-visible:outline-ink';
-  const buttonClass = 'min-h-11 rounded-full border border-ink/30 px-4 py-2 font-semibold hover:bg-leaf focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink disabled:cursor-wait disabled:opacity-60';
+  const inputClass = 'admin-input';
+  const buttonClass = 'admin-button';
 
   return (
     <div className="mt-4 space-y-4" aria-busy={loading || saving}>
@@ -148,13 +148,13 @@ function Products() {
       {error && <p role="alert" className="text-berry">{error}</p>}
       {data && (data.length === 0
         ? <p>Chưa có sản phẩm.</p>
-        : <div className="overflow-x-auto">
-          <table className="w-full border-collapse text-left">
+        : <div className="admin-table-wrap" tabIndex={0}>
+          <table className="admin-table">
             <caption className="sr-only">Sản phẩm và các biến thể SKU; giá tính bằng đồng Việt Nam</caption>
             <thead><tr>{['Sản phẩm / SKU', 'Giá (đ)', 'Giá giảm (đ)', 'Tồn kho', 'Đang giữ', 'Hành động'].map(label => <th key={label} scope="col" className="border-b border-ink/20 p-3">{label}</th>)}</tr></thead>
             <tbody>
               {data.map(product => <Fragment key={product.id}>
-                <tr className="bg-leaf/40">
+                <tr className="admin-group">
                   <th scope="rowgroup" colSpan={5} className="p-3">
                     <Link to={`/san-pham/${encodeURIComponent(product.slug)}`} className="underline underline-offset-4">{product.name}</Link>
                     <span className="ml-3 text-sm font-normal">{product.status === 'ACTIVE' ? 'Đang bán' : 'Đã ẩn'}</span>
@@ -168,7 +168,7 @@ function Products() {
                     <th scope="row" className="p-3 font-normal"><form id={formId} onSubmit={event => { void saveSku(event, sku); }} />{sku.code} · {sku.color || 'Không phân màu'}<span className="block text-sm">{sku.status === 'ACTIVE' ? 'Đang bán' : 'Đã ẩn'}</span></th>
                     <td className="p-3"><input form={formId} name="price" type="number" min={0} max={2147483647} step={1} required defaultValue={sku.price} disabled={saving} aria-label={`Giá ${sku.code}`} className={inputClass} /></td>
                     <td className="p-3"><input form={formId} name="salePrice" type="number" min={0} max={2147483647} step={1} defaultValue={sku.salePrice ?? ''} disabled={saving} aria-label={`Giá giảm ${sku.code}`} className={inputClass} /></td>
-                    <td className="p-3"><input form={formId} name="stock" type="number" min={sku.reserved} max={2147483647} step={1} required defaultValue={sku.stock} disabled={saving} aria-label={`Tồn kho ${sku.code}`} className={inputClass} /></td>
+                    <td className="p-3"><div className="sku-stock"><input form={formId} name="stock" type="number" min={sku.reserved} max={2147483647} step={1} required defaultValue={sku.stock} disabled={saving} aria-label={`Tồn kho ${sku.code}`} aria-describedby={`reserved-${sku.id}`} className={inputClass} /><small id={`reserved-${sku.id}`}>Đang giữ: {sku.reserved}</small></div></td>
                     <td className="p-3">{sku.reserved}</td>
                     <td className="p-3"><button form={formId} type="submit" disabled={saving || loading} className={buttonClass}>Lưu<span className="sr-only"> {sku.code}</span></button></td>
                   </tr>;
@@ -181,7 +181,7 @@ function Products() {
         type="button"
         disabled={loading || saving}
         onClick={() => { void reload(); }}
-        className="min-h-11 rounded-full border border-ink/30 px-5 py-2 font-semibold hover:bg-leaf focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink disabled:cursor-wait disabled:opacity-60"
+        className="admin-button"
       >
         {loading ? 'Đang tải…' : error ? 'Thử lại' : 'Tải lại'}
       </button>
@@ -241,8 +241,8 @@ function Users() {
       {data && <>
         <p>Tổng số: {data.total} tài khoản. Trang {data.page}, hiển thị {data.items.length} tài khoản.</p>
         {data.items.length === 0 ? <p>Chưa có tài khoản.</p> : (
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse text-left">
+          <div className="admin-table-wrap" tabIndex={0}>
+            <table className="admin-table">
               <caption className="sr-only">Danh sách tài khoản và trạng thái hoạt động</caption>
               <thead><tr>{['Họ tên và email', 'Vai trò', 'Số đơn hàng', 'Ngày tạo', 'Hoạt động'].map(label => <th key={label} scope="col" className="border-b border-ink/20 p-3">{label}</th>)}</tr></thead>
               <tbody>{data.items.map(account => (
@@ -272,7 +272,7 @@ function Users() {
           </div>
         )}
       </>}
-      <button type="button" disabled={loading || saving} onClick={() => { void reload(); }} className="min-h-11 rounded-full border border-ink/30 px-5 py-2 font-semibold hover:bg-leaf focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink disabled:cursor-wait disabled:opacity-60">
+      <button type="button" disabled={loading || saving} onClick={() => { void reload(); }} className="admin-button">
         {loading ? 'Đang tải…' : error ? 'Thử lại' : 'Tải lại'}
       </button>
     </div>
@@ -286,7 +286,7 @@ export default function AdminPage() {
 
   if (loading) {
     return (
-      <main className="mx-auto min-h-[60vh] max-w-7xl px-4 py-10 text-ink">
+      <main className="admin-page">
         <h1 className="text-3xl font-extrabold">Quản trị</h1>
         <p role="status" className="mt-4">Đang tải…</p>
       </main>
@@ -296,7 +296,7 @@ export default function AdminPage() {
   // Chỉ mount nội dung quản trị sau khi xác nhận quyền.
   if (user?.role !== 'ADMIN') {
     return (
-      <main className="mx-auto min-h-[60vh] max-w-7xl px-4 py-10 text-ink">
+      <main className="admin-page">
         <h1 className="text-3xl font-extrabold">Khu quản trị</h1>
         <p className="my-6">Chỉ tài khoản quản trị mới truy cập được trang này.</p>
         <Link className="catalog-button inline-flex min-h-11 items-center rounded-full bg-berry px-6 py-3 font-semibold text-paper focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink" to="/dang-nhap?next=%2Fadmin">
@@ -307,22 +307,22 @@ export default function AdminPage() {
   }
 
   return (
-    <main className="mx-auto min-h-[60vh] max-w-7xl px-4 py-10 text-ink">
-      <div className="admin-layout grid gap-6 md:grid-cols-[14rem_1fr]">
-        <nav className="admin-nav flex flex-col gap-2" aria-label="Mục quản trị">
+    <main className="admin-page">
+      <div className="admin-layout">
+        <nav className="admin-nav" aria-label="Mục quản trị">
           {sections.map(([key, label]) => (
             <button
               key={key}
               type="button"
               aria-current={section === key ? 'page' : undefined}
               onClick={() => setParams({ muc: key })}
-              className={`min-h-11 rounded-xl px-4 py-3 text-left font-semibold hover:bg-leaf focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink ${section === key ? 'bg-leaf' : ''}`}
+              className="admin-nav-button"
             >
               {label}
             </button>
           ))}
         </nav>
-        <section className="admin-main min-w-0" aria-labelledby="admin-section-title">
+        <section className="admin-main" aria-labelledby="admin-section-title">
           <h1 id="admin-section-title" className="text-3xl font-extrabold">{title}</h1>
           {section === 'san-pham'
             ? <Products />
