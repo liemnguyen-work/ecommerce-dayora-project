@@ -2436,3 +2436,47 @@ Hoàn chạy lệnh và cung cấp ảnh; Codex đối chiếu, chờ QA xem xé
 
 - Ảnh terminal cho thấy ba test thất bại; lỗi được hiển thị bao gồm module `promotions.module.js` chưa tồn tại.
 - Kết quả kiểm tra trước đó được ghi tại `hoan-20261115-promo-02`.
+
+---
+
+## Phase 1 / hoan-20261115-promo-04
+
+* Thời gian ghi: 2026-11-15T11:05:13+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-promo
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-3.2; hoan-20261115-promo-03
+
+### Công cụ
+
+Codex, Vitest và VS Code.
+
+### Mục đích
+
+Triển khai truy vấn danh sách ưu đãi công khai theo trạng thái và thời gian.
+
+### Prompt
+
+Sau khi trao đổi ý nghĩa ưu đãi hết hạn, Hoàn yêu cầu tiến hành bước 3.2; trước đó Hoàn cho biết nhóm giữ schema và coi đầu thời gian null là không giới hạn.
+
+### Kết quả đề xuất
+
+Codex thêm `promotions.service.ts`: lấy một thời điểm trong `list`, lọc ưu đãi đang bật, xử lý hai đầu thời gian null, chọn trường công khai trong schema và sắp xếp theo thời gian bắt đầu rồi ID.
+
+### Phản biện
+
+Ca test này kiểm tra truy vấn qua Prisma giả, chưa chứng minh kết quả truy vấn trên database thật. Chưa có xác nhận QA đã duyệt bộ test; file test không được sửa trong bước này.
+
+### Quyết định của nhóm
+
+Theo Hoàn, nhóm đồng ý giữ schema và coi đầu thời gian null là không giới hạn. Hoàn yêu cầu triển khai service.
+
+### Người kiểm tra
+
+Codex chạy ca test; chờ Hoàn và QA/reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api -- promotions.spec.ts -t 'lọc active'`: 1 ca pass, 2 ca khác được bỏ qua do lọc tên.
+- Chưa kiểm tra API HTTP hoặc database thật; chưa commit hay push bước này.
