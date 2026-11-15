@@ -5,6 +5,7 @@ import SiteHeader from './components/SiteHeader';
 import SiteFooter from './components/SiteFooter';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import CatalogPage from './pages/CatalogPage';
 import './motion.css';
 
 function ScrollOnNavigation() {
@@ -126,7 +127,7 @@ export default function App() {
       <SiteHeader />
       <Routes>
         <Route path="/" element={<Styleguide />} />
-        <Route path="/san-pham" element={<Placeholder title="Sản phẩm" />} />
+        <Route path="/san-pham" element={<CatalogPage />} />
         <Route path="/san-pham/:slug" element={<Placeholder title="Chi tiết sản phẩm" />} />
         <Route path="/dang-nhap" element={<LoginPage />} />
         <Route path="/dang-ky" element={<RegisterPage />} />

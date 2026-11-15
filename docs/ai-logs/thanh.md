@@ -2280,3 +2280,26 @@ Codex chạy thử hàm, lint và build web; Thành xem lại kết quả.
 
 ### Kiểm tra và minh chứng
 Query tiếng Việt trả q=th%E1%BA%A3m&sort=price_asc, giá 150000 hiển thị 150.000 ₫; lint và build web thành công. Chưa commit.
+
+## P1 / THANH-20261115-PRJ-P1-FD1-3-02
+
+### Mục đích
+Thực hiện bước 3.2: đồng bộ URL và tải danh mục sản phẩm.
+
+### Prompt
+Thành cung cấp issue #201 và yêu cầu tiếp tục.
+
+### Kết quả đề xuất
+Codex tạo trang danh mục đọc search params, cập nhật URL từ biểu mẫu tạm, gọi API sản phẩm và hiển thị kết quả, trạng thái tải, lỗi hoặc rỗng.
+
+### Phản biện
+Bộ lọc hiện tạm dùng mã danh mục; bộ lọc trái đầy đủ thuộc bước sau. Chưa xác nhận thử sao chép URL qua tab mới hoặc dữ liệu API thật.
+
+### Người kiểm tra
+Codex chạy lint và build web; chờ Thành kiểm tra trình duyệt.
+
+### Kiểm tra và minh chứng
+npm.cmd run lint -w web và npm.cmd run build -w web thành công. Chưa commit hoặc push bước 3.2.
+
+### Kết quả Thành kiểm tra bổ sung
+Thành chạy API, nhập mã TM và bấm Lọc: hiển thị 4 sản phẩm thảm. Thành mở URL có `?category=TM` ở tab mới và gửi ảnh cho thấy cùng 4 sản phẩm. Lỗi CORS cổng 5175 được xử lý bằng biến môi trường cho phiên API; lỗi font 403 đã thấy trước đó chưa được xác minh lại.
