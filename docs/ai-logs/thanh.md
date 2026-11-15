@@ -2303,3 +2303,26 @@ npm.cmd run lint -w web và npm.cmd run build -w web thành công. Chưa commit 
 
 ### Kết quả Thành kiểm tra bổ sung
 Thành chạy API, nhập mã TM và bấm Lọc: hiển thị 4 sản phẩm thảm. Thành mở URL có `?category=TM` ở tab mới và gửi ảnh cho thấy cùng 4 sản phẩm. Lỗi CORS cổng 5175 được xử lý bằng biến môi trường cho phiên API; lỗi font 403 đã thấy trước đó chưa được xác minh lại.
+
+## P1 / THANH-20261115-PRJ-P1-FD1-3-03
+
+### Mục đích
+Xây dựng bộ lọc danh mục cho bước 3.3.
+
+### Prompt
+Thành cung cấp yêu cầu bộ lọc trái và tiếp tục task.
+
+### Kết quả đề xuất
+Codex bổ sung các trường lọc, lấy nhóm hàng từ API, kiểm tra khoảng giá và đóng/mở bộ lọc theo màn hình.
+
+### Phản biện
+API hiện chỉ chấp nhận sort price_asc và price_desc, chưa hỗ trợ newest nên chưa thêm lựa chọn này. Chưa kiểm tra giao diện, dữ liệu và thao tác thực tế trong trình duyệt.
+
+### Người kiểm tra
+Codex chạy lint và build web; chờ Thành kiểm tra.
+
+### Kiểm tra và minh chứng
+npm.cmd run lint -w web và npm.cmd run build -w web thành công. Chưa commit.
+
+### Kết quả Thành kiểm tra bổ sung
+Thành thử khoảng giá tối thiểu 500000 và tối đa 100000: thông báo lỗi hiển thị. Thành xác nhận thao tác gập/mở ở màn hình hẹp; ảnh cho thấy bộ lọc đang mở. Thành chọn nhóm Bình nước và ly kết hợp khoảng giá, ảnh hiển thị một ly picnic giá 79.000 ₫. Chưa có xác nhận API hỗ trợ sort=newest.
