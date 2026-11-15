@@ -3129,3 +3129,48 @@ Codex chạy test; chờ Hoàn và reviewer xem xét.
 
 - `npm.cmd test -w api -- me.spec.ts -t 'mật khẩu'`: 2 ca pass, 4 ca bỏ qua do lọc tên.
 - Chưa commit hoặc push bước 4.4; chưa kiểm tra API HTTP hoặc database thật.
+
+---
+
+## Phase 1 / hoan-20261115-me-06
+
+* Thời gian ghi: 2026-11-15T22:04:20+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-me
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-4.5; hoan-20261115-me-05
+
+### Công cụ
+
+Codex, Vitest, TypeScript và VS Code.
+
+### Mục đích
+
+Hoàn thiện lịch sử sản phẩm đã xem và kết nối module hồ sơ.
+
+### Prompt
+
+Sau khi xem kế hoạch, Hoàn yêu cầu thực hiện bước 4.5.
+
+### Kết quả đề xuất
+
+Codex thêm ghi nhận và truy vấn sản phẩm đã xem, hoàn thiện route hồ sơ, mật khẩu và lịch sử xem; tạo MeModule và đăng ký trong AppModule. Bổ sung ConfigModule vào AuthModule để khởi tạo module xác thực độc lập trong test.
+
+### Phản biện
+
+Test ban đầu báo thiếu ConfigService khi khởi tạo AuthModule; sau khi khai báo ConfigModule, sáu ca pass. Test dùng Prisma giả, chưa xác nhận kết quả với database thật; thay đổi AuthModule cần reviewer xem xét. Không sửa file test nghiệm thu.
+
+### Quyết định của nhóm
+
+Hoàn đồng ý thực hiện theo kế hoạch; chưa có xác nhận QA duyệt test hoặc reviewer duyệt thay đổi.
+
+### Người kiểm tra
+
+Codex chạy test, lint và TypeScript; chờ Hoàn và reviewer kiểm tra.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api -- me`: 6/6 ca pass sau khi bổ sung dependency.
+- `npm.cmd run lint -w api`: pass; `npx.cmd tsc --noEmit -p apps/api/tsconfig.build.json`: pass.
+- Chưa kiểm tra database thật hoặc build toàn dự án; chưa commit hoặc push bước này.
