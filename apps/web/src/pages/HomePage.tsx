@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import StaggeredText from '../components/home/StaggeredText';
+import HomeSections from '../components/home/HomeSections';
 import './home-hero.css';
 
 let introSeenThisLoad = false;
@@ -59,10 +60,7 @@ export default function HomePage() {
           <button className="home-hero-skip" type="button" onClick={finish}>Bỏ qua giới thiệu <span aria-hidden="true">→</span></button>
         )}
       </section>
-      <section id="trips-title" className="mx-auto max-w-4xl px-6 py-12" aria-label="Ba chuyến đi">
-        <h2>Ba chuyến đi</h2>
-        <p>Nội dung đang xây dựng.</p>
-      </section>
+      {ready && <HomeSections />}
     </main>
   );
 }

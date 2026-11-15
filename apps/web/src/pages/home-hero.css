@@ -11,6 +11,6 @@ html { scrollbar-gutter: stable; }
 .home-hero-actions a, .home-hero-skip { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0.8rem 1.4rem; border-radius: 999px; font-weight: 600; text-decoration: none; }
 .home-hero-actions a:first-child { background: #c8483c; color: #fffdf7; }
 .home-hero-actions a:last-child { border: 1px solid #fffdf7; color: #fffdf7; }
-.home-hero-skip { position: absolute; z-index: 2; right: 24px; bottom: 24px; border: 0; background: #fffdf7; color: #23412e; cursor: pointer; }
+.home-hero-skip { position: fixed; z-index: 50; right: max(24px, env(safe-area-inset-right)); bottom: max(24px, env(safe-area-inset-bottom)); border: 0; background: #fffdf7; color: #23412e; cursor: pointer; }
 .home-opening a:focus-visible, .home-hero-skip:focus-visible { outline: 3px solid #f2c14e; outline-offset: 4px; }
 @media (max-width: 600px) { .home-opening::after { background: linear-gradient(0deg, rgb(18 38 25 / 80%), rgb(18 38 25 / 15%)); } .home-hero-copy { align-self: end; padding: 5rem 0; } }
