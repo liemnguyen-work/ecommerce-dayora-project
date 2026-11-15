@@ -1,5 +1,7 @@
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../lib/auth.tsx';
+import { api } from '../lib/api.ts';
 import '../catalog.css';
 
 type Section = 'tong-quan' | 'don-hang' | 'san-pham' | 'voucher' | 'khuyen-mai' | 'quy-tac' | 'tai-khoan';
@@ -13,6 +15,74 @@ const sections: [Section, string][] = [
   ['quy-tac', 'Quy tắc Kit'],
   ['tai-khoan', 'Tài khoản'],
 ];
+
+const errText = (error: unknown): string =>
+  error instanceof Error ? error.message : 'Có lỗi xảy ra.';
+
+function useLoad<T>(path: string) {
+  const [result, setResult] = useState<{
+    path: string;
+    data: T | null;
+    error: string;
+    loading: boolean;
+  }>({ path, data: null, error: '', loading: true });
+  const version = useRef(0);
+
+  const load = useCallback(() => {
+    const current = ++version.current;
+    return api<T>(path)
+      .then(data => {
+        if (version.current === current) {
+          setResult({ path, data, error: '', loading: false });
+        }
+      })
+      .catch((error: unknown) => {
+        if (version.current === current) {
+          setResult({ path, data: null, error: errText(error), loading: false });
+        }
+      });
+  }, [path]);
+
+  const reload = useCallback(() => {
+    setResult({ path, data: null, error: '', loading: true });
+    return load();
+  }, [path, load]);
+
+  useEffect(() => {
+    void load();
+    // Vô hiệu hóa phản hồi đang chờ khi đổi path hoặc rời mục.
+    const invalidate = () => { version.current++; };
+    return invalidate;
+  }, [load]);
+
+  // Không hiển thị dữ liệu endpoint cũ trong lúc effect của path mới chưa chạy.
+  const state = result.path === path
+    ? result
+    : { data: null, error: '', loading: true };
+  return { data: state.data, error: state.error, loading: state.loading, reload };
+}
+
+function ProductsPreview() {
+  const { data, error, loading, reload } = useLoad<{ id: string; name: string }[]>('/admin/products');
+
+  return (
+    <div className="mt-4 space-y-4" aria-busy={loading}>
+      {loading && <p role="status">Đang tải…</p>}
+      {error && <p role="alert" className="text-berry">{error}</p>}
+      {data && (data.length === 0
+        ? <p>Chưa có sản phẩm.</p>
+        : <ul className="list-inside list-disc">{data.map(product => <li key={product.id}>{product.name}</li>)}</ul>)}
+      <button
+        type="button"
+        disabled={loading}
+        onClick={() => { void reload(); }}
+        className="min-h-11 rounded-full border border-ink/30 px-5 py-2 font-semibold hover:bg-leaf focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink disabled:cursor-wait disabled:opacity-60"
+      >
+        {loading ? 'Đang tải…' : error ? 'Thử lại' : 'Tải lại'}
+      </button>
+    </div>
+  );
+}
 
 export default function AdminPage() {
   const { user, loading } = useAuth();
@@ -59,7 +129,9 @@ export default function AdminPage() {
         </nav>
         <section className="admin-main min-w-0" aria-labelledby="admin-section-title">
           <h1 id="admin-section-title" className="text-3xl font-extrabold">{title}</h1>
-          <p className="mt-4">Mục {title} đang được xây dựng.</p>
+          {section === 'san-pham'
+            ? <ProductsPreview />
+            : <p className="mt-4">Mục {title} đang được xây dựng.</p>}
         </section>
       </div>
     </main>
