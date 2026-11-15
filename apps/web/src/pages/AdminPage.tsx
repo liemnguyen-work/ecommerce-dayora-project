@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { Fragment, useCallback, useEffect, useRef, useState, type FormEvent } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../lib/auth.tsx';
 import { api } from '../lib/api.ts';
@@ -62,19 +62,124 @@ function useLoad<T>(path: string) {
   return { data: state.data, error: state.error, loading: state.loading, reload };
 }
 
-function ProductsPreview() {
-  const { data, error, loading, reload } = useLoad<{ id: string; name: string }[]>('/admin/products');
+type AdminProduct = {
+  id: string;
+  slug: string;
+  name: string;
+  status: string;
+  skus: {
+    id: string;
+    code: string;
+    color: string | null;
+    price: number;
+    salePrice: number | null;
+    stock: number;
+    reserved: number;
+    status: string;
+  }[];
+};
+
+function Products() {
+  const { data, error, loading, reload } = useLoad<AdminProduct[]>('/admin/products');
+  const [msg, setMsg] = useState('');
+  const [actionError, setActionError] = useState('');
+  const [saving, setSaving] = useState(false);
+  const locked = useRef(false);
+
+  async function mutate(path: string, body?: object) {
+    if (locked.current) return;
+    locked.current = true;
+    setSaving(true);
+    setMsg('');
+    setActionError('');
+    try {
+      await api(path, { method: 'PATCH', ...(body ? { body: JSON.stringify(body) } : {}) });
+      setMsg('Đã lưu.');
+      await reload();
+    } catch (error: unknown) {
+      setActionError(errText(error));
+    } finally {
+      locked.current = false;
+      setSaving(false);
+    }
+  }
+
+  async function saveSku(event: FormEvent<HTMLFormElement>, sku: AdminProduct['skus'][number]) {
+    event.preventDefault();
+    if (locked.current) return;
+    const form = new FormData(event.currentTarget);
+    const rawPrice = String(form.get('price') ?? '').trim();
+    const rawSale = String(form.get('salePrice') ?? '').trim();
+    const rawStock = String(form.get('stock') ?? '').trim();
+    const price = Number(rawPrice);
+    const stock = Number(rawStock);
+    const salePrice = rawSale === '' ? null : Number(rawSale);
+    const validInt = (value: number) => Number.isInteger(value) && value >= 0 && value <= 2147483647;
+    setMsg('');
+    if (!rawPrice || !rawStock || !validInt(price) || !validInt(stock) || (salePrice !== null && !validInt(salePrice))) {
+      setActionError('Giá và tồn kho phải là số nguyên không âm, tối đa 2.147.483.647.');
+      return;
+    }
+    if (salePrice !== null && salePrice >= price) {
+      setActionError('Giá giảm phải nhỏ hơn giá niêm yết.');
+      return;
+    }
+    if (stock < sku.reserved) {
+      setActionError('Tồn kho không được nhỏ hơn số lượng đang giữ.');
+      return;
+    }
+    await mutate(`/admin/skus/${encodeURIComponent(sku.id)}`, { price, salePrice, stock });
+  }
+
+  async function toggle(product: AdminProduct) {
+    const path = `/admin/products/${encodeURIComponent(product.id)}`;
+    await mutate(product.status === 'ACTIVE' ? `${path}/hide` : path,
+      product.status === 'ACTIVE' ? undefined : { status: 'ACTIVE' });
+  }
+
+  const inputClass = 'w-32 rounded-lg border border-ink/30 bg-paper px-3 py-2 focus-visible:outline-2 focus-visible:outline-ink';
+  const buttonClass = 'min-h-11 rounded-full border border-ink/30 px-4 py-2 font-semibold hover:bg-leaf focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink disabled:cursor-wait disabled:opacity-60';
 
   return (
-    <div className="mt-4 space-y-4" aria-busy={loading}>
+    <div className="mt-4 space-y-4" aria-busy={loading || saving}>
+      {msg && <p role="status">{msg}</p>}
+      {actionError && <p role="alert" className="text-berry">{actionError}</p>}
       {loading && <p role="status">Đang tải…</p>}
       {error && <p role="alert" className="text-berry">{error}</p>}
       {data && (data.length === 0
         ? <p>Chưa có sản phẩm.</p>
-        : <ul className="list-inside list-disc">{data.map(product => <li key={product.id}>{product.name}</li>)}</ul>)}
+        : <div className="overflow-x-auto">
+          <table className="w-full border-collapse text-left">
+            <caption className="sr-only">Sản phẩm và các biến thể SKU; giá tính bằng đồng Việt Nam</caption>
+            <thead><tr>{['Sản phẩm / SKU', 'Giá (đ)', 'Giá giảm (đ)', 'Tồn kho', 'Đang giữ', 'Hành động'].map(label => <th key={label} scope="col" className="border-b border-ink/20 p-3">{label}</th>)}</tr></thead>
+            <tbody>
+              {data.map(product => <Fragment key={product.id}>
+                <tr className="bg-leaf/40">
+                  <th scope="rowgroup" colSpan={5} className="p-3">
+                    <Link to={`/san-pham/${encodeURIComponent(product.slug)}`} className="underline underline-offset-4">{product.name}</Link>
+                    <span className="ml-3 text-sm font-normal">{product.status === 'ACTIVE' ? 'Đang bán' : 'Đã ẩn'}</span>
+                  </th>
+                  <td className="p-3"><button type="button" disabled={saving || loading} onClick={() => { void toggle(product); }} className={buttonClass}>{product.status === 'ACTIVE' ? 'Ẩn' : 'Hiện lại'}<span className="sr-only"> {product.name}</span></button></td>
+                </tr>
+                {product.skus.length === 0 && <tr><td colSpan={6} className="p-3">Chưa có SKU.</td></tr>}
+                {product.skus.map(sku => {
+                  const formId = `sku-${sku.id}`;
+                  return <tr key={sku.id} className="border-b border-ink/15">
+                    <th scope="row" className="p-3 font-normal"><form id={formId} onSubmit={event => { void saveSku(event, sku); }} />{sku.code} · {sku.color || 'Không phân màu'}<span className="block text-sm">{sku.status === 'ACTIVE' ? 'Đang bán' : 'Đã ẩn'}</span></th>
+                    <td className="p-3"><input form={formId} name="price" type="number" min={0} max={2147483647} step={1} required defaultValue={sku.price} disabled={saving} aria-label={`Giá ${sku.code}`} className={inputClass} /></td>
+                    <td className="p-3"><input form={formId} name="salePrice" type="number" min={0} max={2147483647} step={1} defaultValue={sku.salePrice ?? ''} disabled={saving} aria-label={`Giá giảm ${sku.code}`} className={inputClass} /></td>
+                    <td className="p-3"><input form={formId} name="stock" type="number" min={sku.reserved} max={2147483647} step={1} required defaultValue={sku.stock} disabled={saving} aria-label={`Tồn kho ${sku.code}`} className={inputClass} /></td>
+                    <td className="p-3">{sku.reserved}</td>
+                    <td className="p-3"><button form={formId} type="submit" disabled={saving || loading} className={buttonClass}>Lưu<span className="sr-only"> {sku.code}</span></button></td>
+                  </tr>;
+                })}
+              </Fragment>)}
+            </tbody>
+          </table>
+        </div>)}
       <button
         type="button"
-        disabled={loading}
+        disabled={loading || saving}
         onClick={() => { void reload(); }}
         className="min-h-11 rounded-full border border-ink/30 px-5 py-2 font-semibold hover:bg-leaf focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink disabled:cursor-wait disabled:opacity-60"
       >
@@ -130,7 +235,7 @@ export default function AdminPage() {
         <section className="admin-main min-w-0" aria-labelledby="admin-section-title">
           <h1 id="admin-section-title" className="text-3xl font-extrabold">{title}</h1>
           {section === 'san-pham'
-            ? <ProductsPreview />
+            ? <Products />
             : <p className="mt-4">Mục {title} đang được xây dựng.</p>}
         </section>
       </div>
