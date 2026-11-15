@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import { createHmac } from 'node:crypto';
 import { ConflictException, UnauthorizedException, ValidationPipe } from '@nestjs/common';
 import type { ExecutionContext } from '@nestjs/common';
 import type { ConfigService } from '@nestjs/config';
@@ -16,6 +17,41 @@ const configGia = {
 } as unknown as ConfigService;
 
 describe('Auth', () => {
+  it('allows admin roles and rejects unauthenticated users', () => {
+    const reflector = { getAllAndOverride: vi.fn().mockReturnValue(['ADMIN']) } as unknown as Reflector;
+    const guard = new RolesGuard(reflector);
+    const request: { user?: { role: string } } = { user: { role: 'ADMIN' } };
+    const context = { switchToHttp: () => ({ getRequest: () => request }), getHandler: () => ({}), getClass: () => ({}) } as unknown as ExecutionContext;
+    expect(guard.canActivate(context)).toBe(true);
+    delete request.user;
+    expect(guard.canActivate(context)).toBe(false);
+  });
+
+  it('registers successfully without returning a password hash', async () => {
+    const user = { id: 'u1', email: 'user@example.com', fullName: 'Hoan', phone: null, role: 'CUSTOMER', isActive: true, createdAt: new Date() };
+    const prisma = { user: { findUnique: vi.fn().mockResolvedValue(null), create: vi.fn().mockResolvedValue(user) } };
+    const auth = new AuthService(prisma as unknown as PrismaService, configGia);
+    const result = await auth.register({ email: user.email, password: 'MatKhau123', fullName: 'Hoan' });
+    expect(result).toEqual(user);
+    expect(result).not.toHaveProperty('passwordHash');
+    expect(prisma.user.create.mock.calls[0][0].select).not.toHaveProperty('passwordHash');
+  });
+
+  it('rejects a token with an unsupported algorithm and malformed token', () => {
+    const auth = new AuthService({} as PrismaService, configGia);
+    const [header, payload] = auth.signToken('u1').split('.');
+    expect(header).toBeTruthy();
+    const otherHeader = Buffer.from(JSON.stringify({ alg: 'none', typ: 'JWT' })).toString('base64url');
+    const signature = createHmac('sha256', 'khoa-gia-dung-cho-test').update(`${otherHeader}.${payload}`).digest('base64url');
+    expect(() => auth.verifyToken(`${otherHeader}.${payload}.${signature}`)).toThrow(UnauthorizedException);
+    expect(() => auth.verifyToken('not-a-jwt')).toThrow(UnauthorizedException);
+  });
+
+  it('rejects inactive accounts when fetching the current user', async () => {
+    const prisma = { user: { findUnique: vi.fn().mockResolvedValue({ id: 'u1', isActive: false }) } };
+    const auth = new AuthService(prisma as unknown as PrismaService, configGia);
+    await expect(auth.getUser('u1')).rejects.toBeInstanceOf(UnauthorizedException);
+  });
   it('rejects overly long login and registration fields with 400', async () => {
     const pipe = new ValidationPipe({ transform: true, whitelist: true, forbidNonWhitelisted: true });
     const login = { type: 'body' as const, metatype: LoginDto };
