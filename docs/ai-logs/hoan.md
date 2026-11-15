@@ -2997,3 +2997,47 @@ Codex viết và chạy test; chờ Hoàn và QA xem xét.
 
 - `npm.cmd test -w api -- me.spec.ts`: 6 ca FAIL do thiếu `me.module.js` và `me.service.js`; không phải lỗi assertion.
 - Sau lần chạy đã bổ sung assertion dữ liệu thẻ; chưa chạy lại, chưa commit hoặc push.
+
+---
+
+## Phase 1 / hoan-20261115-me-03
+
+* Thời gian ghi: 2026-11-15T16:57:53+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-me
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-4.2; hoan-20261115-me-02
+
+### Công cụ
+
+Codex, Vitest và VS Code.
+
+### Mục đích
+
+Thực hiện DTO và controller hồ sơ trong phạm vi bước 4.2 và ghi nhận kết quả test.
+
+### Prompt
+
+Hoàn yêu cầu thực hiện theo từng bước và báo tình hình thực tế của bước này.
+
+### Kết quả đề xuất
+
+Codex tạo DTO kiểm tra dữ liệu hồ sơ, mật khẩu và sản phẩm đã xem; tạo controller gắn JwtAuthGuard ở cấp lớp và endpoint profile lấy ID từ người đã xác thực. Các endpoint khác và service chưa được triển khai.
+
+### Phản biện
+
+Ca test hiện phụ thuộc `MeModule` dự kiến ở bước 4.5; controller cũng phụ thuộc service sẽ làm ở bước sau. Chưa thể xác nhận kiểm tra bảo vệ HTTP hay tiêu chí test xanh; không sửa test hoặc tạo module ngoài bước để che lỗi.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu tiếp tục từng bước; chưa có xác nhận QA duyệt test.
+
+### Người kiểm tra
+
+Codex chạy test; chờ Hoàn và QA xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api -- me.spec.ts -t 'yêu cầu đăng nhập'`: 1 ca fail vì thiếu `me.module.js`, 5 ca bỏ qua; chưa chạy đến assertion.
+- Chưa tạo service, module hay các endpoint còn lại; chưa commit hoặc push bước 4.2.
