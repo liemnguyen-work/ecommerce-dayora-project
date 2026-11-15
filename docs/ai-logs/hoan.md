@@ -2864,3 +2864,48 @@ Codex ghi nhận nội dung; Hoàn cần tự hoàn thiện và reviewer cần �
 - File kiểm tra có nội dung Hoàn gửi nhưng danh sách test và câu về khó khăn còn cần hoàn thiện.
 - Chưa xác nhận reviewer đã hỏi và nhận câu trả lời cho hai câu bất kỳ.
 - Trạng thái build toàn dự án gần nhất chưa pass như mục `hoan-20261115-cat1-09`; chưa chạy lại trong bước ghi nhận này.
+
+---
+
+## Phase 1 / hoan-20261115-promo-12
+
+* Thời gian ghi: 2026-11-15T15:50:42+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-promo
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-3; PR #658
+
+### Công cụ
+
+Codex, Git, npm, Vitest và VS Code.
+
+### Mục đích
+
+Giải quyết conflict giữa nhánh PR ưu đãi và main mới nhất.
+
+### Prompt
+
+Hoàn cung cấp ảnh conflict tại `app.module.ts` và yêu cầu tiến hành xử lý.
+
+### Kết quả đề xuất
+
+Codex merge `origin/main` vào nhánh PR, giữ AuthModule, CatalogModule, AdminCatalogModule, AdminUsersModule và PromotionsModule trong một khối `@Module`. Dependencies được đồng bộ sau khi main thêm các gói kiểm thử.
+
+### Phản biện
+
+Lần chạy test đầu thiếu `@nestjs/testing` trong node_modules; sau khi cài các dependency theo cấu hình hiện có, test chạy thành công. Chưa xác nhận trạng thái PR hoặc CI sau push.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu giải quyết conflict; chưa có xác nhận review hoặc merge PR sau thay đổi này.
+
+### Người kiểm tra
+
+Codex kiểm tra và chạy lệnh; chờ reviewer và CI xem lại.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd run lint -w api`: pass.
+- `npm.cmd test -w api`: 33/33 pass.
+- `npm.cmd run build -w api`: pass.
