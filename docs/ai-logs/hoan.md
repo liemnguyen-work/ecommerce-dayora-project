@@ -2524,3 +2524,92 @@ Codex đối chiếu và chạy test; chờ Hoàn và reviewer xem xét.
 
 - `npm.cmd test -w api -- promotions.spec.ts -t 'lấy thời gian mới mỗi request'`: 1 ca pass, 2 ca bỏ qua do lọc tên.
 - Không sửa file chức năng hoặc file test; chưa commit mục log này.
+
+---
+
+## Phase 1 / hoan-20261115-promo-06
+
+* Thời gian ghi: 2026-11-15T11:17:32+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-promo
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-3.4; hoan-20261115-promo-05
+
+### Công cụ
+
+Codex, Vitest và VS Code.
+
+### Mục đích
+
+Tạo endpoint công khai để giao diện lấy danh sách ưu đãi.
+
+### Prompt
+
+Hoàn hỏi cách API phục vụ khách có hoặc chưa đăng nhập, sau đó yêu cầu thực hiện bước 3.4.
+
+### Kết quả đề xuất
+
+Codex tạo controller và module ưu đãi, đăng ký module trong AppModule; endpoint gọi service và không gắn guard đăng nhập.
+
+### Phản biện
+
+Test HTTP dùng Prisma giả, không xác nhận truy vấn với database thật. Endpoint phục vụ hiển thị ưu đãi, không kiểm tra hay áp dụng mã giảm giá cho đơn hàng. Chưa có xác nhận QA duyệt test.
+
+### Quyết định của nhóm
+
+Hoàn đồng ý thực hiện bước 3.4; các quy tắc dữ liệu theo thỏa thuận được ghi tại hoan-20261115-promo-02.
+
+### Người kiểm tra
+
+Codex chạy kiểm thử; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api -- promotions`: 3/3 ca pass, bao gồm HTTP với Prisma giả.
+- `npm.cmd run lint -w api`: pass.
+- Chưa kiểm tra với database thật, chưa chạy build toàn dự án và chưa commit hoặc push bước này.
+
+---
+
+## Phase 1 / hoan-20261115-promo-07
+
+* Thời gian ghi: 2026-11-15T11:21:35+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-promo
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-3.4; hoan-20261115-promo-06
+
+### Công cụ
+
+Codex, NestJS và VS Code.
+
+### Mục đích
+
+Thử khởi động API để kiểm tra ưu đãi với database hiện tại theo hướng chỉ đọc.
+
+### Prompt
+
+Hoàn yêu cầu thử để có thể tự kiểm tra.
+
+### Kết quả đề xuất
+
+Codex kiểm tra cổng 3000 chưa phản hồi, chạy `npm.cmd run start:dev -w api`; TypeScript báo không có lỗi nhưng tiến trình ứng dụng gặp lỗi `exports is not defined in ES module scope` tại Prisma Client trong dist, nên đã dừng watch.
+
+### Phản biện
+
+API chưa khởi động, chưa thể kết luận kết nối database hoặc kết quả ưu đãi; chưa có thao tác thêm, sửa hay xóa dữ liệu. Cần chẩn đoán sự khác nhau giữa định dạng module của Prisma Client và ứng dụng.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu thử; chưa có quyết định thay đổi cấu hình module hoặc dữ liệu database.
+
+### Người kiểm tra
+
+Codex quan sát kết quả; Hoàn kiểm tra cùng.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd run start:dev -w api`: biên dịch 0 lỗi, sau đó ứng dụng dừng với lỗi module Prisma; Node v26.13.1.
+- Không gọi thành công API, không xác nhận database hay dữ liệu ưu đãi; chưa sửa cấu hình để khắc phục.
