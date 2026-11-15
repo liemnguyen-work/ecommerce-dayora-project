@@ -2999,3 +2999,48 @@ Codex chạy test auth và lint API; chờ Hoàn và reviewer xem xét.
 - `npm.cmd test -w api -- auth.spec.ts`: 7/7 pass.
 - `npm.cmd run lint -w api`: pass.
 - Bước 1 và 2 chưa commit hoặc push; chưa chạy build toàn dự án.
+
+---
+
+## Phase 1 / hoan-20261115-authfix-03
+
+* Thời gian ghi: 2026-11-15T23:14:12+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-authfix
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-FIX.3; hoan-20261115-authfix-02
+
+### Công cụ
+
+Codex, Vitest và VS Code.
+
+### Mục đích
+
+Giới hạn độ dài thông tin đăng ký và đăng nhập theo yêu cầu review.
+
+### Prompt
+
+Hoàn yêu cầu tiếp tục task fix sau khi đã commit hai bước trước.
+
+### Kết quả đề xuất
+
+Codex thêm giới hạn mật khẩu 128, họ tên 100 và số điện thoại 20 ký tự; bổ sung ca test ValidationPipe cho dữ liệu vượt giới hạn và mật khẩu 128 ký tự hợp lệ.
+
+### Phản biện
+
+Kiểm tra 400 được thực hiện trực tiếp qua ValidationPipe, chưa kiểm tra HTTP thật. Ca test được thêm vào file nghiệm thu hiện có để đáp ứng task fix, cần QA xem lại; các assertion cũ không được nới lỏng.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu tiếp tục; chưa có xác nhận QA hoặc reviewer duyệt bổ sung test.
+
+### Người kiểm tra
+
+Codex chạy test và lint API; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api`: 37/37 ca pass.
+- `npm.cmd run lint -w api`: pass.
+- Chưa chạy build toàn dự án; chưa commit hoặc push bước 3.
