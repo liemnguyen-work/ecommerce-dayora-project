@@ -2480,3 +2480,47 @@ Codex chạy ca test; chờ Hoàn và QA/reviewer xem xét.
 
 - `npm.cmd test -w api -- promotions.spec.ts -t 'lọc active'`: 1 ca pass, 2 ca khác được bỏ qua do lọc tên.
 - Chưa kiểm tra API HTTP hoặc database thật; chưa commit hay push bước này.
+
+---
+
+## Phase 1 / hoan-20261115-promo-05
+
+* Thời gian ghi: 2026-11-15T11:07:40+07:00
+* Thời gian thực hiện: 15/11/2026.
+* Mã phiên nhật ký: hoan-20261115-promo
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-3.3; hoan-20261115-promo-04
+
+### Công cụ
+
+Codex, Vitest và VS Code.
+
+### Mục đích
+
+Kiểm tra thời gian mới cho từng lần gọi và việc truyền lỗi database của service ưu đãi.
+
+### Prompt
+
+Hoàn cung cấp yêu cầu bước 3.3 và yêu cầu tiếp tục.
+
+### Kết quả đề xuất
+
+Codex đối chiếu `promotions.service.ts`: `new Date()` nằm trong `list()` và lỗi từ Prisma được truyền ra ngoài. Hai hành vi này đã được viết trong commit service của bước 3.2; không sửa lại code.
+
+### Phản biện
+
+Test dùng Prisma giả kiểm tra hai lần gọi và lỗi reject, không phải kiểm tra HTTP 500 hoặc kết nối database thật. Chưa có xác nhận QA đã duyệt bộ test.
+
+### Quyết định của nhóm
+
+Chưa có quyết định về cách ghi nhận commit riêng cho bước 3.3 khi code đã nằm trong commit bước 3.2.
+
+### Người kiểm tra
+
+Codex đối chiếu và chạy test; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api -- promotions.spec.ts -t 'lấy thời gian mới mỗi request'`: 1 ca pass, 2 ca bỏ qua do lọc tên.
+- Không sửa file chức năng hoặc file test; chưa commit mục log này.
