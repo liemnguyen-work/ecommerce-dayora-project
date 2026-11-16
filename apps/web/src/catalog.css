@@ -26,7 +26,10 @@
 .catalog-filter-form fieldset { border: 0; padding: 0; margin: 0; }
 .catalog-filter-form legend { margin-bottom: 6px; font-weight: 700; font-size: .875rem; }
 .catalog-price-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.catalog-filter-actions { display: grid; gap: 8px; }
 .catalog-filter-form button { border: 0; border-radius: 999px; background: #c8483c; color: white; padding: 12px 16px; font-weight: 700; cursor: pointer; }
+.catalog-filter-form .catalog-clear-filters { border: 1px solid #c8483c; background: #fff; color: #a52720; }
+.catalog-filter-form .catalog-clear-filters:disabled { border-color: #cbd8c4; background: #f5f2e8; color: #77827a; cursor: not-allowed; }
 .catalog-filter-error { margin: 0; color: #a52720; }
 .catalog-count { margin: 0 0 16px; }
 .catalog-filters :focus-visible { outline: 3px solid #c8483c; outline-offset: 3px; }
