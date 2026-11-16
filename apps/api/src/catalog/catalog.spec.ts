@@ -71,6 +71,19 @@ describe('CatalogQueryPipe', () => {
 });
 
 describe('CatalogService', () => {
+  it('filters size per SKU and excludes missing dimensions', async () => {
+    const { service, prisma } = setup();
+    prisma.product.findMany.mockResolvedValue([product({ skus: [sku({ id: 'ok', lengthCm: 220, widthCm: 160 }), sku({ id: 'small', lengthCm: 190 }), sku({ id: 'missing', widthCm: null })] })]);
+    const result = await service.list({ size: [200, 150] });
+    expect(result.items[0].skus.map((item) => item.id)).toEqual(['ok']);
+  });
+
+  it('sorts descending by price and uses stable IDs for ties', async () => {
+    const { service, prisma } = setup();
+    prisma.product.findMany.mockResolvedValue([product({ id: 'b', skus: [sku({ price: 200 })] }), product({ id: 'a', skus: [sku({ price: 200 })] }), product({ id: 'c', skus: [sku({ price: 100 })] })]);
+    const result = await service.list({ sort: 'price_desc' });
+    expect(result.items.map((item) => item.id)).toEqual(['a', 'b', 'c']);
+  });
   it('passes SQL-looking search text as a Prisma filter value', async () => {
     const { service, prisma } = setup();
     prisma.product.findMany.mockResolvedValue([]);
@@ -202,6 +215,22 @@ describe('CatalogService', () => {
 });
 
 describe('CatalogModule', () => {
+  it('validates catalog routes over HTTP with Prisma mocked', async () => {
+    const { Test } = await import('@nestjs/testing');
+    const { PrismaService: Prisma } = await import('../prisma/prisma.service.js');
+    const { default: request } = await import('supertest');
+    const prisma = { product: { findMany: vi.fn(), findFirst: vi.fn().mockResolvedValue(null) }, category: { findMany: vi.fn().mockResolvedValue([]) } };
+    const module = await Test.createTestingModule({ imports: [CatalogModule] }).overrideProvider(Prisma).useValue(prisma).compile();
+    const app = module.createNestApplication();
+    app.setGlobalPrefix('api');
+    app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true, forbidNonWhitelisted: true }));
+    await app.init();
+    try {
+      await request(app.getHttpServer()).get('/api/products?minPrice=abc').expect(400);
+      await request(app.getHttpServer()).get('/api/products/khong-co').expect(404);
+      await request(app.getHttpServer()).get('/api/categories').expect(200);
+    } finally { await app.close(); }
+  });
   it('module khởi tạo được với Prisma mock và controller chuyển đúng tham số', async () => {
     const app = await NestFactory.createApplicationContext(CatalogModule, {
       logger: false,

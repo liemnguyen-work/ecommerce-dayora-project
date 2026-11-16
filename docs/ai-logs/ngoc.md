@@ -1119,3 +1119,89 @@ Codex đối chiếu các mục log đã ghi trong phiên; chờ Ngọc kiểm t
 ### Kiểm tra và minh chứng
 
 Đọc lại hai mục liên quan trước khi nối thêm. Chưa chạy test hoặc kiểm tra PR thực tế trong hoạt động tóm tắt. Tệp thay đổi: `docs/ai-logs/ngoc.md`.
+
+---
+
+## P1 / ngoc-20261116-b79e-01
+
+* Thời gian ghi: 2026-11-16T21:53:28+07:00
+* Thời gian thực hiện: 2026-11-16; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: ngoc-20261116-b79e
+* Người prompt: Ngọc
+* Loại mục: Phản biện
+* Liên quan: PRJ-P1-QA-1
+
+### Công cụ
+
+Codex.
+
+### Mục đích
+
+Nhận xét câu trả lời kiểm tra kiến thức về ca kiểm thử P1 và đặt hai câu hỏi tiếp theo.
+
+### Prompt
+
+Tóm lược: Ngọc yêu cầu chấm từng phần đúng, thiếu hoặc sai, giải thích và hỏi thêm hai câu vặn; chưa đưa code mẫu.
+
+### Kết quả đề xuất
+
+Đối chiếu câu trả lời với tài liệu ca kiểm thử và lộ trình; nhận xét về kỳ vọng, kết quả thực tế, phạm vi lệnh test và điều kiện kiểm thử dữ liệu; đưa hai câu hỏi để Ngọc tự trả lời.
+
+### Phản biện
+
+Chưa có phản biện đối với nhận xét này.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới; nhận xét không xác nhận nghiệm thu task.
+
+### Người kiểm tra
+
+Codex đối chiếu tài liệu trong repo; chờ Ngọc kiểm tra nhận xét.
+
+### Kiểm tra và minh chứng
+
+Đọc `docs/learning/QA-Ngoc/LP-QA-Ngoc-P1.md` và `docs/testing/TEST-CASES.md`; không chạy lại test hoặc kiểm tra CI trực tiếp. Tệp thay đổi: `docs/ai-logs/ngoc.md`.
+
+---
+
+## P1 / ngoc-20261116-b79e-02
+
+* Thời gian ghi: 2026-11-16T21:55:52+07:00
+* Thời gian thực hiện: 2026-11-16; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: ngoc-20261116-b79e
+* Người prompt: Ngọc
+* Loại mục: Phản biện
+* Liên quan: ngoc-20261116-b79e-01; PRJ-P1-QA-1
+
+### Công cụ
+
+Codex.
+
+### Mục đích
+
+Nhận xét hai câu trả lời tiếp theo và tóm tắt phiên thảo luận kiểm tra kiến thức P1.
+
+### Prompt
+
+Tóm lược: Ngọc trả lời cách phân biệt danh sách lọc rỗng do dữ liệu, API hay hiển thị và cách đối chiếu ba điều kiện của ca 16; yêu cầu ghi tóm tắt phiên vào log cá nhân.
+
+### Kết quả đề xuất
+
+Codex nhận xét hai câu trả lời đúng về hướng xử lý; bổ sung cần đối chiếu cả sản phẩm đủ điều kiện có bị bỏ sót và kiểm tra dữ liệu, phiên bản, điều kiện gửi request trước khi kết luận nguyên nhân. Phiên trước đó đã nhận xét các bước lập ca, ghi Actual, chạy test API và đối chiếu CI; chi tiết ở mục liên quan.
+
+### Phản biện
+
+Ngọc đã trả lời hai câu hỏi tình huống; chưa có phản biện đối với nhận xét mới.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới; thảo luận không xác nhận task đã được nghiệm thu.
+
+### Người kiểm tra
+
+Codex đối chiếu câu trả lời với nội dung thảo luận và mục log trước; chờ Ngọc kiểm tra bản tóm tắt và nhận xét.
+
+### Kiểm tra và minh chứng
+
+Đọc lại mục `ngoc-20261116-b79e-01` trước khi nối thêm. Không chạy lại test, kiểm tra dữ liệu hay CI trong lượt này. Tệp thay đổi: `docs/ai-logs/ngoc.md`.
