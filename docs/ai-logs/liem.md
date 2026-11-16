@@ -3439,3 +3439,360 @@ AI đã đọc file hiện có để đối chiếu khi chuẩn bị mục log. 
 - Nội dung file hiện có gồm phần nháp Buổi 2 và phần câu hỏi Buổi 3; trạng thái cần được Liêm kiểm tra, hoàn thiện theo yêu cầu task.
 - Chưa xác nhận commit hoặc push cho bước `.6` tại thời điểm ghi.
 - Chưa xác nhận kết quả review hay đóng sub-issue.
+---
+
+## P0 — Đồng bộ bảng việc / LIEM-20261112-SYNC-001
+
+* Thời gian ghi: 2026-11-12 (giờ cụ thể chưa xác minh).
+* Thời gian thực hiện: 11–12/11/2026; tiếp tục ngày 12/11 sau khi tạm dừng.
+* Mã phiên nhật ký: LIEM-20261112-SYNC.
+* Người prompt: Liêm (PM).
+* Loại mục: Hoạt động.
+* Liên quan: SYNC-MIRROR-PM.
+
+### Công cụ
+
+Codex; model chưa xác minh. Dùng Node.js và GitHub CLI để đối chiếu và cập nhật bảng việc.
+
+### Mục đích
+
+Đồng bộ issue và Project của repo nhóm theo bảng việc nguồn, giữ mã task, phân công, milestone và trạng thái tương ứng.
+
+### Prompt
+
+Tóm lược: Liêm nhờ AI phân tích và trực tiếp thực hiện đồng bộ, rồi tiếp tục sau khi tạm dừng. Liêm xác nhận người phụ trách nguồn đồng ý giữ cả hai issue trùng mã `FIX-P0-DO`, phân biệt bằng số issue.
+
+### Kết quả đề xuất
+
+AI kiểm tra dữ liệu, lưu bản sao thông tin issue và Project trước khi sửa, viết script riêng ngoài repo nhóm và thực hiện đồng bộ. Lần kiểm tra lại ghi nhận 570 issue nguồn hợp lệ, 575 issue ở repo nhóm gồm cả issue ngoài phạm vi; còn 0 issue cần tạo, 0 cần đóng và 0 cần mở lại. Mã trùng được phân biệt theo số issue nguồn, không gộp hai công việc.
+
+### Phản biện
+
+Script ban đầu theo yêu cầu có nguy cơ nhầm hai issue trùng mã và khẳng định đã đối chiếu PR khi mới chỉ đồng bộ trạng thái. AI thay cách nhận diện và dùng mô tả trung tính; giữ các nhãn sẵn có và chỉ bổ sung nhãn cần thiết. người phụ trách nguồn đồng ý giữ riêng hai issue theo thông tin Liêm cung cấp.
+
+### Quyết định của nhóm
+
+Theo Liêm xác nhận, người phụ trách nguồn đồng ý giữ riêng hai issue `FIX-P0-DO` theo số issue. Chưa ghi nhận quyết định chung nào khác.
+
+### Người kiểm tra
+
+AI chạy kiểm tra số lượng, trạng thái và đối chiếu 5 mẫu issue với PR đã merge. Chờ Liêm kiểm tra lại kết quả và Project.
+
+### Kiểm tra và minh chứng
+
+- Các issue đã đối chiếu không còn lệch tiêu đề, người phụ trách, nhãn nguồn hoặc milestone; số liệu là tại thời điểm chạy.
+- Đã tìm được 5 mẫu có issue repo nhóm đóng và PR merge có mã task tương ứng.
+- Đã xác nhận workflow chuyển issue đóng sang Done được bật.
+- Khi kiểm tra Project có 18 thẻ Done trong khi issue tương ứng đang mở; việc xử lý và xác minh cuối chưa hoàn tất do kết nối GitHub bị gián đoạn. Liên kết cha–con cũng chưa được xác nhận đầy đủ.
+- Script đồng bộ và bản sao dữ liệu tạm được giữ ngoài repo nhóm. Chưa xác nhận ảnh Project hoặc kết quả đối chiếu đã được đăng vào issue giao việc.
+
+---
+
+## P0 — Kết quả kiểm tra đồng bộ / LIEM-20261112-SYNC-002
+
+* Thời gian ghi: 2026-11-12 (giờ cụ thể chưa xác minh).
+* Thời gian thực hiện: 12/11/2026.
+* Mã phiên nhật ký: LIEM-20261112-SYNC.
+* Người prompt: Liêm (PM).
+* Loại mục: Kiểm tra.
+* Liên quan: LIEM-20261112-SYNC-001, SYNC-MIRROR-PM.
+
+### Công cụ
+
+Codex, Node.js và GitHub CLI; model chưa xác minh.
+
+### Mục đích
+
+Ghi nhận kết quả kiểm tra bổ sung sau khi các yêu cầu GitHub bị gián đoạn vì kết nối mạng.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu tiếp tục đồng bộ sau khi đã tạm dừng.
+
+### Kết quả đề xuất
+
+AI kiểm tra 456 issue con, xác nhận 356 đã có liên kết cha đúng và nối thêm 100 liên kết còn thiếu; không phát hiện xung đột. AI kiểm tra 18 thẻ Project từng sai trạng thái: đã bỏ Done cho 17 thẻ còn sai, một thẻ không còn phù hợp điều kiện sửa; lượt kiểm tra sau xác nhận cả 18 không còn sai Done so với trạng thái issue.
+
+### Phản biện
+
+Không tự chọn Todo hay In Progress cho những issue đang mở vì chưa có thông tin thực tế; các thành viên cần tự cập nhật trạng thái công việc.
+
+### Quyết định của nhóm
+
+Chưa ghi nhận quyết định chung bổ sung ngoài nội dung đã ghi ở mục LIEM-20261112-SYNC-001.
+
+### Người kiểm tra
+
+AI kiểm tra bằng GitHub API; chờ Liêm kiểm tra trên bảng Project.
+
+### Kiểm tra và minh chứng
+
+- Lượt đối chiếu trước đó: tạo 0, đóng 0, mở lại 0; không thiếu issue trong Project tại thời điểm kiểm tra.
+- Rà 456 liên kết issue con: 356 đã đúng, 100 được nối, 0 xung đột được ghi nhận.
+- Rà 18 thẻ Project: 0 thẻ còn vừa mở vừa có trạng thái Done.
+- Chưa xác nhận ảnh Project hoặc bảng minh chứng đã được đăng vào issue giao việc tại thời điểm ghi mục này.
+
+---
+
+## P1 — Truy vết yêu cầu / LIEM-20261115-TRACE-A71-001
+
+* Thời gian ghi: 2026-11-15T00:50:10+07:00
+* Thời gian thực hiện: 15/11/2026, trong phiên làm việc này.
+* Mã phiên nhật ký: LIEM-20261115-TRACE-A71.
+* Người prompt: Liêm (PM).
+* Loại mục: Hoạt động.
+* Liên quan: PRJ-P1-PM-1.1.
+
+### Công cụ
+
+Codex; model chưa xác minh.
+
+### Mục đích
+
+Đối chiếu yêu cầu P1 với roadmap, mã nguồn và test hiện có, hoàn thiện bảng truy vết và ghi rõ các mâu thuẫn, phần còn thiếu.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu lập bảng sáu cột cho FR01–FR05 và FR14, chỉ dẫn file tồn tại, không tự kết luận test đạt; giữ nguyên thay đổi sẵn có, nêu khác biệt định nghĩa và không commit, push hoặc đóng issue.
+
+### Kết quả đề xuất
+
+AI đối chiếu tài liệu, file code và test; cập nhật `docs/report/FR-TRACE.md` với mã task, đường dẫn hiện có và tình trạng chưa có đủ minh chứng. Phân biệt các trang placeholder, test auth và chức năng nghiệm thu đầy đủ; ghi FR05 là đánh giá sau mua ở P3 theo roadmap và nêu FR05/FR14 cần xác nhận lại với task giao việc.
+
+### Phản biện
+
+Không xem file hoặc test tồn tại là bằng chứng đã chạy và đạt; không lấy bài tập session2/session3 thay cho code đồ án. Chưa đối chiếu được nguyên văn mô tả FR05/FR14 trong task giao việc.
+
+### Quyết định của nhóm
+
+Chưa có quyết định nhóm được xác nhận về khác biệt FR05/FR14.
+
+### Người kiểm tra
+
+AI đối chiếu nội dung tệp và đường dẫn; chờ Liêm và QA Ngọc kiểm tra, xác nhận phạm vi và bằng chứng nghiệm thu.
+
+### Kiểm tra và minh chứng
+
+- Đọc `REQUIREMENTS.md`, `docs/ROADMAP.md`, `docs/DECISIONS.md`, overview P1, mã web/API và test auth hiện có trên nhánh.
+- Chưa chạy test chức năng hoặc xác nhận trạng thái đã đạt; chưa xác nhận điều kiện đóng sub-issue.
+- Giữ nguyên nội dung log trước và các thay đổi Obsidian; không commit, push hoặc đóng issue.
+
+---
+
+## P1 — Bổ sung khác biệt FR / LIEM-20261115-TRACE-A71-002
+
+* Thời gian ghi: 2026-11-15T00:58:19+07:00
+* Thời gian thực hiện: 15/11/2026, trong phiên làm việc này.
+* Mã phiên nhật ký: LIEM-20261115-TRACE-A71.
+* Người prompt: Liêm (PM).
+* Loại mục: Hoạt động.
+* Liên quan: LIEM-20261115-TRACE-A71-001, PRJ-P1-PM-1.1.
+
+### Công cụ
+
+Codex; model chưa xác minh.
+
+### Mục đích
+
+Làm rõ sự khác biệt FR05 và FR14 trong bảng truy vết theo nội dung Liêm cung cấp.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu ghi rõ task mô tả FR05 là quản trị sản phẩm và FR14 là hồ sơ cá nhân, sản phẩm đã xem; đối chiếu với REQUIREMENTS, giữ các nội dung khác và không tự chốt hay commit, push, đóng issue.
+
+### Kết quả đề xuất
+
+Bổ sung hai khác biệt trong `docs/report/FR-TRACE.md`; ghi nguồn mô tả task là thông tin Liêm cung cấp, giữ trạng thái cần xác nhận. Không kết luận tài liệu nào cần sửa.
+
+### Phản biện
+
+Thông tin mô tả task do Liêm cung cấp; AI chưa trực tiếp đối chiếu nguyên văn issue.
+
+### Quyết định của nhóm
+
+Chưa có quyết định nhóm về cách xử lý khác biệt.
+
+### Người kiểm tra
+
+AI đối chiếu yêu cầu do Liêm cung cấp với `REQUIREMENTS.md` đã đọc; chờ Liêm và QA xác nhận.
+
+### Kiểm tra và minh chứng
+
+- Thay đúng mục khác biệt trong `docs/report/FR-TRACE.md`; các nội dung khác giữ nguyên.
+- Không chạy test chức năng; không commit, push hoặc đóng issue.
+
+---
+
+## P1 — Cập nhật bảng truy vết / LIEM-20261117-PM1-B62-001
+
+* Thời gian ghi: 2026-11-17T02:29:12+07:00
+* Thời gian thực hiện: Hồi cứu các lượt làm PRJ-P1-PM-1.1; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261117-PM1-B62.
+* Người prompt: Liêm (PM).
+* Loại mục: Hoạt động.
+* Liên quan: PRJ-P1-PM-1.1; LIEM-20261115-TRACE-A71-001 và LIEM-20261115-TRACE-A71-002.
+
+### Công cụ
+
+Codex; model chưa xác minh.
+
+### Mục đích
+
+Rà soát, cập nhật bảng truy vết P1 theo yêu cầu, roadmap, code và minh chứng QA hiện có.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu hỗ trợ hoàn thiện bảng, đối chiếu FR05/FR14 và cập nhật thông tin sau khi nhóm cung cấp phản hồi.
+
+### Kết quả đề xuất
+
+AI hỗ trợ cập nhật `docs/report/FR-TRACE.md`, chỉ ra phần code/test có và chưa có minh chứng; sau đó bảng giữ FR01–FR04 và FR14, ghi FR05 đánh giá sau mua thuộc P3. Có bổ sung liên kết code và ca QA theo tài liệu hiện có.
+
+### Phản biện
+
+Không coi code hoặc test tồn tại là bằng chứng toàn bộ FR đã đạt. AI ghi nhận các giới hạn của kết quả QA và không tự tuyên bố nghiệm thu đầy đủ.
+
+### Quyết định của nhóm
+
+Theo thông tin Liêm cung cấp, Ngọc xác nhận FR05 đánh giá sau mua thuộc P3 và bốn ca quản trị cơ bản bao phủ phần được giao ở P1; không suy ra bao phủ toàn bộ FR14.
+
+### Người kiểm tra
+
+AI kiểm tra cấu trúc bảng và đường dẫn; Liêm trao đổi với Ngọc về phạm vi. Chưa xác minh việc chạy lại test chức năng trong lượt cập nhật này.
+
+### Kiểm tra và minh chứng
+
+- Các commit đã có: `9026d64`, `e467573`, `f235971`, `e9d16b7`.
+- Liêm cho biết đã đóng sub-issue .1; trạng thái được ghi theo phản hồi của Liêm.
+
+---
+
+## P1 — Nhật ký thay đổi / LIEM-20261117-PM1-B62-002
+
+* Thời gian ghi: 2026-11-17T02:29:12+07:00
+* Thời gian thực hiện: Hồi cứu công việc PRJ-P1-PM-1.2; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261117-PM1-B62.
+* Người prompt: Liêm (PM).
+* Loại mục: Hoạt động.
+* Liên quan: PRJ-P1-PM-1.2.
+
+### Công cụ
+
+Codex; model chưa xác minh.
+
+### Mục đích
+
+Ghi nhận các điều chỉnh phạm vi và giao diện vào nhật ký thay đổi, cùng thông tin quyết định liên quan.
+
+### Prompt
+
+Tóm lược: Liêm cung cấp xác nhận của Ngọc về K09, K10 và K11, yêu cầu tiếp tục triển khai nội dung .2.
+
+### Kết quả đề xuất
+
+AI cập nhật `docs/CHANGELOG.md` và `docs/DECISIONS.md` cho K09–K11; ghi K09 liên quan desktop 1366×768 và mobile 390×844, và phản hồi của Ngọc về chuyển hướng giao diện sang website bán hàng cho K10/K11.
+
+### Phản biện
+
+Không tự khẳng định ngày hoặc người duyệt khi chưa có minh chứng; việc ghi tài liệu không chứng minh giao diện đã được kiểm thử.
+
+### Quyết định của nhóm
+
+Thông tin xác nhận K09–K11 là do Liêm chuyển lại từ Ngọc; chưa có căn cứ ghi thêm người phê duyệt hoặc thời điểm quyết định chưa được xác minh.
+
+### Người kiểm tra
+
+Liêm cho biết Ngọc đã đồng ý; chưa có bằng chứng kiểm thử giao diện trong lượt ghi nhận này.
+
+### Kiểm tra và minh chứng
+
+- Commit đã có: `97228f0`.
+- Liêm cho biết đã đóng sub-issue .2.
+
+---
+
+## P1 — Rà soát tiến độ / LIEM-20261117-PM1-B62-003
+
+* Thời gian ghi: 2026-11-17T02:29:12+07:00
+* Thời gian thực hiện: Hồi cứu công việc PRJ-P1-PM-1.3; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261117-PM1-B62.
+* Người prompt: Liêm (PM).
+* Loại mục: Hoạt động.
+* Liên quan: PRJ-P1-PM-1.3.
+
+### Công cụ
+
+Codex; model chưa xác minh.
+
+### Mục đích
+
+Tạo báo cáo tiến độ P1, ghi nhận phản hồi của các thành viên và hạn dự kiến.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu làm .3, cung cấp phản hồi của Châu và Đạt và yêu cầu commit, push.
+
+### Kết quả đề xuất
+
+AI chạy script báo cáo thành công, cập nhật `docs/PROGRESS.md` và thêm mục rà soát vào `phases/P1-catalog-accounts/P1-OVERVIEW.md`. Theo Liêm, Châu đang kiểm tra kiến thức; Đạt cho biết bước PD-2.1 mất thêm thời gian; hai bạn không cần hỗ trợ và dự kiến hoàn thành ngày 17/11/2026.
+
+### Phản biện
+
+Trạng thái trên bảng việc và issue repo nhóm chưa đồng bộ, nên báo cáo tự động không đủ căn cứ để kết luận tiến độ thực tế; chưa có kết quả hoàn thành thực tế của các task trên tại thời điểm ghi biên bản.
+
+### Quyết định của nhóm
+
+Thông tin về hỗ trợ và hạn dự kiến được ghi theo phản hồi Liêm chuyển lại; chưa xác minh việc cập nhật hạn trên Project board.
+
+### Người kiểm tra
+
+AI kiểm tra `git diff --check` cho hai file; Liêm cung cấp thông tin các thành viên và yêu cầu push.
+
+### Kiểm tra và minh chứng
+
+- Script `npm run roadmap:report -- --repo liemnguyen-work/ecommerce-dayora-project` chạy thành công.
+- Commit đã push: `a736074`. Liêm cho biết đã đóng sub-issue .3.
+
+---
+
+## P1 — Kiểm tra kiến thức / LIEM-20261117-PM1-B62-004
+
+* Thời gian ghi: 2026-11-17T02:29:12+07:00
+* Thời gian thực hiện: Hồi cứu công việc PRJ-P1-PM-1.4; thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: LIEM-20261117-PM1-B62.
+* Người prompt: Liêm (PM).
+* Loại mục: Hoạt động.
+* Liên quan: PRJ-P1-PM-1.4.
+
+### Công cụ
+
+Codex; model chưa xác minh.
+
+### Mục đích
+
+Chuẩn bị và rà soát nội dung tự đánh giá kiến thức về ba bước trước.
+
+### Prompt
+
+Tóm lược: Liêm yêu cầu chuẩn bị bước .4, xin câu trả lời mẫu để diễn đạt lại, trả lời câu hỏi luyện tập và nhờ kiểm tra.
+
+### Kết quả đề xuất
+
+AI tạo khung `docs/learning/PM-Liem/kiem-tra/PRJ-P1-PM-1.md`; Liêm điền và lưu nội dung. AI đã đưa ví dụ trả lời trước khi Liêm hoàn thành và sau đó góp ý, đặt hai câu hỏi luyện tập; file được commit và push.
+
+### Phản biện
+
+Yêu cầu bài tự đánh giá quy định tự viết và không nhờ AI viết hộ. AI đã đưa câu trả lời mẫu theo đề nghị của Liêm; nội dung trong file còn trùng đáng kể với ví dụ, vì vậy không thể coi file là bằng chứng độc lập rằng Liêm tự trả lời mà không có AI hỗ trợ. Liêm cần tự nắm và giải thích được nội dung khi reviewer hỏi.
+
+### Quyết định của nhóm
+
+Chưa có thông tin xác nhận reviewer hoặc trưởng nhóm đã đánh giá đạt.
+
+### Người kiểm tra
+
+AI đọc file và góp ý; Liêm đã trả lời câu hỏi luyện tập trong cuộc trao đổi. Chưa xác minh kết quả đánh giá của reviewer.
+
+### Kiểm tra và minh chứng
+
+- Commit đã push: `7cc8d6a`.
+- Chưa xác nhận hoàn thành phần reviewer hỏi và checklist kiến thức của issue cha.
