@@ -1,4 +1,4 @@
-﻿import { useEffect, useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import ProductCard from '../components/catalog/ProductCard';
 import { api } from '../lib/api';
@@ -34,6 +34,9 @@ export default function CatalogPage() {
 
   useEffect(() => {
     let active = true;
+    // URL thay đổi phải thay ngay danh sách cũ bằng trạng thái tải.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setLoading(true);
     api<CatalogResult>(`/products${query ? `?${query}` : ''}`)
       .then((data) => { if (active) { setResult(data); setError(false); } })
       .catch(() => { if (active) { setResult(null); setError(true); } })
@@ -56,14 +59,12 @@ export default function CatalogPage() {
       return;
     }
     setFormError('');
-    if (next.toString() !== query) setLoading(true);
     setParams(next);
   }
 
   function clearFilters() {
     if (!query) return;
     setFormError('');
-    setLoading(true);
     setParams(new URLSearchParams());
   }
 
