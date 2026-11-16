@@ -1070,3 +1070,56 @@ Chưa có xác nhận nghiệm thu chính thức từ PM Liêm hoặc reviewer F
 - Lưới đội ngũ: 2 cột.
 - CSS tạo khung lời hứa và thẻ đội ngũ đã được trình duyệt áp dụng.
 - Chưa có xác nhận review chính thức tại thời điểm ghi.
+---
+
+## P1 — Minh chứng giao diện About / DAT-20261116-7F3C91A2-003
+
+* Thời gian ghi: 2026-11-16T11:08:29+07:00
+* Thời gian thực hiện: Hoạt động chụp và đối chiếu giao diện trong phiên làm việc; chưa xác minh đầy đủ giờ bắt đầu.
+* Mã phiên nhật ký: DAT-20261116-7F3C91A2
+* Người prompt: Đạt (PD).
+* Loại mục: Hoạt động.
+* Liên quan: PRJ-P1-PD-1.4; DAT-20261116-7F3C91A2-002.
+
+### Công cụ
+
+ChatGPT (GPT-6), trình duyệt Firefox, Responsive Design Mode và Git.
+
+### Mục đích
+
+Chuẩn bị minh chứng giao diện trang Về chúng tôi ở hai kích thước 1366px và 390px, đối chiếu với bản tham chiếu DAYORA trước khi gửi reviewer.
+
+### Prompt
+
+Tóm lược: Đạt yêu cầu giải thích code mẫu, hướng dẫn chụp ảnh, kiểm tra bốn ảnh toàn trang và xác định bước tiếp theo để hoàn thành PRJ-P1-PD-1.4.
+
+### Kết quả đề xuất
+
+Đạt đã cung cấp bốn ảnh minh chứng:
+
+- Bản nhóm: `1366 - code.png`, `390 - code.png`.
+- Bản tham chiếu: `1366 - mẫu.png`, `390 - mẫu.png`.
+
+ChatGPT đối chiếu bố cục Hero, Story, Promises, Team, FAQ, Header và Footer; hướng dẫn trình bày ảnh trong Pull Request để FD1 Thành review.
+
+### Phản biện
+
+Hai bản không hoàn toàn giống nhau. Bản nhóm sử dụng Hero căn giữa, thẻ nền trắng viền xanh và footer xanh đậm; bản tham chiếu có Hero chia cột, thẻ nền kem và footer sáng. Bản nhóm có hai câu FAQ, trong khi bản tham chiếu có bốn câu.
+
+Các khác biệt được ghi nhận để reviewer đánh giá; chưa tự kết luận là lỗi hoặc đã được chấp thuận.
+
+### Quyết định của nhóm
+
+Chưa có xác nhận nghiệm thu chính thức từ FD1 Thành hoặc quyết định mới của PM Liêm về các khác biệt giao diện.
+
+### Người kiểm tra
+
+Đạt chụp và cung cấp bốn ảnh. ChatGPT kiểm tra, nhận xét dựa trên ảnh do Đạt gửi. Chờ FD1 Thành review thực tế.
+
+### Kiểm tra và minh chứng
+
+- Đã có ảnh giao diện nhóm và mẫu ở 1366px, 390px.
+- Phần giao diện nhóm đã kiểm tra không tràn ngang ở 390px (`false`) trong bước 1.3.
+- ESLint và build của bước 1.3 đã PASS.
+- Chưa có PR được reviewer phê duyệt tại thời điểm ghi.
+- Ảnh sẽ được đính kèm vào Pull Request của repo nhóm.
