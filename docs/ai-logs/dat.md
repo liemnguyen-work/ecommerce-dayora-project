@@ -1123,3 +1123,55 @@ Chưa có xác nhận nghiệm thu chính thức từ FD1 Thành hoặc quyết 
 - ESLint và build của bước 1.3 đã PASS.
 - Chưa có PR được reviewer phê duyệt tại thời điểm ghi.
 - Ảnh sẽ được đính kèm vào Pull Request của repo nhóm.
+---
+
+---
+
+## P1 — Kiểm tra kiến thức trang Về chúng tôi / DAT-20261116-PD15-001
+
+* **Thời gian ghi:** [Điền thời gian thực tế]
+* **Thời gian thực hiện:** 16/11/2026
+* **Mã phiên nhật ký:** DAT-20261116-PD15
+* **Người prompt:** Đạt (PD)
+* **Loại mục:** Hoạt động
+* **Liên quan:** PRJ-P1-PD-1.5; PR #669
+
+### Công cụ
+
+ChatGPT (GPT-6), Visual Studio Code và Git.
+
+### Mục đích
+
+Tổng hợp lại những kiến thức đã sử dụng trong quá trình xây dựng trang Về chúng tôi, bao gồm chuẩn bị nội dung, xây dựng cấu trúc React, thiết kế CSS responsive và kiểm tra giao diện. Qua đó, tôi muốn hệ thống hóa công việc đã thực hiện và chuẩn bị cho phần kiểm tra kiến thức của dự án.
+
+### Prompt
+
+Tôi yêu cầu ChatGPT hỗ trợ hệ thống hóa nội dung của năm câu hỏi trong PRJ-P1-PD-1.5, dựa trên các bước đã triển khai ở task trước. Nội dung cần ngắn gọn, dễ hiểu, sử dụng cách diễn đạt tự nhiên và tập trung vào mục đích của từng bước cũng như những ảnh hưởng nếu bỏ qua.
+
+### Kết quả đề xuất
+
+Tôi nhận được năm câu trả lời tham khảo, tập trung vào vai trò của nội dung thương hiệu, cấu trúc `AboutPage.tsx`, CSS responsive, ảnh chụp minh chứng và khó khăn thực tế khi hoàn thiện giao diện.
+
+Các nội dung này giúp tôi tổng hợp lại quá trình triển khai và chuẩn bị tài liệu tại `docs/learning/PD-Dat/kiem-tra/PRJ-P1-PD-1.md`.
+
+### Phản biện
+
+Tôi nhận thấy các nội dung được đề xuất bám sát quá trình thực hiện trang About. Tuy nhiên, việc hiểu rõ từng bước vẫn cần được kiểm chứng thông qua khả năng giải thích lại mà không phụ thuộc vào tài liệu tham khảo.
+
+Đặc biệt, tôi cần nắm được sự khác nhau giữa lỗi chức năng, lỗi hiển thị và việc thiếu minh chứng nghiệm thu để tránh nhầm lẫn khi trình bày.
+
+### Quyết định của nhóm
+
+Tôi sử dụng nội dung được hỗ trợ để chuẩn bị tài liệu ôn tập, đồng thời tiếp tục tự nghiên cứu và kiểm tra lại kiến thức trước khi hoàn tất nghiệm thu. Chưa có xác nhận chính thức từ reviewer.
+
+### Người kiểm tra
+
+Đạt (PD) phụ trách rà soát nội dung và thực hiện kiểm tra kiến thức. FD1 Thành là reviewer phụ trách nghiệm thu.
+
+### Kiểm tra và minh chứng
+
+- Nội dung ôn tập gồm năm câu hỏi của PRJ-P1-PD-1.5.
+- File tài liệu: `docs/learning/PD-Dat/kiem-tra/PRJ-P1-PD-1.md`.
+- Nhật ký AI: `docs/ai-logs/dat.md`.
+- Pull Request: #669.
+- Phần tự đánh giá độc lập và vấn đáp cần được xác nhận trước khi đóng sub-issue.
