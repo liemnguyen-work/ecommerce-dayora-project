@@ -878,3 +878,300 @@ Chưa có quyết định chung hoặc xác nhận reviewer/FD1 Thành đã duy�
 * git status -sb ban đầu: prj/p0-pd-1...origin/prj/p0-pd-1; session3/docs/answers/Dat.md có thay đổi chưa commit; docs/learning/PD-Dat/kiem-tra/ chưa theo dõi. Không chuyển nhánh, stage hoặc hoàn tác thay đổi.
 * File docs/learning/PD-Dat/kiem-tra/PRJ-P0-PD-1.md đã có; kiểm hash trước/sau để giữ nguyên file này và session3/docs/answers/Dat.md. Không tạo câu trả lời hoặc sửa code.
 * Chỉ nối docs/ai-logs/dat.md, giữ nguyên từng byte lịch sử trước đó. Kiểm tra git diff --check và git status -sb sau ghi để báo kết quả; không commit/push/PR.
+
+---
+
+## P1 — Chuẩn bị nội dung trang Về chúng tôi / DAT-20261114-83F98248-001
+
+* Thời gian ghi: 2026-11-14T00:24:12+07:00
+* Thời gian thực hiện: Codex kiểm tra và ghi nhật ký trong phiên hiện tại. Hoạt động ChatGPT được tổng hợp hồi cứu theo thông tin Đạt cung cấp; thời gian thực hiện trước đó chưa xác minh.
+* Mã phiên nhật ký: DAT-20261114-83F98248
+* Người prompt: PD Đạt (tự xác nhận).
+* Loại mục: Hoạt động
+* Liên quan: Task PRJ-P1-PD-1.1; chưa cung cấp URL Issue hoặc commit cho công việc này.
+
+### Công cụ
+
+ChatGPT hỗ trợ soạn nội dung và hướng dẫn quy trình theo xác nhận của Đạt. Codex trực tiếp kiểm tra nhánh, đọc tài liệu và ghi nhật ký. Chưa cung cấp prompt ChatGPT nguyên văn, bản hội thoại hoặc model để xác minh độc lập.
+
+### Mục đích
+
+Ghi nhận trung thực việc sử dụng AI khi chuẩn bị nội dung trang Về chúng tôi; kiểm tra file Đạt đã lưu và chỉ nối một mục mới vào docs/ai-logs/dat.md.
+
+### Prompt
+
+Tóm lược yêu cầu thực tế của Đạt: kiểm tra nhánh prj/p1-pd-1; đọc quy tắc và mẫu log; kiểm tra docs/learning/PD-Dat/P1-about-content.md; nối đúng một mục đủ 7 trường, ghi ChatGPT hỗ trợ soạn nội dung và hướng dẫn quy trình, Đạt xác nhận Liêm đã duyệt, Codex kiểm tra và ghi nhật ký; giữ nguyên lịch sử, chạy git diff --check và báo file thay đổi; không sửa code website, commit, push hoặc tạo PR. Prompt ChatGPT trước đó chưa được cung cấp nguyên văn.
+
+### Kết quả đề xuất
+
+Codex xác nhận đang ở nhánh prj/p1-pd-1 và đọc toàn bộ file nội dung đã có. File gồm câu chuyện thương hiệu, ba lời hứa thương hiệu, bảng 8 thành viên, kế hoạch tái sử dụng FAQ và ghi chú triển khai. FAQ được ghi đang chờ module liên quan, chưa coi là đã tích hợp. Giữ nguyên file nội dung; chỉ nối mục nhật ký này.
+
+### Phản biện
+
+Chưa có phản hồi sửa/bỏ chi tiết của Liêm được cung cấp trong phiên này. Codex chỉ kiểm tra nội dung tài liệu, không xác minh độc lập hoạt động ChatGPT hoặc việc PM phê duyệt; không coi lời hứa thương hiệu là bằng chứng chức năng website đã triển khai. Không chỉnh nội dung đã lưu.
+
+### Quyết định của nhóm
+
+Đạt xác nhận PM Liêm đã duyệt nội dung trang Về chúng tôi cho task PRJ-P1-PD-1.1; file nội dung cũng ghi trạng thái này. Đây là phê duyệt theo thông tin Đạt cung cấp, không suy rộng thành toàn nhóm duyệt mọi chính sách. Đạt cho phép Codex chỉ nối một mục log và kiểm tra Git trong phiên này.
+
+### Người kiểm tra
+
+PM Liêm đã duyệt nội dung theo xác nhận của Đạt. Codex trực tiếp kiểm tra nhánh, đọc file nội dung, quy tắc và mẫu log, kiểm tra Git. Mục nhật ký mới chờ Đạt rà soát; chưa có xác nhận Đạt hoặc Liêm duyệt mục log này.
+
+### Kiểm tra và minh chứng
+
+* Đã đọc docs/ai-logs/ai-logging-rules.md và docs/ai-logs/TEMPLATE.md; kiểm tra nội dung docs/learning/PD-Dat/P1-about-content.md.
+* git diff --check trước khi nối log thành công, không báo lỗi. Sau ghi sẽ chạy lại và báo kết quả bàn giao; không coi kiểm tra whitespace là kiểm thử website.
+* Trạng thái ban đầu: session3/docs/answers/Dat.md có thay đổi; docs/learning/PD-Dat/P1-about-content.md chưa được Git theo dõi. Đây là các thay đổi có sẵn, không phải Codex tạo trong phiên này.
+* Chỉ nối docs/ai-logs/dat.md; kiểm tra phần byte lịch sử và hash hai file có sẵn trước/sau để xác nhận giữ nguyên. Không chạy build hoặc kiểm thử giao diện vì chỉ ghi nhật ký. Không commit, push hoặc tạo PR.
+
+---
+
+## P1 — Trang Về chúng tôi / DAT-20261116-7F3C91A2-001
+
+* Thời gian ghi: 2026-11-16T02:57:29+07:00
+* Thời gian thực hiện: Tổng hợp hồi cứu quá trình triển khai PRJ-P1-PD-1.2; chưa xác minh đầy đủ thời điểm bắt đầu.
+* Mã phiên nhật ký: DAT-20261116-7F3C91A2
+* Người prompt: Đạt (PD).
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-PD-1; PRJ-P1-PD-1.2.
+
+### Công cụ
+
+ChatGPT (GPT-6 trong phiên hiện tại).
+
+### Mục đích
+
+Hỗ trợ triển khai trang Về chúng tôi của dự án DAYORA, đồng bộ với cấu trúc React hiện tại và các component dùng chung của nhóm.
+
+### Prompt
+
+Tóm lược các yêu cầu thực tế của Đạt:
+
+- Kiểm tra code AboutPage.tsx và đối chiếu với yêu cầu task.
+- Hướng dẫn tích hợp CatalogLayout, Rise, FaqItem và faqs.
+- Giữ nguyên nội dung năm khu vực của trang.
+- Kiểm tra Git, giải quyết lỗi dependency và kết nối route.
+- Hướng dẫn từng bước, không làm mất code hiện có.
+- Rà soát nội dung và điều kiện hoàn thành trước khi commit.
+
+### Kết quả đề xuất
+
+ChatGPT hướng dẫn Đạt:
+
+1. Đồng bộ nhánh làm việc với origin/main.
+2. Khôi phục AboutPage.tsx từ Git stash mà không ghi đè App.tsx.
+3. Kiểm tra và sửa các ký tự tiếng Việt bị lỗi.
+4. Tích hợp CatalogLayout làm bố cục chung.
+5. Sử dụng Rise cho năm khu vực nội dung.
+6. Tái sử dụng FaqItem và faqs từ component của nhóm.
+7. Kết nối AboutPage vào các route /ve-chung-toi và /about.
+8. Cài đặt lại dependency để xử lý lỗi thiếu motion/react.
+
+Các file ứng dụng liên quan:
+- apps/web/src/pages/AboutPage.tsx
+- apps/web/src/App.tsx
+
+Phần CSS trong catalog.css được đề xuất cho bước 1.3, chưa xác nhận triển khai trong mục log này.
+
+### Phản biện
+
+Đạt yêu cầu kiểm tra đầy đủ nội dung trước khi commit và phản hồi rằng trang About đã hiển thị đủ nội dung nhưng giao diện vẫn đơn giản, chủ yếu là văn bản.
+
+Qua đối chiếu, phần CSS riêng của About chưa được triển khai. Việc hoàn thiện giao diện được tách sang PRJ-P1-PD-1.3 thay vì coi phần hiển thị hiện tại là giao diện đã nghiệm thu.
+
+Lỗi thiếu motion/react được xác định là do dependency chưa được cài đầy đủ sau khi đồng bộ code mới. Đạt chạy npm install và build thành công.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới hoặc xác nhận nghiệm thu từ PM Liêm và reviewer FD1 Thành.
+
+Đạt đang hoàn thiện phần code 1.2, kiểm tra và ghi nhật ký trước khi commit. Phần thiết kế responsive tiếp tục thực hiện trong 1.3.
+
+### Người kiểm tra
+
+Đạt trực tiếp chạy lệnh Git, npm và mở website để kiểm tra nội dung.
+
+ChatGPT kiểm tra code, log CMD và git diff do Đạt cung cấp. Chưa có xác nhận review chính thức của FD1 Thành.
+
+### Kiểm tra và minh chứng
+
+- Nhánh làm việc: prj/p1-pd-1.
+- Đã merge origin/main thành công, không có conflict.
+- AboutPage.tsx được khôi phục từ stash.
+- npm run lint -w web: PASS sau khi cập nhật route About.
+- npm install: thành công; bổ sung các dependency còn thiếu.
+- npm run build -w web: PASS sau khi cập nhật route About; Vite build thành công với 480 modules transformed.
+- git diff --check: PASS, không phát hiện lỗi whitespace ở các file được Git theo dõi.
+- git diff của App.tsx chỉ thể hiện việc bổ sung import AboutPage và thay route About.
+- Đạt xác nhận trang About hiển thị đầy đủ nội dung trên trình duyệt.
+- Chưa xác nhận kiểm thử responsive 390px hoặc nghiệm thu CSS.
+- Chưa commit, push hoặc tạo PR tại thời điểm ghi mục này.
+---
+
+## P1 — CSS trang Về chúng tôi / DAT-20261116-7F3C91A2-002
+
+* Thời gian ghi: 2026-11-16T09:53:41+07:00
+* Thời gian thực hiện: Triển khai PRJ-P1-PD-1.3; chưa xác minh đầy đủ giờ bắt đầu.
+* Mã phiên nhật ký: DAT-20261116-7F3C91A2
+* Người prompt: Đạt (PD).
+* Loại mục: Hoạt động.
+* Liên quan: PRJ-P1-PD-1; PRJ-P1-PD-1.3; DAT-20261116-7F3C91A2-001.
+
+### Công cụ
+
+ChatGPT (GPT-6), VS Code, Git, Vite và trình duyệt DevTools.
+
+### Mục đích
+
+Hoàn thiện CSS cho trang Về chúng tôi của DAYORA, tạo giao diện có khung thẻ và đáp ứng yêu cầu responsive 390px.
+
+### Prompt
+
+Tóm lược yêu cầu của Đạt:
+
+- Kiểm tra CSS hiện tại và xác định nguyên nhân giao diện chủ yếu hiển thị văn bản.
+- Bổ sung kiểu dáng cho logo, lời hứa thương hiệu, đội ngũ và FAQ.
+- Đảm bảo các class CSS khớp với AboutPage.tsx.
+- Kiểm tra bố cục desktop, tablet và mobile.
+- Loại bỏ khai báo CSS trùng lặp, không ảnh hưởng code của thành viên khác.
+- Hướng dẫn kiểm thử và hoàn tất Git theo đúng sub-issue.
+
+### Kết quả đề xuất
+
+ChatGPT phân tích CSS, đề xuất các quy tắc tạo khung thẻ, typography, responsive và hướng dẫn loại bỏ CSS trùng. Đạt thực hiện chỉnh sửa và kiểm tra.
+
+Các file liên quan:
+
+- apps/web/src/catalog.css
+- apps/web/src/pages/AboutPage.tsx
+
+### Phản biện
+
+Đạt phát hiện giao diện chưa có khung thẻ rõ ràng và yêu cầu kiểm tra CSS thực tế. Quá trình đối chiếu phát hiện các khai báo CSS About bị trùng.
+
+Đạt tiếp tục chỉnh sửa, kiểm tra trong trình duyệt và dọn các rule trùng lặp theo hướng dẫn.
+
+### Quyết định của nhóm
+
+Chưa có xác nhận nghiệm thu chính thức từ PM Liêm hoặc reviewer FD1 Thành. Phạm vi thực hiện giới hạn trong giao diện About.
+
+### Người kiểm tra
+
+Đạt trực tiếp kiểm tra giao diện và chạy các lệnh kiểm thử. ChatGPT phân tích code, ảnh DevTools và kết quả CMD do Đạt cung cấp.
+
+### Kiểm tra và minh chứng
+
+- ESLint: PASS.
+- Build: PASS; Vite xử lý thành công 480 modules.
+- git diff --check: PASS.
+- Kiểm tra responsive 390px: không tràn ngang (`false`).
+- Lưới lời hứa: 1 cột.
+- Lưới đội ngũ: 2 cột.
+- CSS tạo khung lời hứa và thẻ đội ngũ đã được trình duyệt áp dụng.
+- Chưa có xác nhận review chính thức tại thời điểm ghi.
+---
+
+## P1 — Minh chứng giao diện About / DAT-20261116-7F3C91A2-003
+
+* Thời gian ghi: 2026-11-16T11:08:29+07:00
+* Thời gian thực hiện: Hoạt động chụp và đối chiếu giao diện trong phiên làm việc; chưa xác minh đầy đủ giờ bắt đầu.
+* Mã phiên nhật ký: DAT-20261116-7F3C91A2
+* Người prompt: Đạt (PD).
+* Loại mục: Hoạt động.
+* Liên quan: PRJ-P1-PD-1.4; DAT-20261116-7F3C91A2-002.
+
+### Công cụ
+
+ChatGPT (GPT-6), trình duyệt Firefox, Responsive Design Mode và Git.
+
+### Mục đích
+
+Chuẩn bị minh chứng giao diện trang Về chúng tôi ở hai kích thước 1366px và 390px, đối chiếu với bản tham chiếu DAYORA trước khi gửi reviewer.
+
+### Prompt
+
+Tóm lược: Đạt yêu cầu giải thích code mẫu, hướng dẫn chụp ảnh, kiểm tra bốn ảnh toàn trang và xác định bước tiếp theo để hoàn thành PRJ-P1-PD-1.4.
+
+### Kết quả đề xuất
+
+Đạt đã cung cấp bốn ảnh minh chứng:
+
+- Bản nhóm: `1366 - code.png`, `390 - code.png`.
+- Bản tham chiếu: `1366 - mẫu.png`, `390 - mẫu.png`.
+
+ChatGPT đối chiếu bố cục Hero, Story, Promises, Team, FAQ, Header và Footer; hướng dẫn trình bày ảnh trong Pull Request để FD1 Thành review.
+
+### Phản biện
+
+Hai bản không hoàn toàn giống nhau. Bản nhóm sử dụng Hero căn giữa, thẻ nền trắng viền xanh và footer xanh đậm; bản tham chiếu có Hero chia cột, thẻ nền kem và footer sáng. Bản nhóm có hai câu FAQ, trong khi bản tham chiếu có bốn câu.
+
+Các khác biệt được ghi nhận để reviewer đánh giá; chưa tự kết luận là lỗi hoặc đã được chấp thuận.
+
+### Quyết định của nhóm
+
+Chưa có xác nhận nghiệm thu chính thức từ FD1 Thành hoặc quyết định mới của PM Liêm về các khác biệt giao diện.
+
+### Người kiểm tra
+
+Đạt chụp và cung cấp bốn ảnh. ChatGPT kiểm tra, nhận xét dựa trên ảnh do Đạt gửi. Chờ FD1 Thành review thực tế.
+
+### Kiểm tra và minh chứng
+
+- Đã có ảnh giao diện nhóm và mẫu ở 1366px, 390px.
+- Phần giao diện nhóm đã kiểm tra không tràn ngang ở 390px (`false`) trong bước 1.3.
+- ESLint và build của bước 1.3 đã PASS.
+- Chưa có PR được reviewer phê duyệt tại thời điểm ghi.
+- Ảnh sẽ được đính kèm vào Pull Request của repo nhóm.
+---
+
+---
+
+## P1 — Kiểm tra kiến thức trang Về chúng tôi / DAT-20261116-PD15-001
+
+* **Thời gian ghi:** [Điền thời gian thực tế]
+* **Thời gian thực hiện:** 16/11/2026
+* **Mã phiên nhật ký:** DAT-20261116-PD15
+* **Người prompt:** Đạt (PD)
+* **Loại mục:** Hoạt động
+* **Liên quan:** PRJ-P1-PD-1.5; PR #669
+
+### Công cụ
+
+ChatGPT (GPT-6), Visual Studio Code và Git.
+
+### Mục đích
+
+Tổng hợp lại những kiến thức đã sử dụng trong quá trình xây dựng trang Về chúng tôi, bao gồm chuẩn bị nội dung, xây dựng cấu trúc React, thiết kế CSS responsive và kiểm tra giao diện. Qua đó, tôi muốn hệ thống hóa công việc đã thực hiện và chuẩn bị cho phần kiểm tra kiến thức của dự án.
+
+### Prompt
+
+Tôi yêu cầu ChatGPT hỗ trợ hệ thống hóa nội dung của năm câu hỏi trong PRJ-P1-PD-1.5, dựa trên các bước đã triển khai ở task trước. Nội dung cần ngắn gọn, dễ hiểu, sử dụng cách diễn đạt tự nhiên và tập trung vào mục đích của từng bước cũng như những ảnh hưởng nếu bỏ qua.
+
+### Kết quả đề xuất
+
+Tôi nhận được năm câu trả lời tham khảo, tập trung vào vai trò của nội dung thương hiệu, cấu trúc `AboutPage.tsx`, CSS responsive, ảnh chụp minh chứng và khó khăn thực tế khi hoàn thiện giao diện.
+
+Các nội dung này giúp tôi tổng hợp lại quá trình triển khai và chuẩn bị tài liệu tại `docs/learning/PD-Dat/kiem-tra/PRJ-P1-PD-1.md`.
+
+### Phản biện
+
+Tôi nhận thấy các nội dung được đề xuất bám sát quá trình thực hiện trang About. Tuy nhiên, việc hiểu rõ từng bước vẫn cần được kiểm chứng thông qua khả năng giải thích lại mà không phụ thuộc vào tài liệu tham khảo.
+
+Đặc biệt, tôi cần nắm được sự khác nhau giữa lỗi chức năng, lỗi hiển thị và việc thiếu minh chứng nghiệm thu để tránh nhầm lẫn khi trình bày.
+
+### Quyết định của nhóm
+
+Tôi sử dụng nội dung được hỗ trợ để chuẩn bị tài liệu ôn tập, đồng thời tiếp tục tự nghiên cứu và kiểm tra lại kiến thức trước khi hoàn tất nghiệm thu. Chưa có xác nhận chính thức từ reviewer.
+
+### Người kiểm tra
+
+Đạt (PD) phụ trách rà soát nội dung và thực hiện kiểm tra kiến thức. FD1 Thành là reviewer phụ trách nghiệm thu.
+
+### Kiểm tra và minh chứng
+
+- Nội dung ôn tập gồm năm câu hỏi của PRJ-P1-PD-1.5.
+- File tài liệu: `docs/learning/PD-Dat/kiem-tra/PRJ-P1-PD-1.md`.
+- Nhật ký AI: `docs/ai-logs/dat.md`.
+- Pull Request: #669.
+- Phần tự đánh giá độc lập và vấn đáp cần được xác nhận trước khi đóng sub-issue.
