@@ -445,6 +445,83 @@ const items: Item[] = [
   },
 ];
 
+type SeedScenario = 'PICNIC' | 'DATE' | 'BEACH';
+
+const scenariosByProductName: Record<string, SeedScenario[]> = {
+  // TM - Tham picnic (4 Product)
+  'Thảm picnic gấp gọn 2 người': ['PICNIC', 'DATE', 'BEACH'],
+  'Thảm picnic gấp gọn 4 người': ['PICNIC', 'BEACH'],
+  'Thảm picnic gia đình 6 người': ['PICNIC', 'BEACH'],
+  'Thảm picnic cá nhân': ['PICNIC', 'BEACH'],
+
+  // BL - Binh va ly (4 Product)
+  'Bình nước cá nhân 750 ml': ['PICNIC', 'BEACH'],
+  'Ly picnic có nắp 350 ml': ['PICNIC', 'DATE'],
+  'Bình nước cá nhân 500 ml': ['BEACH'],
+  'Bình nước quai xách 1.000 ml': ['PICNIC', 'BEACH'],
+
+  // HD - Hop dung thuc pham (4 Product)
+  'Hộp đựng thực phẩm 1.000 ml': ['PICNIC', 'DATE'],
+  'Hộp đựng thực phẩm 600 ml': ['PICNIC', 'DATE'],
+  'Hộp đựng thực phẩm 1.500 ml': ['PICNIC', 'BEACH'],
+  'Hộp đựng thực phẩm 2 ngăn 1.000 ml': ['PICNIC', 'DATE'],
+
+  // GN - Tui giu nhiet (4 Product)
+  'Túi giữ nhiệt xách tay 15 lít': ['PICNIC', 'BEACH'],
+  'Túi giữ nhiệt nhỏ 8 lít': ['DATE', 'BEACH'],
+  'Túi giữ nhiệt nhóm 25 lít': ['PICNIC', 'BEACH'],
+  'Túi giữ nhiệt đeo vai 12 lít': ['PICNIC', 'BEACH'],
+
+  // VS - Ve sinh (5 Product)
+  'Túi thu gom rác 20 lít cuộn 20 túi': ['PICNIC', 'BEACH'],
+  'Khăn giấy khô gói 100 tờ': ['PICNIC', 'DATE', 'BEACH'],
+  'Khăn lau vải dùng lại': ['PICNIC', 'DATE'],
+  'Túi thu gom rác 35 lít cuộn 15 túi': ['PICNIC', 'BEACH'],
+  'Túi đựng đồ đã dùng 5 lít': ['BEACH'],
+
+  // PK - Phu kien (5 Product)
+  'Giỏ picnic có nắp 18 lít': ['PICNIC', 'DATE'],
+  'Bộ muỗng nĩa đũa cá nhân': ['PICNIC', 'DATE'],
+  'Túi tote đựng đồ picnic': ['PICNIC', 'DATE', 'BEACH'],
+  'Kẹp cố định thảm bộ 4 chiếc': ['PICNIC', 'BEACH'],
+  'Dây đai cuộn thảm': ['PICNIC', 'BEACH'],
+};
+
+function validateScenarioAssignments(): void {
+  const productNames = new Set(items.map(getProductName));
+  const assignedNames = Object.keys(scenariosByProductName);
+
+  if (productNames.size !== 26 || assignedNames.length !== 26) {
+    throw new Error(
+      'Scenario mapping must contain exactly 26 products',
+    );
+  }
+
+  for (const productName of productNames) {
+    const scenarios = scenariosByProductName[productName];
+
+    if (!scenarios || scenarios.length === 0) {
+      throw new Error(
+        `Missing scenarios for product: ${productName}`,
+      );
+    }
+
+    if (new Set(scenarios).size !== scenarios.length) {
+      throw new Error(
+        `Duplicate scenarios for product: ${productName}`,
+      );
+    }
+  }
+
+  for (const productName of assignedNames) {
+    if (!productNames.has(productName)) {
+      throw new Error(
+        `Unknown product in scenario mapping: ${productName}`,
+      );
+    }
+  }
+}
+
 // Tạo slug từ tên Product
 function makeSlug(name: string): string {
   return name
@@ -881,6 +958,7 @@ async function seedRuleSet(adminId: string): Promise<void> {
 async function main(): Promise<void> {
   // Kiểm tra dữ liệu trước khi ghi vào database
   validateCatalog();
+  validateScenarioAssignments();
 
   // Task #150: Seed 6 Category
   const categoryIds = new Map<string, string>();
@@ -931,26 +1009,33 @@ async function main(): Promise<void> {
     const slug = makeSlug(productName);
 
     // Chỉ các trường cần đồng bộ khi chạy seed lại
-    const productData = {
-      name: productName,
-      categoryId,
-      material: item.material,
-    };
+const productData = {
+  name: productName,
+  categoryId,
+  material: item.material,
+};
 
-    const product = await prisma.product.upsert({
-      where: { slug },
+const scenarios = scenariosByProductName[productName];
 
-      // Không reset scenarios đã gán trước đó
-      update: productData,
-
-      // Product mới được tạo với scenarios ban đầu rỗng
-      create: {
-        slug,
-        ...productData,
-        scenarios: [],
-      },
-    });
-
+if (!scenarios || scenarios.length === 0) {
+  throw new Error(
+    `Missing scenarios for product: ${productName}`,
+  );
+}
+const product = await prisma.product.upsert({
+  where: { slug },
+  update: {
+    ...productData,
+    scenarios: {
+      set: scenarios,
+    },
+  },
+  create: {
+    slug,
+    ...productData,
+    scenarios,
+  },
+});
     const code = `DAY-${item.code}`;
 
     // Không đưa stock và reserved vào skuData
