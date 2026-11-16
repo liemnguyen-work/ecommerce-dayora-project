@@ -1,4 +1,4 @@
-﻿import { useEffect, useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import ProductCard from '../components/catalog/ProductCard';
 import { api } from '../lib/api';
@@ -34,6 +34,9 @@ export default function CatalogPage() {
 
   useEffect(() => {
     let active = true;
+    // URL thay đổi phải thay ngay danh sách cũ bằng trạng thái tải.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setLoading(true);
     api<CatalogResult>(`/products${query ? `?${query}` : ''}`)
       .then((data) => { if (active) { setResult(data); setError(false); } })
       .catch(() => { if (active) { setResult(null); setError(true); } })
@@ -56,8 +59,13 @@ export default function CatalogPage() {
       return;
     }
     setFormError('');
-    if (next.toString() !== query) setLoading(true);
     setParams(next);
+  }
+
+  function clearFilters() {
+    if (!query) return;
+    setFormError('');
+    setParams(new URLSearchParams());
   }
 
   return (
@@ -78,11 +86,11 @@ export default function CatalogPage() {
               <label>Kích thước (cm)<input name="size" pattern="[0-9]+x[0-9]+(x[0-9]+)?" defaultValue={params.get('size') ?? ''} placeholder="Ví dụ: 200x150" title="Nhập kích thước dạng 200x150 hoặc 200x150x10" /></label>
               <label>Sắp xếp<select name="sort" defaultValue={params.get('sort') ?? ''}><option value="">Mặc định</option><option value="price_asc">Giá thấp đến cao</option><option value="price_desc">Giá cao đến thấp</option></select></label>
               {formError && <p className="catalog-filter-error" role="alert">{formError}</p>}
-              <button type="submit">Áp dụng bộ lọc</button>
+              <div className="catalog-filter-actions"><button type="submit">Áp dụng bộ lọc</button><button type="button" className="catalog-clear-filters" onClick={clearFilters} disabled={!query}>Xóa bộ lọc</button></div>
             </form>
           </details>
         </aside>
-        <section aria-label="Danh sách sản phẩm" aria-busy={loading}>{loading ? <div className="catalog-message" role="status">Đang tìm sản phẩm phù hợp…</div> : error ? <div className="catalog-message catalog-message-error" role="alert"><h2>Chưa tải được danh mục sản phẩm</h2><p>Kết nối đang gián đoạn.</p><button type="button" onClick={retry}>Thử lại</button></div> : !result?.items.length ? <div className="catalog-message" role="status"><h2>Không có sản phẩm phù hợp với bộ lọc hiện tại</h2><p>Hãy thử xóa bớt tiêu chí lọc.</p>{query && <button type="button" onClick={() => { setFormError(''); setLoading(true); setParams(new URLSearchParams()); }}>Xóa bộ lọc</button>}</div> : <><p className="catalog-count">{result.total} sản phẩm</p><div className="catalog-grid">{result.items.map((product) => <ProductCard key={product.id} product={product} search={query ? `?${query}` : ''} />)}</div></>}</section>
+        <section aria-label="Danh sách sản phẩm" aria-busy={loading}>{loading ? <div className="catalog-message" role="status">Đang tìm sản phẩm phù hợp…</div> : error ? <div className="catalog-message catalog-message-error" role="alert"><h2>Chưa tải được danh mục sản phẩm</h2><p>Kết nối đang gián đoạn.</p><button type="button" onClick={retry}>Thử lại</button></div> : !result?.items.length ? <div className="catalog-message" role="status"><h2>Không có sản phẩm phù hợp với bộ lọc hiện tại</h2><p>Hãy thử xóa bớt tiêu chí lọc.</p></div> : <><p className="catalog-count">{result.total} sản phẩm</p><div className="catalog-grid">{result.items.map((product) => <ProductCard key={product.id} product={product} search={query ? `?${query}` : ''} />)}</div></>}</section>
       </div>
     </main>
   );
