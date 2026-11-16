@@ -1007,3 +1007,66 @@ ChatGPT kiểm tra code, log CMD và git diff do Đạt cung cấp. Chưa có x�
 - Đạt xác nhận trang About hiển thị đầy đủ nội dung trên trình duyệt.
 - Chưa xác nhận kiểm thử responsive 390px hoặc nghiệm thu CSS.
 - Chưa commit, push hoặc tạo PR tại thời điểm ghi mục này.
+---
+
+## P1 — CSS trang Về chúng tôi / DAT-20261116-7F3C91A2-002
+
+* Thời gian ghi: 2026-11-16T09:53:41+07:00
+* Thời gian thực hiện: Triển khai PRJ-P1-PD-1.3; chưa xác minh đầy đủ giờ bắt đầu.
+* Mã phiên nhật ký: DAT-20261116-7F3C91A2
+* Người prompt: Đạt (PD).
+* Loại mục: Hoạt động.
+* Liên quan: PRJ-P1-PD-1; PRJ-P1-PD-1.3; DAT-20261116-7F3C91A2-001.
+
+### Công cụ
+
+ChatGPT (GPT-6), VS Code, Git, Vite và trình duyệt DevTools.
+
+### Mục đích
+
+Hoàn thiện CSS cho trang Về chúng tôi của DAYORA, tạo giao diện có khung thẻ và đáp ứng yêu cầu responsive 390px.
+
+### Prompt
+
+Tóm lược yêu cầu của Đạt:
+
+- Kiểm tra CSS hiện tại và xác định nguyên nhân giao diện chủ yếu hiển thị văn bản.
+- Bổ sung kiểu dáng cho logo, lời hứa thương hiệu, đội ngũ và FAQ.
+- Đảm bảo các class CSS khớp với AboutPage.tsx.
+- Kiểm tra bố cục desktop, tablet và mobile.
+- Loại bỏ khai báo CSS trùng lặp, không ảnh hưởng code của thành viên khác.
+- Hướng dẫn kiểm thử và hoàn tất Git theo đúng sub-issue.
+
+### Kết quả đề xuất
+
+ChatGPT phân tích CSS, đề xuất các quy tắc tạo khung thẻ, typography, responsive và hướng dẫn loại bỏ CSS trùng. Đạt thực hiện chỉnh sửa và kiểm tra.
+
+Các file liên quan:
+
+- apps/web/src/catalog.css
+- apps/web/src/pages/AboutPage.tsx
+
+### Phản biện
+
+Đạt phát hiện giao diện chưa có khung thẻ rõ ràng và yêu cầu kiểm tra CSS thực tế. Quá trình đối chiếu phát hiện các khai báo CSS About bị trùng.
+
+Đạt tiếp tục chỉnh sửa, kiểm tra trong trình duyệt và dọn các rule trùng lặp theo hướng dẫn.
+
+### Quyết định của nhóm
+
+Chưa có xác nhận nghiệm thu chính thức từ PM Liêm hoặc reviewer FD1 Thành. Phạm vi thực hiện giới hạn trong giao diện About.
+
+### Người kiểm tra
+
+Đạt trực tiếp kiểm tra giao diện và chạy các lệnh kiểm thử. ChatGPT phân tích code, ảnh DevTools và kết quả CMD do Đạt cung cấp.
+
+### Kiểm tra và minh chứng
+
+- ESLint: PASS.
+- Build: PASS; Vite xử lý thành công 480 modules.
+- git diff --check: PASS.
+- Kiểm tra responsive 390px: không tràn ngang (`false`).
+- Lưới lời hứa: 1 cột.
+- Lưới đội ngũ: 2 cột.
+- CSS tạo khung lời hứa và thẻ đội ngũ đã được trình duyệt áp dụng.
+- Chưa có xác nhận review chính thức tại thời điểm ghi.

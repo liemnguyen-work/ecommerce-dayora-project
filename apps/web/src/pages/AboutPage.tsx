@@ -1,4 +1,4 @@
-
+import '../catalog.css'
 import { Link } from 'react-router-dom'
 import CatalogLayout from '../components/catalog/CatalogLayout'
 import { Rise } from '../components/home/HomeMotion'
