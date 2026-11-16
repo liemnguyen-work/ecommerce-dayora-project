@@ -1,5 +1,6 @@
 
 import { useEffect } from 'react';
+import AccountPage from './pages/AccountPage';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import SiteHeader from './components/SiteHeader';
 import SiteFooter from './components/SiteFooter';
@@ -69,7 +70,7 @@ export default function App() {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/tao-bo" element={<Placeholder title="Tạo bộ" />} />
         <Route path="/gio-hang" element={<Placeholder title="Giỏ hàng" />} />
-        <Route path="/tai-khoan" element={<Placeholder title="Tài khoản" />} />
+        <Route path="/tai-khoan" element={<AccountPage />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="*" element={<main className="p-8"><h1>404 - Không tìm thấy trang</h1></main>} />
       </Routes>
