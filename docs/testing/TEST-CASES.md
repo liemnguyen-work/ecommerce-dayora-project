@@ -86,3 +86,11 @@ npm run build
 | TC-P1-26 | FR02 — Lọc theo kích thước | Có sản phẩm khớp kích thước sẽ chọn và sản phẩm có kích thước khác. | Xóa bộ lọc cũ, chọn một kích thước và xem danh sách. | Một kích thước có trên danh mục và hai sản phẩm để đối chiếu. | Sản phẩm khớp kích thước xuất hiện. Sản phẩm đối chiếu có kích thước khác vắng mặt. | Lọc kích thước 200 × 200 cm. Hiện thảm 4 người (200 × 200 cm) và thảm 6 người (240 × 240 cm). Thảm 2 người (140 × 150 cm) không xuất hiện. Yêu cầu lọc trả HTTP 200. | 2026-11-16 | Pass |
 | TC-P1-27 | FR02 — Lọc theo chất liệu | Danh mục có sản phẩm thuộc ít nhất hai chất liệu. | Xóa bộ lọc cũ, chọn một chất liệu và xem danh sách. | Một chất liệu có trên danh mục và hai sản phẩm để đối chiếu. | Sản phẩm có chất liệu đã chọn xuất hiện. Sản phẩm đối chiếu có chất liệu khác vắng mặt. | Lọc chất liệu “polyester” trên tất cả nhóm hàng. Có Thảm picnic gấp gọn 4 người, không có Bình nước cá nhân 500 ml. Yêu cầu lọc trả HTTP 200. | 2026-11-16 | Pass |
 | TC-P1-28 | FR04 — Đăng xuất | Có tài khoản thử nghiệm đang hoạt động với vai trò `CUSTOMER` và `ADMIN`. Đăng nhập trước mỗi lượt kiểm tra. | Với từng vai trò, kiểm tra ở 1366 px và 390 px. Mở `/tai-khoan`, bấm **Đăng xuất** rồi nhấn `⌘ + R` để tải lại trang. | Tài khoản thử nghiệm `CUSTOMER` và `ADMIN`. Độ rộng 1366 px và 390 px. | Nút **Đăng xuất** hiển thị khi đã đăng nhập. Sau khi bấm, trang hiện “Đã đăng xuất.” và nút **Đăng nhập**. Sau khi tải lại, trang vẫn ở trạng thái khách và thông tin tài khoản không xuất hiện lại. | Retest trên commit `27601e9`. Cả `CUSTOMER` và `ADMIN` đăng xuất thành công ở 1366 px và 390 px. Sau khi tải lại `/tai-khoan`, trang vẫn hiện “Bạn chưa đăng nhập.” Với `CUSTOMER`, Network ghi nhận `logout` trả HTTP 201 và `me` trả HTTP 401 sau khi tải lại. | 2026-11-16 | Pass |
+
+### Tổng kết kiểm thử tự động Phase 1
+
+- Ngày kiểm tra: 2026-11-16.
+- Commit kiểm thử: `1a54984` (commit merge thử của PR #674).
+- Cục bộ (`npm test -w api`): 7/7 file test đạt, 51/51 ca đạt, 0 ca thất bại, mã thoát `0`.
+- [GitHub Actions CI #209](https://github.com/liemnguyen-work/ecommerce-dayora-project/actions/runs/43885217965/job/133361401276): 7/7 file test đạt, 51/51 ca đạt, khớp với kết quả cục bộ.
+- Trạng thái nghiệm thu: **ĐẠT**.
