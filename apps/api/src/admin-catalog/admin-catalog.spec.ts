@@ -80,6 +80,16 @@ function cookie() {
 }
 
 describe('admin catalog HTTP', () => {
+  it('returns products with SKU relations for the admin editor', async () => {
+    const products = [{ id: 'p1', ...product, status: 'ACTIVE', skus: [sku] }];
+    prisma.product.findMany.mockResolvedValue(products);
+    const response = await request(app.getHttpServer())
+      .get('/api/admin/products')
+      .set('Cookie', cookie())
+      .expect(200);
+    expect(response.body).toEqual(products);
+    expect(prisma.product.findMany).toHaveBeenCalledWith({ include: { skus: true } });
+  });
   beforeAll(async () => {
     process.env.JWT_SECRET = 'dayora-admin-catalog-test-secret';
 

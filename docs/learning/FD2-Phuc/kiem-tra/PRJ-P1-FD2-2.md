@@ -1,0 +1,7 @@
+**Bước 1 — Khung `AdminPage.tsx`:** Phúc tạo khung quản trị để kiểm tra vai trò ADMIN, hiển thị menu và lưu mục đang chọn bằng `?muc=`. Nếu bỏ, trang thiếu điều hướng và kiểm tra quyền ở giao diện; backend vẫn chặn truy cập trái quyền.
+
+1. **Bước 2 — `useLoad(path)`:** Phúc dùng hook chung để tải dữ liệu, quản lý trạng thái tải, lỗi và tải lại sau thao tác. Nếu bỏ mà không thay thế, các bảng không tải hoặc cập nhật được dữ liệu, đồng thời thiếu xử lý lỗi và thử lại.
+2. **Bước 3 — Mục Sản phẩm:** Phúc xây dựng bảng sản phẩm/SKU, cho phép sửa giá, giá giảm, tồn kho và ẩn/hiện sản phẩm qua API. Nếu bỏ, quản trị viên không thực hiện được các thao tác này trên giao diện; không kiểm thử được luồng sửa giá rồi F5 vẫn giữ giá mới.
+3. **Bước 4 — Mục Tài khoản:** Phúc hiển thị thông tin người dùng và thao tác khóa/mở tài khoản, có xử lý lỗi khi API thất bại. Nếu bỏ, quản trị viên không quản lý trạng thái tài khoản trên giao diện hoặc thực hiện luồng kiểm thử khóa khách rồi thử đăng nhập.
+4. **Bước 5 — CSS quản trị:** Phúc định dạng menu, bảng, input, nút và bố cục responsive để trang dễ dùng trên máy tính lẫn điện thoại. Nếu bỏ, nghiệp vụ API vẫn hoạt động nhưng giao diện mất bố cục, trạng thái mục đang chọn và khả năng cuộn bảng phù hợp; build/lint vẫn có thể đạt.
+5. **Chỗ khó nhất:** Khi nối bảng SKU, yêu cầu `/admin/products` trả kèm `skus`, nhưng backend ban đầu chỉ dùng `findMany({})`. Phúc đã dùng Codex đối chiếu và bổ sung `include: { skus: true }`.
