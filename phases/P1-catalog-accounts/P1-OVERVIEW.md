@@ -49,3 +49,14 @@ Cột Task: mã task trong [ROADMAP](../../docs/ROADMAP.md) mục P1 (mỗi task
 - Ngày họp:
 - Quyết định:
 - Rủi ro:
+
+## Rà soát tiến độ P1 (17/11/2026)
+
+Thông tin dưới đây theo phản hồi của thành viên; hạn hoàn thành là dự kiến và cần cập nhật lại khi có kết quả thực tế. Chưa xác nhận tình trạng từng task trên bảng việc của repo nhóm do trạng thái giữa các bảng còn khác nhau.
+
+| Task | Người làm | Tình trạng và nguyên nhân | Người hỗ trợ | Hạn dự kiến |
+|---|---|---|---|---|
+| PRJ-P1-BD2-1, PRJ-P1-BD2-2, PRJ-P1-BD2-3 | Châu | Đang kiểm tra kiến thức; Châu cho biết không gặp khó khăn. | Không cần hỗ trợ theo phản hồi. | 17/11/2026 |
+| PRJ-P1-PD-2 | Đạt | PRJ-P1-PD-2.1 mất nhiều thời gian hơn dự kiến, ảnh hưởng các task khác. | Không cần hỗ trợ theo phản hồi. | 17/11/2026 |
+
+Báo cáo `docs/PROGRESS.md` dựa trên trạng thái issue ở repo nhóm; cần đối chiếu lại do trạng thái giữa các bảng việc chưa đồng bộ. Chưa có thông tin xác nhận kết quả hoàn thành thực tế hoặc cập nhật hạn trên GitHub Project board.
