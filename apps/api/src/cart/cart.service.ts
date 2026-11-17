@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import type { PrismaService } from '../prisma/prisma.service.js';
 
 type AddCartDto = {
@@ -109,17 +109,115 @@ export class CartService {
       warnings,
     };
   }
-
-  async add(userId: string, dto: AddCartDto) {
-    void userId;
-    void dto;
-
-    return {
-      items: [],
-      subtotal: 0,
-      warnings: [] as CartWarning[],
-    };
+async add(userId: string, dto: AddCartDto) {
+  if (!dto.items?.length) {
+    throw new BadRequestException('Danh sách sản phẩm trống');
   }
+
+  const kitGroupId = dto.kitId ?? 'SINGLE';
+
+  await this.prisma.$transaction(async (tx) => {
+    const cart = await tx.cart.upsert({
+      where: { userId },
+      create: { userId },
+      update: {},
+    });
+
+    if (dto.ruleSetVersion !== undefined) {
+      const ruleSet = await tx.ruleSet.findFirst({
+        where: { version: dto.ruleSetVersion },
+      });
+
+      if (!ruleSet) {
+        throw new BadRequestException(
+          'Không tìm thấy phiên bản quy tắc',
+        );
+      }
+    }
+
+    for (const entry of dto.items) {
+      if (
+        !entry.skuId ||
+        !Number.isInteger(entry.quantity) ||
+        entry.quantity < 1 ||
+        entry.quantity > 99
+      ) {
+        throw new BadRequestException(
+          'Số lượng sản phẩm không hợp lệ',
+        );
+      }
+
+      const sku = await tx.sku.findUnique({
+        where: { id: entry.skuId },
+        include: { product: true },
+      });
+
+      if (
+        !sku ||
+        sku.status !== 'ACTIVE' ||
+        sku.product.status !== 'ACTIVE'
+      ) {
+        throw new BadRequestException(
+          'Sản phẩm không còn được bán',
+        );
+      }
+
+      const existingItems = await tx.cartItem.findMany({
+        where: {
+          cartId: cart.id,
+          skuId: entry.skuId,
+        },
+      });
+
+      const sameGroup = existingItems.find(
+        (item) => item.kitGroupId === kitGroupId,
+      );
+
+      const newLineQuantity =
+        (sameGroup?.quantity ?? 0) + entry.quantity;
+
+      if (newLineQuantity > 99) {
+        throw new BadRequestException(
+          'Mỗi dòng giỏ hàng tối đa 99 sản phẩm',
+        );
+      }
+
+      const currentTotal = existingItems.reduce(
+        (sum, item) => sum + item.quantity,
+        0,
+      );
+
+      const availableStock = Math.max(
+        0,
+        sku.stock - sku.reserved,
+      );
+
+      if (currentTotal + entry.quantity > availableStock) {
+        throw new BadRequestException(
+          'Số lượng vượt quá tồn kho khả dụng',
+        );
+      }
+
+      if (sameGroup) {
+        await tx.cartItem.update({
+          where: { id: sameGroup.id },
+          data: { quantity: newLineQuantity },
+        });
+      } else {
+        await tx.cartItem.create({
+          data: {
+            cartId: cart.id,
+            skuId: entry.skuId,
+            kitGroupId,
+            quantity: entry.quantity,
+          },
+        });
+      }
+    }
+  });
+
+  return this.get(userId);
+}
   async update(
     userId: string,
     id: string,
