@@ -168,6 +168,7 @@ model CartItem {
 model Voucher {
   id            String   @id @default(uuid())
   code          String   @unique
+  description   String?
   percentOff    Int?
   amountOff     Int?
   maxDiscount   Int?

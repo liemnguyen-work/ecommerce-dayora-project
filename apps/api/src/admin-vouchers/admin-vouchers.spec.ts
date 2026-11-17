@@ -5,7 +5,7 @@ import request from 'supertest';
 import { JwtAuthGuard, RolesGuard } from '../auth/auth.guard.js';
 
 const base = {
-  id: 'voucher-a', code: 'DAYORA10', isActive: true,
+  id: 'voucher-a', code: 'DAYORA10', description: 'Giảm giá 10%', isActive: true,
   startsAt: new Date('2026-01-01T00:00:00Z'),
   endsAt: new Date('2027-01-01T00:00:00Z'),
   percentOff: 10, amountOff: null, maxDiscount: null,
