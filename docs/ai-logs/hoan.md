@@ -3532,3 +3532,496 @@ Codex đối chiếu nhật ký, chạy test, lint và build; chờ Hoàn và re
 - Đối chiếu thấy năm mục authfix chỉ có ở nhánh fix, tám mục me chỉ có ở main; các mục chung không khác nhau.
 - `npm.cmd run lint`: pass; `npm.cmd test`: 50/50 pass; `npm.cmd run build`: pass.
 - Chưa xác nhận CI hay trạng thái PR sau push.
+
+---
+
+## Phase 2 / hoan-20261118-pricing-01
+
+* Thời gian ghi: 2026-11-18T00:05:45+07:00
+* Thời gian thực hiện: 18/11/2026.
+* Mã phiên nhật ký: hoan-20261118-pricing
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-1.1
+
+### Công cụ
+
+Codex và Git.
+
+### Mục đích
+
+Chuẩn bị nhánh làm việc cho task tính tiền P2.
+
+### Prompt
+
+Hoàn yêu cầu kiểm tra nhánh, cập nhật nội dung mới nếu cần và chuyển nhánh để chuẩn bị task.
+
+### Kết quả đề xuất
+
+Codex kiểm tra nhánh cũ không có thay đổi chưa lưu, fetch origin và tạo `prj/p2-bd1-1` từ `origin/main` tại `e1cf6eb`.
+
+### Phản biện
+
+Mới chỉ chuẩn bị nhánh, chưa viết hoặc chạy test pricing; các chính sách D02/D03 cần đối chiếu với yêu cầu và quyết định hiện hành trước khi chốt.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu chuẩn bị nhánh; chưa có xác nhận QA duyệt test pricing.
+
+### Người kiểm tra
+
+Codex kiểm tra Git; chờ Hoàn và QA xem kế hoạch kiểm thử.
+
+### Kiểm tra và minh chứng
+
+- `origin/main` tại `e1cf6eb`; nhánh `prj/p2-bd1-1` được tạo từ commit này.
+- Chưa commit hoặc push nhánh mới; chưa tạo file test pricing.
+
+---
+
+## Phase 2 / hoan-20261118-pricing-02
+
+* Thời gian ghi: 2026-11-18T00:16:06+07:00
+* Thời gian thực hiện: 18/11/2026.
+* Mã phiên nhật ký: hoan-20261118-pricing
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-1.1; hoan-20261118-pricing-01
+
+### Công cụ
+
+Codex, Vitest và VS Code.
+
+### Mục đích
+
+Chuẩn bị test nghiệm thu trước khi viết hàm tính tiền thuần.
+
+### Prompt
+
+Sau khi thống nhất tạo nhánh và xem các sub-issue, Hoàn yêu cầu tiến hành.
+
+### Kết quả đề xuất
+
+Codex viết năm ca test theo tên sub-issue: ví dụ charter, giá sale và số lượng, trần giảm, hiệu lực voucher và số nguyên an toàn. Test có ví dụ về ngưỡng phí giao và không thay đổi input.
+
+### Phản biện
+
+Vitest nhận diện năm ca nhưng dừng vì chưa có module pricing; chưa chạy được assertion. Các giá trị voucher và hợp đồng dữ liệu trong test cần Hoàn và QA xem trước; chính sách D02/D03 trong tài liệu repo đang ghi là đề xuất.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu thực hiện test; chưa có xác nhận QA duyệt hoặc nhóm chốt chính sách.
+
+### Người kiểm tra
+
+Codex chạy Vitest; chờ Hoàn và QA xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api -- pricing`: 5 ca fail do chưa có `pricing.js`; chưa xác nhận assertion thất bại.
+- Chưa viết chức năng, chưa commit hoặc push.
+
+---
+
+## Phase 2 / hoan-20261118-pricing-03
+
+* Thời gian ghi: 2026-11-18T00:57:19+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-pricing
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-1.2; hoan-20261118-pricing-02
+
+### Công cụ
+
+Codex, Vitest.
+
+### Mục đích
+
+Triển khai ví dụ charter tính tiền hàng, voucher phần trăm và phí giao hàng.
+
+### Prompt
+
+Tóm lược: Hoàn yêu cầu tiếp tục bước 1.2 và xác nhận nhóm đã duyệt test và thống nhất chính sách theo task.
+
+### Kết quả đề xuất
+
+Tạo pricing.ts với hàm tính tiền thuần, phép tính BigInt, phí theo vùng và ví dụ giảm phần trăm. Các quy tắc voucher còn lại được để cho các bước sau.
+
+### Phản biện
+
+Ca charter không chứng minh đầy đủ các quy tắc voucher hoặc tích hợp database; các ca khác chưa được xác nhận ở bước này.
+
+### Quyết định của nhóm
+
+Hoàn cho biết nhóm đã duyệt các ca test pricing và thống nhất chính sách D02/D03 theo task.
+
+### Người kiểm tra
+
+Codex chạy ca charter; chờ Hoàn kiểm tra thay đổi.
+
+### Kiểm tra và minh chứng
+
+npm test -w api -- pricing.spec.ts -t "ví dụ charter": 1 pass, 4 skipped. Chưa commit hoặc push bước này.
+
+---
+
+## Phase 2 / hoan-20261118-pricing-04
+
+* Thời gian ghi: 2026-11-18T01:06:34+07:00
+* Thời gian thực hiện: theo phiên làm việc 18/11/2026.
+* Mã phiên nhật ký: hoan-20261118-pricing
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-1.2; hoan-20261118-pricing-03
+
+### Công cụ
+
+Codex, Vitest và Git.
+
+### Mục đích
+
+Thực hiện ví dụ charter của chức năng tính tiền thuần: tính tiền hàng, giảm voucher theo phần trăm và phí giao hàng theo khu vực; kiểm tra kết quả và làm rõ vai trò của file tính toán và file kiểm thử.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp sub-issue PRJ-P2-BD1-1.2 và yêu cầu tiếp tục sau bước viết test. Hoàn xác nhận nhóm đã duyệt test pricing và thống nhất chính sách D02/D03 theo task; hỏi ví dụ charter nằm ở đâu, tác dụng thực tế và sự khác nhau giữa code kiểm thử và code tính tiền. Sau đó Hoàn yêu cầu commit, push code và duyệt nội dung AI logs trước khi cập nhật.
+
+### Kết quả đề xuất
+
+Codex tạo apps/api/src/pricing/pricing.ts với hàm calculatePricing: tính tiền hàng theo đơn giá, giá sale và số lượng; dùng BigInt khi tính tiền hàng và giảm giá phần trăm; tính phí giao theo khu vực và ngưỡng miễn phí giao ở TP.HCM theo task. Ví dụ charter cho kết quả 345.000đ tiền hàng trừ 34.500đ giảm giá cộng 20.000đ phí giao, bằng 330.500đ.
+
+Codex giải thích pricing.ts chứa hàm tính toán; pricing.spec.ts cung cấp dữ liệu mẫu và kiểm tra kết quả. Code đã được commit và push theo yêu cầu của Hoàn.
+
+### Phản biện
+
+Ca charter chỉ xác nhận ví dụ và các trường hợp phí giao được kiểm tra trong ca đó, chưa chứng minh toàn bộ quy tắc voucher hoặc tích hợp database. Các trường hợp trần giảm giá, giảm cố định và kiểm tra hiệu lực voucher thuộc những bước tiếp theo.
+
+### Quyết định của nhóm
+
+Hoàn cho biết nhóm đã duyệt các ca test pricing và thống nhất chính sách D02/D03 theo nội dung task. Hoàn yêu cầu commit và push code; sau khi xem bản nháp, Hoàn yêu cầu cập nhật AI logs.
+
+### Người kiểm tra
+
+Codex chạy ca test charter. Hoàn xem xét và duyệt bản nháp nhật ký; chưa có kết quả review từ reviewer cho bước code này.
+
+### Kiểm tra và minh chứng
+
+- npm test -w api -- pricing.spec.ts -t "ví dụ charter": 1 ca pass, 4 ca được bỏ qua.
+- Commit code c0c0465 (feat(pricing): calculate charter pricing) đã push lên nhánh prj/p2-bd1-1.
+- Mục này bổ sung chi tiết cho hoan-20261118-pricing-03; không thay đổi nội dung mục trước.
+
+---
+
+## Phase 2 / hoan-20261118-pricing-05
+
+* Thời gian ghi: 2026-11-18T01:07:52+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-pricing
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-1.3; hoan-20261118-pricing-04
+
+### Công cụ
+
+Codex, Vitest, tsx.
+
+### Mục đích
+
+Thực hiện bước tính giá sale theo số lượng, áp voucher sau sale và cộng phí giao ngoài voucher, không thay đổi input.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp nội dung sub-issue PRJ-P2-BD1-1.3 để tiếp tục task.
+
+### Kết quả đề xuất
+
+Phần lớn phép tính đã có trong commit c0c0465 của bước charter. Codex bổ sung điều kiện từ chối salePrice lớn hơn price trong apps/api/src/pricing/pricing.ts; giữ nguyên file test nghiệm thu.
+
+### Phản biện
+
+Ca được chọn không kiểm tra giá sale lớn hơn giá gốc, nên Codex kiểm tra riêng trường hợp này. Các quy tắc voucher và giới hạn còn lại vẫn thuộc bước sau.
+
+### Quyết định của nhóm
+
+Áp dụng chính sách theo xác nhận của Hoàn được ghi trong hoan-20261118-pricing-03; chưa có xác nhận reviewer cho thay đổi mới.
+
+### Người kiểm tra
+
+Codex chạy ca test và kiểm tra riêng điều kiện giá; chờ Hoàn xem xét.
+
+### Kiểm tra và minh chứng
+
+- npm test -w api -- pricing.spec.ts -t "dùng sale, nhân số lượng": 1 pass, 4 skipped.
+- Chạy tsx với giá gốc 100, salePrice 101: nhận lỗi INVALID_INPUT.
+- Chưa commit hoặc push thay đổi bước này.
+
+---
+
+## Phase 2 / hoan-20261118-pricing-06
+
+* Thời gian ghi: 2026-11-18T01:15:31+07:00
+* Thời gian thực hiện: phiên làm việc 18/11/2026.
+* Mã phiên nhật ký: hoan-20261118-pricing
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-1.3; hoan-20261118-pricing-05
+
+### Công cụ
+
+Codex, Vitest, tsx và Git.
+
+### Mục đích
+
+Kiểm tra tính tiền khi sản phẩm có giá sale: lấy giá sale nhân số lượng, áp voucher trên tiền hàng sau sale và cộng phí giao sau giảm giá. Kiểm tra hàm không thay đổi input và từ chối giá sale cao hơn giá gốc.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp sub-issue PRJ-P2-BD1-1.3, yêu cầu lệnh chạy test để tự kiểm tra, yêu cầu commit và push code, sau đó duyệt bản nháp AI logs. Trong lần chạy test đầu, Hoàn gặp lỗi do terminal ở DAYORA_H thay vì thư mục dự án; Codex hướng dẫn chuyển vào ecommerce-dayora-project và dùng npm.cmd.
+
+### Kết quả đề xuất
+
+Phần chọn salePrice, nhân số lượng, tính voucher trên tiền hàng sau sale và cộng phí giao đã có trong bước charter. Codex bổ sung điều kiện từ chối salePrice lớn hơn price với lỗi INVALID_INPUT.
+
+Ví dụ task: 100.009đ x 3 = 300.027đ; voucher 10% làm tròn xuống 30.002đ; tiền hàng sau giảm 270.025đ, cộng phí giao tạm tính 30.000đ thành 300.025đ. Code được commit và push theo yêu cầu của Hoàn.
+
+### Phản biện
+
+Ca test của bước này kiểm tra phép tính và input không đổi nhưng không trực tiếp kiểm tra salePrice lớn hơn price. Codex kiểm tra riêng giá gốc 100đ, giá sale 101đ và nhận INVALID_INPUT. Trần giảm giá, voucher cố định và thời hạn voucher chưa được kết luận hoàn thành ở bước này.
+
+### Quyết định của nhóm
+
+Phép tính và chính sách thực hiện theo task mà Hoàn cho biết nhóm đã thống nhất. Hoàn yêu cầu commit và push code, sau đó duyệt bản nháp để cập nhật AI logs.
+
+### Người kiểm tra
+
+Codex chạy test bước 1.3 và kiểm tra riêng giá sale; chưa có kết quả review từ reviewer. Chưa xác nhận Hoàn chạy thành công ca 1.3 trên máy; ảnh lần chạy đầu cho thấy terminal chưa ở đúng thư mục.
+
+### Kiểm tra và minh chứng
+
+- npm.cmd test -w api -- pricing.spec.ts -t "dùng sale, nhân số lượng": 1 pass, 4 skipped.
+- Kiểm tra riêng salePrice > price: INVALID_INPUT.
+- Commit code d1b6a77 (feat(pricing): validate sale price) đã push.
+- Mục này bổ sung chi tiết cho hoan-20261118-pricing-05.
+
+---
+
+## Phase 2 / hoan-20261118-pricing-07
+
+* Thời gian ghi: 2026-11-18T01:16:28+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-pricing
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-1.4; hoan-20261118-pricing-06
+
+### Công cụ
+
+Codex và Vitest.
+
+### Mục đích
+
+Áp trần voucher, giới hạn giảm cố định theo tiền hàng và chấp nhận giá sale bằng 0.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp sub-issue PRJ-P2-BD1-1.4 và yêu cầu tiếp tục.
+
+### Kết quả đề xuất
+
+Codex cập nhật pricing.ts để tính giảm phần trăm hoặc số tiền cố định, sau đó giới hạn theo maxDiscount và subtotal. Phép chọn salePrice bằng toán tử ?? đã chấp nhận giá 0.
+
+### Phản biện
+
+Chỉ kiểm tra ca của bước 1.4 và hai ca trước; quy tắc hiệu lực voucher và overflow còn thuộc bước sau.
+
+### Quyết định của nhóm
+
+Thực hiện theo yêu cầu task và xác nhận của Hoàn về chính sách đã được nhóm thống nhất; chưa có reviewer duyệt thay đổi bước này.
+
+### Người kiểm tra
+
+Codex chạy Vitest; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- Test chọn "áp trần, giảm cố định": 1 pass, 4 skipped.
+- Test chọn "ví dụ charter|dùng sale, nhân số lượng": 2 pass, 3 skipped.
+- Chưa commit hoặc push thay đổi bước 1.4.
+
+---
+
+## Phase 2 / hoan-20261118-pricing-08
+
+* Thời gian ghi: 2026-11-18T01:20:09+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-pricing
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-1.5; hoan-20261118-pricing-07
+
+### Công cụ
+
+Codex và Vitest.
+
+### Mục đích
+
+Kiểm tra trạng thái, thời gian hiệu lực, giá trị đơn tối thiểu và lượt dùng của voucher.
+
+### Prompt
+
+Tóm lược: Hoàn gửi sub-issue PRJ-P2-BD1-1.5 và yêu cầu tiếp tục bước tiếp theo.
+
+### Kết quả đề xuất
+
+Codex bổ sung các trường dữ liệu voucher cần thiết và kiểm tra trong pricing.ts: trạng thái hoạt động, thời gian bắt đầu bao gồm và kết thúc không bao gồm, giá trị đơn tối thiểu, giới hạn lượt dùng tổng và từng người. Với minOrderValue hoặc perUserLimit null, hàm lần lượt xử lý như ngưỡng 0 hoặc không giới hạn.
+
+### Phản biện
+
+Các lượt dùng được truyền vào hàm thuần; test không xác minh truy vấn database hoặc bảo đảm giới hạn khi có nhiều yêu cầu đồng thời. Bước overflow chưa hoàn tất.
+
+### Quyết định của nhóm
+
+Làm theo nội dung task do Hoàn cung cấp; chưa có reviewer duyệt thay đổi bước này.
+
+### Người kiểm tra
+
+Codex chạy Vitest; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- npm test -w api -- pricing.spec.ts -t "hiệu lực gồm thời điểm bắt đầu": 1 pass, 4 skipped.
+- Ba ca charter, sale và áp trần chạy lại: 3 pass, 2 skipped.
+- Chưa commit hoặc push thay đổi bước này.
+
+---
+
+## Phase 2 / hoan-20261118-pricing-09
+
+* Thời gian ghi: 2026-11-18T01:24:55+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-pricing
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-1.6; hoan-20261118-pricing-08
+
+### Công cụ
+
+Codex, Vitest, ESLint, Prisma và Nest CLI.
+
+### Mục đích
+
+Phát hiện số nguyên đầu vào không an toàn và overflow trong tính tiền.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp sub-issue PRJ-P2-BD1-1.6 và yêu cầu tiếp tục.
+
+### Kết quả đề xuất
+
+Codex bổ sung hàm kiểm tra số nguyên an toàn, kiểm tra thành tiền từng dòng và tổng giỏ bằng BigInt, kiểm tra các trường số của voucher và từ chối phần trăm trên 100; giữ safeNumber để kiểm tra giá trị giảm và tổng thanh toán.
+
+### Phản biện
+
+Các test kiểm tra hành vi bằng dữ liệu giả, chưa chứng minh tích hợp database hay chính sách voucher trong môi trường vận hành. Cần reviewer xem xét thay đổi và test nghiệm thu.
+
+### Quyết định của nhóm
+
+Thực hiện theo task do Hoàn cung cấp; chưa có xác nhận reviewer duyệt thay đổi.
+
+### Người kiểm tra
+
+Codex chạy test pricing, lint API và build API; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- npm test -w api -- pricing: 5/5 pass.
+- npm run lint -w api: pass.
+- npm run build -w api: pass.
+- Chưa commit hoặc push bước này.
+
+---
+
+## Phase 2 / hoan-20261118-pricing-10
+
+* Thời gian ghi: 2026-11-18T01:27:39+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-pricing
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-1.7; hoan-20261118-pricing-09
+
+### Công cụ
+
+Codex.
+
+### Mục đích
+
+Chuẩn bị file câu hỏi tự kiểm tra kiến thức pricing để Hoàn tự trả lời.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp yêu cầu bước 1.7 và yêu cầu tiếp tục.
+
+### Kết quả đề xuất
+
+Tạo docs/learning/BD1-Hoan/kiem-tra/PRJ-P2-BD1-1.md gồm các câu hỏi và ô trống; không viết câu trả lời.
+
+### Phản biện
+
+Task yêu cầu Hoàn tự viết câu trả lời bằng lời của mình, không xem code hoặc nhờ AI viết hộ. Việc tạo mẫu chưa chứng minh hoàn thành kiểm tra kiến thức.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung về việc duyệt câu trả lời; chờ Hoàn tự hoàn thành.
+
+### Người kiểm tra
+
+Codex tạo mẫu; chờ Hoàn tự trả lời và reviewer kiểm tra.
+
+### Kiểm tra và minh chứng
+
+File mẫu được tạo trên nhánh prj/p2-bd1-1; chưa trả lời, chưa commit hoặc push.
+
+---
+
+## Phase 2 / hoan-20261118-pricing-11
+
+* Thời gian ghi: 2026-11-18T01:33:23+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-pricing
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-1.7; hoan-20261118-pricing-10
+
+### Công cụ
+
+Codex.
+
+### Mục đích
+
+Ghi nhận và sắp xếp câu trả lời tự kiểm tra kiến thức do Hoàn cung cấp.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp câu trả lời, trả lời thêm hai câu về thời hạn và mức giảm voucher, rồi yêu cầu điều chỉnh nội dung.
+
+### Kết quả đề xuất
+
+Codex nhóm các ý Hoàn cung cấp thành năm ca, ghi vào file tự kiểm tra và chỉnh trình tự xác nhận nhóm sau khi test được viết và push.
+
+### Phản biện
+
+Câu về hiệu lực có thể nêu thêm kiểm tra trạng thái, đơn tối thiểu và lượt dùng. Reviewer cần đánh giá khả năng Hoàn tự giải thích; việc AI sắp xếp không chứng minh năng lực tự trình bày.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu điều chỉnh nội dung; chưa có reviewer duyệt bài tự kiểm tra.
+
+### Người kiểm tra
+
+Codex nhận xét câu trả lời và hai câu luyện tập; chờ Hoàn xem lại nội dung.
+
+### Kiểm tra và minh chứng
+
+Cập nhật file docs/learning/BD1-Hoan/kiem-tra/PRJ-P2-BD1-1.md; chưa commit hoặc push.
