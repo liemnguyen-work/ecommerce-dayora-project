@@ -4425,3 +4425,49 @@ Codex chạy test các bước hiện có, lint và build API; chờ Hoàn, QA v
 - npm run lint -w api: pass.
 - npm run build -w api: pass.
 - Chưa kiểm tra database thật, chưa commit hoặc push.
+
+---
+
+## Phase 2 / hoan-20261118-checkout-10
+
+* Thời gian ghi: 2026-11-18T03:05:24+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-checkout
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-2.5; hoan-20261118-checkout-09
+
+### Công cụ
+
+Codex, Vitest, ESLint, Prisma và Nest CLI.
+
+### Mục đích
+
+Hủy đơn chưa thanh toán, trả tồn đã giữ và ghi lịch sử trong transaction.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp sub-issue PRJ-P2-BD1-2.5 và yêu cầu tiếp tục.
+
+### Kết quả đề xuất
+
+Codex thêm cancel, release và detail trong checkout.service.ts: lọc theo chủ sở hữu, chỉ chuyển đơn chưa thanh toán sang CANCELLED, giảm reserved có điều kiện, báo lỗi khi không trả đủ và ghi trạng thái cùng ghi chú theo schema hiện có. Detail được thêm để trả đơn sau hủy.
+
+### Phản biện
+
+Test dùng Prisma mock, chưa xác minh rollback và cạnh tranh thanh toán/hủy trên PostgreSQL. Chưa xác nhận QA duyệt test. Task này không mô tả chính sách hoàn lượt voucher khi hủy; chưa thêm xử lý hoàn lượt. Xử lý hết hạn thuộc bước sau.
+
+### Quyết định của nhóm
+
+Hoàn cho biết nhóm giữ schema OrderStatusLog và ghi trạng thái mới, ghi chú; chưa có xác nhận reviewer duyệt code.
+
+### Người kiểm tra
+
+Codex chạy test chọn lọc, lint và build API; chờ Hoàn, QA và reviewer.
+
+### Kiểm tra và minh chứng
+
+- Sáu ca checkout được chọn: 6 pass, 1 skipped.
+- npm run lint -w api: pass.
+- npm run build -w api: pass.
+- Chưa kiểm thử database thật, chưa commit hoặc push.
