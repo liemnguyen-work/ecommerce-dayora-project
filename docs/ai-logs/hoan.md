@@ -3848,3 +3848,48 @@ Codex chạy Vitest; chờ Hoàn và reviewer xem xét.
 - Test chọn "áp trần, giảm cố định": 1 pass, 4 skipped.
 - Test chọn "ví dụ charter|dùng sale, nhân số lượng": 2 pass, 3 skipped.
 - Chưa commit hoặc push thay đổi bước 1.4.
+
+---
+
+## Phase 2 / hoan-20261118-pricing-08
+
+* Thời gian ghi: 2026-11-18T01:20:09+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-pricing
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-1.5; hoan-20261118-pricing-07
+
+### Công cụ
+
+Codex và Vitest.
+
+### Mục đích
+
+Kiểm tra trạng thái, thời gian hiệu lực, giá trị đơn tối thiểu và lượt dùng của voucher.
+
+### Prompt
+
+Tóm lược: Hoàn gửi sub-issue PRJ-P2-BD1-1.5 và yêu cầu tiếp tục bước tiếp theo.
+
+### Kết quả đề xuất
+
+Codex bổ sung các trường dữ liệu voucher cần thiết và kiểm tra trong pricing.ts: trạng thái hoạt động, thời gian bắt đầu bao gồm và kết thúc không bao gồm, giá trị đơn tối thiểu, giới hạn lượt dùng tổng và từng người. Với minOrderValue hoặc perUserLimit null, hàm lần lượt xử lý như ngưỡng 0 hoặc không giới hạn.
+
+### Phản biện
+
+Các lượt dùng được truyền vào hàm thuần; test không xác minh truy vấn database hoặc bảo đảm giới hạn khi có nhiều yêu cầu đồng thời. Bước overflow chưa hoàn tất.
+
+### Quyết định của nhóm
+
+Làm theo nội dung task do Hoàn cung cấp; chưa có reviewer duyệt thay đổi bước này.
+
+### Người kiểm tra
+
+Codex chạy Vitest; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- npm test -w api -- pricing.spec.ts -t "hiệu lực gồm thời điểm bắt đầu": 1 pass, 4 skipped.
+- Ba ca charter, sale và áp trần chạy lại: 3 pass, 2 skipped.
+- Chưa commit hoặc push thay đổi bước này.
