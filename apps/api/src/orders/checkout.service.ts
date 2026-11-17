@@ -26,11 +26,8 @@ export class CheckoutService {
   ) {}
 
   async create(userId: string, dto: CreateOrderInput) {
-    // Voucher checkout is added in a later step; never create an unrecorded usage.
-    if (dto.voucherCode) {
-      throw new ConflictException({ code: 'CONFIRM_REQUIRED' });
-    }
     const preview = await this.orders.preview(userId, {
+      voucherCode: dto.voucherCode,
       address: dto.recipient,
       expected: dto.expected,
     });
@@ -38,9 +35,16 @@ export class CheckoutService {
     if (
       preview.warnings.length > 0 ||
       preview.total !== dto.expectedTotal ||
+      (dto.voucherCode != null && !preview.voucher?.valid) ||
+      expectedPrices.size !== dto.expected.length ||
       preview.lines.some((line) => expectedPrices.get(line.skuId) !== line.sku.effectivePrice) ||
       expectedPrices.size !== new Set(preview.lines.map((line) => line.skuId)).size
     ) {
+      throw new ConflictException({ code: 'CONFIRM_REQUIRED', preview });
+    }
+
+    // Voucher usage must be recorded atomically before voucher orders are enabled.
+    if (dto.voucherCode) {
       throw new ConflictException({ code: 'CONFIRM_REQUIRED', preview });
     }
 
