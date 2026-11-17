@@ -4,6 +4,14 @@ export interface PricingItem {
   quantity: number;
 }
 export interface PricingVoucher {
+  isActive: boolean;
+  startsAt: Date;
+  endsAt: Date;
+  minOrderValue: number | null;
+  usageLimit: number | null;
+  usedCount: number;
+  perUserLimit: number | null;
+  userUsedCount: number;
   percentOff?: number | null;
   amountOff?: number | null;
   maxDiscount?: number | null;
@@ -45,6 +53,21 @@ export function calculatePricing(input: PricingInput) {
   }
   const subtotal = safeNumber(sum);
   const voucher = input.voucher;
+  if (voucher) {
+    if (!voucher.isActive) {
+      throw new PricingError('VOUCHER_INACTIVE', 'Voucher không hoạt động');
+    }
+    if (input.now < voucher.startsAt || input.now >= voucher.endsAt) {
+      throw new PricingError('VOUCHER_TIME', 'Voucher ngoài hạn hiệu lực');
+    }
+    if (subtotal < (voucher.minOrderValue ?? 0)) {
+      throw new PricingError('VOUCHER_MINIMUM', 'Chưa đạt đơn tối thiểu');
+    }
+    if ((voucher.usageLimit != null && voucher.usedCount >= voucher.usageLimit) ||
+        (voucher.perUserLimit != null && voucher.userUsedCount >= voucher.perUserLimit)) {
+      throw new PricingError('VOUCHER_LIMIT', 'Voucher hết lượt sử dụng');
+    }
+  }
   const raw = voucher?.percentOff != null
     ? safeNumber(sum * BigInt(voucher.percentOff) / 100n)
     : (voucher?.amountOff ?? 0);
