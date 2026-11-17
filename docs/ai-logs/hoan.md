@@ -3893,3 +3893,49 @@ Codex chạy Vitest; chờ Hoàn và reviewer xem xét.
 - npm test -w api -- pricing.spec.ts -t "hiệu lực gồm thời điểm bắt đầu": 1 pass, 4 skipped.
 - Ba ca charter, sale và áp trần chạy lại: 3 pass, 2 skipped.
 - Chưa commit hoặc push thay đổi bước này.
+
+---
+
+## Phase 2 / hoan-20261118-pricing-09
+
+* Thời gian ghi: 2026-11-18T01:24:55+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-pricing
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-1.6; hoan-20261118-pricing-08
+
+### Công cụ
+
+Codex, Vitest, ESLint, Prisma và Nest CLI.
+
+### Mục đích
+
+Phát hiện số nguyên đầu vào không an toàn và overflow trong tính tiền.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp sub-issue PRJ-P2-BD1-1.6 và yêu cầu tiếp tục.
+
+### Kết quả đề xuất
+
+Codex bổ sung hàm kiểm tra số nguyên an toàn, kiểm tra thành tiền từng dòng và tổng giỏ bằng BigInt, kiểm tra các trường số của voucher và từ chối phần trăm trên 100; giữ safeNumber để kiểm tra giá trị giảm và tổng thanh toán.
+
+### Phản biện
+
+Các test kiểm tra hành vi bằng dữ liệu giả, chưa chứng minh tích hợp database hay chính sách voucher trong môi trường vận hành. Cần reviewer xem xét thay đổi và test nghiệm thu.
+
+### Quyết định của nhóm
+
+Thực hiện theo task do Hoàn cung cấp; chưa có xác nhận reviewer duyệt thay đổi.
+
+### Người kiểm tra
+
+Codex chạy test pricing, lint API và build API; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- npm test -w api -- pricing: 5/5 pass.
+- npm run lint -w api: pass.
+- npm run build -w api: pass.
+- Chưa commit hoặc push bước này.
