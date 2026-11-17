@@ -4563,3 +4563,89 @@ Codex chạy test checkout, lint và build API; chờ Hoàn, QA và reviewer xem
 - npm run lint -w api: pass.
 - npm run build -w api: pass.
 - Chưa kiểm tra HTTP hoặc database thật, chưa commit hoặc push.
+
+---
+
+## Phase 2 / hoan-20261118-checkout-13
+
+* Thời gian ghi: 2026-11-18T03:19:12+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-checkout
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-2.8; hoan-20261118-checkout-12
+
+### Công cụ
+
+Codex.
+
+### Mục đích
+
+Chuẩn bị mẫu tự kiểm tra kiến thức checkout.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp yêu cầu bước kiểm tra kiến thức cuối task.
+
+### Kết quả đề xuất
+
+Tạo file câu hỏi docs/learning/BD1-Hoan/kiem-tra/PRJ-P2-BD1-2.md với ô trả lời trống.
+
+### Phản biện
+
+Hoàn cần tự trả lời theo yêu cầu task; việc tạo mẫu không chứng minh hoàn thành kiểm tra kiến thức.
+
+### Quyết định của nhóm
+
+Chưa có xác nhận reviewer duyệt bài tự đánh giá.
+
+### Người kiểm tra
+
+Codex tạo mẫu; chờ Hoàn trả lời và reviewer kiểm tra.
+
+### Kiểm tra và minh chứng
+
+File mẫu được tạo, chưa có câu trả lời và chưa commit hoặc push.
+
+---
+
+## Phase 2 / hoan-20261118-checkout-14
+
+* Thời gian ghi: 2026-11-18T03:27:12+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-checkout
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-2.8; hoan-20261118-checkout-13
+
+### Công cụ
+
+Codex.
+
+### Mục đích
+
+Ghi nhận câu trả lời tự kiểm tra kiến thức checkout và phần luyện tập.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp câu trả lời, trả lời hai câu luyện về tranh tồn và thanh toán đồng thời với hết hạn, rồi yêu cầu ghi vào file, commit, push và cập nhật AI logs.
+
+### Kết quả đề xuất
+
+Codex nhận xét các câu, xác nhận hai câu luyện phù hợp và ghi nội dung trả lời do Hoàn cung cấp vào file tự kiểm tra.
+
+### Phản biện
+
+Test cạnh tranh và hết hạn hiện dùng mock; chưa mô phỏng giao dịch đồng thời trên PostgreSQL. Khả năng giải thích trước reviewer cần được đánh giá trực tiếp.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu ghi câu trả lời, commit và push; chưa có xác nhận reviewer duyệt bài.
+
+### Người kiểm tra
+
+Codex nhận xét câu trả lời; chờ reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+Nội dung được ghi vào docs/learning/BD1-Hoan/kiem-tra/PRJ-P2-BD1-2.md; không chạy test phần code trong bước tài liệu.
