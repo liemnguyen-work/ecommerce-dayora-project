@@ -4471,3 +4471,49 @@ Codex chạy test chọn lọc, lint và build API; chờ Hoàn, QA và reviewer
 - npm run lint -w api: pass.
 - npm run build -w api: pass.
 - Chưa kiểm thử database thật, chưa commit hoặc push.
+
+---
+
+## Phase 2 / hoan-20261118-checkout-11
+
+* Thời gian ghi: 2026-11-18T03:08:31+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-checkout
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-2.6; hoan-20261118-checkout-10
+
+### Công cụ
+
+Codex, Vitest, ESLint, Prisma và Nest CLI.
+
+### Mục đích
+
+Xử lý đơn chưa thanh toán hết hạn, trả tồn và ghi trạng thái.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp sub-issue PRJ-P2-BD1-2.6 và yêu cầu tiếp tục.
+
+### Kết quả đề xuất
+
+Bổ sung quét đơn hết hạn, kiểm tra lại trạng thái và hạn khi cập nhật trong transaction, trả tồn, cập nhật payment chưa thanh toán sang EXPIRED, ghi lịch sử và thiết lập bộ hẹn giờ 60 giây có thể tắt bằng DISABLE_ORDER_EXPIRY.
+
+### Phản biện
+
+Test dùng mock chưa kiểm tra rollback và cạnh tranh thanh toán trên PostgreSQL. Bộ hẹn giờ cần service được đăng ký trong module ứng dụng mới hoạt động; chưa xác nhận QA duyệt bộ test. Chưa kiểm tra chính sách hoàn lượt voucher khi đơn hết hạn.
+
+### Quyết định của nhóm
+
+Thực hiện theo task Hoàn cung cấp; chưa có xác nhận reviewer duyệt code.
+
+### Người kiểm tra
+
+Codex chạy test, lint và build API; chờ Hoàn, QA và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- npm test -w api -- checkout.service: 7/7 pass bằng mock.
+- npm run lint -w api: pass.
+- npm run build -w api: pass.
+- Chưa kiểm tra database thật hoặc bộ hẹn giờ trong ứng dụng chạy thực tế; chưa commit hoặc push.
