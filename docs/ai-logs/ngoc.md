@@ -1261,3 +1261,69 @@ Codex đối chiếu câu trả lời với nội dung thảo luận và mục l
 
 Đọc lại mục `ngoc-20261116-b79e-01` trước khi nối thêm. Không chạy lại test, kiểm tra dữ liệu hay CI trong lượt này. Tệp thay đổi: `docs/ai-logs/ngoc.md`.
 
+---
+
+## P1 / ngoc-20261118-b6f2-02
+
+* Thời gian ghi: 2026-11-18T03:13:05+07:00
+* Thời gian thực hiện: Ngày 18/11/2026; tổng hợp hoạt động trong phiên, thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: ngoc-20261118-b6f2
+* Người prompt: Ngọc
+* Loại mục: Hoạt động
+* Liên quan: ngoc-20261118-b6f2-01; ca hồi quy P1; PR #684
+
+### Công cụ
+
+ChatGPT.
+
+### Mục đích
+
+Xác định các trường hợp cần kiểm thử hồi quy cho giới hạn mật khẩu, điều hướng tới section trên trang chủ và quản trị tình huống sản phẩm. Hoàn thiện bảng ca kiểm thử và kiểm tra thay đổi trước khi commit.
+
+### Prompt
+
+Tóm lược: Ngọc cung cấp mô tả lỗi, phạm vi sửa và tiêu chí kiểm tra, trao đổi với ChatGPT để xác định các ca hồi quy cần có. Ngọc yêu cầu bản Markdown đầy đủ, giữ nguyên các ca cũ và mô tả phạm vi bằng tên chức năng. Sau khi đưa nội dung vào tài liệu, Ngọc gửi ảnh Terminal để kiểm tra diff và thao tác Git.
+
+### Kết quả đề xuất
+
+ChatGPT phân tích yêu cầu thành ba nhóm, đề xuất 17 ca TC-P1-29–45 và soạn bản nháp Markdown:
+
+- TC-P1-29–33: kiểm tra mật khẩu mới dài 128 ký tự, từ chối 129 ký tự, giữ kiểm tra mật khẩu hiện tại, chống ghi đè khi đổi đồng thời và cho phép đổi lại mật khẩu dài đã lưu khi còn phiên hợp lệ.
+- TC-P1-34–39: điều hướng tới hash Home khi bỏ qua hoặc hoàn tất intro, dùng Back/Forward, intro đã xem, reduced motion và hash không tồn tại.
+- TC-P1-40–45: tạo và cập nhật scenarios, giữ dữ liệu khi thiếu trường, xóa gán bằng mảng rỗng, chặn enum sai và xử lý sản phẩm không tồn tại.
+
+Ngọc yêu cầu bỏ các số tham chiếu không thuộc repo nhóm, giữ nguyên nội dung kiểm thử. ChatGPT chỉnh lại dòng phạm vi và các tiêu đề theo yêu cầu.
+
+Ngọc đưa nội dung vào `docs/testing/TEST-CASES.md`, sau phần tổng kết P1 và trước Phase 2, lưu file rồi gửi ảnh diff. ChatGPT hỗ trợ đọc thay đổi, nhắc giữ trạng thái Chưa chạy và hướng dẫn stage, commit, push.
+
+### Phản biện
+
+Ngọc yêu cầu chỉ dùng thông tin truy vết thuộc repo nhóm, giữ nguyên các ca đã có và phân biệt việc thiết kế ca với kết quả chạy thực tế.
+
+Phần mô tả được chỉnh lại theo tên chức năng. Bảng ghi rõ Prisma mock chỉ kiểm tra validation, phản hồi HTTP và dữ liệu truyền tới Prisma; việc lưu bền vững cần được kiểm chứng riêng trên CSDL thử.
+
+Các ca mới giữ Actual và Ngày trống, trạng thái Chưa chạy.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới hoặc xác nhận nghiệm thu các bản sửa trong phần trao đổi này.
+
+Ngọc đưa phần thiết kế ca hồi quy lên nhánh `prj/p2-qa-1` để reviewer kiểm tra. Việc commit tài liệu không xác nhận các lỗi đã được sửa hoặc các ca đã Pass.
+
+### Người kiểm tra
+
+Ngọc thực hiện thao tác lưu file, xem diff, stage, commit và push trên máy, cung cấp ảnh Terminal trong cuộc trao đổi.
+
+ChatGPT hỗ trợ đối chiếu phần thay đổi hiển thị trong ảnh, đọc thống kê Git và kết quả push. Chưa có kết quả reviewer thực hiện các ca hồi quy trong hoạt động này.
+
+### Kiểm tra và minh chứng
+
+- File thay đổi: `docs/testing/TEST-CASES.md`.
+- Đã thêm 17 ca hồi quy TC-P1-29–45.
+- `git diff --check` không in lỗi trong ảnh Terminal được cung cấp.
+- `git diff --cached --stat` hiển thị 1 file thay đổi, 46 dòng thêm và không có dòng xóa.
+- Commit: `add5cea` — `docs(testing): add P1 regression test cases`.
+- Terminal xác nhận push thành công lên `origin/prj/p2-qa-1`.
+- Minh chứng commit: https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/add5cea
+- Chưa chạy 17 ca hồi quy; Actual và Ngày vẫn trống, trạng thái Chưa chạy.
+- Không chạy lint, test hoặc build trong lượt soạn và commit tài liệu này.
