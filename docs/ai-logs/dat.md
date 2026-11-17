@@ -1290,3 +1290,59 @@ Giữ báo cáo với các khác biệt mức Nên sửa và Chấp nhận. Khô
 - Không phát sinh issue bắt buộc cho lỗi Chặn.
 - `git diff --check`: PASS.
 - Chưa có xác nhận chính thức từ reviewer tại thời điểm ghi.
+
+---
+
+## P1 — Tự đánh giá quy trình đối chiếu giao diện / DAT-20261117-PD2-004
+
+* **Thời gian ghi:** 17/11/2026
+* **Thời gian thực hiện:** 17/11/2026
+* **Mã phiên nhật ký:** DAT-20261117-PD2
+* **Người prompt:** Đạt (PD)
+* **Loại mục:** Học tập
+* **Liên quan:** PRJ-P1-PD-2.4; nhánh `prj/p1-pd-2`
+
+### Công cụ
+
+ChatGPT (GPT-6), Visual Studio Code, CMD và Git.
+
+### Mục đích
+
+Ghi lại phần tự đánh giá sau khi hoàn thành việc chạy hai phiên bản, chụp ảnh và lập báo cáo đối chiếu giao diện P1. Nội dung được dùng để ôn lại quy trình và chuẩn bị trả lời khi reviewer hỏi.
+
+### Prompt
+
+Đạt yêu cầu tổng hợp ngắn gọn những gì đã trực tiếp thực hiện trong PRJ-P1-PD-2, gồm mục đích của từng bước, hậu quả nếu bỏ qua và khó khăn lớn nhất trong quá trình làm.
+
+### Kết quả thảo luận
+
+Qua quá trình thực hiện, Đạt xác định:
+
+- Chạy bản nhóm ở cổng 5173 và bản mẫu ở cổng 5174 giúp quan sát hai giao diện cùng lúc. Bỏ bước này không làm website hỏng nhưng khiến việc so sánh thiếu bản tham chiếu.
+- Chụp ở 1366 × 768 px và 390 × 844 px giúp kiểm tra cả desktop lẫn mobile. Nếu chỉ kiểm tra một kích thước thì có thể bỏ sót lỗi responsive.
+- Bảng đối chiếu giúp ghi rõ điểm giống, điểm khác, mức độ và người phụ trách thay vì chỉ nhận xét chung chung.
+- Khó khăn lớn nhất là lúc đầu hiểu “10 cặp ảnh” thành 10 ảnh. Sau khi đọc lại yêu cầu, Đạt đã chuẩn hóa thành 20 tệp gồm bản nhóm và bản mẫu, đổi tên và lưu đúng tại `docs/report/images/p1/`.
+
+ChatGPT hỗ trợ sắp xếp và diễn đạt lại các ý trên thành nội dung ngắn gọn cho file kiểm tra kiến thức.
+
+### Phản biện
+
+Ảnh chụp chỉ chứng minh được bố cục và trạng thái giao diện tại thời điểm chụp. Ảnh không đủ để kết luận các trạng thái hover, focus, validation, disabled hoặc thao tác bàn phím đã hoạt động đúng.
+
+Việc không ghi nhận lỗi Chặn cũng chỉ áp dụng trong phạm vi 20 ảnh đã đối chiếu. Các hành vi chức năng vẫn cần được kiểm thử riêng nếu reviewer yêu cầu.
+
+### Quyết định của nhóm
+
+Sử dụng nội dung tự đánh giá làm tài liệu ôn tập cho PRJ-P1-PD-2.4. Đạt sẽ dựa trên quá trình đã trực tiếp thực hiện để giải thích lại bằng lời khi được hỏi, không phụ thuộc vào việc mở lại báo cáo.
+
+### Người kiểm tra
+
+Đạt trực tiếp thực hiện các bước chạy dự án, xử lý API, chụp ảnh, chuẩn hóa tên tệp và kiểm tra báo cáo. ChatGPT hỗ trợ rà soát và hệ thống hóa nội dung. FD1 Thành là reviewer xác nhận kiến thức thực tế.
+
+### Kiểm tra và minh chứng
+
+- File kiểm tra: `docs/learning/PD-Dat/kiem-tra/PRJ-P1-PD-2.md`.
+- File báo cáo: `docs/report/ux/P1-doi-chieu.md`.
+- Bộ minh chứng gồm 20 ảnh tại `docs/report/images/p1/`.
+- Nội dung kiểm tra gồm đủ ba bước của task và một khó khăn thực tế.
+- Chưa có xác nhận chính thức từ reviewer tại thời điểm ghi.
