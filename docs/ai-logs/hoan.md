@@ -4517,3 +4517,49 @@ Codex chạy test, lint và build API; chờ Hoàn, QA và reviewer xem xét.
 - npm run lint -w api: pass.
 - npm run build -w api: pass.
 - Chưa kiểm tra database thật hoặc bộ hẹn giờ trong ứng dụng chạy thực tế; chưa commit hoặc push.
+
+---
+
+## Phase 2 / hoan-20261118-checkout-12
+
+* Thời gian ghi: 2026-11-18T03:14:45+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-checkout
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-2.7; hoan-20261118-checkout-10
+
+### Công cụ
+
+Codex, Vitest, ESLint, Prisma và Nest CLI.
+
+### Mục đích
+
+Kiểm tra quyền sở hữu khi xem hoặc hủy đơn.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp sub-issue PRJ-P2-BD1-2.7 và yêu cầu tiếp tục.
+
+### Kết quả đề xuất
+
+Phần tìm theo id và userId cùng lỗi 404 đã được thêm trong bước hủy đơn. Codex bổ sung từ chối userId thiếu hoặc rỗng tại detail và cancel để tránh bỏ qua điều kiện chủ sở hữu.
+
+### Phản biện
+
+Test hiện dùng mock và chưa kiểm tra HTTP thực tế; controller cần lấy userId từ phiên đăng nhập. Chưa có xác nhận QA duyệt test, chưa có test riêng cho userId thiếu hoặc rỗng.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu tiếp tục; chưa có xác nhận reviewer duyệt code.
+
+### Người kiểm tra
+
+Codex chạy test checkout, lint và build API; chờ Hoàn, QA và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- npm test -w api -- checkout.service: 7/7 pass bằng mock.
+- npm run lint -w api: pass.
+- npm run build -w api: pass.
+- Chưa kiểm tra HTTP hoặc database thật, chưa commit hoặc push.
