@@ -5,7 +5,7 @@ tags: [decisions]
 
 Mỗi dòng một quyết định. Trạng thái: **đề xuất** (chờ nhóm duyệt ở P0) → **chốt** (đã duyệt, ghi ngày và người duyệt) → **thay đổi** (ghi [CHANGELOG](CHANGELOG.md)). Quyết định lớn có thể viết ADR theo [mẫu](adr/_TEMPLATE.md). Về [HOME](../HOME.md).
 
-Mọi dòng dưới đây đang là **đề xuất**. PM điều phối họp chốt ở P0, ghi ngày và người duyệt khi chốt.
+Những dòng có trạng thái **đề xuất** cần được nhóm duyệt; khi chốt, ghi ngày và người duyệt. Các dòng khác được mô tả theo trạng thái tại bảng.
 
 ## Kỹ thuật
 | Mã | Quyết định đề xuất | Trạng thái |
@@ -17,6 +17,9 @@ Mọi dòng dưới đây đang là **đề xuất**. PM điều phối họp ch
 | K05 | Auth: JWT trong cookie httpOnly; mật khẩu băm có salt (bcrypt hoặc scrypt) | đề xuất |
 | K06 | Animation: tôn trọng `prefers-reduced-motion` | đề xuất |
 | K07 | Test: Vitest hoặc Jest (API); CI GitHub Actions chạy lint + test + build mỗi PR | đề xuất |
+| K09 | Giao diện dùng được trên desktop 1366×768 và mobile 390×844; đối chiếu yêu cầu responsive AC08 | áp dụng theo xác nhận của QA do Liêm cung cấp; ngày và người duyệt chưa xác minh |
+| K10 | Phương án giao diện mang phong cách portfolio; được thay bằng K11 để phù hợp mục tiêu bán hàng | áp dụng theo xác nhận của QA do Liêm cung cấp; ngày và người duyệt chưa xác minh; thời điểm thay thế chưa xác minh |
+| K11 | Dùng bố cục giao diện phù hợp website bán hàng thay cho phương án K10 | áp dụng theo xác nhận của QA do Liêm cung cấp; ngày và người duyệt chưa xác minh |
 
 ## Nghiệp vụ (bảng 2.6 — câu hỏi cần chốt trước khi code)
 | Mã | Câu hỏi | Phương án đề xuất | Trạng thái |
