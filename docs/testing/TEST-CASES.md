@@ -95,6 +95,52 @@ npm run build
 - [GitHub Actions CI #209](https://github.com/liemnguyen-work/ecommerce-dayora-project/actions/runs/43885217965/job/133361401276): 7/7 file test đạt, 51/51 ca đạt, khớp với kết quả cục bộ.
 - Trạng thái nghiệm thu: **ĐẠT**.
 
+### Ca hồi quy — Giới hạn mật khẩu, điều hướng Home và quản trị tình huống sản phẩm
+
+- Phạm vi hồi quy: giới hạn mật khẩu, điều hướng tới section trên trang chủ và quản trị tình huống sản phẩm.
+- Các ca dưới đây mới được thiết kế, chưa phải kết quả kiểm thử.
+- Mỗi lượt chạy dùng dữ liệu thử nghiệm độc lập; ghi SHA của bản được kiểm tra trong Actual.
+- Actual và Ngày chỉ điền khi thực sự chạy. Trạng thái ban đầu là Chưa chạy.
+- Với kiểm thử HTTP dùng Prisma mock, ghi rõ chỉ kiểm tra validation, phản hồi HTTP và dữ liệu truyền tới Prisma; không kết luận dữ liệu đã được lưu bền vững trong CSDL.
+- Với kiểm thử trình duyệt, ghi rõ dùng API thật hay mock và đính kèm ảnh hoặc video.
+- Không ghi mật khẩu, cookie hoặc thông tin bí mật vào bảng hay ảnh minh chứng.
+
+#### Giới hạn mật khẩu mới tương thích với đăng nhập
+
+| Mã ca | Chức năng | Tiền điều kiện | Các bước thao tác | Dữ liệu đầu vào | Kết quả kỳ vọng (Expected) | Kết quả thực tế (Actual) | Ngày chạy | Trạng thái |
+|---|---|---|---|---|---|---|---|---|
+| TC-P1-29 | FR04 — Đổi mật khẩu dài 128 ký tự và đăng nhập lại | Tài khoản thử nghiệm đang hoạt động; có phiên hợp lệ và biết mật khẩu hiện tại. | Đổi sang mật khẩu mới dài đúng 128 ký tự. Sau khi thành công, đăng nhập bằng mật khẩu mới ở phiên độc lập. | Mật khẩu hiện tại đúng; mật khẩu mới gồm đúng 128 ký tự ASCII hợp lệ. | Đổi mật khẩu thành công; hash xác minh đúng mật khẩu mới; đăng nhập lại thành công bằng đầy đủ 128 ký tự. | | | Chưa chạy |
+| TC-P1-30 | FR04 — Chặn mật khẩu mới dài 129 ký tự | Tài khoản thử nghiệm có phiên hợp lệ; xác định được trạng thái hash trước yêu cầu. | Gửi yêu cầu đổi mật khẩu dài 129 ký tự qua HTTP. Kiểm tra phản hồi và việc ghi hash. Kiểm tra mật khẩu hiện tại vẫn dùng được. | Mật khẩu hiện tại đúng; mật khẩu mới gồm 129 ký tự ASCII hợp lệ. | HTTP 400 tại bước validation; không gọi thao tác ghi hash; hash cũ không đổi. Không âm thầm cắt mật khẩu xuống 128 ký tự. Mật khẩu hiện tại vẫn đăng nhập được. | | | Chưa chạy |
+| TC-P1-31 | FR04 — Giữ kiểm tra mật khẩu hiện tại | Tài khoản thử nghiệm có phiên hợp lệ; biết mật khẩu đúng để đối chiếu. | Gửi yêu cầu đổi mật khẩu với mật khẩu hiện tại sai và mật khẩu mới hợp lệ. Kiểm tra phản hồi và hash. | Mật khẩu hiện tại sai; mật khẩu mới hợp lệ trong giới hạn 8–128 ký tự. | Yêu cầu bị từ chối theo hợp đồng API; không ghi hash mới; mật khẩu hiện tại đúng vẫn dùng được. | | | Chưa chạy |
+| TC-P1-32 | FR04 — Chặn ghi đè khi đổi mật khẩu đồng thời | Có thể điều phối hai yêu cầu cùng đọc trạng thái mật khẩu ban đầu bằng test HTTP và Prisma mock. | Gửi hai yêu cầu đổi sang hai mật khẩu mới khác nhau, cùng dùng mật khẩu hiện tại đúng. Điều phối để cả hai cùng tranh cập nhật trạng thái ban đầu. Kiểm tra kết quả cập nhật có điều kiện. | Hai mật khẩu mới khác nhau, đều hợp lệ. | Chỉ một cập nhật thành công; yêu cầu còn lại bị từ chối do trạng thái đã đổi theo hợp đồng API. Không ghi đè kết quả của yêu cầu thành công. | | | Chưa chạy |
+| TC-P1-33 | FR04 — Đổi lại mật khẩu dài đã lưu khi còn phiên | Trong test mock có tài khoản đang lưu hash của mật khẩu dài 129 ký tự và còn phiên hợp lệ; không sửa dữ liệu người dùng thật. | Dùng phiên hợp lệ gửi mật khẩu hiện tại dài 129 ký tự và mật khẩu mới hợp lệ. Sau khi đổi, đăng nhập lại bằng mật khẩu mới. | Mật khẩu hiện tại 129 ký tự khớp hash đã lưu; mật khẩu mới trong giới hạn 8–128 ký tự. | Vẫn xác minh được mật khẩu hiện tại dài đã lưu; đổi sang mật khẩu mới thành công và đăng nhập lại được. Không yêu cầu reset hoặc sửa trực tiếp dữ liệu người dùng. | | | Chưa chạy |
+
+#### Điều hướng tới hash Home sau intro
+
+Chạy từng ca ở độ rộng 1366 px và 390 px. Với 390 px, sử dụng menu mobile khi điều hướng. Phân biệt chiều rộng màn hình với chiều cao viewport; ghi kích thước thực tế trong minh chứng.
+
+| Mã ca | Chức năng | Tiền điều kiện | Các bước thao tác | Dữ liệu đầu vào | Kết quả kỳ vọng (Expected) | Kết quả thực tế (Actual) | Ngày chạy | Trạng thái |
+|---|---|---|---|---|---|---|---|---|
+| TC-P1-34 | FR01 — Từ danh mục tới Ba chuyến đi rồi bỏ qua intro | Phiên trình duyệt thử nghiệm mới, chưa xem intro; mở trực tiếp danh mục. | Bấm Ba chuyến đi trên nav hoặc menu mobile. Khi intro bắt đầu, chờ trên 1 giây rồi bấm Bỏ qua giới thiệu. Quan sát vị trí sau khi nội dung mount. | `/san-pham` → `/#trips-title`. | URL đúng hash; sau khi bỏ qua intro, trang cuộn tới section Ba chuyến đi. Không còn mắc ở đầu trang trong khi đích nằm ngoài viewport. | | | Chưa chạy |
+| TC-P1-35 | FR01 — Mở trực tiếp hash và để intro chạy hết | Phiên thử nghiệm mới, chưa xem intro. | Mở trực tiếp URL có hash. Để intro kết thúc tự nhiên. Quan sát vị trí cuộn sau khi section xuất hiện. | `/#trips-title`. | Sau intro, đích được mount và trang cuộn tới đúng section; không phụ thuộc việc đích xuất hiện trong một số frame ngắn cố định. | | | Chưa chạy |
+| TC-P1-36 | FR01 — Back và Forward qua hash Home | Có thể điều hướng giữa danh mục và Home có hash. | Từ danh mục mở Ba chuyến đi. Sau khi đến đích, bấm Back rồi Forward. Kiểm tra URL, nội dung và vị trí cuộn. | Lịch sử `/san-pham` và `/#trips-title`. | Back trở về đúng trang trước; Forward trở lại Home và tới đúng đích hash sau khi nội dung sẵn sàng. Không còn tác vụ cuộn cũ làm trang cuộn sai sau khi rời Home. | | | Chưa chạy |
+| TC-P1-37 | FR01 — Điều hướng hash khi intro đã xem | Phiên thử nghiệm đã hoàn tất hoặc bỏ qua intro theo cơ chế của ứng dụng. | Mở danh mục rồi bấm Ba chuyến đi. | Trạng thái intro đã xem; `/#trips-title`. | Home hiển thị và cuộn tới đúng section; không cần chờ một intro mới để xử lý hash. | | | Chưa chạy |
+| TC-P1-38 | FR01 — Điều hướng hash với reduced motion | Bật tùy chọn prefers-reduced-motion trong môi trường thử nghiệm; dùng phiên chưa xem intro. | Từ danh mục bấm Ba chuyến đi và kiểm tra sau khi Home sẵn sàng. | `prefers-reduced-motion: reduce`; `/#trips-title`. | Vẫn tới đúng section; tôn trọng reduced motion theo thiết kế của ứng dụng, không bắt buộc chuyển động cuộn hoặc intro gây cản trở điều hướng. | | | Chưa chạy |
+| TC-P1-39 | FR01 — Hash không tồn tại không gây chờ vô hạn | Đã xác nhận ID thử nghiệm không tồn tại trên Home. | Mở Home với hash không tồn tại, hoàn tất hoặc bỏ qua intro, sau đó điều hướng sang trang khác. Theo dõi Console và tác vụ tìm đích bằng công cụ kiểm tra phù hợp. | `/#qa-khong-co-section`. | Trang vẫn sử dụng được; không có lỗi JavaScript chưa xử lý hoặc vòng lặp tìm đích vô hạn. Tác vụ tìm đích được kết thúc hoặc dọn dẹp phù hợp, không ảnh hưởng trang tiếp theo. | | | Chưa chạy |
+
+#### Lưu scenarios và xử lý sản phẩm không tồn tại
+
+Các lượt tạo hoặc cập nhật dùng sản phẩm thử nghiệm riêng. Với kiểm thử mock, kiểm tra cả Prisma data và response. Với kiểm thử tích hợp trên CSDL thử riêng, đọc lại sản phẩm sau thao tác để xác nhận lưu bền vững.
+
+| Mã ca | Chức năng | Tiền điều kiện | Các bước thao tác | Dữ liệu đầu vào | Kết quả kỳ vọng (Expected) | Kết quả thực tế (Actual) | Ngày chạy | Trạng thái |
+|---|---|---|---|---|---|---|---|---|
+| TC-P1-40 | FR14 — Tạo sản phẩm có tình huống hợp lệ | ADMIN hợp lệ; dữ liệu tạo sản phẩm đầy đủ, mã và slug không trùng. | Tạo sản phẩm với scenarios hợp lệ. Chạy độc lập lần lượt cho từng enum và một mảng nhiều enum. Kiểm tra Prisma data và response; đọc lại nếu dùng CSDL thử. | `["PICNIC"]`, `["DATE"]`, `["BEACH"]` và `["PICNIC","DATE","BEACH"]`. | Tạo thành công; Prisma nhận đúng scenarios; response phản ánh đúng giá trị. Nếu chạy với CSDL thử, đọc lại vẫn có đúng các tình huống đã gửi. | | | Chưa chạy |
+| TC-P1-41 | FR14 — PATCH thay đổi tình huống sản phẩm | ADMIN hợp lệ; sản phẩm thử đang được gắn PICNIC. | PATCH sản phẩm sang BEACH. Tiếp tục chạy độc lập các lượt cập nhật DATE, PICNIC và nhiều tình huống, chuẩn bị lại dữ liệu trước mỗi lượt. Kiểm tra Prisma data và response. | Trường scenarios với các enum hợp lệ. | HTTP 200; Prisma update nhận đúng scenarios; response phản ánh giá trị mới. Khi chạy tích hợp, đọc lại vẫn giữ đúng thay đổi. | | | Chưa chạy |
+| TC-P1-42 | FR14 — PATCH thiếu scenarios giữ dữ liệu cũ | Sản phẩm thử đã gắn PICNIC và DATE; có một trường khác được phép cập nhật. | PATCH trường hợp lệ khác, không gửi scenarios. Kiểm tra dữ liệu cập nhật và kết quả đọc lại. | Body không có thuộc tính scenarios. | Cập nhật trường được gửi thành công; không xóa hoặc thay thế scenarios cũ. Sản phẩm vẫn gắn PICNIC và DATE. | | | Chưa chạy |
+| TC-P1-43 | FR14 — PATCH mảng scenarios rỗng xóa gán | Sản phẩm thử đang có ít nhất một tình huống; ADMIN hợp lệ. | PATCH sản phẩm với scenarios là mảng rỗng. Kiểm tra Prisma data, response và đọc lại nếu dùng CSDL thử. | `{"scenarios":[]}`. | HTTP 200; dữ liệu cập nhật thể hiện thao tác xóa gán theo hợp đồng API; response có scenarios rỗng. Khi chạy tích hợp, đọc lại không còn tình huống đã gán. | | | Chưa chạy |
+| TC-P1-44 | FR14 — Chặn enum scenarios sai trước Prisma | ADMIN hợp lệ; các trường khác của body đều hợp lệ. | Chạy độc lập với Create và PATCH. Gửi mảng có enum sai; kiểm tra HTTP và lời gọi Prisma. Thử cả mảng chỉ có giá trị sai và mảng trộn đúng/sai. | `["SAI_ENUM"]` và `["PICNIC","SAI_ENUM"]`. | HTTP 400 tại bước validation; không gọi thao tác ghi Prisma, không trả 500, không lưu một phần mảng. Dữ liệu sản phẩm cũ không đổi. | | | Chưa chạy |
+| TC-P1-45 | FR14 — Ẩn sản phẩm không tồn tại trả 404 | ADMIN hợp lệ; ID thử nghiệm không tồn tại. Trong test mock, thao tác Prisma tương ứng phát sinh P2025. | Gọi API ẩn sản phẩm theo route thực tế của ứng dụng. Kiểm tra phản hồi khi Prisma báo không tìm thấy bản ghi. | ID sản phẩm không tồn tại; Prisma P2025. | HTTP 404 theo hợp đồng API; không trả 500 và không ảnh hưởng sản phẩm khác. | | | Chưa chạy |
+
 ## Phase 2 — Giỏ hàng, Voucher, Phí giao và Checkout
 
 ### 1. Ca kiểm thử giỏ hàng
