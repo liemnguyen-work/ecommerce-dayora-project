@@ -4470,3 +4470,89 @@ Codex kiểm tra metadata và công cụ; chờ Hoàn và nhóm xác nhận môi
 ### Kiểm tra và minh chứng
 
 Truy vấn chỉ đọc information_schema và bảng lịch sử migration; không in thông tin kết nối. Chưa test HTTP với database thật hoặc kiểm tra giao dịch đồng thời.
+
+---
+
+## Phase 2 / hoan-20261118-adminvoucher-11
+
+* Thời gian ghi: 2026-11-18T04:08:51+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-adminvoucher
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-3.7; hoan-20261118-adminvoucher-10
+
+### Công cụ
+
+Codex.
+
+### Mục đích
+
+Chuẩn bị mẫu tự kiểm tra kiến thức quản trị voucher và khuyến mãi.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp yêu cầu bước kiểm tra kiến thức cuối task.
+
+### Kết quả đề xuất
+
+Tạo docs/learning/BD1-Hoan/kiem-tra/PRJ-P2-BD1-3.md với câu hỏi và ô trả lời trống.
+
+### Phản biện
+
+Hoàn cần tự trả lời theo yêu cầu task; tạo mẫu không chứng minh hoàn thành kiểm tra kiến thức.
+
+### Quyết định của nhóm
+
+Chưa có xác nhận reviewer duyệt bài tự đánh giá.
+
+### Người kiểm tra
+
+Codex tạo mẫu; chờ Hoàn trả lời và reviewer kiểm tra.
+
+### Kiểm tra và minh chứng
+
+File mẫu được tạo, chưa có câu trả lời và chưa commit hoặc push.
+
+---
+
+## Phase 2 / hoan-20261118-adminvoucher-12
+
+* Thời gian ghi: 2026-11-18T04:14:00+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-adminvoucher
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-3.7; hoan-20261118-adminvoucher-11
+
+### Công cụ
+
+Codex và Git.
+
+### Mục đích
+
+Ghi nhận câu trả lời tự kiểm tra kiến thức admin voucher và khuyến mãi.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp câu trả lời và trả lời hai câu luyện về giới hạn voucher và link nội bộ; yêu cầu ghi file, commit, push và cập nhật AI logs.
+
+### Kết quả đề xuất
+
+Codex nhận xét câu trả lời, ghi nội dung Hoàn cung cấp và bổ sung tình trạng migration chưa áp dụng vào file tự kiểm tra.
+
+### Phản biện
+
+Test chưa kiểm tra riêng giới hạn bằng số lượt đã dùng và tình huống cập nhật đồng thời; reviewer cần đánh giá khả năng giải thích trực tiếp.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu ghi câu trả lời và push; chưa có reviewer duyệt bài.
+
+### Người kiểm tra
+
+Codex nhận xét câu trả lời và hai câu luyện; chờ reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+Ghi file docs/learning/BD1-Hoan/kiem-tra/PRJ-P2-BD1-3.md; không chạy test code trong bước tài liệu.
