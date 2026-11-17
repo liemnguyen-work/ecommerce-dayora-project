@@ -2,6 +2,7 @@ import { ConflictException, Injectable } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
 
 import { PrismaService } from '../prisma/prisma.service.js';
+import { calculatePricing, PricingError } from '../pricing/pricing.js';
 import { OrdersService } from './orders.service.js';
 import type { ExpectedDto, AddressDto } from './orders.dto.js';
 
@@ -43,10 +44,6 @@ export class CheckoutService {
       throw new ConflictException({ code: 'CONFIRM_REQUIRED', preview });
     }
 
-    // Voucher usage must be recorded atomically before voucher orders are enabled.
-    if (dto.voucherCode) {
-      throw new ConflictException({ code: 'CONFIRM_REQUIRED', preview });
-    }
 
     return this.prisma.$transaction(async (tx) => {
       const cartItems = await tx.cartItem.findMany({
@@ -63,6 +60,43 @@ export class CheckoutService {
         })
       ) {
         throw new ConflictException({ code: 'CONFIRM_REQUIRED', preview });
+      }
+
+      let voucherId: string | undefined;
+      let discount = 0;
+      if (dto.voucherCode) {
+        await tx.$queryRaw`SELECT "id" FROM "Voucher" WHERE "code" = ${dto.voucherCode} FOR UPDATE`;
+        const voucher = await tx.voucher.findUnique({ where: { code: dto.voucherCode } });
+        if (!voucher) {
+          throw new ConflictException({ code: 'CONFIRM_REQUIRED', preview });
+        }
+        const usedCount = await tx.voucherUsage.count({ where: { voucherId: voucher.id } });
+        const userUsedCount = await tx.voucherUsage.count({ where: { voucherId: voucher.id, userId } });
+        try {
+          const pricing = calculatePricing({
+            items: preview.lines.map((line) => ({
+              price: line.sku.price,
+              salePrice: line.sku.salePrice,
+              quantity: line.quantity,
+            })),
+            voucher: { ...voucher, usedCount, userUsedCount },
+            now: new Date(),
+          });
+          if (
+            pricing.subtotal !== preview.subtotal ||
+            pricing.discount !== preview.voucher?.discount ||
+            pricing.merchandiseTotal + preview.shippingFee !== preview.total
+          ) {
+            throw new ConflictException({ code: 'CONFIRM_REQUIRED', preview });
+          }
+          discount = pricing.discount;
+          voucherId = voucher.id;
+        } catch (error) {
+          if (error instanceof PricingError && error.code.startsWith('VOUCHER_')) {
+            throw new ConflictException({ code: 'CONFIRM_REQUIRED', preview });
+          }
+          throw error;
+        }
       }
 
       const quantities = new Map<string, number>();
@@ -93,7 +127,7 @@ export class CheckoutService {
           recipientPhone: dto.recipient.phone,
           recipientAddress: dto.recipient.address,
           subtotal: preview.subtotal,
-          discount: 0,
+          discount,
           shippingFee: preview.shippingFee,
           total: preview.total,
           reserveExpiresAt: new Date(Date.now() + 15 * 60_000),
@@ -113,6 +147,11 @@ export class CheckoutService {
         },
         include: { items: true },
       });
+      if (voucherId) {
+        await tx.voucherUsage.create({
+          data: { voucherId, userId, orderId: order.id },
+        });
+      }
       await tx.orderStatusLog.create({
         data: { orderId: order.id, status: 'PENDING_PAYMENT', note: 'Tạo đơn' },
       });
