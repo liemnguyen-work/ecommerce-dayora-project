@@ -4025,3 +4025,89 @@ Codex nhận xét câu trả lời và hai câu luyện tập; chờ Hoàn xem l
 ### Kiểm tra và minh chứng
 
 Cập nhật file docs/learning/BD1-Hoan/kiem-tra/PRJ-P2-BD1-1.md; chưa commit hoặc push.
+
+---
+
+## Phase 2 / hoan-20261118-adminvoucher-01
+
+* Thời gian ghi: 2026-11-18T03:31:06+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-adminvoucher
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-3; PRJ-P1-BD1-1
+
+### Công cụ
+
+Codex và Git.
+
+### Mục đích
+
+Chuẩn bị nhánh cho task quản trị voucher và khuyến mãi.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp mô tả task cha và danh sách bảy sub-issue.
+
+### Kết quả đề xuất
+
+Fetch origin, kiểm tra auth và promotions có trên origin/main tại 6c258ca, tạo nhánh prj/p2-bd1-3 từ origin/main. Chưa tạo test hoặc chức năng.
+
+### Phản biện
+
+Cần nội dung chi tiết các sub-issue để xác định ca test và ràng buộc trước khi viết test nghiệm thu.
+
+### Quyết định của nhóm
+
+Chưa có xác nhận QA duyệt test cho task mới.
+
+### Người kiểm tra
+
+Codex kiểm tra Git; chờ Hoàn cung cấp chi tiết và QA xem xét.
+
+### Kiểm tra và minh chứng
+
+Nhánh mới được tạo tại 6c258ca; chưa chạy test, chưa commit hoặc push.
+
+---
+
+## Phase 2 / hoan-20261118-adminvoucher-02
+
+* Thời gian ghi: 2026-11-18T03:39:59+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-adminvoucher
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-3.1; hoan-20261118-adminvoucher-01
+
+### Công cụ
+
+Codex và Vitest.
+
+### Mục đích
+
+Chuẩn bị test nghiệm thu admin voucher và khuyến mãi.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp các sub-issue và đồng ý phương án giữ schema được đề xuất.
+
+### Kết quả đề xuất
+
+Tạo năm ca test theo tên sub-issue: phân quyền hai route, tạo voucher trùng mã, giới hạn lượt, bật tắt và lọc, khuyến mãi link nội bộ. Giả định không có description, đếm VoucherUsage, sử dụng linkUrl và không thêm subtitle.
+
+### Phản biện
+
+Hoàn đồng ý phương án đề xuất, chưa có xác nhận riêng của QA hoặc reviewer. Ca giới hạn hiện chỉ mô phỏng số lượt đã vượt giới hạn, chưa mô phỏng thay đổi đồng thời; cần hoàn thiện và QA xem xét trước khi chốt. Các ca khác dùng mock, một số giả định cấu trúc service và DTO cần review.
+
+### Quyết định của nhóm
+
+Hoàn đồng ý tiến hành theo phương án giữ schema; chưa có xác nhận QA duyệt test.
+
+### Người kiểm tra
+
+Codex chạy Vitest; chờ Hoàn, QA và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+npm test -w api -- admin-vouchers: 5 ca được thu thập, cả 5 fail do thiếu controller hoặc service; assertion chưa chạy. Chưa commit hoặc push.
