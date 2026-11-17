@@ -1176,7 +1176,62 @@ Codex đối chiếu tài liệu trong repo; chờ Ngọc kiểm tra nhận xét
 
 ### Công cụ
 
-Codex.
+Codex.---
+
+## P2 / ngoc-20261118-b6f2-01
+
+* Thời gian ghi: 2026-11-18T02:42:08+07:00
+* Thời gian thực hiện: Tổng hợp các trao đổi về P2 đến ngày 18/11/2026; chưa xác minh thời điểm bắt đầu từng hoạt động.
+* Mã phiên nhật ký: ngoc-20261118-b6f2
+* Người prompt: Ngọc
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-QA-1.1; PRJ-P2-QA-1.2; PRJ-P2-QA-1.3; PR #679; PR #684
+
+### Công cụ
+
+ChatGPT.
+
+### Mục đích
+
+Rà soát yêu cầu ca kiểm thử P2, sửa mã FR theo góp ý reviewer, mô tả kịch bản tranh tồn và giải thích kết quả chạy test checkout. Hướng dẫn kiểm tra diff, commit, push và điền mô tả PR.
+
+### Prompt
+
+Tóm lược: Ngọc cung cấp yêu cầu task, bảng ca kiểm thử và góp ý reviewer; yêu cầu sửa cột FR, giữ nguyên nội dung các cột khác và hỗ trợ mô tả TC-P2-32. Sau đó cung cấp ảnh Terminal để hỏi cách đọc kết quả kiểm tra và thực hiện các bước Git.
+
+### Kết quả đề xuất
+
+ChatGPT hướng dẫn dùng FR09 cho ca giỏ hàng, FR13 cho voucher và FR10 cho các ca phí giao trong checkout cùng ca tranh tồn; giữ chung đường dẫn `docs/testing/TEST-CASES.md`.
+
+Hỗ trợ soạn kịch bản TC-P2-32 với hai tài khoản độc lập cùng đặt SKU còn tồn khả dụng bằng 1. Kỳ vọng một yêu cầu thành công, yêu cầu còn lại nhận 409 do tồn kho, chỉ tạo một đơn và tồn kho không âm.
+
+Giải thích thông báo “No test files found” là không tìm thấy file khớp bộ lọc checkout.service trong lần chạy đó; chưa có test checkout nào được thực thi. Hướng dẫn ghi rõ phạm vi tài liệu, kết quả kiểm tra thực tế và phần chưa chạy trong mô tả PR.
+
+### Phản biện
+
+Ngọc yêu cầu giữ nguyên các nội dung ngoài phạm vi sửa FR. Một bản đề xuất của AI đã rút gọn cả các ca cũ nên không được giữ lại. Ngọc khôi phục bản cũ, yêu cầu sửa đúng cột FR và giữ phần bổ sung ca 32.
+
+Không dùng kết quả không tìm thấy file test để kết luận kiểm thử đạt.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới hoặc xác nhận nghiệm thu toàn bộ P2 trong phần trao đổi này. Ngọc đã đẩy thay đổi tài liệu lên nhánh `prj/p2-qa-1` để reviewer kiểm tra. Các ca chưa thực hiện giữ trạng thái Chưa chạy, Actual và ngày chạy để trống.
+
+### Người kiểm tra
+
+Ngọc chạy lệnh trên máy và cung cấp ảnh Terminal. ChatGPT hỗ trợ đọc kết quả, đối chiếu nội dung và hướng dẫn thao tác.
+
+Tiến Minh có góp ý về mã FR, đường dẫn tài liệu và mô tả PR. Chưa có xác nhận nghiệm thu thực nghiệm tranh tồn trong các minh chứng của mục này.
+
+### Kiểm tra và minh chứng
+
+- `grep -cF '| Giỏ |' docs/testing/TEST-CASES.md` trả về `0`.
+- Kết quả tìm `TC-P2-32` cho thấy ca mang mã FR10 và nằm trong cùng file.
+- `npm test -w api -- checkout.service` báo “No test files found”, mã thoát `1`; chưa thực thi test checkout.
+- Chưa có kết quả chạy TC-P2-32 bằng hai phiên trình duyệt và đối chiếu CSDL.
+- Chưa có kết quả lint/build cho thay đổi này trong minh chứng đã cung cấp.
+- Các commit đã đẩy: `d157263` cho bước 1.1, `9e2863f` cho bước 1.2 và `3a9be58` cho bước 1.3.
+- PR liên quan: #679 và #684 trong repo nhóm.
 
 ### Mục đích
 
@@ -1205,3 +1260,4 @@ Codex đối chiếu câu trả lời với nội dung thảo luận và mục l
 ### Kiểm tra và minh chứng
 
 Đọc lại mục `ngoc-20261116-b79e-01` trước khi nối thêm. Không chạy lại test, kiểm tra dữ liệu hay CI trong lượt này. Tệp thay đổi: `docs/ai-logs/ngoc.md`.
+
