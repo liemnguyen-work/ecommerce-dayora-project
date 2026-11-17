@@ -1,6 +1,7 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
 
+import type { Prisma } from '../generated/prisma/client.js';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { calculatePricing, PricingError } from '../pricing/pricing.js';
 import { OrdersService } from './orders.service.js';
@@ -25,6 +26,48 @@ export class CheckoutService {
     private readonly prisma: PrismaService,
     private readonly orders: OrdersService,
   ) {}
+
+  async detail(userId: string, id: string) {
+    const order = await this.prisma.order.findFirst({
+      where: { id, userId },
+      include: { items: true },
+    });
+    if (!order) throw new NotFoundException('Không tìm thấy đơn hàng');
+    return order;
+  }
+
+  private async release(tx: Prisma.TransactionClient, id: string, userId: string) {
+    const order = await tx.order.findFirst({
+      where: { id, userId },
+      include: { items: true },
+    });
+    if (!order) throw new NotFoundException('Không tìm thấy đơn hàng');
+
+    const changed = await tx.order.updateMany({
+      where: { id, userId, status: 'PENDING_PAYMENT', paymentStatus: 'UNPAID' },
+      data: { status: 'CANCELLED' },
+    });
+    if (changed.count !== 1) throw new ConflictException('Đơn không thể hủy');
+
+    const items = [...order.items].sort((a, b) => a.skuId.localeCompare(b.skuId));
+    for (const item of items) {
+      const released = await tx.sku.updateMany({
+        where: { id: item.skuId, reserved: { gte: item.quantity } },
+        data: { reserved: { decrement: item.quantity } },
+      });
+      if (released.count !== 1) {
+        throw new ConflictException('Không thể trả tồn kho đã giữ');
+      }
+    }
+    await tx.orderStatusLog.create({
+      data: { orderId: id, status: 'CANCELLED', note: 'Khách hủy' },
+    });
+  }
+
+  async cancel(userId: string, id: string) {
+    await this.prisma.$transaction((tx) => this.release(tx, id, userId));
+    return this.detail(userId, id);
+  }
 
   async create(userId: string, dto: CreateOrderInput) {
     const preview = await this.orders.preview(userId, {
