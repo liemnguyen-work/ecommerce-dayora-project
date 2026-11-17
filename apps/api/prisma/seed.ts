@@ -1088,3 +1088,29 @@ const product = await prisma.product.upsert({
   }
 }
 await main().finally(() => prisma.$disconnect());
+
+  // PRJ-P2-BD2-3.1 — Seed voucher DAYORA10
+  const startsAt = new Date();
+  const endsAt = new Date('2026-12-31T17:00:00.000Z');
+
+  await prisma.voucher.upsert({
+    where: {
+      code: 'DAYORA10',
+    },
+    update: {},
+    create: {
+      code: 'DAYORA10',
+      percentOff: 10,
+      amountOff: null,
+      maxDiscount: 50000,
+      minOrderValue: 300000,
+      usageLimit: 200,
+      perUserLimit: 1,
+      startsAt,
+      endsAt,
+      isActive: true,
+    },
+  });
+
+  console.log('Seed voucher DAYORA10 thành công');
+
