@@ -4381,3 +4381,92 @@ Codex chạy Vitest; chờ Hoàn, QA và reviewer.
 ### Kiểm tra và minh chứng
 
 npm test -w api -- admin-vouchers-status.spec.ts: 5/5 pass. Chưa commit hoặc push.
+
+---
+
+## Phase 2 / hoan-20261118-adminvoucher-09
+
+* Thời gian ghi: 2026-11-18T04:04:19+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-adminvoucher
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-3.6; hoan-20261118-adminvoucher-08
+
+### Công cụ
+
+Codex, Vitest, ESLint, Prisma và Nest CLI.
+
+### Mục đích
+
+Tạo, sửa khuyến mãi với link nội bộ và đăng ký module quản trị.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp sub-issue PRJ-P2-BD1-3.6.
+
+### Kết quả đề xuất
+
+Thêm DTO, service và route quản trị khuyến mãi, kiểm tra link nội bộ; đăng ký module khuyến mãi và voucher, bổ sung route tạo voucher. Giữ linkUrl và không thêm subtitle theo schema hiện có; yêu cầu imageUrl vì schema bắt buộc. Cập nhật fixture test với imageUrl.
+
+### Phản biện
+
+Lần test đầu lỗi do phương thức create ném lỗi đồng bộ trong khi test chờ promise; đã chuyển sang async rồi chạy lại. Thay đổi fixture test nghiệm thu cần QA review. Ca giới hạn thay đổi đồng thời chưa mô phỏng concurrency; chưa test HTTP tích hợp toàn bộ module hoặc database thật. Chưa xác nhận QA duyệt test.
+
+### Quyết định của nhóm
+
+Tiếp tục giữ schema Promotion theo quyết định Hoàn đã cung cấp; chưa có reviewer duyệt code.
+
+### Người kiểm tra
+
+Codex chạy test, lint và build API; chờ Hoàn, QA và reviewer.
+
+### Kiểm tra và minh chứng
+
+- npm test -w api -- admin-vouchers: 11/11 pass bằng mock.
+- npm run lint -w api: pass.
+- npm run build -w api: pass.
+- Chưa test ứng dụng với database thật; migration voucher description chưa áp dụng; chưa commit hoặc push.
+
+---
+
+## Phase 2 / hoan-20261118-adminvoucher-10
+
+* Thời gian ghi: 2026-11-18T04:06:02+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-adminvoucher
+* Người prompt: Hoàn
+* Loại mục: Kiểm tra
+* Liên quan: PRJ-P2-BD1-3.6; hoan-20261118-adminvoucher-09
+
+### Công cụ
+
+Codex, Git và PostgreSQL client pg.
+
+### Mục đích
+
+Kiểm tra an toàn trạng thái migration và khả năng kiểm thử database thật.
+
+### Prompt
+
+Tóm lược: Hoàn hỏi có thể kiểm tra ứng dụng với database thật, thay đổi lượt voucher đồng thời và trạng thái migration không.
+
+### Kết quả đề xuất
+
+Chỉ đọc metadata database theo cấu hình local, ưu tiên DIRECT_URL: public.Voucher chưa có description và chưa thấy migration 20261118040000_add_voucher_description áp dụng thành công. Không ghi dữ liệu hoặc áp dụng migration. Kiểm tra PATH không tìm thấy docker hoặc psql.
+
+### Phản biện
+
+Chưa xác minh database được cấu hình có trùng môi trường Supabase mà nhóm dự định sử dụng hay không. Chưa có database test riêng được xác nhận; không chạy thử hai giao dịch ghi trên database chung. Lock voucher chỉ bảo vệ khi mọi luồng ghi lượt dùng tuân thủ cùng quy ước.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chọn môi trường database test hoặc áp dụng migration. Hoàn yêu cầu kiểm tra; không yêu cầu thay đổi database.
+
+### Người kiểm tra
+
+Codex kiểm tra metadata và công cụ; chờ Hoàn và nhóm xác nhận môi trường test.
+
+### Kiểm tra và minh chứng
+
+Truy vấn chỉ đọc information_schema và bảng lịch sử migration; không in thông tin kết nối. Chưa test HTTP với database thật hoặc kiểm tra giao dịch đồng thời.
