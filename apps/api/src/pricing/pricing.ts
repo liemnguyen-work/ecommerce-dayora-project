@@ -1,4 +1,4 @@
-﻿export interface PricingItem {
+export interface PricingItem {
   price: number;
   salePrice?: number | null;
   quantity: number;
@@ -37,7 +37,7 @@ export function calculatePricing(input: PricingInput) {
   for (const item of input.items) {
     const price = item.salePrice ?? item.price;
     if (!Number.isSafeInteger(item.price) || item.price < 0 ||
-        !Number.isSafeInteger(price) || price < 0 ||
+        !Number.isSafeInteger(price) || price < 0 || price > item.price ||
         !Number.isSafeInteger(item.quantity) || item.quantity < 1) {
       throw new PricingError('INVALID_INPUT', 'Giá hoặc số lượng không hợp lệ');
     }
