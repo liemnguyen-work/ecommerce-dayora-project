@@ -1112,7 +1112,6 @@ await main().finally(() => prisma.$disconnect());
     },
   });
   console.log('Seed voucher DAYORA10 thành công');
-
   // PRJ-P2-BD2-3.2 — Voucher giảm tiền cố định PICNIC50K
   await prisma.voucher.upsert({
     where: {
@@ -1132,6 +1131,24 @@ await main().finally(() => prisma.$disconnect());
       isActive: true,
     },
   });
+// PRJ-P2-BD2-3.3 — Seed khuyến mãi mùa picnic
+await prisma.promotion.upsert({
+  where: {
+    id: '0d3797d7-c916-4e43-aead-0667f73ad032',
+  },
+  update: {},
+  create: {
+    id: '0d3797d7-c916-4e43-aead-0667f73ad032',
+    title: 'Ưu đãi mùa picnic',
+    imageUrl: '/home/trip-picnic.jpg',
+    linkUrl: '/san-pham',
+    startsAt,
+    endsAt,
+    isActive: true,
+  },
+});
+
+console.log('Seed khuyến mãi mùa picnic thành công');
 
   console.log('Seed voucher PICNIC50K thành công');
 
