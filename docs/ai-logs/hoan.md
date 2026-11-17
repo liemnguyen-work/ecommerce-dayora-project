@@ -4243,3 +4243,49 @@ Codex kiểm tra trạng thái Git; chờ QA duyệt test và Hoàn, nhóm quy�
 
 - Test bước 2.1 đã commit b33f266 và push; AI logs chuẩn bị đã commit eca9111.
 - Chưa có apps/api/src/orders/checkout.service.ts; chưa triển khai bước 2.2 và chưa test tranh tồn trên database thật.
+
+---
+
+## Phase 2 / hoan-20261118-checkout-06
+
+* Thời gian ghi: 2026-11-18T02:52:35+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-checkout
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-2.2; hoan-20261118-checkout-05
+
+### Công cụ
+
+Codex, Vitest, ESLint, Prisma và Nest CLI.
+
+### Mục đích
+
+Triển khai bước tạo đơn, lưu giá snapshot và giữ tồn trong transaction.
+
+### Prompt
+
+Tóm lược: Hoàn làm rõ yêu cầu thực hiện bước 2.2 trước bước xác nhận giá.
+
+### Kết quả đề xuất
+
+Tạo checkout.service.ts: lấy preview, so sánh dữ liệu dự kiến, kiểm tra giỏ, giữ hàng bằng cập nhật có điều kiện theo thứ tự SKU, tạo đơn và lịch sử, xóa các dòng giỏ trong transaction. Đơn có hạn giữ 15 phút và snapshot giá sale. Tạm từ chối đơn có voucher vì xử lý giao dịch voucher ở bước sau.
+
+### Phản biện
+
+Test tranh tồn dùng mock không chứng minh an toàn đồng thời trên PostgreSQL. Chưa có controller hoặc module kết nối API; chưa kiểm tra database thật. Chưa xác nhận QA duyệt test trước khi triển khai. Schema CartItem không lưu ruleSetVersion nên chưa có dữ liệu này cho snapshot.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu thực hiện bước 2.2. Chưa có xác nhận riêng của QA duyệt test hoặc reviewer duyệt thay đổi.
+
+### Người kiểm tra
+
+Codex chạy hai ca liên quan, lint và build API; chờ Hoàn, QA và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- npm test -w api -- checkout.service.spec.ts -t "tạo đơn với snapshot giá sale|hai yêu cầu tranh tồn": 2 pass, 5 skipped.
+- npm run lint -w api: pass.
+- npm run build -w api: pass.
+- Chưa test với database thật, chưa commit hoặc push.
