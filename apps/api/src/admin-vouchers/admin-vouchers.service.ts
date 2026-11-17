@@ -1,5 +1,7 @@
-import { BadRequestException, ConflictException, Inject, Injectable, NotFoundException, NotImplementedException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import type { Prisma } from '../generated/prisma/client.js';
 import { PrismaService } from '../prisma/prisma.service.js';
+import type { VoucherQueryDto } from './admin-vouchers.dto.js';
 
 export type CreateVoucherInput = {
   code: string;
@@ -19,11 +21,34 @@ export type CreateVoucherInput = {
 export class AdminVouchersService {
   constructor(@Inject(PrismaService) private readonly prisma: PrismaService) {}
 
-  list() {
-    throw new NotImplementedException('Chức năng đang được triển khai');
+  async list(query: VoucherQueryDto) {
+    const now = new Date();
+    const page = query.page ?? 1;
+    const statusWhere: Record<NonNullable<VoucherQueryDto['status']>, Prisma.VoucherWhereInput> = {
+      disabled: { isActive: false },
+      expired: { isActive: true, endsAt: { lte: now } },
+      scheduled: { isActive: true, startsAt: { gt: now }, endsAt: { gt: now } },
+      active: { isActive: true, startsAt: { lte: now }, endsAt: { gt: now } },
+    };
+    const where: Prisma.VoucherWhereInput = {
+      ...(query.q ? { code: { contains: query.q, mode: 'insensitive' } } : {}),
+      ...(query.status ? statusWhere[query.status] : {}),
+    };
+    const [items, total] = await Promise.all([
+      this.prisma.voucher.findMany({ where, orderBy: [{ code: 'asc' }, { id: 'asc' }], skip: (page - 1) * 20, take: 20 }),
+      this.prisma.voucher.count({ where }),
+    ]);
+    return {
+      items: items.map((voucher) => ({
+        ...voucher,
+        status: !voucher.isActive ? 'disabled' : voucher.endsAt <= now ? 'expired' : voucher.startsAt > now ? 'scheduled' : 'active',
+      })),
+      total,
+      page,
+    };
   }
 
-  async update(id: string, dto: { usageLimit?: number | null }) {
+  async update(id: string, dto: { usageLimit?: number | null; isActive?: boolean }) {
     const limit = dto.usageLimit;
     if (limit != null && (!Number.isSafeInteger(limit) || limit < 0)) {
       throw new BadRequestException('Giới hạn không hợp lệ');
@@ -38,7 +63,7 @@ export class AdminVouchersService {
           throw new BadRequestException('Giới hạn thấp hơn số lượt đã dùng');
         }
       }
-      return tx.voucher.update({ where: { id }, data: { usageLimit: limit } });
+      return tx.voucher.update({ where: { id }, data: { usageLimit: limit, isActive: dto.isActive } });
     });
   }
 
