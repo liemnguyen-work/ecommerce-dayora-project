@@ -33,27 +33,52 @@ export class PricingError extends Error {
 }
 function safeNumber(value: bigint): number {
   if (value > BigInt(Number.MAX_SAFE_INTEGER)) {
-    throw new PricingError('OVERFLOW', 'Giá trị vượt giới hạn an toàn');
+    throw new PricingError('OVERFLOW', 'Số tiền vượt giới hạn integer an toàn');
   }
   return Number(value);
 }
+function integer(value: unknown, field: string, minimum = 0): asserts value is number {
+  if (typeof value !== 'number' || !Number.isSafeInteger(value) || value < minimum) {
+    throw new PricingError('INVALID_INPUT', `Đầu vào không hợp lệ: ${field}`);
+  }
+}
+
 export function calculatePricing(input: PricingInput) {
   if (!input.items.length) {
     throw new PricingError('INVALID_INPUT', 'Giỏ hàng không được rỗng');
   }
   let sum = 0n;
   for (const item of input.items) {
+    integer(item.price, 'price');
+    integer(item.quantity, 'quantity', 1);
+    if (item.salePrice != null) integer(item.salePrice, 'salePrice');
     const price = item.salePrice ?? item.price;
-    if (!Number.isSafeInteger(item.price) || item.price < 0 ||
-        !Number.isSafeInteger(price) || price < 0 || price > item.price ||
-        !Number.isSafeInteger(item.quantity) || item.quantity < 1) {
-      throw new PricingError('INVALID_INPUT', 'Giá hoặc số lượng không hợp lệ');
+    if (price > item.price) {
+      throw new PricingError('INVALID_INPUT', 'Giá sale vượt giá gốc');
     }
-    sum += BigInt(price) * BigInt(item.quantity);
+    const lineTotal = BigInt(price) * BigInt(item.quantity);
+    safeNumber(lineTotal);
+    sum += lineTotal;
+    safeNumber(sum);
   }
   const subtotal = safeNumber(sum);
   const voucher = input.voucher;
   if (voucher) {
+    integer(voucher.usedCount, 'usedCount');
+    integer(voucher.userUsedCount, 'userUsedCount');
+    for (const [field, value] of Object.entries({
+      minOrderValue: voucher.minOrderValue,
+      usageLimit: voucher.usageLimit,
+      perUserLimit: voucher.perUserLimit,
+      percentOff: voucher.percentOff,
+      amountOff: voucher.amountOff,
+      maxDiscount: voucher.maxDiscount,
+    })) {
+      if (value != null) integer(value, field);
+    }
+    if (voucher.percentOff != null && voucher.percentOff > 100) {
+      throw new PricingError('INVALID_INPUT', 'Phần trăm giảm không được vượt quá 100');
+    }
     if (!voucher.isActive) {
       throw new PricingError('VOUCHER_INACTIVE', 'Voucher không hoạt động');
     }
