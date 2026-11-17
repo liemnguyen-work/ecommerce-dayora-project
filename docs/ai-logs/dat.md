@@ -1228,3 +1228,65 @@ Giữ đúng 20 ảnh đã chuẩn hóa tên. Thay đổi CORS trong `apps/api/s
 - Mỗi trang có desktop/mobile và group/sample.
 - `git diff --cached --check`: PASS.
 - Commit chỉ chứa ảnh và nhật ký AI; không chứa thay đổi CORS tạm thời.
+
+---
+
+## P1 — Lập báo cáo đối chiếu giao diện / DAT-20261117-PD2-003
+
+* **Thời gian ghi:** 17/11/2026
+* **Thời gian thực hiện:** 17/11/2026
+* **Mã phiên nhật ký:** DAT-20261117-PD2
+* **Người prompt:** Đạt (PD)
+* **Loại mục:** Hoạt động
+* **Liên quan:** PRJ-P1-PD-2.3; nhánh `prj/p1-pd-2`
+
+### Công cụ
+
+ChatGPT (GPT-6), Visual Studio Code, CMD, Git và GitHub.
+
+### Mục đích
+
+Lập bảng đối chiếu giao diện giữa bản nhóm và bản mẫu cho năm trang cốt lõi của Phase 1; phân loại khác biệt theo mức Chặn, Nên sửa hoặc Chấp nhận và xác định người phụ trách.
+
+### Prompt
+
+Đạt cung cấp yêu cầu của PRJ-P1-PD-2.3, bản nháp báo cáo và bộ 20 ảnh đã chụp ở bước 2.2; yêu cầu ChatGPT rà soát nội dung, sửa đường dẫn ảnh, phân loại mức độ khác biệt và bảo đảm chỉ tạo issue khi có khác biệt mức Chặn.
+
+### Kết quả đề xuất
+
+ChatGPT hỗ trợ:
+
+- Chuẩn hóa thông tin kiểm tra, commit nhóm và nguồn code mẫu.
+- Thay bảng minh chứng cũ bằng 20 đường dẫn ảnh tại `docs/report/images/p1/`.
+- Đối chiếu Trang chủ, Sản phẩm, Chi tiết sản phẩm, Đăng nhập và Về chúng tôi ở desktop và mobile.
+- Bổ sung cột mức độ, người phụ trách và issue.
+- Phân loại các khác biệt quan sát được là Nên sửa hoặc Chấp nhận.
+- Kết luận không có khác biệt mức Chặn trong phạm vi ảnh chụp nên không phát sinh issue bắt buộc.
+
+### Phản biện
+
+Bản nháp ban đầu ghi hai khác biệt mức Chặn: thiếu mô tả thực tế ở trang Chi tiết sản phẩm và mất FAQ ở About mobile. Sau khi đối chiếu lại bộ ảnh mới:
+
+- Cả bản nhóm và bản mẫu đều dùng nội dung mô tả sản phẩm đang cập nhật.
+- About mobile của bản nhóm vẫn có FAQ, nhưng số lượng câu và cách trình bày khác bản mẫu.
+- Không quan sát thấy giao diện bị vỡ, tràn ngang hoặc CTA cốt lõi bị che.
+
+Vì vậy, hai mục trên không đáp ứng tiêu chí Chặn và được phân loại lại. Kết luận chỉ dựa trên ảnh; chưa xác nhận hover, focus, validation, disabled, zoom 200%, dark mode, reduced motion hoặc hành vi chức năng.
+
+### Quyết định của nhóm
+
+Giữ báo cáo với các khác biệt mức Nên sửa và Chấp nhận. Không tạo issue Chặn vì `BLOCKER_ROWS=0`. Báo cáo chờ FD1 Thành review; chưa ghi nhận phê duyệt chính thức.
+
+### Người kiểm tra
+
+Đạt trực tiếp chụp ảnh, kiểm tra nội dung và lưu báo cáo. ChatGPT hỗ trợ đối chiếu, phân loại, chuẩn hóa báo cáo và hướng dẫn kiểm tra Git. FD1 Thành là reviewer phụ trách xác nhận kết quả.
+
+### Kiểm tra và minh chứng
+
+- Báo cáo: `docs/report/ux/P1-doi-chieu.md`.
+- Ảnh: `docs/report/images/p1/`.
+- Có đúng 20 đường dẫn ảnh trong báo cáo.
+- `BLOCKER_ROWS=0`.
+- Không phát sinh issue bắt buộc cho lỗi Chặn.
+- `git diff --check`: PASS.
+- Chưa có xác nhận chính thức từ reviewer tại thời điểm ghi.
