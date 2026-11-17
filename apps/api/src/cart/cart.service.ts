@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import type { PrismaService } from '../prisma/prisma.service.js';
 
 type AddCartDto = {
@@ -197,7 +197,6 @@ async add(userId: string, dto: AddCartDto) {
           'Số lượng vượt quá tồn kho khả dụng',
         );
       }
-
       if (sameGroup) {
         await tx.cartItem.update({
           where: { id: sameGroup.id },
@@ -218,27 +217,89 @@ async add(userId: string, dto: AddCartDto) {
 
   return this.get(userId);
 }
-  async update(
-    userId: string,
-    id: string,
-    quantity: number,
-  ) {
-    void userId;
-    void id;
-    void quantity;
 
-    return {};
+  async update(userId: string, id: string, quantity: number) {
+    if (!Number.isInteger(quantity) || quantity < 1 || quantity > 99) {
+      throw new BadRequestException('Số lượng phải từ 1 đến 99');
+    }
+
+    const item = await this.prisma.cartItem.findFirst({
+      where: {
+        id,
+        cart: { userId },
+      },
+      include: {
+        sku: {
+          include: { product: true },
+        },
+      },
+    });
+
+    if (!item) {
+      throw new NotFoundException('Không tìm thấy mục giỏ hàng');
+    }
+
+    const sku = item.sku;
+
+    if (
+      sku.status !== 'ACTIVE' ||
+      sku.product.status !== 'ACTIVE'
+    ) {
+      throw new BadRequestException('Sản phẩm không còn được bán');
+    }
+
+    const otherItems = await this.prisma.cartItem.findMany({
+      where: {
+        cartId: item.cartId,
+        skuId: item.skuId,
+      },
+    });
+
+    const otherQuantity = otherItems.reduce(
+      (sum, row) => sum + (row.id === item.id ? 0 : row.quantity),
+      0,
+    );
+
+    const availableStock = Math.max(0, sku.stock - sku.reserved);
+
+    if (otherQuantity + quantity > availableStock) {
+      throw new BadRequestException(
+        'Số lượng vượt quá tồn kho khả dụng',
+      );
+    }
+
+    await this.prisma.cartItem.update({
+      where: {
+        id: item.id,
+      },
+      data: { quantity },
+    });
+
+    return this.get(userId);
   }
-  async remove(userId: string, id: string) {
-    void userId;
-    void id;
 
-    return {};
+  async remove(userId: string, id: string) {
+    const result = await this.prisma.cartItem.deleteMany({
+      where: {
+        id,
+        cart: { userId },
+      },
+    });
+
+    if (result.count === 0) {
+      throw new NotFoundException('Không tìm thấy mục giỏ hàng');
+    }
+
+    return this.get(userId);
   }
 
   async clear(userId: string) {
-    void userId;
+    await this.prisma.cartItem.deleteMany({
+      where: {
+        cart: { userId },
+      },
+    });
 
-    return {};
+    return this.get(userId);
   }
 }
