@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException, Inject, Injectable, NotImplementedException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Inject, Injectable, NotFoundException, NotImplementedException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 
 export type CreateVoucherInput = {
@@ -21,6 +21,25 @@ export class AdminVouchersService {
 
   list() {
     throw new NotImplementedException('Chức năng đang được triển khai');
+  }
+
+  async update(id: string, dto: { usageLimit?: number | null }) {
+    const limit = dto.usageLimit;
+    if (limit != null && (!Number.isSafeInteger(limit) || limit < 0)) {
+      throw new BadRequestException('Giới hạn không hợp lệ');
+    }
+    return this.prisma.$transaction(async (tx) => {
+      await tx.$queryRaw`SELECT "id" FROM "Voucher" WHERE "id" = ${id} FOR UPDATE`;
+      const voucher = await tx.voucher.findUnique({ where: { id } });
+      if (!voucher) throw new NotFoundException('Không tìm thấy voucher');
+      if (limit != null) {
+        const usedCount = await tx.voucherUsage.count({ where: { voucherId: id } });
+        if (limit < usedCount) {
+          throw new BadRequestException('Giới hạn thấp hơn số lượt đã dùng');
+        }
+      }
+      return tx.voucher.update({ where: { id }, data: { usageLimit: limit } });
+    });
   }
 
   async create(dto: CreateVoucherInput) {
