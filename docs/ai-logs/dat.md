@@ -1175,3 +1175,174 @@ Tôi sử dụng nội dung được hỗ trợ để chuẩn bị tài liệu �
 - Nhật ký AI: `docs/ai-logs/dat.md`.
 - Pull Request: #669.
 - Phần tự đánh giá độc lập và vấn đáp cần được xác nhận trước khi đóng sub-issue.
+---
+
+## P1 — Chụp minh chứng giao diện nhóm và bản mẫu / DAT-20261117-PD2-002
+
+* **Thời gian ghi:** 17/11/2026
+* **Thời gian thực hiện:** 16/11/2026–17/11/2026
+* **Mã phiên nhật ký:** DAT-20261117-PD2
+* **Người prompt:** Đạt (PD)
+* **Loại mục:** Hoạt động
+* **Liên quan:** PRJ-P1-PD-2.2; nhánh `prj/p1-pd-2`
+
+### Công cụ
+
+ChatGPT (GPT-6), Firefox Responsive Design Mode, CMD và Git.
+
+### Mục đích
+
+Chụp minh chứng giao diện của năm trang P1 trên bản nhóm và bản mẫu ở kích thước desktop 1366 × 768 và mobile 390 × 844, phục vụ bước đối chiếu giao diện.
+
+### Prompt
+
+Đạt yêu cầu ChatGPT hướng dẫn chạy đồng thời bản nhóm tại cổng 5173, bản mẫu tại cổng 5174 và API tại cổng 3000; xử lý lỗi cổng và CORS; hướng dẫn chụp, kiểm tra, đổi tên và lưu đủ ảnh theo đúng cấu trúc của task PRJ-P1-PD-2.2.
+
+### Kết quả đề xuất
+
+ChatGPT hỗ trợ xác định năm trang cần chụp, hai kích thước viewport, quy tắc phân biệt `group` và `sample`, cách duy trì ba tiến trình local, cấu hình CORS tạm thời cho cổng 5174 và cách chuẩn hóa tên ảnh.
+
+Đạt trực tiếp chạy dự án, kiểm tra giao diện và chụp đủ 20 ảnh tại `docs/report/images/p1/`, gồm 5 trang × 2 kích thước × 2 phiên bản.
+
+### Phản biện
+
+Hướng dẫn ban đầu đã hiểu chưa đầy đủ yêu cầu khi chỉ chuẩn bị 10 ảnh bản nhóm và dùng sai thư mục. Sau khi đọc lại sub-issue, quy trình được sửa thành 20 ảnh gồm cả bản nhóm và bản mẫu tại đúng thư mục `docs/report/images/p1/`.
+
+Kích thước pixel vật lý của ảnh có thể chịu ảnh hưởng bởi Windows Display Scaling; việc nghiệm thu dựa trên viewport đã đặt trong Responsive Design Mode và nội dung toàn trang được chụp.
+
+### Quyết định của nhóm
+
+Giữ đúng 20 ảnh đã chuẩn hóa tên. Thay đổi CORS trong `apps/api/src/main.ts` chỉ được sử dụng tạm thời để chạy bản mẫu tại cổng 5174 và không được đưa vào commit PRJ-P1-PD-2.2.
+
+### Người kiểm tra
+
+Đạt trực tiếp chạy bản nhóm, bản mẫu và API; chụp, xem lại và lưu ảnh. ChatGPT hướng dẫn quy trình và kiểm tra danh sách tệp dựa trên output do Đạt cung cấp.
+
+### Kiểm tra và minh chứng
+
+- API health trả `{"status":"ok","service":"dayora-api"}`.
+- Bản nhóm chạy tại `http://localhost:5173`.
+- Bản mẫu chạy tại `http://localhost:5174`.
+- Có đúng 20 ảnh trong `docs/report/images/p1/`.
+- Đủ Trang chủ, Sản phẩm, Chi tiết sản phẩm, Đăng nhập và Về chúng tôi.
+- Mỗi trang có desktop/mobile và group/sample.
+- `git diff --cached --check`: PASS.
+- Commit chỉ chứa ảnh và nhật ký AI; không chứa thay đổi CORS tạm thời.
+
+---
+
+## P1 — Lập báo cáo đối chiếu giao diện / DAT-20261117-PD2-003
+
+* **Thời gian ghi:** 17/11/2026
+* **Thời gian thực hiện:** 17/11/2026
+* **Mã phiên nhật ký:** DAT-20261117-PD2
+* **Người prompt:** Đạt (PD)
+* **Loại mục:** Hoạt động
+* **Liên quan:** PRJ-P1-PD-2.3; nhánh `prj/p1-pd-2`
+
+### Công cụ
+
+ChatGPT (GPT-6), Visual Studio Code, CMD, Git và GitHub.
+
+### Mục đích
+
+Lập bảng đối chiếu giao diện giữa bản nhóm và bản mẫu cho năm trang cốt lõi của Phase 1; phân loại khác biệt theo mức Chặn, Nên sửa hoặc Chấp nhận và xác định người phụ trách.
+
+### Prompt
+
+Đạt cung cấp yêu cầu của PRJ-P1-PD-2.3, bản nháp báo cáo và bộ 20 ảnh đã chụp ở bước 2.2; yêu cầu ChatGPT rà soát nội dung, sửa đường dẫn ảnh, phân loại mức độ khác biệt và bảo đảm chỉ tạo issue khi có khác biệt mức Chặn.
+
+### Kết quả đề xuất
+
+ChatGPT hỗ trợ:
+
+- Chuẩn hóa thông tin kiểm tra, commit nhóm và nguồn code mẫu.
+- Thay bảng minh chứng cũ bằng 20 đường dẫn ảnh tại `docs/report/images/p1/`.
+- Đối chiếu Trang chủ, Sản phẩm, Chi tiết sản phẩm, Đăng nhập và Về chúng tôi ở desktop và mobile.
+- Bổ sung cột mức độ, người phụ trách và issue.
+- Phân loại các khác biệt quan sát được là Nên sửa hoặc Chấp nhận.
+- Kết luận không có khác biệt mức Chặn trong phạm vi ảnh chụp nên không phát sinh issue bắt buộc.
+
+### Phản biện
+
+Bản nháp ban đầu ghi hai khác biệt mức Chặn: thiếu mô tả thực tế ở trang Chi tiết sản phẩm và mất FAQ ở About mobile. Sau khi đối chiếu lại bộ ảnh mới:
+
+- Cả bản nhóm và bản mẫu đều dùng nội dung mô tả sản phẩm đang cập nhật.
+- About mobile của bản nhóm vẫn có FAQ, nhưng số lượng câu và cách trình bày khác bản mẫu.
+- Không quan sát thấy giao diện bị vỡ, tràn ngang hoặc CTA cốt lõi bị che.
+
+Vì vậy, hai mục trên không đáp ứng tiêu chí Chặn và được phân loại lại. Kết luận chỉ dựa trên ảnh; chưa xác nhận hover, focus, validation, disabled, zoom 200%, dark mode, reduced motion hoặc hành vi chức năng.
+
+### Quyết định của nhóm
+
+Giữ báo cáo với các khác biệt mức Nên sửa và Chấp nhận. Không tạo issue Chặn vì `BLOCKER_ROWS=0`. Báo cáo chờ FD1 Thành review; chưa ghi nhận phê duyệt chính thức.
+
+### Người kiểm tra
+
+Đạt trực tiếp chụp ảnh, kiểm tra nội dung và lưu báo cáo. ChatGPT hỗ trợ đối chiếu, phân loại, chuẩn hóa báo cáo và hướng dẫn kiểm tra Git. FD1 Thành là reviewer phụ trách xác nhận kết quả.
+
+### Kiểm tra và minh chứng
+
+- Báo cáo: `docs/report/ux/P1-doi-chieu.md`.
+- Ảnh: `docs/report/images/p1/`.
+- Có đúng 20 đường dẫn ảnh trong báo cáo.
+- `BLOCKER_ROWS=0`.
+- Không phát sinh issue bắt buộc cho lỗi Chặn.
+- `git diff --check`: PASS.
+- Chưa có xác nhận chính thức từ reviewer tại thời điểm ghi.
+
+---
+
+## P1 — Tự đánh giá quy trình đối chiếu giao diện / DAT-20261117-PD2-004
+
+* **Thời gian ghi:** 17/11/2026
+* **Thời gian thực hiện:** 17/11/2026
+* **Mã phiên nhật ký:** DAT-20261117-PD2
+* **Người prompt:** Đạt (PD)
+* **Loại mục:** Học tập
+* **Liên quan:** PRJ-P1-PD-2.4; nhánh `prj/p1-pd-2`
+
+### Công cụ
+
+ChatGPT (GPT-6), Visual Studio Code, CMD và Git.
+
+### Mục đích
+
+Ghi lại phần tự đánh giá sau khi hoàn thành việc chạy hai phiên bản, chụp ảnh và lập báo cáo đối chiếu giao diện P1. Nội dung được dùng để ôn lại quy trình và chuẩn bị trả lời khi reviewer hỏi.
+
+### Prompt
+
+Đạt yêu cầu tổng hợp ngắn gọn những gì đã trực tiếp thực hiện trong PRJ-P1-PD-2, gồm mục đích của từng bước, hậu quả nếu bỏ qua và khó khăn lớn nhất trong quá trình làm.
+
+### Kết quả thảo luận
+
+Qua quá trình thực hiện, Đạt xác định:
+
+- Chạy bản nhóm ở cổng 5173 và bản mẫu ở cổng 5174 giúp quan sát hai giao diện cùng lúc. Bỏ bước này không làm website hỏng nhưng khiến việc so sánh thiếu bản tham chiếu.
+- Chụp ở 1366 × 768 px và 390 × 844 px giúp kiểm tra cả desktop lẫn mobile. Nếu chỉ kiểm tra một kích thước thì có thể bỏ sót lỗi responsive.
+- Bảng đối chiếu giúp ghi rõ điểm giống, điểm khác, mức độ và người phụ trách thay vì chỉ nhận xét chung chung.
+- Khó khăn lớn nhất là lúc đầu hiểu “10 cặp ảnh” thành 10 ảnh. Sau khi đọc lại yêu cầu, Đạt đã chuẩn hóa thành 20 tệp gồm bản nhóm và bản mẫu, đổi tên và lưu đúng tại `docs/report/images/p1/`.
+
+ChatGPT hỗ trợ sắp xếp và diễn đạt lại các ý trên thành nội dung ngắn gọn cho file kiểm tra kiến thức.
+
+### Phản biện
+
+Ảnh chụp chỉ chứng minh được bố cục và trạng thái giao diện tại thời điểm chụp. Ảnh không đủ để kết luận các trạng thái hover, focus, validation, disabled hoặc thao tác bàn phím đã hoạt động đúng.
+
+Việc không ghi nhận lỗi Chặn cũng chỉ áp dụng trong phạm vi 20 ảnh đã đối chiếu. Các hành vi chức năng vẫn cần được kiểm thử riêng nếu reviewer yêu cầu.
+
+### Quyết định của nhóm
+
+Sử dụng nội dung tự đánh giá làm tài liệu ôn tập cho PRJ-P1-PD-2.4. Đạt sẽ dựa trên quá trình đã trực tiếp thực hiện để giải thích lại bằng lời khi được hỏi, không phụ thuộc vào việc mở lại báo cáo.
+
+### Người kiểm tra
+
+Đạt trực tiếp thực hiện các bước chạy dự án, xử lý API, chụp ảnh, chuẩn hóa tên tệp và kiểm tra báo cáo. ChatGPT hỗ trợ rà soát và hệ thống hóa nội dung. FD1 Thành là reviewer xác nhận kiến thức thực tế.
+
+### Kiểm tra và minh chứng
+
+- File kiểm tra: `docs/learning/PD-Dat/kiem-tra/PRJ-P1-PD-2.md`.
+- File báo cáo: `docs/report/ux/P1-doi-chieu.md`.
+- Bộ minh chứng gồm 20 ảnh tại `docs/report/images/p1/`.
+- Nội dung kiểm tra gồm đủ ba bước của task và một khó khăn thực tế.
+- Chưa có xác nhận chính thức từ reviewer tại thời điểm ghi.
