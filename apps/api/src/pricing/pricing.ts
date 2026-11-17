@@ -44,8 +44,11 @@ export function calculatePricing(input: PricingInput) {
     sum += BigInt(price) * BigInt(item.quantity);
   }
   const subtotal = safeNumber(sum);
-  const percent = input.voucher?.percentOff;
-  const discount = percent == null ? 0 : safeNumber(sum * BigInt(percent) / 100n);
+  const voucher = input.voucher;
+  const raw = voucher?.percentOff != null
+    ? safeNumber(sum * BigInt(voucher.percentOff) / 100n)
+    : (voucher?.amountOff ?? 0);
+  const discount = Math.min(raw, voucher?.maxDiscount ?? subtotal, subtotal);
   const merchandiseTotal = subtotal - discount;
   const shippingEstimated = input.zone == null;
   let shippingFee = input.zone === 'HCM_INNER' ? 20_000 : input.zone === 'OTHER' ? 40_000 : 30_000;
