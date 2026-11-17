@@ -4156,3 +4156,95 @@ Codex chạy test và lint; chờ Hoàn, QA và reviewer.
 - npm test -w api -- admin-vouchers.spec.ts -t "khách bị chặn cả hai route": 1 pass, 4 skipped.
 - npm run lint -w api: pass.
 - Chưa build API, chưa đăng ký module, chưa commit hoặc push.
+
+---
+
+## Phase 2 / hoan-20261118-adminvoucher-04
+
+* Thời gian ghi: 2026-11-18T03:46:09+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-adminvoucher
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-3.3; hoan-20261118-adminvoucher-03
+
+### Công cụ
+
+Codex, Vitest, ESLint, Prisma và Nest CLI.
+
+### Mục đích
+
+Thêm tạo voucher và xử lý lỗi mã trùng.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp sub-issue PRJ-P2-BD1-3.3.
+
+### Kết quả đề xuất
+
+Thêm create vào AdminVouchersService: kiểm tra mã, thời gian, một loại giảm giá và các giá trị số; chuyển lỗi P2002 thành HTTP 409. Không yêu cầu description theo phương án giữ schema Hoàn đã chọn.
+
+### Phản biện
+
+Ca test dùng mock và chưa kiểm tra riêng mọi điều kiện đầu vào; API controller chưa có route tạo và module chưa được đăng ký. Phương án bỏ description khác nội dung task, cần reviewer xác nhận. Bộ test chưa được xác nhận QA duyệt.
+
+### Quyết định của nhóm
+
+Hoàn đã đồng ý tiến hành phương án giữ schema; chưa có xác nhận riêng từ reviewer.
+
+### Người kiểm tra
+
+Codex chạy test, lint và build API; chờ Hoàn, QA và reviewer.
+
+### Kiểm tra và minh chứng
+
+- Hai ca tạo voucher trùng mã và phân quyền: 2 pass, 3 skipped.
+- npm run lint -w api: pass.
+- npm run build -w api: pass.
+- Chưa test database thật, chưa commit hoặc push.
+
+---
+
+## Phase 2 / hoan-20261118-adminvoucher-05
+
+* Thời gian ghi: 2026-11-18T03:50:43+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-adminvoucher
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-3.3; hoan-20261118-adminvoucher-04
+
+### Công cụ
+
+Codex, Vitest, Prisma, ESLint và Nest CLI.
+
+### Mục đích
+
+Bổ sung mô tả voucher theo yêu cầu task và giữ tương thích dữ liệu cũ.
+
+### Prompt
+
+Tóm lược: Hoàn hỏi có thể thêm description vào schema hay không và yêu cầu thực hiện.
+
+### Kết quả đề xuất
+
+Thêm Voucher.description nullable và migration ADD COLUMN; service yêu cầu mô tả không rỗng khi tạo mới. Bổ sung description vào fixture test nghiệm thu và thêm test mô tả riêng. Không áp dụng migration vào database.
+
+### Phản biện
+
+Trường nullable giúp migration không yêu cầu điền dữ liệu cũ; các voucher hiện hữu có thể có description null. Fixture test nghiệm thu đã thay đổi để phù hợp schema, cần thông báo QA review trước khi chốt. Lần build đầu thất bại do trường chưa vào đúng model; sửa schema và chạy lại thành công.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu thêm description; chưa có xác nhận reviewer hoặc QA duyệt migration và test.
+
+### Người kiểm tra
+
+Codex chạy test, lint, build API; chờ Hoàn, reviewer và QA.
+
+### Kiểm tra và minh chứng
+
+- Test tạo voucher và phân quyền: 2 pass, 3 skipped.
+- Test description riêng: 1 pass.
+- npm run lint -w api và npm run build -w api: pass sau sửa schema.
+- Migration chưa được áp dụng vào database; chưa commit hoặc push.
