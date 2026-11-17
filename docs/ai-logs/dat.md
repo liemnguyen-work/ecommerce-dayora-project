@@ -1175,3 +1175,56 @@ Tôi sử dụng nội dung được hỗ trợ để chuẩn bị tài liệu �
 - Nhật ký AI: `docs/ai-logs/dat.md`.
 - Pull Request: #669.
 - Phần tự đánh giá độc lập và vấn đáp cần được xác nhận trước khi đóng sub-issue.
+---
+
+## P1 — Chụp minh chứng giao diện nhóm và bản mẫu / DAT-20261117-PD2-002
+
+* **Thời gian ghi:** 17/11/2026
+* **Thời gian thực hiện:** 16/11/2026–17/11/2026
+* **Mã phiên nhật ký:** DAT-20261117-PD2
+* **Người prompt:** Đạt (PD)
+* **Loại mục:** Hoạt động
+* **Liên quan:** PRJ-P1-PD-2.2; nhánh `prj/p1-pd-2`
+
+### Công cụ
+
+ChatGPT (GPT-6), Firefox Responsive Design Mode, CMD và Git.
+
+### Mục đích
+
+Chụp minh chứng giao diện của năm trang P1 trên bản nhóm và bản mẫu ở kích thước desktop 1366 × 768 và mobile 390 × 844, phục vụ bước đối chiếu giao diện.
+
+### Prompt
+
+Đạt yêu cầu ChatGPT hướng dẫn chạy đồng thời bản nhóm tại cổng 5173, bản mẫu tại cổng 5174 và API tại cổng 3000; xử lý lỗi cổng và CORS; hướng dẫn chụp, kiểm tra, đổi tên và lưu đủ ảnh theo đúng cấu trúc của task PRJ-P1-PD-2.2.
+
+### Kết quả đề xuất
+
+ChatGPT hỗ trợ xác định năm trang cần chụp, hai kích thước viewport, quy tắc phân biệt `group` và `sample`, cách duy trì ba tiến trình local, cấu hình CORS tạm thời cho cổng 5174 và cách chuẩn hóa tên ảnh.
+
+Đạt trực tiếp chạy dự án, kiểm tra giao diện và chụp đủ 20 ảnh tại `docs/report/images/p1/`, gồm 5 trang × 2 kích thước × 2 phiên bản.
+
+### Phản biện
+
+Hướng dẫn ban đầu đã hiểu chưa đầy đủ yêu cầu khi chỉ chuẩn bị 10 ảnh bản nhóm và dùng sai thư mục. Sau khi đọc lại sub-issue, quy trình được sửa thành 20 ảnh gồm cả bản nhóm và bản mẫu tại đúng thư mục `docs/report/images/p1/`.
+
+Kích thước pixel vật lý của ảnh có thể chịu ảnh hưởng bởi Windows Display Scaling; việc nghiệm thu dựa trên viewport đã đặt trong Responsive Design Mode và nội dung toàn trang được chụp.
+
+### Quyết định của nhóm
+
+Giữ đúng 20 ảnh đã chuẩn hóa tên. Thay đổi CORS trong `apps/api/src/main.ts` chỉ được sử dụng tạm thời để chạy bản mẫu tại cổng 5174 và không được đưa vào commit PRJ-P1-PD-2.2.
+
+### Người kiểm tra
+
+Đạt trực tiếp chạy bản nhóm, bản mẫu và API; chụp, xem lại và lưu ảnh. ChatGPT hướng dẫn quy trình và kiểm tra danh sách tệp dựa trên output do Đạt cung cấp.
+
+### Kiểm tra và minh chứng
+
+- API health trả `{"status":"ok","service":"dayora-api"}`.
+- Bản nhóm chạy tại `http://localhost:5173`.
+- Bản mẫu chạy tại `http://localhost:5174`.
+- Có đúng 20 ảnh trong `docs/report/images/p1/`.
+- Đủ Trang chủ, Sản phẩm, Chi tiết sản phẩm, Đăng nhập và Về chúng tôi.
+- Mỗi trang có desktop/mobile và group/sample.
+- `git diff --cached --check`: PASS.
+- Commit chỉ chứa ảnh và nhật ký AI; không chứa thay đổi CORS tạm thời.
