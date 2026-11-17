@@ -4379,3 +4379,49 @@ Codex chạy Vitest; chờ Hoàn và reviewer xem xét.
 
 - Bốn ca kiểm tra bổ sung: 4/4 pass.
 - Các ca xác nhận giá và tạo đơn trước đó: 3 pass, 4 skipped; lint và build API pass như mục checkout-07.
+
+---
+
+## Phase 2 / hoan-20261118-checkout-09
+
+* Thời gian ghi: 2026-11-18T03:01:48+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-checkout
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-2.4; hoan-20261118-checkout-03
+
+### Công cụ
+
+Codex, Vitest, ESLint, Prisma và Nest CLI.
+
+### Mục đích
+
+Kiểm tra và ghi lượt sử dụng voucher cùng transaction tạo đơn.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp sub-issue PRJ-P2-BD1-2.4 và yêu cầu tiếp tục.
+
+### Kết quả đề xuất
+
+Checkout khóa dòng Voucher bằng FOR UPDATE, đếm số lượt tổng và theo user từ VoucherUsage, tính lại điều kiện và mức giảm, tạo VoucherUsage cùng orderId trong transaction. Giữ schema theo lựa chọn Hoàn đã cung cấp; không có trường Voucher.usedCount.
+
+### Phản biện
+
+Test dùng mock; chưa kiểm tra cạnh tranh voucher và rollback với database PostgreSQL thật. Khóa hàng voucher chỉ bảo vệ nếu các luồng khác ghi lượt dùng cùng tuân theo cơ chế khóa. Chưa xác nhận QA đã duyệt test. Preview trong lỗi là dữ liệu đã lấy trước transaction và có thể không còn mới nhất.
+
+### Quyết định của nhóm
+
+Hoàn đã chọn đếm VoucherUsage và giữ schema; chưa có xác nhận reviewer duyệt phần thực hiện.
+
+### Người kiểm tra
+
+Codex chạy test các bước hiện có, lint và build API; chờ Hoàn, QA và reviewer kiểm tra.
+
+### Kiểm tra và minh chứng
+
+- Bốn ca checkout đã triển khai: 4 pass, 3 skipped.
+- npm run lint -w api: pass.
+- npm run build -w api: pass.
+- Chưa kiểm tra database thật, chưa commit hoặc push.
