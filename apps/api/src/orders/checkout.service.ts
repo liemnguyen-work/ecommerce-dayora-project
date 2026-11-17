@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, Logger, NotFoundException, type OnModuleDestroy, type OnModuleInit } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
 
 import type { Prisma } from '../generated/prisma/client.js';
@@ -21,7 +21,9 @@ export type CreateOrderInput = {
 };
 
 @Injectable()
-export class CheckoutService {
+export class CheckoutService implements OnModuleInit, OnModuleDestroy {
+  private readonly logger = new Logger(CheckoutService.name);
+  private timer?: ReturnType<typeof setInterval>;
   constructor(
     private readonly prisma: PrismaService,
     private readonly orders: OrdersService,
@@ -36,7 +38,7 @@ export class CheckoutService {
     return order;
   }
 
-  private async release(tx: Prisma.TransactionClient, id: string, userId: string) {
+  private async release(tx: Prisma.TransactionClient, id: string, userId?: string, expired = false) {
     const order = await tx.order.findFirst({
       where: { id, userId },
       include: { items: true },
@@ -44,8 +46,8 @@ export class CheckoutService {
     if (!order) throw new NotFoundException('Không tìm thấy đơn hàng');
 
     const changed = await tx.order.updateMany({
-      where: { id, userId, status: 'PENDING_PAYMENT', paymentStatus: 'UNPAID' },
-      data: { status: 'CANCELLED' },
+      where: { id, userId, status: 'PENDING_PAYMENT', paymentStatus: 'UNPAID', ...(expired ? { reserveExpiresAt: { lte: new Date() } } : {}) },
+      data: expired ? { status: 'CANCELLED', paymentStatus: 'EXPIRED' } : { status: 'CANCELLED' },
     });
     if (changed.count !== 1) throw new ConflictException('Đơn không thể hủy');
 
@@ -59,11 +61,49 @@ export class CheckoutService {
         throw new ConflictException('Không thể trả tồn kho đã giữ');
       }
     }
+    if (expired) {
+      await tx.payment.updateMany({
+        where: { orderId: id, status: 'UNPAID' },
+        data: { status: 'EXPIRED' },
+      });
+    }
     await tx.orderStatusLog.create({
-      data: { orderId: id, status: 'CANCELLED', note: 'Khách hủy' },
+      data: {
+        orderId: id,
+        status: 'CANCELLED',
+        ...(expired ? { paymentStatus: 'EXPIRED' } : {}),
+        note: expired ? 'EXPIRED: quá 15 phút chưa thanh toán' : 'Khách hủy',
+      },
     });
   }
 
+  onModuleInit() {
+    if (process.env.DISABLE_ORDER_EXPIRY !== '1') {
+      this.timer = setInterval(() => {
+        void this.expireStaleOrders().catch((error: unknown) =>
+          this.logger.error('Không thể xử lý đơn hết hạn', error),
+        );
+      }, 60_000);
+    }
+  }
+
+  onModuleDestroy() {
+    if (this.timer) clearInterval(this.timer);
+  }
+
+  async expireStaleOrders() {
+    const orders = await this.prisma.order.findMany({
+      where: { status: 'PENDING_PAYMENT', paymentStatus: 'UNPAID', reserveExpiresAt: { lte: new Date() } },
+      select: { id: true },
+    });
+    for (const order of orders) {
+      try {
+        await this.prisma.$transaction((tx) => this.release(tx, order.id, undefined, true));
+      } catch (error) {
+        this.logger.error(`Không thể xử lý đơn hết hạn ${order.id}`, error);
+      }
+    }
+  }
   async cancel(userId: string, id: string) {
     await this.prisma.$transaction((tx) => this.release(tx, id, userId));
     return this.detail(userId, id);
