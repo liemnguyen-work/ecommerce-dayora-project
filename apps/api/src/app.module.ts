@@ -1,4 +1,4 @@
-
+import { CartModule } from './cart/cart.module.js';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
@@ -15,6 +15,7 @@ import { MeModule } from './me/me.module.js';
     ConfigModule.forRoot({ isGlobal: true }),
     AuthModule,
     CatalogModule,
+    CartModule,
     AdminCatalogModule,
     AdminUsersModule,
     PromotionsModule,
