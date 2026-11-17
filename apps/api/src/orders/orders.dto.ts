@@ -3,6 +3,7 @@ import {
   IsArray,
   IsBoolean,
   IsInt,
+  IsObject,
   IsOptional,
   IsString,
   Min,
@@ -37,9 +38,10 @@ export class PreviewDto {
   voucherCode?: string;
 
   @IsOptional()
-  @ValidateNested()
-  @Type(() => AddressDto)
-  address?: AddressDto;
+@IsObject()
+@ValidateNested()
+@Type(() => AddressDto)
+address?: AddressDto;
 
   @IsOptional()
   @IsArray()
