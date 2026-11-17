@@ -24,7 +24,7 @@ function fixture() {
     },
     voucherUsage: { count: vi.fn().mockResolvedValue(0) },
     promotion: {
-      findUnique: vi.fn().mockResolvedValue({ id: 'promo-a', title: 'Ưu đãi', linkUrl: '/products', isActive: true }),
+      findUnique: vi.fn().mockResolvedValue({ id: 'promo-a', title: 'Ưu đãi', imageUrl: '/banner.jpg', linkUrl: '/products', isActive: true }),
       findMany: vi.fn().mockResolvedValue([]),
       create: vi.fn().mockImplementation(({ data }) => Promise.resolve({ id: 'promo-a', ...data })),
       update: vi.fn().mockImplementation(({ data }) => Promise.resolve({ id: 'promo-a', ...data })),
@@ -101,10 +101,10 @@ describe('Admin vouchers và promotions - PRJ-P2-BD1-3', () => {
     const { AdminPromotionsService } = await import('../promotions/admin-promotions.service.js');
     const prisma = fixture();
     const service = new AdminPromotionsService(prisma as never);
-    await expect(service.create({ title: 'Ưu đãi', linkUrl: '/products' })).resolves.toMatchObject({ linkUrl: '/products' });
+    await expect(service.create({ title: 'Ưu đãi', imageUrl: '/banner.jpg', linkUrl: '/products' })).resolves.toMatchObject({ linkUrl: '/products' });
     await expect(service.update('promo-a', { isActive: false })).resolves.toMatchObject({ isActive: false });
     for (const linkUrl of ['https://evil.example', '//evil.example']) {
-      await expect(service.create({ title: 'Ưu đãi', linkUrl })).rejects.toMatchObject({ status: 400 });
+      await expect(service.create({ title: 'Ưu đãi', imageUrl: '/banner.jpg', linkUrl })).rejects.toMatchObject({ status: 400 });
     }
   });
 });

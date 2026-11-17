@@ -9,6 +9,8 @@ import { PromotionsModule } from './promotions/promotions.module';
 import { AdminCatalogModule } from './admin-catalog/admin-catalog.module.js';
 import { AdminUsersModule } from './admin-users/admin-users.module.js';
 import { MeModule } from './me/me.module.js';
+import { AdminVouchersModule } from './admin-vouchers/admin-vouchers.module.js';
+import { AdminPromotionsModule } from './promotions/admin-promotions.module.js';
 
 @Module({
   imports: [
@@ -20,6 +22,8 @@ import { MeModule } from './me/me.module.js';
     AdminUsersModule,
     PromotionsModule,
     MeModule,
+    AdminVouchersModule,
+    AdminPromotionsModule,
   ],
   controllers: [AppController],
 })

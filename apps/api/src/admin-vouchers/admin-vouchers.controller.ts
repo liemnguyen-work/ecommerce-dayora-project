@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Inject, Param, Patch, Query, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Patch, Post, Query, UseGuards, ValidationPipe } from '@nestjs/common';
 import { JwtAuthGuard, Roles, RolesGuard } from '../auth/auth.guard.js';
-import { ActiveDto, VoucherQueryDto } from './admin-vouchers.dto.js';
+import { ActiveDto, CreateVoucherDto, VoucherQueryDto } from './admin-vouchers.dto.js';
 import { AdminVouchersService } from './admin-vouchers.service.js';
 
 @Controller('admin/vouchers')
@@ -14,6 +14,10 @@ export class AdminVouchersController {
     return this.service.list(query);
   }
 
+  @Post()
+  create(@Body(new ValidationPipe({ transform: true, whitelist: true, forbidNonWhitelisted: true })) dto: CreateVoucherDto) {
+    return this.service.create(dto);
+  }
   @Patch(':id/active')
   active(
     @Param('id') id: string,
