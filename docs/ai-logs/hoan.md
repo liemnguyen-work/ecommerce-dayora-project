@@ -4248,3 +4248,48 @@ Codex chạy test, lint, build API; chờ Hoàn, reviewer và QA.
 - Test description riêng: 1 pass.
 - npm run lint -w api và npm run build -w api: pass sau sửa schema.
 - Migration chưa được áp dụng vào database; chưa commit hoặc push.
+
+---
+
+## Phase 2 / hoan-20261118-adminvoucher-06
+
+* Thời gian ghi: 2026-11-18T03:53:47+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-adminvoucher
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-3.4; hoan-20261118-adminvoucher-05
+
+### Công cụ
+
+Codex, Vitest, ESLint, Prisma và Nest CLI.
+
+### Mục đích
+
+Ngăn giảm giới hạn voucher xuống dưới số lượt đã sử dụng theo schema hiện tại.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp nội dung sub-issue PRJ-P2-BD1-3.4.
+
+### Kết quả đề xuất
+
+Thêm update giới hạn voucher trong transaction: khóa dòng Voucher, đếm VoucherUsage và kiểm tra giới hạn trước khi cập nhật.
+
+### Phản biện
+
+Ca test hiện chỉ mô phỏng số lượt vượt giới hạn, không kiểm tra hai giao dịch đồng thời; chưa chứng minh an toàn trên PostgreSQL thật. Các luồng sử dụng voucher cũng phải tuân thủ cùng cơ chế khóa. Chưa xác nhận QA duyệt bộ test.
+
+### Quyết định của nhóm
+
+Làm theo phương án giữ schema và đếm VoucherUsage Hoàn đã chọn; chưa có xác nhận reviewer duyệt code.
+
+### Người kiểm tra
+
+Codex chạy test, lint, build API; chờ Hoàn, QA và reviewer.
+
+### Kiểm tra và minh chứng
+
+- Ba ca test voucher được chọn: 3 pass, 2 skipped.
+- npm run lint -w api và npm run build -w api: pass.
+- Chưa kiểm tra đồng thời trên database thật, chưa commit hoặc push.
