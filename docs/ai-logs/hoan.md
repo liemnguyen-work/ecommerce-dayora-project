@@ -3939,3 +3939,89 @@ Codex chạy test pricing, lint API và build API; chờ Hoàn và reviewer xem 
 - npm run lint -w api: pass.
 - npm run build -w api: pass.
 - Chưa commit hoặc push bước này.
+
+---
+
+## Phase 2 / hoan-20261118-pricing-10
+
+* Thời gian ghi: 2026-11-18T01:27:39+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-pricing
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-1.7; hoan-20261118-pricing-09
+
+### Công cụ
+
+Codex.
+
+### Mục đích
+
+Chuẩn bị file câu hỏi tự kiểm tra kiến thức pricing để Hoàn tự trả lời.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp yêu cầu bước 1.7 và yêu cầu tiếp tục.
+
+### Kết quả đề xuất
+
+Tạo docs/learning/BD1-Hoan/kiem-tra/PRJ-P2-BD1-1.md gồm các câu hỏi và ô trống; không viết câu trả lời.
+
+### Phản biện
+
+Task yêu cầu Hoàn tự viết câu trả lời bằng lời của mình, không xem code hoặc nhờ AI viết hộ. Việc tạo mẫu chưa chứng minh hoàn thành kiểm tra kiến thức.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung về việc duyệt câu trả lời; chờ Hoàn tự hoàn thành.
+
+### Người kiểm tra
+
+Codex tạo mẫu; chờ Hoàn tự trả lời và reviewer kiểm tra.
+
+### Kiểm tra và minh chứng
+
+File mẫu được tạo trên nhánh prj/p2-bd1-1; chưa trả lời, chưa commit hoặc push.
+
+---
+
+## Phase 2 / hoan-20261118-pricing-11
+
+* Thời gian ghi: 2026-11-18T01:33:23+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-pricing
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-1.7; hoan-20261118-pricing-10
+
+### Công cụ
+
+Codex.
+
+### Mục đích
+
+Ghi nhận và sắp xếp câu trả lời tự kiểm tra kiến thức do Hoàn cung cấp.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp câu trả lời, trả lời thêm hai câu về thời hạn và mức giảm voucher, rồi yêu cầu điều chỉnh nội dung.
+
+### Kết quả đề xuất
+
+Codex nhóm các ý Hoàn cung cấp thành năm ca, ghi vào file tự kiểm tra và chỉnh trình tự xác nhận nhóm sau khi test được viết và push.
+
+### Phản biện
+
+Câu về hiệu lực có thể nêu thêm kiểm tra trạng thái, đơn tối thiểu và lượt dùng. Reviewer cần đánh giá khả năng Hoàn tự giải thích; việc AI sắp xếp không chứng minh năng lực tự trình bày.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu điều chỉnh nội dung; chưa có reviewer duyệt bài tự kiểm tra.
+
+### Người kiểm tra
+
+Codex nhận xét câu trả lời và hai câu luyện tập; chờ Hoàn xem lại nội dung.
+
+### Kiểm tra và minh chứng
+
+Cập nhật file docs/learning/BD1-Hoan/kiem-tra/PRJ-P2-BD1-1.md; chưa commit hoặc push.
