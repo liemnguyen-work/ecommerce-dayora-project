@@ -4111,3 +4111,48 @@ Codex chạy Vitest; chờ Hoàn, QA và reviewer xem xét.
 ### Kiểm tra và minh chứng
 
 npm test -w api -- admin-vouchers: 5 ca được thu thập, cả 5 fail do thiếu controller hoặc service; assertion chưa chạy. Chưa commit hoặc push.
+
+---
+
+## Phase 2 / hoan-20261118-adminvoucher-03
+
+* Thời gian ghi: 2026-11-18T03:43:31+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-adminvoucher
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-3.2; hoan-20261118-adminvoucher-02
+
+### Công cụ
+
+Codex, Vitest và ESLint.
+
+### Mục đích
+
+Bảo vệ hai controller quản trị bằng JwtAuthGuard, RolesGuard và vai trò ADMIN.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp sub-issue 3.2 và yêu cầu tiếp tục.
+
+### Kết quả đề xuất
+
+Tạo hai controller admin và service khung; phương thức list hiện trả NotImplementedException, chưa triển khai chức năng. Chưa đăng ký module trong ứng dụng.
+
+### Phản biện
+
+Test HTTP mô phỏng người dùng CUSTOMER bằng cách thay JwtAuthGuard; chưa kiểm tra xác thực cookie thật hoặc tích hợp module ứng dụng. Test trước chưa được xác nhận QA duyệt và ca thay đổi đồng thời còn thiếu. Các chức năng service tiếp tục ở bước sau.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu tiếp tục; chưa có xác nhận reviewer hoặc QA duyệt.
+
+### Người kiểm tra
+
+Codex chạy test và lint; chờ Hoàn, QA và reviewer.
+
+### Kiểm tra và minh chứng
+
+- npm test -w api -- admin-vouchers.spec.ts -t "khách bị chặn cả hai route": 1 pass, 4 skipped.
+- npm run lint -w api: pass.
+- Chưa build API, chưa đăng ký module, chưa commit hoặc push.
