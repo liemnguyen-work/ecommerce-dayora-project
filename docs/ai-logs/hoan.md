@@ -4025,3 +4025,177 @@ Codex nhận xét câu trả lời và hai câu luyện tập; chờ Hoàn xem l
 ### Kiểm tra và minh chứng
 
 Cập nhật file docs/learning/BD1-Hoan/kiem-tra/PRJ-P2-BD1-1.md; chưa commit hoặc push.
+
+---
+
+## Phase 2 / hoan-20261118-checkout-01
+
+* Thời gian ghi: 2026-11-18T02:24:41+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-checkout
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-2; PRJ-P2-BD2-2
+
+### Công cụ
+
+Codex và Git.
+
+### Mục đích
+
+Kiểm tra điều kiện phụ thuộc và chuẩn bị nhánh cho task tạo đơn, giữ tồn, hủy và hết hạn.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp task cha PRJ-P2-BD1-2 và yêu cầu tiếp tục.
+
+### Kết quả đề xuất
+
+Fetch origin; xác nhận nhánh preview origin/prj/p2-bd2-2 và commit pricing 21cd3e6 là tổ tiên của origin/main tại 6c258ca. Tạo nhánh prj/p2-bd1-2 từ origin/main. Chưa tạo test hoặc chức năng.
+
+### Phản biện
+
+Cần nội dung chi tiết các sub-issue để xác định tên và điều kiện test nghiệm thu trước; giao dịch, tồn và voucher cần được QA xem xét.
+
+### Quyết định của nhóm
+
+Chưa có xác nhận QA duyệt test của task checkout.
+
+### Người kiểm tra
+
+Codex kiểm tra Git và tài liệu lộ trình; chờ Hoàn cung cấp nội dung chi tiết sub-issue và QA xem xét.
+
+### Kiểm tra và minh chứng
+
+origin/main: 6c258ca (merge PR #682); git merge-base xác nhận hai điều kiện trên. Chưa chạy test checkout, chưa commit hoặc push nhánh mới.
+
+---
+
+## Phase 2 / hoan-20261118-checkout-02
+
+* Thời gian ghi: 2026-11-18T02:27:50+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-checkout
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-2.1; hoan-20261118-checkout-01
+
+### Công cụ
+
+Codex và Vitest.
+
+### Mục đích
+
+Chuẩn bị test nghiệm thu trước chức năng checkout.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp yêu cầu test trước và sáu sub-issue chức năng của task tạo đơn.
+
+### Kết quả đề xuất
+
+Codex tạo bảy ca trong apps/api/src/orders/checkout.service.spec.ts: tạo đơn, mô phỏng tranh tồn, xác nhận lại, ghi lượt voucher, hủy, hết hạn và kiểm tra quyền sở hữu. Các ca sử dụng Prisma mock, chưa truy cập database.
+
+### Phản biện
+
+Schema Voucher không có usedCount trong khi sub-issue mô tả tăng trường này; OrdersService.preview đếm VoucherUsage. Schema OrderStatusLog cũng không có các trường fromValue, toValue và actorId như ví dụ. Codex đã hỏi Hoàn về cách quản lý lượt voucher; chờ phản hồi. Test tranh tồn bằng mock không chứng minh tính an toàn đồng thời trên PostgreSQL. Các giả định về DTO và cấu trúc gọi cần QA review.
+
+### Quyết định của nhóm
+
+Chưa nhận xác nhận QA duyệt test hoặc quyết định về điểm chưa khớp schema.
+
+### Người kiểm tra
+
+Codex chạy Vitest; chờ Hoàn, QA và nhóm xem xét.
+
+### Kiểm tra và minh chứng
+
+- npm test -w api -- checkout.service: thu thập 7 ca, cả 7 fail vì chưa có module checkout.service.js; assertion chưa chạy.
+- Chưa commit hoặc push các thay đổi của bước này.
+
+---
+
+## Phase 2 / hoan-20261118-checkout-03
+
+* Thời gian ghi: 2026-11-18T02:28:10+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-checkout
+* Người prompt: Hoàn
+* Loại mục: Quyết định
+* Liên quan: PRJ-P2-BD1-2.1; hoan-20261118-checkout-02
+
+### Công cụ
+
+Codex.
+
+### Mục đích
+
+Ghi nhận lựa chọn xử lý lượt dùng voucher khi task và schema khác nhau.
+
+### Prompt
+
+Tóm lược: Codex hỏi chọn đếm VoucherUsage hay thêm Voucher.usedCount vào schema; Hoàn chọn đếm VoucherUsage và giữ schema.
+
+### Kết quả đề xuất
+
+Dự kiến tiếp tục dùng bản ghi VoucherUsage để đếm lượt, tương thích cách preview hiện tại. Chưa thay đổi schema hoặc chức năng checkout.
+
+### Phản biện
+
+Việc đếm và ghi trong giao dịch vẫn cần cơ chế khóa thích hợp để tránh vượt giới hạn khi dùng đồng thời; test mock chưa chứng minh được tính an toàn đồng thời.
+
+### Quyết định của nhóm
+
+Hoàn chọn đếm từ VoucherUsage, giữ schema. Chưa có xác nhận riêng từ reviewer hoặc QA.
+
+### Người kiểm tra
+
+Hoàn chọn phương án; chờ reviewer và QA kiểm tra.
+
+### Kiểm tra và minh chứng
+
+Chưa chạy test mới sau lựa chọn; các test đang fail vì chưa có checkout.service.
+
+---
+
+## Phase 2 / hoan-20261118-checkout-04
+
+* Thời gian ghi: 2026-11-18T02:40:10+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-checkout
+* Người prompt: Hoàn
+* Loại mục: Quyết định
+* Liên quan: PRJ-P2-BD1-2.1; hoan-20261118-checkout-03
+
+### Công cụ
+
+Codex và Vitest.
+
+### Mục đích
+
+Ghi nhận quyết định về lịch sử trạng thái đơn và chuẩn bị test nghiệm thu để QA xem xét.
+
+### Prompt
+
+Tóm lược: Hoàn trao đổi về khác biệt giữa ví dụ task và schema OrderStatusLog, thông báo nhóm thống nhất giữ schema và ghi trạng thái mới cùng ghi chú; sau đó yêu cầu commit, push test và AI logs.
+
+### Kết quả đề xuất
+
+Dự kiến dùng các trường status, paymentStatus, note và createdAt hiện có khi ghi lịch sử. Test checkout đã được tạo; chưa sửa schema hoặc viết chức năng.
+
+### Phản biện
+
+Schema hiện tại không có trường riêng cho trạng thái cũ và người thực hiện. Các ca test và phương án ghi lịch sử cần QA và reviewer xem xét; test tranh tồn mock không chứng minh an toàn đồng thời trên database thật.
+
+### Quyết định của nhóm
+
+Theo Hoàn cung cấp, nhóm thống nhất giữ schema hiện tại và ghi trạng thái mới cùng ghi chú.
+
+### Người kiểm tra
+
+Codex đã chạy Vitest; chờ QA và reviewer duyệt test.
+
+### Kiểm tra và minh chứng
+
+- npm.cmd test -w api -- checkout.service: thu thập 7 ca, 7 fail vì chưa có checkout.service.js; các assertion chưa chạy.
+- Chưa kiểm thử tranh tồn với PostgreSQL.
