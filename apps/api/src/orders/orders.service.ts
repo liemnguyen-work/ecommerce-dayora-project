@@ -77,10 +77,25 @@ const items = lines.map((item) => ({
   salePrice: item.sku.salePrice,
   quantity: item.quantity,
 }));
+const province = (dto.address?.province ?? '')
+  .normalize('NFD')
+  .replace(/[\u0300-\u036f]/g, '')
+  .replace(/đ/g, 'd')
+  .trim()
+  .toLowerCase()
+  .replace(/[.\s-]+/g, ' ');
+
+const isHcm = [
+  'ho chi minh',
+  'tp ho chi minh',
+  'thanh pho ho chi minh',
+  'hcm',
+  'tphcm',
+].includes(province);
 
 const zone: PricingInput['zone'] = !dto.address
   ? null
-  : dto.address.province === 'Hồ Chí Minh'
+  : isHcm
     ? dto.address.isInnerHcm
       ? 'HCM_INNER'
       : 'HCM_OUTER'

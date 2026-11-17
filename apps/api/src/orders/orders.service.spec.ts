@@ -1,3 +1,4 @@
+
 import 'reflect-metadata';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -74,6 +75,10 @@ describe('OrdersService - PRJ-P2-BD2-2', () => {
     prisma.voucherUsage.count.mockResolvedValue(0);
   });
 
+  // =====================================================
+  // 3 TEST GỐC - ISSUE #332
+  // =====================================================
+
   it('áp trần phần trăm và cảnh báo giá, tồn', async () => {
     mockCart(200000, [
       { skuId: 'sku-a', type: 'INSUFFICIENT_STOCK' },
@@ -102,7 +107,6 @@ describe('OrdersService - PRJ-P2-BD2-2', () => {
     });
 
     expect(cart.get).toHaveBeenCalledWith('user-a');
-
     expect(result.subtotal).toBe(200000);
 
     // 20% của 200000 = 40000,
@@ -193,5 +197,65 @@ describe('OrdersService - PRJ-P2-BD2-2', () => {
       }),
     );
     expect(overLimit.voucher?.reason).toBeTruthy();
+  });
+
+  // =====================================================
+  // 4 TEST BỔ SUNG - ISSUE #347
+  // =====================================================
+
+  it('tính phí 30000 khi HCM chưa đủ ngưỡng miễn phí', async () => {
+    mockCart(499999);
+
+    const result = await preview({
+      address: {
+        province: 'TP. Hồ Chí Minh',
+        isInnerHcm: false,
+      },
+    });
+
+    expect(result.shippingFee).toBe(30000);
+    expect(result.shippingIsEstimate).toBe(false);
+    expect(result.total).toBe(529999);
+  });
+
+  it('ngoài HCM vẫn tính phí 40000 khi đơn trên 500000', async () => {
+    mockCart(600000);
+
+    const result = await preview({
+      address: {
+        province: 'Hà Nội',
+      },
+    });
+
+    expect(result.shippingFee).toBe(40000);
+    expect(result.total).toBe(640000);
+  });
+
+  it('chưa có địa chỉ thì phí giao chỉ là tạm tính', async () => {
+    mockCart(200000);
+
+    const result = await preview({});
+
+    expect(result.shippingFee).toBe(30000);
+    expect(result.shippingIsEstimate).toBe(true);
+    expect(result.total).toBe(230000);
+  });
+
+  it('voucher không tồn tại không làm giảm tổng tiền', async () => {
+    mockCart(200000);
+    prisma.voucher.findUnique.mockResolvedValue(null);
+
+    const result = await preview({
+      voucherCode: 'NOTFOUND',
+    });
+
+    expect(result.voucher).toEqual(
+      expect.objectContaining({
+        valid: false,
+        reason: expect.any(String),
+      }),
+    );
+
+    expect(result.total).toBe(230000);
   });
 });
