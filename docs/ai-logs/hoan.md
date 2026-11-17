@@ -4293,3 +4293,91 @@ Codex chạy test, lint, build API; chờ Hoàn, QA và reviewer.
 - Ba ca test voucher được chọn: 3 pass, 2 skipped.
 - npm run lint -w api và npm run build -w api: pass.
 - Chưa kiểm tra đồng thời trên database thật, chưa commit hoặc push.
+
+---
+
+## Phase 2 / hoan-20261118-adminvoucher-07
+
+* Thời gian ghi: 2026-11-18T03:57:47+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-adminvoucher
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-3.5; hoan-20261118-adminvoucher-06
+
+### Công cụ
+
+Codex, Vitest, ESLint, Prisma và Nest CLI.
+
+### Mục đích
+
+Bật tắt voucher và lọc danh sách theo trạng thái.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp nội dung sub-issue PRJ-P2-BD1-3.5.
+
+### Kết quả đề xuất
+
+Thêm DTO và controller route bật tắt, cập nhật service và danh sách lọc bốn trạng thái, phân trang 20 và thứ tự code/id.
+
+### Phản biện
+
+Ca test hiện chủ yếu kiểm tra trạng thái disabled và gọi cập nhật, chưa xác nhận riêng mọi trạng thái hay HTTP thực tế. Module chưa được đăng ký. Ca đồng thời ở bước trước còn thiếu; QA chưa xác nhận duyệt bộ test.
+
+### Quyết định của nhóm
+
+Thực hiện theo task Hoàn cung cấp; chưa có reviewer duyệt thay đổi.
+
+### Người kiểm tra
+
+Codex chạy test chọn lọc, lint và build API; chờ Hoàn và reviewer.
+
+### Kiểm tra và minh chứng
+
+- Bốn ca voucher chọn lọc: 4 pass, 1 skipped.
+- npm run lint -w api và npm run build -w api: pass.
+- Chưa test database thật; chưa commit hoặc push.
+
+---
+
+## Phase 2 / hoan-20261118-adminvoucher-08
+
+* Thời gian ghi: 2026-11-18T03:59:16+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-adminvoucher
+* Người prompt: Hoàn
+* Loại mục: Kiểm tra
+* Liên quan: PRJ-P2-BD1-3.5; hoan-20261118-adminvoucher-07
+
+### Công cụ
+
+Codex và Vitest.
+
+### Mục đích
+
+Kiểm tra riêng bộ lọc và kết quả bốn trạng thái voucher.
+
+### Prompt
+
+Tóm lược: Hoàn hỏi có thể xử lý việc chưa kiểm tra đủ bốn trạng thái và module chưa đăng ký hay không.
+
+### Kết quả đề xuất
+
+Thêm file test riêng admin-vouchers-status.spec.ts với bốn ca điều kiện lọc và một ca phân loại tại biên thời gian.
+
+### Phản biện
+
+Test dùng mock, chưa gọi route thật hoặc kết nối database. Việc đăng ký module được nêu trong bước 3.6; chưa thực hiện. Ca đồng thời của bước 3.4 vẫn thiếu và chưa xác nhận QA duyệt test.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu xem xét xử lý; chưa có xác nhận reviewer duyệt thay đổi.
+
+### Người kiểm tra
+
+Codex chạy Vitest; chờ Hoàn, QA và reviewer.
+
+### Kiểm tra và minh chứng
+
+npm test -w api -- admin-vouchers-status.spec.ts: 5/5 pass. Chưa commit hoặc push.
