@@ -3532,3 +3532,91 @@ Codex đối chiếu nhật ký, chạy test, lint và build; chờ Hoàn và re
 - Đối chiếu thấy năm mục authfix chỉ có ở nhánh fix, tám mục me chỉ có ở main; các mục chung không khác nhau.
 - `npm.cmd run lint`: pass; `npm.cmd test`: 50/50 pass; `npm.cmd run build`: pass.
 - Chưa xác nhận CI hay trạng thái PR sau push.
+
+---
+
+## Phase 2 / hoan-20261118-pricing-01
+
+* Thời gian ghi: 2026-11-18T00:05:45+07:00
+* Thời gian thực hiện: 18/11/2026.
+* Mã phiên nhật ký: hoan-20261118-pricing
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-1.1
+
+### Công cụ
+
+Codex và Git.
+
+### Mục đích
+
+Chuẩn bị nhánh làm việc cho task tính tiền P2.
+
+### Prompt
+
+Hoàn yêu cầu kiểm tra nhánh, cập nhật nội dung mới nếu cần và chuyển nhánh để chuẩn bị task.
+
+### Kết quả đề xuất
+
+Codex kiểm tra nhánh cũ không có thay đổi chưa lưu, fetch origin và tạo `prj/p2-bd1-1` từ `origin/main` tại `e1cf6eb`.
+
+### Phản biện
+
+Mới chỉ chuẩn bị nhánh, chưa viết hoặc chạy test pricing; các chính sách D02/D03 cần đối chiếu với yêu cầu và quyết định hiện hành trước khi chốt.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu chuẩn bị nhánh; chưa có xác nhận QA duyệt test pricing.
+
+### Người kiểm tra
+
+Codex kiểm tra Git; chờ Hoàn và QA xem kế hoạch kiểm thử.
+
+### Kiểm tra và minh chứng
+
+- `origin/main` tại `e1cf6eb`; nhánh `prj/p2-bd1-1` được tạo từ commit này.
+- Chưa commit hoặc push nhánh mới; chưa tạo file test pricing.
+
+---
+
+## Phase 2 / hoan-20261118-pricing-02
+
+* Thời gian ghi: 2026-11-18T00:16:06+07:00
+* Thời gian thực hiện: 18/11/2026.
+* Mã phiên nhật ký: hoan-20261118-pricing
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-1.1; hoan-20261118-pricing-01
+
+### Công cụ
+
+Codex, Vitest và VS Code.
+
+### Mục đích
+
+Chuẩn bị test nghiệm thu trước khi viết hàm tính tiền thuần.
+
+### Prompt
+
+Sau khi thống nhất tạo nhánh và xem các sub-issue, Hoàn yêu cầu tiến hành.
+
+### Kết quả đề xuất
+
+Codex viết năm ca test theo tên sub-issue: ví dụ charter, giá sale và số lượng, trần giảm, hiệu lực voucher và số nguyên an toàn. Test có ví dụ về ngưỡng phí giao và không thay đổi input.
+
+### Phản biện
+
+Vitest nhận diện năm ca nhưng dừng vì chưa có module pricing; chưa chạy được assertion. Các giá trị voucher và hợp đồng dữ liệu trong test cần Hoàn và QA xem trước; chính sách D02/D03 trong tài liệu repo đang ghi là đề xuất.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu thực hiện test; chưa có xác nhận QA duyệt hoặc nhóm chốt chính sách.
+
+### Người kiểm tra
+
+Codex chạy Vitest; chờ Hoàn và QA xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm.cmd test -w api -- pricing`: 5 ca fail do chưa có `pricing.js`; chưa xác nhận assertion thất bại.
+- Chưa viết chức năng, chưa commit hoặc push.
