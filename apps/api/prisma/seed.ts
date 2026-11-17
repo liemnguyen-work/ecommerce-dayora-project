@@ -1111,6 +1111,27 @@ await main().finally(() => prisma.$disconnect());
       isActive: true,
     },
   });
-
   console.log('Seed voucher DAYORA10 thành công');
+
+  // PRJ-P2-BD2-3.2 — Voucher giảm tiền cố định PICNIC50K
+  await prisma.voucher.upsert({
+    where: {
+      code: 'PICNIC50K',
+    },
+    update: {},
+    create: {
+      code: 'PICNIC50K',
+      percentOff: null,
+      amountOff: 50000,
+      maxDiscount: null,
+      minOrderValue: 500000,
+      usageLimit: 100,
+      perUserLimit: 1,
+      startsAt,
+      endsAt,
+      isActive: true,
+    },
+  });
+
+  console.log('Seed voucher PICNIC50K thành công');
 
