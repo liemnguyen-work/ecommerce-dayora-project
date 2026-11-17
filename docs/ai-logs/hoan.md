@@ -4289,3 +4289,93 @@ Codex chạy hai ca liên quan, lint và build API; chờ Hoàn, QA và reviewer
 - npm run lint -w api: pass.
 - npm run build -w api: pass.
 - Chưa test với database thật, chưa commit hoặc push.
+
+---
+
+## Phase 2 / hoan-20261118-checkout-07
+
+* Thời gian ghi: 2026-11-18T02:56:08+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-checkout
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-2.3; hoan-20261118-checkout-06
+
+### Công cụ
+
+Codex, Vitest, ESLint, Prisma và Nest CLI.
+
+### Mục đích
+
+Kiểm tra lại preview khi giá, tổng tiền hoặc voucher thay đổi trước khi tạo đơn.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp sub-issue PRJ-P2-BD1-2.3 và yêu cầu tiếp tục.
+
+### Kết quả đề xuất
+
+Codex cập nhật checkout.service.ts để truyền voucherCode vào preview, kiểm tra voucher không hợp lệ và danh sách giá dự kiến trùng SKU; khi cần xác nhận trả CONFIRM_REQUIRED cùng preview trước transaction. Kiểm tra cảnh báo, tổng tiền và giá đã có từ bước 2.2.
+
+### Phản biện
+
+Voucher hợp lệ vẫn tạm bị từ chối vì chưa có giao dịch ghi lượt voucher; chưa kiểm thử thực tế qua HTTP hoặc database. Ca test nghiệm thu hiện chỉ mô phỏng tổng lệch, chưa xác minh riêng mọi nhánh điều kiện. Chưa xác nhận QA duyệt test.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu tiếp tục bước 2.3; chưa có xác nhận reviewer duyệt thay đổi.
+
+### Người kiểm tra
+
+Codex chạy các ca test liên quan, lint và build API; chờ Hoàn, QA và reviewer kiểm tra.
+
+### Kiểm tra và minh chứng
+
+- npm test -w api -- checkout.service.spec.ts với ba ca xác nhận giá và tạo đơn: 3 pass, 4 skipped.
+- npm run lint -w api: pass.
+- npm run build -w api: pass.
+- Chưa commit hoặc push bước này.
+
+---
+
+## Phase 2 / hoan-20261118-checkout-08
+
+* Thời gian ghi: 2026-11-18T02:59:03+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-checkout
+* Người prompt: Hoàn
+* Loại mục: Kiểm tra
+* Liên quan: PRJ-P2-BD1-2.3; hoan-20261118-checkout-07
+
+### Công cụ
+
+Codex và Vitest.
+
+### Mục đích
+
+Kiểm tra bổ sung các nhánh yêu cầu xác nhận trước khi commit.
+
+### Prompt
+
+Tóm lược: Hoàn đồng ý kiểm tra thêm và yêu cầu commit, push cùng AI logs.
+
+### Kết quả đề xuất
+
+Codex chạy bốn ca test tạm thời với mock: giá thay đổi, danh sách SKU không khớp, cảnh báo tồn và voucher không hợp lệ. Các ca kiểm tra lỗi 409 CONFIRM_REQUIRED kèm preview và không mở transaction. File test tạm đã được xóa; test nghiệm thu được giữ nguyên.
+
+### Phản biện
+
+Các kiểm tra dùng mock, không kiểm tra qua HTTP hoặc database. Voucher hợp lệ vẫn tạm bị từ chối đến khi hoàn thành bước ghi lượt voucher. Chưa xác nhận QA duyệt bộ test nghiệm thu.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu kiểm tra thêm rồi commit, push; chưa có xác nhận reviewer duyệt.
+
+### Người kiểm tra
+
+Codex chạy Vitest; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- Bốn ca kiểm tra bổ sung: 4/4 pass.
+- Các ca xác nhận giá và tạo đơn trước đó: 3 pass, 4 skipped; lint và build API pass như mục checkout-07.
