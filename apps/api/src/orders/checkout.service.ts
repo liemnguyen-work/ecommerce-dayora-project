@@ -30,6 +30,9 @@ export class CheckoutService implements OnModuleInit, OnModuleDestroy {
   ) {}
 
   async detail(userId: string, id: string) {
+    if (typeof userId !== 'string' || !userId.trim()) {
+      throw new NotFoundException('Không tìm thấy đơn hàng');
+    }
     const order = await this.prisma.order.findFirst({
       where: { id, userId },
       include: { items: true },
@@ -105,6 +108,9 @@ export class CheckoutService implements OnModuleInit, OnModuleDestroy {
     }
   }
   async cancel(userId: string, id: string) {
+    if (typeof userId !== 'string' || !userId.trim()) {
+      throw new NotFoundException('Không tìm thấy đơn hàng');
+    }
     await this.prisma.$transaction((tx) => this.release(tx, id, userId));
     return this.detail(userId, id);
   }
