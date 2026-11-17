@@ -4199,3 +4199,47 @@ Codex đã chạy Vitest; chờ QA và reviewer duyệt test.
 
 - npm.cmd test -w api -- checkout.service: thu thập 7 ca, 7 fail vì chưa có checkout.service.js; các assertion chưa chạy.
 - Chưa kiểm thử tranh tồn với PostgreSQL.
+
+---
+
+## Phase 2 / hoan-20261118-checkout-05
+
+* Thời gian ghi: 2026-11-18T02:47:45+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-checkout
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-2.1; PRJ-P2-BD1-2.2; hoan-20261118-checkout-04
+
+### Công cụ
+
+Codex và Git.
+
+### Mục đích
+
+Làm rõ yêu cầu QA duyệt test và cách kiểm tra tình huống tranh tồn với database thật.
+
+### Prompt
+
+Tóm lược: Hoàn hỏi về yêu cầu QA duyệt, việc có bắt buộc test database thật không và cách kiểm tra; sau đó yêu cầu commit, push và cập nhật AI logs.
+
+### Kết quả đề xuất
+
+Codex giải thích test nghiệm thu hiện dùng Prisma mock; đề xuất dùng PostgreSQL riêng với dữ liệu giả, một SKU còn một sản phẩm và hai yêu cầu đồng thời để kiểm tra tranh tồn sau khi triển khai chức năng.
+
+### Phản biện
+
+Ca mock không chứng minh an toàn đồng thời trên PostgreSQL. Nội dung sub-issue được cung cấp không nêu rõ bắt buộc database thật, nhưng lộ trình có hướng dẫn thử tranh tồn trên database thật. Chưa chốt với QA môi trường hoặc điều kiện merge.
+
+### Quyết định của nhóm
+
+Chưa có xác nhận rõ QA đã duyệt test hoặc quyết định chọn môi trường database test. Không thực hiện thay đổi database.
+
+### Người kiểm tra
+
+Codex kiểm tra trạng thái Git; chờ QA duyệt test và Hoàn, nhóm quyết định môi trường test.
+
+### Kiểm tra và minh chứng
+
+- Test bước 2.1 đã commit b33f266 và push; AI logs chuẩn bị đã commit eca9111.
+- Chưa có apps/api/src/orders/checkout.service.ts; chưa triển khai bước 2.2 và chưa test tranh tồn trên database thật.
