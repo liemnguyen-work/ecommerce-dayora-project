@@ -1,6 +1,8 @@
-import { useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { useAuth, type User } from '../lib/auth';
+import { getCart, previewOrder, savedVoucher, type Cart, type Preview } from '../lib/cart';
+import { formatPrice } from '../lib/catalog';
 import '../catalog.css';
 
 type RecipientErrors = Partial<Record<'name' | 'phone' | 'address' | 'province', string>>;
@@ -14,6 +16,62 @@ function CheckoutForm({ user }: { user: User }) {
   const [isInnerHcm, setIsInnerHcm] = useState(false);
   const [errors, setErrors] = useState<RecipientErrors>({});
   const [ready, setReady] = useState(false);
+  const [cart, setCart] = useState<Cart | null>(null);
+  const [preview, setPreview] = useState<Preview | null>(null);
+  const [loadingCart, setLoadingCart] = useState(true);
+  const [previewing, setPreviewing] = useState(false);
+  const [requestError, setRequestError] = useState('');
+  const voucher = savedVoucher();
+
+  useEffect(() => {
+    let active = true;
+    getCart()
+      .then((nextCart) => {
+        if (active) setCart(nextCart);
+      })
+      .catch((error: unknown) => {
+        if (active) setRequestError(error instanceof Error ? error.message : 'Chưa tải được giỏ hàng.');
+      })
+      .finally(() => {
+        if (active) setLoadingCart(false);
+      });
+    return () => { active = false; };
+  }, []);
+
+  useEffect(() => {
+    if (!cart?.items.length || !province.trim()) {
+      return;
+    }
+
+    let active = true;
+    const normalizedProvince = province.trim().toLocaleLowerCase('vi');
+    const isHcm = ['hồ chí minh', 'tp hồ chí minh', 'thành phố hồ chí minh', 'hcm', 'tphcm'].includes(normalizedProvince);
+    const zone = {
+      province: province.trim(),
+      district: district.trim() || '-',
+      ...(isHcm ? { isInnerHcm } : {}),
+    };
+
+    Promise.resolve()
+      .then(() => {
+        if (!active) return null;
+        setPreviewing(true);
+        setRequestError('');
+        return previewOrder(cart, voucher, zone);
+      })
+      .then((nextPreview) => {
+        if (active && nextPreview) setPreview(nextPreview);
+      })
+      .catch((error: unknown) => {
+        if (!active) return;
+        setPreview(null);
+        setRequestError(error instanceof Error ? error.message : 'Chưa tính được tổng tiền.');
+      })
+      .finally(() => {
+        if (active) setPreviewing(false);
+      });
+    return () => { active = false; };
+  }, [cart, district, isInnerHcm, province, voucher]);
 
   function validate() {
     const next: RecipientErrors = {};
@@ -90,14 +148,34 @@ function CheckoutForm({ user }: { user: User }) {
           </div>
         </form>
 
-        <aside className="checkout-help">
-          <p>ĐƠN HÀNG CỦA BẠN</p>
-          <h2>Giao đúng nơi,<br />đi đúng lúc.</h2>
-          <ul>
-            <li>Thông tin chỉ dùng để xử lý và giao đơn.</li>
-            <li>Phí giao và tổng tiền sẽ do server tính.</li>
-            <li>Bạn có thể quay lại giỏ mà không mất voucher.</li>
-          </ul>
+        <aside className="checkout-sidebar">
+          <section className="checkout-summary" aria-label="Tóm tắt thanh toán" aria-busy={previewing}>
+            <p className="checkout-summary-eyebrow">ĐƠN HÀNG CỦA BẠN</p>
+            <h2>Tóm tắt chi phí</h2>
+            {requestError && <p className="checkout-preview-error" role="alert">{requestError}</p>}
+            {loadingCart && <p role="status">Đang tải giỏ hàng…</p>}
+            {!loadingCart && !cart?.items.length && <p>Giỏ hàng chưa có sản phẩm.</p>}
+            {cart?.items.length && !province.trim() ? <p>Nhập tỉnh/thành để server tính phí giao.</p> : null}
+            {previewing && <p className="checkout-previewing" role="status">Đang cập nhật chi phí…</p>}
+            {preview && province.trim() && (
+              <div className="checkout-price-breakdown">
+                <p><span>Tạm tính</span><strong>{formatPrice(preview.subtotal)}</strong></p>
+                <p><span>Giảm giá sản phẩm</span><strong>−{formatPrice(preview.saleDiscount)}</strong></p>
+                <p><span>Giảm giá voucher</span><strong>−{formatPrice(preview.voucher?.discount ?? 0)}</strong></p>
+                <p><span>Phí vận chuyển</span><strong>+{formatPrice(preview.shippingFee)}</strong></p>
+                <p className="checkout-summary-total"><span>Tổng thanh toán</span><strong>{formatPrice(preview.total)}</strong></p>
+              </div>
+            )}
+            {voucher && <small>Voucher đang áp dụng: <strong>{voucher}</strong></small>}
+          </section>
+          <section className="checkout-help">
+            <p>GIAO HÀNG DAYORA</p>
+            <h2>Giao đúng nơi,<br />đi đúng lúc.</h2>
+            <ul>
+              <li>Phí giao và tổng tiền đều do server tính.</li>
+              <li>Đổi tỉnh/thành sẽ tự cập nhật chi phí.</li>
+            </ul>
+          </section>
         </aside>
       </div>
     </main>

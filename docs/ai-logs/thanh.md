@@ -3070,3 +3070,44 @@ Thành kiểm tra trực quan trên localhost và phản hồi lỗi màu chữ;
 ### Kiểm tra và minh chứng
 
 `npm.cmd run lint -w web` pass; `npm.cmd run build -w web` pass; `npm.cmd run build -w api` pass sau khi tạo Prisma Client. API `/api/health` và web `/thanh-toan` đều trả HTTP 200. Các tệp liên quan: `apps/web/src/App.tsx`, `apps/web/src/catalog.css`, `apps/web/src/lib/auth.tsx`, `apps/web/src/pages/CheckoutPage.tsx` và mục log này.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-2-2-002
+
+* Thời gian ghi: 2026-11-18T17:11:23+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-checkout
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: THANH-20261118-PRJ-P2-FD1-2-1-001; PRJ-P2-FD1-2.2 #480.
+
+### Công cụ
+
+Codex; React; TypeScript; CSS; REST API; npm.cmd; ESLint; Vite; Git.
+
+### Mục đích
+
+Nối trang thanh toán với API preview để phí giao, voucher và tổng tiền được backend tính lại khi khách thay đổi tỉnh/thành hoặc khu vực nội thành TP.HCM.
+
+### Prompt
+
+Thành cung cấp toàn bộ nội dung sub-issue #480 và yêu cầu tiếp tục. Sau khi kiểm tra localhost, Thành xác nhận kết quả ổn và yêu cầu commit nếu issue không bắt buộc dùng danh sách chọn tỉnh/thành.
+
+### Kết quả đề xuất
+
+Codex mở rộng `previewOrder` để gửi `address`, tải giỏ hàng và voucher đã lưu trong CheckoutPage, gọi lại preview theo địa chỉ, xử lý trạng thái tải/lỗi và hiển thị tạm tính, giảm giá sản phẩm, giảm voucher, phí vận chuyển và tổng thanh toán. Giao diện responsive được bổ sung cho bảng tiền; frontend không tự tính phí.
+
+### Phản biện
+
+Lint ban đầu phát hiện cập nhật state đồng bộ trong effect; Codex chuyển khởi tạo request sang chuỗi Promise để tránh render nối tầng. Issue ghi phí tỉnh khác 45.000 đồng nhưng backend và test hiện tại quy định 40.000 đồng; giữ frontend hiển thị đúng kết quả server thay vì tự ghi đè nghiệp vụ. Issue không yêu cầu dropdown hoặc danh sách tỉnh thành nên giữ ô nhập văn bản trong phạm vi bước này.
+
+### Quyết định của nhóm
+
+Thành kiểm tra localhost, xác nhận ổn và yêu cầu commit. Không có quyết định thay đổi quy tắc phí backend hoặc bổ sung danh sách tỉnh thành.
+
+### Người kiểm tra
+
+Thành kiểm tra chức năng trên localhost và yêu cầu commit; Codex chạy kiểm tra tự động. Reviewer chưa kiểm tra độc lập.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web` pass; `npm.cmd run build -w web` pass; `git diff --check` pass. API `/api/health` và web `/thanh-toan` đều trả HTTP 200. Tệp thay đổi: `apps/web/src/lib/cart.ts`, `apps/web/src/pages/CheckoutPage.tsx`, `apps/web/src/catalog.css` và mục log này.
