@@ -111,6 +111,8 @@ let pricing = calculatePricing(base);
 
 let voucher: {
   valid: boolean;
+  code?: string;
+  percentOff?: number | null;
   reason?: string;
   discount?: number;
 } | null = null;
@@ -123,6 +125,7 @@ if (dto.voucherCode) {
   if (!found) {
     voucher = {
       valid: false,
+      code: dto.voucherCode,
       reason: 'Không tìm thấy voucher',
     };
   } else {
@@ -150,6 +153,8 @@ if (dto.voucherCode) {
 });
       voucher = {
         valid: true,
+        code: found.code,
+        percentOff: found.percentOff,
         discount: pricing.discount,
       };
     } catch (error) {
@@ -163,6 +168,8 @@ if (dto.voucherCode) {
 
       voucher = {
         valid: false,
+        code: found.code,
+        percentOff: found.percentOff,
         reason: error.message,
       };
     }

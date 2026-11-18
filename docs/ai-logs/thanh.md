@@ -2783,3 +2783,85 @@ Codex kiểm tra API bằng HTTP và chạy lint/build; chờ Thành xác nhận
 ### Kiểm tra và minh chứng
 
 `GET /api/health` và `GET /api/products` trả 200 với header CORS cho `http://localhost:5173`. `npm.cmd run lint -w web`, `npm.cmd run build -w web` và `git diff --check` thành công. Thay đổi sửa nút thêm giỏ và mục log này chưa commit/push tại thời điểm ghi.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-1-3-005
+
+* Thời gian ghi: 2026-11-18T15:56:55+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-cart
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: THANH-20261118-PRJ-P2-FD1-1-2-004; PRJ-P2-FD1-1.3 #472.
+
+### Công cụ
+
+Codex; Git; npm.cmd; React; TypeScript; ESLint; Vite; Vitest; curl.
+
+### Mục đích
+
+Triển khai Bước 3 của task Giỏ hàng + voucher: lưu mã trong sessionStorage, gọi server preview và hiển thị kết quả voucher cùng tổng tiền do server trả.
+
+### Prompt
+
+Thành cung cấp toàn bộ mô tả sub-issue PRJ-P2-FD1-1.3 và yêu cầu tiếp tục task kế tiếp.
+
+### Kết quả đề xuất
+
+Codex bổ sung kiểu `Preview`, `expectedOf`, `previewOrder`, `savedVoucher`, `saveVoucher` trong `lib/cart.ts`; thêm form voucher, trạng thái hợp lệ/từ chối, phí giao tạm tính và tổng server trong `CartPage.tsx`; bổ sung CSS responsive cho form. Mã được chuẩn hóa chữ hoa khi áp dụng, lưu với khóa `dayora:voucher`, và trang giỏ vẫn hiển thị nếu riêng preview gặp lỗi.
+
+### Phản biện
+
+`OrdersService` và 7 test nghiệp vụ đã có, nhưng cả `origin/main` lẫn `origin/prj/p2-bd2-2` không có `OrdersController`/`OrdersModule` đăng ký endpoint. Vì vậy `POST /api/orders/preview` thực tế trả 404; chưa thể xác minh ca DAYORA10 hoặc mã sai trên trình duyệt. Không tự thêm backend ngoài phạm vi FD1.
+
+### Quyết định của nhóm
+
+Thành yêu cầu tiếp tục sub-issue 1.3. Chưa có quyết định cho phép mở rộng sang sửa dependency backend hoặc kết quả reviewer.
+
+### Người kiểm tra
+
+Codex chạy kiểm tra frontend, test service backend và HTTP endpoint; chờ chủ phụ trách backend bổ sung route, sau đó Thành/reviewer kiểm tra tay voucher trên trình duyệt.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web`, `npm.cmd run build -w web`, `git diff --check` thành công. `npm.cmd test -w api -- orders.service` trả 1 file và 7 test đều pass. `POST /api/orders/preview` trả 404 `Cannot POST /api/orders/preview`; tiêu chí “/gio-hang báo kết quả áp mã và cập nhật tổng” chưa được xác minh tích hợp.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-1-3-006
+
+* Thời gian ghi: 2026-11-18T16:06:32+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-cart
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: THANH-20261118-PRJ-P2-FD1-1-3-005; PRJ-P2-FD1-1.3 #472; commit eb2395b trước khi amend.
+
+### Công cụ
+
+Codex; PowerShell; NestJS; React; TypeScript; ESLint; Vite; Vitest.
+
+### Mục đích
+
+Sửa trở ngại tích hợp preview và làm rõ giao diện tính voucher sau khi Thành kiểm tra bản local.
+
+### Prompt
+
+Thành báo trang giỏ trả `Cannot POST /api/orders/preview`, sau đó phản hồi giao diện chưa nói rõ voucher giảm 10% và yêu cầu sửa đẹp hơn; cuối cùng cho phép commit bản sửa.
+
+### Kết quả đề xuất
+
+Codex bổ sung `OrdersController`, `OrdersModule` và đăng ký module để route `POST /api/orders/preview` tồn tại. Response voucher có thêm mã và phần trăm; giao diện thể hiện công thức tiền hàng, voucher âm, phí giao dương và tổng dự kiến, kèm ghi chú tổng đã gồm phí giao tạm tính. Khối voucher được chỉnh khoảng cách, màu, typography và trạng thái thành công.
+
+### Phản biện
+
+Với giỏ 387.000 đồng, DAYORA10 giảm 38.700 đồng và phí giao tạm tính 30.000 đồng, tổng server là 378.300 đồng; số tổng cao hơn tiền sau giảm vì đã cộng phí giao. Thành đã xem giao diện và cho phép commit; Thành chưa cung cấp xác nhận riêng bằng lời cho ca `MA_KHONG_TON_TAI`, nên không ghi ca đó đã pass.
+
+### Quyết định của nhóm
+
+Thành yêu cầu hoàn thiện local trước, tự kiểm tra rồi mới commit; quy trình này được áp dụng cho các bước sau. Thành cho phép amend và cập nhật commit bước 1.3 sau khi xem bản sửa.
+
+### Người kiểm tra
+
+Codex chạy kiểm tra tự động; Thành kiểm tra giao diện local và cho phép commit. Ca mã voucher không tồn tại vẫn chờ xác nhận cụ thể của Thành/reviewer.
+
+### Kiểm tra và minh chứng
+
+API và web lint pass; web build pass; `npm.cmd test -w api -- orders.service` trả 7/7 test pass; `git diff --check` pass. Route preview đã chuyển từ 404 sang 401 khi gọi không cookie, chứng minh controller được đăng ký và guard hoạt động. Thành cung cấp ảnh DAYORA10 áp dụng với mức giảm 38.700 đồng trên giỏ 387.000 đồng.

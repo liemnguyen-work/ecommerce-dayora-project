@@ -36,6 +36,59 @@ export interface Cart {
   warnings: CartWarning[];
 }
 
+export interface PreviewVoucher {
+  valid: boolean;
+  code?: string;
+  percentOff?: number | null;
+  reason?: string;
+  discount?: number;
+}
+
+export interface Preview {
+  subtotal: number;
+  saleDiscount: number;
+  voucher: PreviewVoucher | null;
+  shippingFee: number;
+  shippingIsEstimate: boolean;
+  total: number;
+  warnings: CartWarning[];
+}
+
+export const expectedOf = (cart: Cart) =>
+  cart.items.map((item) => ({
+    skuId: item.sku.id,
+    unitPrice: item.sku.effectivePrice,
+  }));
+
+export function previewOrder(cart: Cart, voucherCode?: string): Promise<Preview> {
+  return api<Preview>('/orders/preview', {
+    method: 'POST',
+    body: JSON.stringify({
+      voucherCode: voucherCode || undefined,
+      expected: expectedOf(cart),
+    }),
+  });
+}
+
+const VOUCHER_KEY = 'dayora:voucher';
+
+export function savedVoucher(): string {
+  try {
+    return sessionStorage.getItem(VOUCHER_KEY) ?? '';
+  } catch {
+    return '';
+  }
+}
+
+export function saveVoucher(code: string): void {
+  try {
+    if (code) sessionStorage.setItem(VOUCHER_KEY, code);
+    else sessionStorage.removeItem(VOUCHER_KEY);
+  } catch {
+    // Storage can be unavailable in private or restricted browser contexts.
+  }
+}
+
 export function getCart(): Promise<Cart> {
   return api<Cart>('/cart');
 }

@@ -1,6 +1,16 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getCart, removeCartItem, updateCartItem, type Cart, type CartWarning } from '../lib/cart';
+import {
+  getCart,
+  previewOrder,
+  removeCartItem,
+  savedVoucher,
+  saveVoucher,
+  updateCartItem,
+  type Cart,
+  type CartWarning,
+  type Preview,
+} from '../lib/cart';
 import { useAuth } from '../lib/auth';
 import { formatPrice } from '../lib/catalog';
 import '../catalog.css';
@@ -15,35 +25,53 @@ function warningLabel(warning: CartWarning | undefined): string | null {
   return null;
 }
 
+async function cartWithPreview(code: string) {
+  const nextCart = await getCart();
+  if (!nextCart.items.length) return { nextCart, nextPreview: null, previewError: null };
+  try {
+    return {
+      nextCart,
+      nextPreview: await previewOrder(nextCart, code),
+      previewError: null,
+    };
+  } catch (previewError) {
+    return { nextCart, nextPreview: null, previewError };
+  }
+}
+
 export default function CartPage() {
   const { user, loading: authLoading } = useAuth();
   const [cart, setCart] = useState<Cart | null>(null);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+  const [voucher, setVoucher] = useState(savedVoucher);
+  const [preview, setPreview] = useState<Preview | null>(null);
 
-  const refresh = useCallback(async () => {
+  const refresh = useCallback(async (code = voucher) => {
     try {
-      const nextCart = await getCart();
+      const { nextCart, nextPreview, previewError } = await cartWithPreview(code);
       setCart(nextCart);
-      setError('');
+      setPreview(nextPreview);
+      setError(previewError ? errorMessage(previewError) : '');
     } catch (requestError) {
       setCart(null);
       setError(errorMessage(requestError));
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [voucher]);
 
   useEffect(() => {
     if (!user) return;
 
     let active = true;
-    getCart()
-      .then((nextCart) => {
+    cartWithPreview(savedVoucher())
+      .then(({ nextCart, nextPreview, previewError }) => {
         if (!active) return;
         setCart(nextCart);
-        setError('');
+        setPreview(nextPreview);
+        setError(previewError ? errorMessage(previewError) : '');
       })
       .catch((requestError: unknown) => {
         if (!active) return;
@@ -65,7 +93,23 @@ export default function CartPage() {
     try {
       if (quantity > 0) await updateCartItem(id, quantity);
       else await removeCartItem(id);
-      await refresh();
+      await refresh(voucher);
+    } catch (requestError) {
+      setError(errorMessage(requestError));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function applyVoucher() {
+    if (!cart) return;
+    const code = voucher.trim().toUpperCase();
+    setVoucher(code);
+    saveVoucher(code);
+    setBusy(true);
+    setError('');
+    try {
+      setPreview(await previewOrder(cart, code));
     } catch (requestError) {
       setError(errorMessage(requestError));
     } finally {
@@ -161,8 +205,27 @@ export default function CartPage() {
         </ul>
         <aside className="cart-summary" aria-label="Tóm tắt giỏ hàng">
           <h2>Tạm tính</h2>
-          <p><span>Tiền hàng</span><strong>{formatPrice(cart.subtotal)}</strong></p>
-          <small>Phí giao hàng và giảm giá sẽ được xác định ở bước tiếp theo.</small>
+          <form className="voucher-form" onSubmit={(event) => { event.preventDefault(); void applyVoucher(); }}>
+            <label htmlFor="voucher-code">Mã voucher</label>
+            <div>
+              <input id="voucher-code" value={voucher} onChange={(event) => setVoucher(event.target.value)} placeholder="Ví dụ: DAYORA10" autoComplete="off" />
+              <button type="submit" disabled={busy}>Áp dụng</button>
+            </div>
+          </form>
+          {preview?.voucher && (
+            <p className={preview.voucher.valid ? 'voucher-result voucher-result-valid' : 'voucher-result voucher-result-invalid'} role="status">
+              {preview.voucher.valid
+                ? <><strong>Áp dụng thành công</strong><span>Mã {preview.voucher.code ?? voucher}{preview.voucher.percentOff != null ? ` giảm ${preview.voucher.percentOff}%` : ''} · Tiết kiệm {formatPrice(preview.voucher.discount ?? 0)}</span></>
+                : preview.voucher.reason}
+            </p>
+          )}
+          <div className="cart-price-breakdown">
+            <p><span>Tiền hàng</span><strong>{formatPrice(preview?.subtotal ?? cart.subtotal)}</strong></p>
+            {preview?.voucher?.valid && <p className="cart-discount"><span>Voucher {preview.voucher.percentOff != null ? `(${preview.voucher.percentOff}%)` : ''}</span><strong>−{formatPrice(preview.voucher.discount ?? 0)}</strong></p>}
+            {preview && <p><span>Phí giao {preview.shippingIsEstimate ? 'tạm tính' : ''}</span><strong>+{formatPrice(preview.shippingFee)}</strong></p>}
+          </div>
+          <p className="cart-summary-total"><span>Tổng dự kiến</span><strong>{formatPrice(preview?.total ?? cart.subtotal)}</strong></p>
+          <small>Đã gồm phí giao tạm tính. Giá trị được server kiểm tra và tính toán.</small>
         </aside>
       </div>
     </main>
