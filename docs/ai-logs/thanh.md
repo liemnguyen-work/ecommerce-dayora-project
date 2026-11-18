@@ -2619,3 +2619,85 @@ Codex chạy lint và build web; chờ Thành và thành viên phụ trách Abou
 
 ### Kiểm tra và minh chứng
 npm run lint -w web, npm run build -w web và git diff --check thành công; chưa kiểm thử trang About.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-1-1-001
+
+* Thời gian ghi: 2026-11-18T15:11:33+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-cart
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-FD1-1.1 #468 (theo issue nguồn NguyenTienMinh2510/dayora); nhánh `prj/p2-fd1-1` trong repo Liêm.
+
+### Công cụ
+
+Codex; Git; npm.cmd; TypeScript; ESLint; Vite.
+
+### Mục đích
+
+Triển khai Bước 1 của task Giỏ hàng + voucher: client API và kiểu dữ liệu cho giỏ hàng.
+
+### Prompt
+
+Thành cung cấp mô tả sub-issue PRJ-P2-FD1-1.1, yêu cầu đọc và áp dụng skill DAYORA, sau đó cho phép làm sớm và triển khai trực tiếp.
+
+### Kết quả đề xuất
+
+Codex tạo `apps/web/src/lib/cart.ts` với CartSku, CartItem, CartWarning, Cart và các hàm getCart, addToCart, updateCartItem, removeCartItem. Client gọi API server `/cart` và `/cart/items`; không lưu giỏ ở localStorage. Dùng `kitGroupId` vì backend hiện trả đúng field này thay vì `kitId` trong ví dụ issue.
+
+### Phản biện
+
+Chưa thử API trong trình duyệt với cookie đăng nhập thật; không thể xác nhận thao tác tăng/giảm/xóa UI vì CartPage thuộc Bước 2. Contract backend được đối chiếu từ CartController và CartService ở commit nền `origin/main`.
+
+### Quyết định của nhóm
+
+Thành cho phép làm sớm và triển khai trực tiếp Bước 1; chưa có quyết định reviewer hoặc kết quả duyệt.
+
+### Người kiểm tra
+
+Codex chạy lint/build; chờ Thành và reviewer PD Đạt kiểm tra tích hợp UI/API.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web`, `npm.cmd run build -w web` và `git diff --check` thành công. `node_modules` của worktree mới được cài bằng `npm ci` theo lockfile. Chưa commit/push tại thời điểm ghi.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-1-1-002
+
+* Thời gian ghi: 2026-11-18T15:15:36+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-cart
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: THANH-20261118-PRJ-P2-FD1-1-1-001; commit 25cfd9e; tiêu chí test OrdersService do Thành cung cấp.
+
+### Công cụ
+
+Codex; npm.cmd; Vitest; NestJS build; Prisma generate.
+
+### Mục đích
+
+Chạy hai ca test OrdersService được Thành yêu cầu trước khi tiếp tục task giỏ hàng.
+
+### Prompt
+
+Thành yêu cầu chạy `orders.service` cho hai ca “miễn phí HCM khi đủ 500.000 sau giảm” và “rejects a voucher before its start date and after the user limit”.
+
+### Kết quả đề xuất
+
+Lần chạy đầu cả hai ca đỏ với thông báo bao ngoài “OrdersService chưa được triển khai” vì Prisma Client chưa được generate trong worktree mới. Codex chạy `npm.cmd run build -w api`, Prisma generate và Nest build thành công; sau đó chạy lại đúng hai ca và cả hai đều pass.
+
+### Phản biện
+
+Thông báo lỗi lần đầu từ `catch` dynamic import không phản ánh đúng việc OrdersService có tồn tại; cần kiểm tra build/generate trước khi kết luận thiếu triển khai. Không sửa mã backend.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới; chỉ thực hiện kiểm tra theo yêu cầu Thành.
+
+### Người kiểm tra
+
+Codex chạy lệnh và quan sát output Vitest; chờ Thành/reviewer đối chiếu.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run build -w api` thành công. Hai lệnh test đều trả `Test Files 1 passed`, `Tests 1 passed | 6 skipped` và exit code 0.
