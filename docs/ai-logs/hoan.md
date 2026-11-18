@@ -4649,3 +4649,48 @@ Codex nhận xét câu trả lời; chờ reviewer xem xét.
 ### Kiểm tra và minh chứng
 
 Nội dung được ghi vào docs/learning/BD1-Hoan/kiem-tra/PRJ-P2-BD1-2.md; không chạy test phần code trong bước tài liệu.
+
+---
+
+## Phase 2 / hoan-20261118-voucher-release-01
+
+* Thời gian ghi: 2026-11-18T16:40:57+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-voucher-release
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-2; PR #686; PR #688
+
+### Công cụ
+
+Codex, Git, Vitest và ESLint.
+
+### Mục đích
+
+Trả lượt voucher khi đơn bị hủy hoặc hết hạn để khách có thể dùng lại.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp nhận xét review về VoucherUsage và yêu cầu sửa, thêm hai ca test hủy hoặc hết hạn rồi tạo lại với perUserLimit = 1.
+
+### Kết quả đề xuất
+
+Tạo bản làm việc riêng fix/p2-voucher-release từ nhánh checkout, giữ nguyên file chưa được theo dõi trong bản chính. Thêm xóa VoucherUsage theo orderId trong cùng transaction release và hai ca test mô phỏng tạo lại đơn sau hủy hoặc hết hạn.
+
+### Phản biện
+
+Test dùng mock, chưa chứng minh rollback hoặc cạnh tranh trong PostgreSQL thật. Test nghiệm thu được bổ sung theo yêu cầu sửa lỗi và cần QA xem xét. Không thay đổi cách đếm ở create và admin: cả hai tiếp tục đếm VoucherUsage.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu sửa theo một trong hai cách đề xuất; Codex chọn xóa VoucherUsage khi release. Chưa có xác nhận reviewer duyệt thay đổi.
+
+### Người kiểm tra
+
+Codex chạy test checkout và lint API; chờ Hoàn, QA và reviewer.
+
+### Kiểm tra và minh chứng
+
+- npm test -w api -- checkout.service.spec.ts: 9/9 pass.
+- npm run lint -w api: pass.
+- Chưa test database thật, chưa commit hoặc push.
