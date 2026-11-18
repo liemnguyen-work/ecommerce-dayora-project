@@ -73,7 +73,7 @@ function fixture() {
       }),
       update: vi.fn().mockResolvedValue({}),
     },
-    voucherUsage: { count: vi.fn().mockResolvedValue(0), create: vi.fn().mockResolvedValue({}) },
+    voucherUsage: { count: vi.fn().mockResolvedValue(0), create: vi.fn().mockResolvedValue({}), deleteMany: vi.fn().mockResolvedValue({ count: 0 }) },
     payment: { updateMany: vi.fn().mockResolvedValue({ count: 1 }) },
     $executeRaw: vi.fn().mockResolvedValue(1),
     $queryRaw: vi.fn().mockResolvedValue([{ id: 'voucher-a' }]),
@@ -180,6 +180,35 @@ describe('CheckoutService - PRJ-P2-BD1-2', () => {
     }));
   });
 
+  it.each(['hủy', 'hết hạn'] as const)(
+    '%s đơn có voucher rồi tạo lại đơn cùng voucher perUserLimit = 1',
+    async (action) => {
+      const { service, prisma, tx, orders } = await makeService();
+      let uses = 1;
+      tx.voucherUsage.count.mockImplementation(async () => uses);
+      tx.voucherUsage.deleteMany.mockImplementation(async ({ where }: { where: { orderId: string } }) => {
+        if (where.orderId === 'order-a') uses = 0;
+        return { count: 1 };
+      });
+      tx.voucherUsage.create.mockImplementation(async () => { uses++; return {}; });
+      orders.preview.mockResolvedValue({ ...preview(), voucher: { valid: true, discount: 16_000 }, total: 164_000 });
+
+      if (action === 'hủy') {
+        await service.cancel(userId, 'order-a');
+      } else {
+        prisma.order.findMany.mockResolvedValue([{ id: 'order-a' }]);
+        await service.expireStaleOrders();
+      }
+
+      expect(tx.voucherUsage.deleteMany).toHaveBeenCalledWith({ where: { orderId: 'order-a' } });
+      expect(uses).toBe(0);
+      await expect(service.create(userId, { ...request(), voucherCode: 'SALE10', expectedTotal: 164_000 })).resolves.toMatchObject({ id: 'order-a' });
+      expect(tx.voucherUsage.create).toHaveBeenCalledWith(expect.objectContaining({
+        data: expect.objectContaining({ voucherId: 'voucher-a', userId, orderId: 'order-a' }),
+      }));
+      expect(uses).toBe(1);
+    },
+  );
   it('không xem hoặc hủy đơn của người khác', async () => {
     const { service, prisma, tx } = await makeService();
     prisma.order.findFirst.mockResolvedValue(null);
