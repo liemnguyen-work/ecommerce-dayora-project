@@ -1346,3 +1346,264 @@ Sử dụng nội dung tự đánh giá làm tài liệu ôn tập cho PRJ-P1-PD
 - Bộ minh chứng gồm 20 ảnh tại `docs/report/images/p1/`.
 - Nội dung kiểm tra gồm đủ ba bước của task và một khó khăn thực tế.
 - Chưa có xác nhận chính thức từ reviewer tại thời điểm ghi.
+
+---
+
+## P2 — Đối chiếu giao diện giỏ hàng / DAT-20261118-P2-001
+
+* **Thời gian ghi:** 18/11/2026
+* **Thời gian thực hiện:** 18/11/2026
+* **Mã phiên nhật ký:** DAT-20261118-P2-001
+* **Người prompt:** Đạt (PD)
+* **Loại mục:** Hoạt động
+* **Liên quan:** PRJ-P2-PD-1.1; nhánh `prj/p2-pd-1`
+
+### Công cụ
+
+ChatGPT, Visual Studio Code, CMD, Git, Chrome DevTools và Firefox.
+
+### Mục đích
+
+Khảo sát trang Giỏ hàng `/gio-hang` ở kích thước desktop 1366 × 768 px và mobile 390 × 844 px; kiểm tra trạng thái có sản phẩm, trạng thái rỗng và ghi nhận các điểm chưa phù hợp với hệ thiết kế K11.
+
+### Prompt
+
+Đạt cung cấp yêu cầu của PRJ-P2-PD-1.1, kết quả chạy dự án và bốn ảnh chụp trang giỏ hàng. Đạt yêu cầu ChatGPT hướng dẫn đúng quy trình từ nhánh Git, khởi chạy API và web, chuẩn hóa tên ảnh, đối chiếu giao diện và lập báo cáo.
+
+Trong quá trình quan sát, Đạt phát hiện biểu tượng giỏ trên header không hiển thị số lượng dù trong giỏ đang có hai sản phẩm và yêu cầu xác định vấn đề này thuộc phạm vi task nào.
+
+### Kết quả hỗ trợ
+
+ChatGPT hỗ trợ:
+
+- Kiểm tra nhánh `prj/p2-pd-1` được tạo từ commit `ce8258a`.
+- Hướng dẫn đồng bộ dependencies, tạo Prisma Client, kiểm tra migration và khởi chạy API/web.
+- Hướng dẫn tạo giỏ có hai sản phẩm và trạng thái giỏ rỗng.
+- Chuẩn hóa bốn ảnh thành `cart-1366.png`, `cart-390.png`, `cart-empty-1366.png` và `cart-empty-390.png`.
+- Xác định lỗi thiếu số lượng trên biểu tượng giỏ thuộc phạm vi đối chiếu giỏ hàng P2 và phân loại mức Nên sửa.
+- Hỗ trợ lập bảng đối chiếu với bốn điểm Nên sửa và một nội dung chờ đo bằng DevTools.
+
+### Phản biện
+
+Kết luận được giới hạn trong những gì quan sát được từ giao diện chạy thật và bốn ảnh chụp. Ảnh đủ để xác nhận biểu tượng giỏ không hiện số lượng, tiêu đề “Tạm tính” có tương phản thấp, CTA giỏ rỗng khó đọc và placeholder voucher bị cắt trên desktop.
+
+Kích thước vùng bấm của nút `−` và `+` chưa được đo trực tiếp nên báo cáo không kết luận đạt hay không đạt. Các trạng thái focus, thao tác bàn phím, zoom 200% và trình đọc màn hình cũng chưa được kiểm tra.
+
+### Quyết định của nhóm
+
+Giữ bốn điểm quan sát được ở mức Nên sửa vì chúng ảnh hưởng đến phản hồi trạng thái hoặc khả năng đọc nhưng chưa làm gián đoạn thao tác chính. Không ghi nhận lỗi mức Chặn trong phạm vi bước 1.1.
+
+Phần đo vùng bấm sẽ được kiểm chứng riêng bằng DevTools. Không sửa mã nguồn giao diện trong nhánh tài liệu của PD Đạt; các đề xuất được chuyển cho FD1 Thành xem xét.
+
+### Người kiểm tra
+
+Đạt trực tiếp chạy dự án, đăng nhập, thêm hai sản phẩm, xóa sản phẩm và chụp bốn ảnh minh chứng. ChatGPT hỗ trợ hướng dẫn quy trình, rà soát ảnh và chuẩn hóa nội dung báo cáo. FD1 Thành là reviewer xác nhận kết quả.
+
+### Kiểm tra và minh chứng
+
+- API health trả `{"status":"ok","service":"dayora-api"}`.
+- Backend biên dịch với 0 lỗi và khởi động thành công.
+- Prisma báo không còn migration chờ áp dụng.
+- Có đủ bốn ảnh tại `docs/report/images/p2/`.
+- Báo cáo có đúng bốn đường dẫn ảnh.
+- Báo cáo ghi nhận bốn dòng mức Nên sửa.
+- Không ghi nhận dòng mức Chặn.
+- Phần kích thước vùng bấm được ghi là chưa kết luận.
+
+---
+
+## P2 — Khảo sát và đối chiếu trang thanh toán / DAT-20261119-P2-002
+
+* **Thời gian ghi:** 19/11/2026
+* **Thời gian thực hiện:** 19/11/2026
+* **Mã phiên nhật ký:** DAT-20261119-P2-002
+* **Người prompt:** Đạt (PD)
+* **Loại mục:** Hoạt động
+* **Liên quan:** PRJ-P2-PD-1.2; nhánh `prj/p2-pd-1`
+
+### Công cụ
+
+ChatGPT, Visual Studio Code, Chrome DevTools, CMD, Git, NestJS, Vite và Prisma.
+
+### Mục đích
+
+Khảo sát trang thanh toán `/thanh-toan` ở hai kích thước 1366 × 768 px và 390 × 844 px; đếm số thao tác của luồng thanh toán, kiểm tra khả năng tự cập nhật phí giao và ghi nhận các điểm chưa nhất quán so với tiêu chí UX/K11.
+
+### Prompt
+
+Đạt cung cấp nội dung sub-issue PRJ-P2-PD-1.2 và yêu cầu hướng dẫn tiếp tục theo đúng flow của các bước trước. Trong quá trình thực hiện, Đạt gửi output Git, build, migration, log API và ảnh giao diện để ChatGPT hỗ trợ kiểm tra từng bước.
+
+### Kết quả đề xuất
+
+ChatGPT hỗ trợ:
+
+- Xác định phần checkout đã được merge vào `main` và hướng dẫn đồng bộ `origin/main` vào nhánh `prj/p2-pd-1`.
+- Hướng dẫn cài dependency, tạo Prisma Client, kiểm tra migration và build API/web.
+- Phân tích giao diện và logic `CheckoutPage.tsx` để xác định các trường bắt buộc, trường tùy chọn và cách tính số thao tác.
+- Hướng dẫn kiểm tra phí giao giữa Hồ Chí Minh nội thành và Hà Nội mà không tải lại trang.
+- Kiểm tra ảnh desktop/mobile và chuẩn hóa tên `checkout-1366.png`, `checkout-390.png`.
+- Hỗ trợ soạn mục 2 trong `docs/report/ux/P2-doi-chieu.md`, gồm bảng thao tác, kết quả phí giao, điểm phù hợp, điểm cần sửa và giới hạn kiểm tra.
+
+### Phản biện
+
+Ví dụ trong issue mô tả các trường `province`, `district`, `ward`, `addressLine` và phương thức thanh toán, nhưng giao diện thực tế không hoàn toàn giống ví dụ. Form hiện tại tự điền họ tên, yêu cầu số điện thoại, địa chỉ và tỉnh/thành; quận/huyện cùng checkbox nội thành là tùy chọn, không có trường phường/xã riêng.
+
+Vì vậy, số thao tác được thống kê theo giao diện chạy thật thay vì sao chép nguyên ví dụ. Luồng kiểm tra có sáu thao tác từ giỏ hàng đến nút đặt hàng; trường hợp chọn nội thành Hồ Chí Minh có thêm một thao tác.
+
+Lần chạy migration đầu tiên gặp lỗi kết nối Prisma `P1001`. Sau khi kiểm tra kết nối cổng 5432 và chạy lại, migration hoàn tất với trạng thái không còn migration chờ áp dụng. Đây được ghi nhận là lỗi kết nối tạm thời, không tự ý thay đổi cấu hình cơ sở dữ liệu.
+
+### Quyết định của nhóm
+
+Giữ hai ảnh checkout thể hiện trạng thái Hà Nội, phí vận chuyển 40.000 đ và tổng thanh toán 388.000 đ. Báo cáo ghi thêm kết quả đối chiếu với Hồ Chí Minh nội thành, nơi phí vận chuyển là 20.000 đ và tổng thanh toán là 368.000 đ.
+
+Không tạo đơn thật trong lúc khảo sát. Bốn điểm quan sát được được phân loại mức **Nên sửa**; không có khác biệt mức **Chặn** trong phạm vi bước này.
+
+### Người kiểm tra
+
+Đạt trực tiếp đồng bộ nhánh, chạy migration/build/API/web, nhập dữ liệu, thay đổi tỉnh/thành, quan sát phí giao và chụp ảnh. ChatGPT hỗ trợ phân tích yêu cầu, kiểm tra output, đối chiếu ảnh, thống kê thao tác và chuẩn hóa nội dung báo cáo. FD1 Thành là reviewer phụ trách xác nhận kết quả.
+
+### Kiểm tra và minh chứng
+
+- API khởi động thành công, TypeScript báo 0 lỗi.
+- Route `POST /api/orders` và `POST /api/orders/preview` được ánh xạ thành công.
+- `npm run build -w api`: PASS.
+- `npm run build -w web`: PASS.
+- Prisma migration: 3 migration, không có migration chờ áp dụng.
+- Hồ Chí Minh nội thành: phí giao 20.000 đ, tổng 368.000 đ.
+- Hà Nội: phí giao 40.000 đ, tổng 388.000 đ.
+- Phí giao tự cập nhật mà không cần tải lại trang.
+- Có đủ hai ảnh `checkout-1366.png` và `checkout-390.png`.
+- Báo cáo có bốn dòng mức **Nên sửa** trong mục thanh toán.
+- `git diff --check`: PASS.
+- Không thực hiện đặt đơn thật trong quá trình kiểm tra.
+
+---
+
+## P2 — Đánh giá câu chữ trạng thái và hộp đối chiếu / DAT-20261119-P2-003
+
+* **Thời gian ghi:** 19/11/2026
+* **Thời gian thực hiện:** 19/11/2026
+* **Mã phiên nhật ký:** DAT-20261119-P2-003
+* **Người prompt:** Đạt (PD)
+* **Loại mục:** Hoạt động
+* **Liên quan:** PRJ-P2-PD-1.3; nhánh `prj/p2-pd-1`
+
+### Công cụ
+
+ChatGPT, Visual Studio Code, Chrome, CMD, Git và GitHub.
+
+### Mục đích
+
+Đánh giá chất lượng câu chữ của thông báo voucher, lỗi hết hàng và hộp đối chiếu thay đổi giá hoặc phí theo NFR02; đề xuất nội dung tiếng Việt rõ nguyên nhân, số liệu và hành động tiếp theo.
+
+### Prompt
+
+Đạt cung cấp nội dung sub-issue PRJ-P2-PD-1.3 và yêu cầu tiếp tục theo flow các bước trước. Đạt trực tiếp thử voucher trên giao diện và gửi ảnh kết quả để ChatGPT hỗ trợ đối chiếu câu chữ hiện tại, phân tích hộp thoại 409 và chuẩn hóa phần báo cáo.
+
+### Kết quả đề xuất
+
+ChatGPT hỗ trợ:
+
+- Xác định hai mã dùng để kiểm tra là `SAIMAKY` và `PICNIC50K`.
+- Đọc implementation của `CartPage.tsx`, `CheckoutPage.tsx`, `orders.service.ts`, `checkout.service.ts` và `pricing.ts`.
+- Xác định nguyên văn thông báo voucher, lỗi tồn kho và nội dung hộp `CONFIRM_REQUIRED`.
+- Tính số tiền còn thiếu của giỏ 348.000đ so với điều kiện tối thiểu 500.000đ là 152.000đ.
+- Đánh giá khả năng giải thích nguyên nhân và hướng dẫn hành động của từng thông báo.
+- Đề xuất câu chữ thân thiện hơn và nhãn nút phù hợp với trạng thái thực tế.
+- Chuẩn hóa hai ảnh minh chứng thành `voucher-invalid-1366.png` và `voucher-minimum-1366.png`.
+- Hỗ trợ soạn mục 3 trong `docs/report/ux/P2-doi-chieu.md`.
+
+### Phản biện
+
+Hai thông báo voucher hiện tại là “Không tìm thấy voucher” và “Chưa đạt đơn tối thiểu”. Nội dung đúng nguyên nhân nhưng còn ngắn, chưa cho biết người dùng nên làm gì và chưa nêu số tiền còn thiếu.
+
+Không thay đổi giá, tồn kho hoặc dữ liệu dùng chung để cưỡng ép lỗi 409. Phần `CONFIRM_REQUIRED` và `OUT_OF_STOCK` được đánh giá từ implementation hiện tại và được ghi rõ là chưa kích hoạt trực tiếp trong phiên kiểm tra.
+
+Hộp đối chiếu đã hiển thị tiền hàng, phí giao và tổng tiền ở cột trước/sau, nhưng chưa nêu tên sản phẩm hoặc số lượng bị ảnh hưởng. Nút “Hủy đơn” chưa chính xác vì tại thời điểm đó đơn hàng chưa được tạo.
+
+### Quyết định của nhóm
+
+Giữ hai ảnh voucher làm minh chứng kiểm tra trực tiếp. Không tạo thêm ảnh giả lập cho lỗi 409 và không chỉnh sửa database.
+
+Đề xuất đổi nút phụ thành “Quay lại giỏ hàng”, nút chính thành “Xác nhận thay đổi và đặt hàng”; đồng thời bổ sung tên sản phẩm, giá, số lượng hoặc số tiền còn thiếu trong từng thông báo.
+
+### Người kiểm tra
+
+Đạt trực tiếp nhập hai mã voucher, quan sát câu chữ và chụp ảnh minh chứng. ChatGPT hỗ trợ đọc implementation, phân tích microcopy, tính số tiền còn thiếu và chuẩn hóa nội dung báo cáo. FD1 Thành là reviewer phụ trách xác nhận kết quả.
+
+### Kiểm tra và minh chứng
+
+- `SAIMAKY`: hiển thị “Không tìm thấy voucher”.
+- `PICNIC50K`: hiển thị “Chưa đạt đơn tối thiểu”.
+- Giá trị giỏ: 348.000đ.
+- Điều kiện mã `PICNIC50K`: đơn từ 500.000đ.
+- Số tiền còn thiếu: 152.000đ.
+- Có hai ảnh voucher trong `docs/report/images/p2/`.
+- Báo cáo có nội dung `CONFIRM_REQUIRED` và `OUT_OF_STOCK`.
+- Báo cáo có đề xuất câu chữ và hành động tiếp theo.
+- Không sửa mã nguồn, giá, tồn kho hoặc dữ liệu dùng chung.
+- `git diff --check`: PASS.
+
+---
+
+## P2 — Kiểm tra kiến thức đối chiếu giỏ hàng và thanh toán / DAT-20261119-P2-004
+
+* **Thời gian ghi:** 19/11/2026
+* **Thời gian thực hiện:** 19/11/2026
+* **Mã phiên nhật ký:** DAT-20261119-P2-004
+* **Người prompt:** Đạt (PD)
+* **Loại mục:** Học tập và tự đánh giá
+* **Liên quan:** PRJ-P2-PD-1.4; nhánh `prj/p2-pd-1`
+
+### Công cụ
+
+ChatGPT, Visual Studio Code, CMD, Git và GitHub.
+
+### Mục đích
+
+Tổng hợp lại những nội dung tôi đã thực hiện trong PRJ-P2-PD-1, gồm đối chiếu giỏ hàng, khảo sát luồng thanh toán, kiểm tra phí giao và đánh giá câu chữ thông báo để chuẩn bị giải thích với reviewer.
+
+### Quá trình thực hiện
+
+Tôi đã xem lại kết quả của ba bước trước và chọn các nội dung quan trọng để trả lời:
+
+- Kiểm tra giỏ có sản phẩm và giỏ rỗng ở desktop, mobile.
+- Đếm thao tác cần thiết trong luồng thanh toán.
+- Kiểm tra phí giao tự thay đổi khi đổi tỉnh/thành.
+- Thử voucher không tồn tại và voucher chưa đạt giá trị tối thiểu.
+- Đánh giá cách hiển thị `CONFIRM_REQUIRED` và `OUT_OF_STOCK`.
+- Nhớ lại khó khăn khi checkout chưa có trên nhánh và quá trình đồng bộ `main`.
+
+ChatGPT hỗ trợ hệ thống hóa các ý và diễn đạt câu trả lời ngắn gọn. Tôi chịu trách nhiệm đọc lại, điều chỉnh và giải thích nội dung khi reviewer hỏi.
+
+### Kết quả
+
+Tôi đã chuẩn bị file `docs/learning/PD-Dat/kiem-tra/PRJ-P2-PD-1.md` với bốn câu trả lời:
+
+1. Mục đích đối chiếu giao diện giỏ hàng.
+2. Mục đích khảo sát và đếm thao tác thanh toán.
+3. Vai trò của câu chữ trong thông báo lỗi và trạng thái.
+4. Khó khăn khi đồng bộ checkout và kiểm tra lại dự án.
+
+Các câu trả lời được viết ngắn gọn, bám theo những việc đã trực tiếp thực hiện trong task.
+
+### Phản biện
+
+Ảnh chụp chỉ phản ánh trạng thái giao diện tại thời điểm kiểm tra. Hộp `CONFIRM_REQUIRED` và lỗi `OUT_OF_STOCK` không được cưỡng ép bằng cách sửa dữ liệu dùng chung; phần này được đối chiếu thêm từ implementation hiện tại.
+
+Tài liệu kiểm tra kiến thức giúp hệ thống hóa nội dung nhưng không thay thế việc tự hiểu và giải thích. Tôi cần luyện nói lại bằng lời của mình trước khi reviewer hỏi ngẫu nhiên.
+
+### Quyết định
+
+Giữ câu trả lời ở mức ngắn, tập trung vào mục đích, rủi ro nếu bỏ qua và cách xử lý khó khăn thực tế. Không bổ sung nội dung ngoài phạm vi PRJ-P2-PD-1.
+
+### Người kiểm tra
+
+Đạt trực tiếp thực hiện task, kiểm tra giao diện, thử voucher, ghi nhận kết quả và chịu trách nhiệm trả lời reviewer. ChatGPT hỗ trợ hệ thống hóa nội dung và rà soát cách diễn đạt. FD1 Thành là reviewer xác nhận kiến thức.
+
+### Kiểm tra và minh chứng
+
+- File kiến thức: `docs/learning/PD-Dat/kiem-tra/PRJ-P2-PD-1.md`.
+- Có đủ bốn nội dung kiểm tra.
+- Nội dung bám theo kết quả thực hiện PRJ-P2-PD-1.1 đến PRJ-P2-PD-1.3.
+- Nhật ký không ghi nhận reviewer đã nghiệm thu khi chưa có xác nhận.
