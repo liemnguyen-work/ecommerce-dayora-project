@@ -4739,3 +4739,49 @@ Codex chạy test, lint và build API; chờ Hoàn, QA và reviewer.
 - npm test -w api -- admin-vouchers.spec.ts orders.service.spec.ts checkout.service.spec.ts: 24/24 pass.
 - npm run lint -w api và npm run build -w api: pass.
 - Chưa kiểm tra database thật, chưa commit hoặc push phần sửa mới.
+
+---
+
+## Phase 2 / hoan-20261118-voucher-count-a71-01
+
+* Thời gian ghi: 2026-11-18T19:07:14+07:00
+* Thời gian thực hiện: 18/11/2026.
+* Mã phiên nhật ký: hoan-20261118-voucher-count-a71
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: #491, API GET /admin/vouchers
+
+### Công cụ
+
+Codex, Git, Prisma, Vitest, ESLint và công cụ build của dự án.
+
+### Mục đích
+
+Bổ sung số lượt voucher đã dùng cho giao diện quản trị mà không thay đổi schema.
+
+### Prompt
+
+Hoàn chuyển yêu cầu bổ sung usedCount từ quan hệ usages, giữ lọc và phân trang, kiểm tra test, lint, build và push để Phúc tích hợp.
+
+### Kết quả đề xuất
+
+Codex lấy số lượng usages cùng truy vấn danh sách, chuyển thành usedCount và bỏ _count khỏi phản hồi; cập nhật fixture mock và thêm kiểm tra số lượt, lọc và phân trang.
+
+### Phản biện
+
+Các ca mới sử dụng Prisma mock, chưa kiểm tra trên database thật; số lượt phản ánh số bản ghi VoucherUsage theo cơ chế hiện tại.
+
+### Quyết định của nhóm
+
+Hoàn cung cấp yêu cầu và phương án đếm quan hệ; chưa có xác nhận review kết quả triển khai.
+
+### Người kiểm tra
+
+Codex chạy các lệnh kiểm tra; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm test -w api -- admin-vouchers`: 13/13 test pass.
+- `npm run lint`: pass toàn bộ workspace.
+- `npm run build`: pass toàn bộ workspace.
+- Chưa gọi API với database thật; không có migration.
