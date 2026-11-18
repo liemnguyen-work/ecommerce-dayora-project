@@ -14,6 +14,7 @@ export type User = {
   id: string;
   email: string;
   fullName: string;
+  phone?: string | null;
   role: 'CUSTOMER' | 'ADMIN';
 };
 

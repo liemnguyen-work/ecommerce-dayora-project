@@ -1,0 +1,2 @@
+ALTER TABLE "Promotion" ADD COLUMN "subtitle" TEXT;
+ALTER TABLE "Promotion" ALTER COLUMN "imageUrl" DROP NOT NULL;
