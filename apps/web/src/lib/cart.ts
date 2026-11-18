@@ -54,17 +54,24 @@ export interface Preview {
   warnings: CartWarning[];
 }
 
+export interface ShippingAddress {
+  province: string;
+  district: string;
+  isInnerHcm?: boolean;
+}
+
 export const expectedOf = (cart: Cart) =>
   cart.items.map((item) => ({
     skuId: item.sku.id,
     unitPrice: item.sku.effectivePrice,
   }));
 
-export function previewOrder(cart: Cart, voucherCode?: string): Promise<Preview> {
+export function previewOrder(cart: Cart, voucherCode?: string, address?: ShippingAddress): Promise<Preview> {
   return api<Preview>('/orders/preview', {
     method: 'POST',
     body: JSON.stringify({
       voucherCode: voucherCode || undefined,
+      address,
       expected: expectedOf(cart),
     }),
   });

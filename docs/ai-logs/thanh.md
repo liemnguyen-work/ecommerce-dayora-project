@@ -3029,3 +3029,290 @@ Codex chạy kiểm tra tự động; chờ reviewer kiểm tra lại PR.
 ### Kiểm tra và minh chứng
 
 Không còn conflict marker trong `app.module.ts`. `npm.cmd run lint` pass cho API và web; Prisma generate và Nest build pass; web TypeScript/Vite build pass; `git diff --check` pass.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-2-1-001
+
+* Thời gian ghi: 2026-11-18T17:00:37+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-checkout
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-FD1-2.1 #478.
+
+### Công cụ
+
+Codex; React; TypeScript; CSS; npm.cmd; ESLint; Vite; NestJS; Prisma; Git.
+
+### Mục đích
+
+Thay trang bàn giao thanh toán tạm bằng giao diện nhập thông tin người nhận, bảo vệ route khi chưa đăng nhập, điền sẵn thông tin tài khoản và kiểm tra dữ liệu đầu vào trong phạm vi bước 1.
+
+### Prompt
+
+Tóm lược: Thành giao task PRJ-P2-FD1-2 “Thanh toán + hộp đối chiếu 409”, yêu cầu làm lần lượt từng sub-issue, ưu tiên kết quả tốt và cho kiểm tra trên localhost trước khi commit. Sau khi xem giao diện bước 1, Thành phản hồi tiêu đề ở khung xanh bị chìm vào nền và yêu cầu sửa rồi commit.
+
+### Kết quả đề xuất
+
+Codex tạo `CheckoutPage.tsx` với form tên, số điện thoại, địa chỉ, tỉnh/thành, quận/huyện và khu vực nội thành; thêm kiểm tra bắt buộc, định dạng điện thoại, trạng thái báo hợp lệ và chuyển người chưa đăng nhập đến `/dang-nhap?next=/thanh-toan`. Route `/thanh-toan`, kiểu `User.phone` và CSS responsive được cập nhật. Tiêu đề khung trợ giúp được đặt màu trắng sau phản hồi về độ tương phản.
+
+### Phản biện
+
+Thành kiểm tra giao diện trên localhost và phát hiện tiêu đề “Giao đúng nơi, đi đúng lúc.” có màu quá tối trên nền xanh. Codex xác nhận nguyên nhân là quy tắc màu heading toàn cục và bổ sung màu trắng trực tiếp cho `.checkout-help h2`. Thành sau đó yêu cầu commit.
+
+### Quyết định của nhóm
+
+Thành xác nhận tiếp tục bằng yêu cầu commit sau khi lỗi tương phản được sửa. Chưa có quyết định chung hoặc kết quả review từ PD Đạt; chưa triển khai preview, tạo đơn hay hộp 409 trong sub-issue này.
+
+### Người kiểm tra
+
+Thành kiểm tra trực quan trên localhost và phản hồi lỗi màu chữ; Codex sửa và chạy lại kiểm tra tự động. Reviewer chưa kiểm tra độc lập.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web` pass; `npm.cmd run build -w web` pass; `npm.cmd run build -w api` pass sau khi tạo Prisma Client. API `/api/health` và web `/thanh-toan` đều trả HTTP 200. Các tệp liên quan: `apps/web/src/App.tsx`, `apps/web/src/catalog.css`, `apps/web/src/lib/auth.tsx`, `apps/web/src/pages/CheckoutPage.tsx` và mục log này.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-2-2-002
+
+* Thời gian ghi: 2026-11-18T17:11:23+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-checkout
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: THANH-20261118-PRJ-P2-FD1-2-1-001; PRJ-P2-FD1-2.2 #480.
+
+### Công cụ
+
+Codex; React; TypeScript; CSS; REST API; npm.cmd; ESLint; Vite; Git.
+
+### Mục đích
+
+Nối trang thanh toán với API preview để phí giao, voucher và tổng tiền được backend tính lại khi khách thay đổi tỉnh/thành hoặc khu vực nội thành TP.HCM.
+
+### Prompt
+
+Thành cung cấp toàn bộ nội dung sub-issue #480 và yêu cầu tiếp tục. Sau khi kiểm tra localhost, Thành xác nhận kết quả ổn và yêu cầu commit nếu issue không bắt buộc dùng danh sách chọn tỉnh/thành.
+
+### Kết quả đề xuất
+
+Codex mở rộng `previewOrder` để gửi `address`, tải giỏ hàng và voucher đã lưu trong CheckoutPage, gọi lại preview theo địa chỉ, xử lý trạng thái tải/lỗi và hiển thị tạm tính, giảm giá sản phẩm, giảm voucher, phí vận chuyển và tổng thanh toán. Giao diện responsive được bổ sung cho bảng tiền; frontend không tự tính phí.
+
+### Phản biện
+
+Lint ban đầu phát hiện cập nhật state đồng bộ trong effect; Codex chuyển khởi tạo request sang chuỗi Promise để tránh render nối tầng. Issue ghi phí tỉnh khác 45.000 đồng nhưng backend và test hiện tại quy định 40.000 đồng; giữ frontend hiển thị đúng kết quả server thay vì tự ghi đè nghiệp vụ. Issue không yêu cầu dropdown hoặc danh sách tỉnh thành nên giữ ô nhập văn bản trong phạm vi bước này.
+
+### Quyết định của nhóm
+
+Thành kiểm tra localhost, xác nhận ổn và yêu cầu commit. Không có quyết định thay đổi quy tắc phí backend hoặc bổ sung danh sách tỉnh thành.
+
+### Người kiểm tra
+
+Thành kiểm tra chức năng trên localhost và yêu cầu commit; Codex chạy kiểm tra tự động. Reviewer chưa kiểm tra độc lập.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web` pass; `npm.cmd run build -w web` pass; `git diff --check` pass. API `/api/health` và web `/thanh-toan` đều trả HTTP 200. Tệp thay đổi: `apps/web/src/lib/cart.ts`, `apps/web/src/pages/CheckoutPage.tsx`, `apps/web/src/catalog.css` và mục log này.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-2-3-003
+
+* Thời gian ghi: 2026-11-18T17:30:56+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-checkout
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: THANH-20261118-PRJ-P2-FD1-2-2-002; PRJ-P2-FD1-2.3 #482.
+
+### Công cụ
+
+Codex; React; TypeScript; NestJS; Prisma; REST API; CSS; npm.cmd; ESLint; Vitest; Vite; Git.
+
+### Mục đích
+
+Gửi đơn chính thức từ CheckoutPage, chống bấm lặp, xử lý lỗi hết hàng và 409, xóa voucher sau thành công rồi chuyển đến URL đơn vừa tạo.
+
+### Prompt
+
+Thành cung cấp sub-issue #482 và yêu cầu hoàn thiện để tự kiểm tra trước khi commit. Sau khi tạo đơn thật trên localhost, Thành phản hồi nút đặt hàng khó phân biệt trạng thái và trang thành công quá sơ sài; sau lần cải thiện tiếp theo, Thành yêu cầu bỏ các giải thích không cần thiết và commit.
+
+### Kết quả đề xuất
+
+Codex thêm payload recipient, voucher, expected và expectedTotal; gửi `POST /orders`, khóa nút khi đang gửi, xử lý OUT_OF_STOCK/CONFIRM_REQUIRED, xóa voucher và điều hướng đến `/don-hang/:id?moi=1`. Do backend đã có CheckoutService nhưng chưa đăng ký endpoint, Codex nối tối thiểu service vào OrdersModule/OrdersController. Trang xác nhận đơn được tạo với mã đơn và điều hướng; các giải thích kỹ thuật thừa được gỡ theo phản hồi của Thành. Màu nút enabled/disabled được làm rõ.
+
+### Phản biện
+
+Thành kiểm tra thực tế và xác nhận thao tác đã chuyển trang nhưng chỉ ra nút trông như bị khóa và placeholder “Trang đang xây dựng” không đạt yêu cầu. Thành tiếp tục yêu cầu màn hình chỉ thông báo thành công, không hiển thị các dòng về xóa giỏ, voucher, giá server hoặc thời gian giữ hàng. Các nội dung đó đã được loại bỏ.
+
+### Quyết định của nhóm
+
+Thành yêu cầu commit sau khi rút gọn trang xác nhận. Chưa có review độc lập từ PD Đạt và chưa có quyết định chung ngoài phạm vi sub-issue này.
+
+### Người kiểm tra
+
+Thành tạo đơn trên localhost và quan sát việc chuyển sang URL đơn thật; Codex chạy kiểm tra tự động. Reviewer chưa kiểm tra độc lập.
+
+### Kiểm tra và minh chứng
+
+Lint toàn repo pass; build API pass sau khi dừng watcher khóa Prisma; build web pass; 7/7 test `checkout.service` pass; `git diff --check` pass. API ghi nhận route `POST /api/orders`; Thành xác nhận luồng tạo đơn đã chuyển trang. Tệp thay đổi gồm OrdersController, OrdersModule, CheckoutPage, App, catalog.css, OrderCreatedPage và mục log này.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-2-3-004
+
+* Thời gian ghi: 2026-11-18T17:32:25+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-checkout
+* Người prompt: Thành
+* Loại mục: Đính chính
+* Liên quan: THANH-20261118-PRJ-P2-FD1-2-3-003; PRJ-P2-FD1-2.3 #482.
+
+### Công cụ
+
+Codex; React; CSS; npm.cmd; ESLint; TypeScript; Vite; Git.
+
+### Mục đích
+
+Sửa độ tương phản hai nút và nội dung tiêu đề trang xác nhận sau khi Thành kiểm tra bản đã commit cục bộ.
+
+### Prompt
+
+Thành cung cấp ảnh và phản hồi hai nút vẫn hiển thị mờ, đồng thời yêu cầu thông báo chính xác là “Đã tạo đơn thành công”.
+
+### Kết quả đề xuất
+
+Tiêu đề được đổi thành “Đã tạo đơn thành công”. Nút chính dùng nền xanh đậm, nút phụ dùng chữ và viền xanh đậm, kèm trạng thái hover rõ ràng.
+
+### Phản biện
+
+Màu `--color-leaf` chung quá nhạt trên nền trắng nên dù nút hoạt động vẫn giống trạng thái vô hiệu hóa. Quy tắc riêng cho khu vực xác nhận đơn giải quyết tương phản mà không ảnh hưởng nút ở trang khác.
+
+### Quyết định của nhóm
+
+Thành yêu cầu sửa trực tiếp hai điểm giao diện nêu trên. Chưa có review độc lập từ PD Đạt.
+
+### Người kiểm tra
+
+Codex chạy kiểm tra tự động; chờ Thành tải lại localhost để quan sát bản CSS mới.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web`, `npm.cmd run build -w web` và `git diff --check` đều pass. Tệp sửa: `apps/web/src/pages/OrderCreatedPage.tsx`, `apps/web/src/catalog.css` và mục log này.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-2-5-005
+
+* Thời gian ghi: 2026-11-18T17:38:00+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-checkout
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: PRJ-P2-FD1-2.5 #485; bước 2.4 đang chờ.
+
+### Công cụ
+
+Codex; Markdown; Git.
+
+### Mục đích
+
+Phản biện và ghi lại phần Thành tự trả lời kiểm tra kiến thức cho task checkout.
+
+### Prompt
+
+Thành tự trả lời năm câu về recipient, preview, gửi đơn, 409 và chỗ khó; sau đó trả lời hai câu vặn về expectedTotal mới và payload recipient. Thành yêu cầu commit tài liệu 2.5 trước và làm 2.4 sau.
+
+### Kết quả đề xuất
+
+Codex chấm từng câu, sửa nhận định `expected` có số lượng, chỉ rõ bước 2.4 chưa tồn tại và lưu bản tóm lược câu trả lời của Thành vào file kiểm tra. Trạng thái chờ 2.4 và reviewer được ghi công khai, không tuyên bố task cha hoàn thành.
+
+### Phản biện
+
+Câu 3 ban đầu nói `expected` chứa số lượng nhưng code chỉ gửi `skuId` và `unitPrice`. Câu 5 mô tả xử lý 409 như đã hoàn thành dù bước 2.4 chưa làm. Nhận định ValidationPipe cũng được bổ sung giới hạn: type TypeScript không tạo metadata runtime như DTO class.
+
+### Quyết định của nhóm
+
+Thành yêu cầu commit bước 2.5 trước thứ tự issue và chấp nhận làm bước 2.4 sau. Không có xác nhận reviewer hoặc quyết định đóng task cha.
+
+### Người kiểm tra
+
+Thành tự viết câu trả lời; Codex đối chiếu với code và yêu cầu issue. Reviewer chưa hỏi ngẫu nhiên hai câu.
+
+### Kiểm tra và minh chứng
+
+File `docs/learning/FD1-Thanh/kiem-tra/PRJ-P2-FD1-2.md` ghi rõ bước 2.4 đang chờ và không đánh dấu task cha hoàn thành. Kiểm tra Markdown bằng `git diff --check` trước commit.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-2-5-006
+
+* Thời gian ghi: 2026-11-18T17:42:58+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-checkout
+* Người prompt: Thành
+* Loại mục: Đính chính
+* Liên quan: THANH-20261118-PRJ-P2-FD1-2-5-005.
+
+### Công cụ
+
+Codex; đồng hồ hệ thống.
+
+### Mục đích
+
+Đính chính thời gian ghi của mục kiểm tra kiến thức ngay trước commit.
+
+### Prompt
+
+Không có prompt mới; Codex phát hiện mốc thời gian ở mục liên quan chưa lấy từ đồng hồ thực tế.
+
+### Kết quả đề xuất
+
+Thời gian ghi thực tế của hoạt động là 2026-11-18T17:42:58+07:00; mốc 17:38:00 trong mục liên quan không có căn cứ và không được sử dụng.
+
+### Phản biện
+
+Quy tắc log yêu cầu thời gian thực tế, không dùng giá trị ước lượng.
+
+### Quyết định của nhóm
+
+Không có quyết định mới; đây là đính chính tính chính xác của nhật ký.
+
+### Người kiểm tra
+
+Codex đối chiếu bằng `Get-Date` trong môi trường làm việc.
+
+### Kiểm tra và minh chứng
+
+Đồng hồ hệ thống trả `2026-11-18T17:42:58+07:00` trước khi commit.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-2-4-007
+
+* Thời gian ghi: 2026-11-18T21:42:34+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-checkout
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-FD1-2.4 #484; THANH-20261118-PRJ-P2-FD1-2-5-005.
+
+### Công cụ
+
+Codex; React; TypeScript; CSS; npm.cmd; ESLint; Vitest; Vite; Git.
+
+### Mục đích
+
+Hiển thị hộp đối chiếu khi tạo đơn nhận 409 CONFIRM_REQUIRED, yêu cầu khách xác nhận tổng mới trước khi gửi lại.
+
+### Prompt
+
+Thành cung cấp toàn bộ sub-issue #484, tự kiểm tra bằng cách đổi giá SKU ở tài khoản Admin trong trình duyệt khác và gửi ảnh hộp đối chiếu. Thành phản hồi thêm các vùng có độ tương phản thấp và yêu cầu hoàn thiện rồi commit.
+
+### Kết quả đề xuất
+
+CheckoutPage lưu preview trước/sau, hiển thị dialog so sánh tiền hàng, phí giao và tổng; nút hủy đóng dialog, nút đồng ý tải giỏ mới và gửi lại với expectedTotal đã được khách chấp nhận. Nếu voucher mất hiệu lực, lần gửi lại không tiếp tục mang mã lỗi thời. CSS responsive cho desktop/mobile và độ tương phản của dialog, số bước, thông báo hợp lệ, tổng thanh toán được cải thiện.
+
+### Phản biện
+
+Lần kiểm tra đầu dùng Admin và khách trong hai tab cùng trình duyệt làm cookie đăng nhập bị thay thế, khiến API báo giỏ Admin trống; Thành kiểm tra lại bằng hai phiên trình duyệt riêng và hộp 409 xuất hiện đúng. Sau ảnh kiểm tra, nút hủy, số bước, thông báo hợp lệ và dòng tổng còn quá nhạt nên được chuyển sang xanh đậm.
+
+### Quyết định của nhóm
+
+Thành xác nhận hộp đối chiếu 409 hiển thị đúng giá trước/sau và yêu cầu hoàn thiện tương phản rồi commit. Chưa có review độc lập từ PD Đạt.
+
+### Người kiểm tra
+
+Thành kiểm tra trực quan luồng 409 thật trên localhost; Codex chạy kiểm tra tự động. Reviewer chưa kiểm tra độc lập.
+
+### Kiểm tra và minh chứng
+
+Ảnh Thành cung cấp cho thấy tiền hàng đổi 139.000 thành 149.000 đồng và tổng đổi 159.000 thành 169.000 đồng trong dialog. `npm.cmd run lint -w web`, `npm.cmd run build -w web`, `git diff --check` pass; 7/7 test `checkout.service` pass. Tệp sửa: CheckoutPage, catalog.css và mục log này.
