@@ -146,6 +146,15 @@ describe('CheckoutService - PRJ-P2-BD1-2', () => {
     }));
   });
 
+  it('chuẩn hóa mã voucher khi tạo đơn', async () => {
+    const { service, tx, orders } = await makeService();
+    orders.preview.mockResolvedValue({ ...preview(), voucher: { valid: true, discount: 16_000 }, total: 164_000 });
+    await service.create(userId, { ...request(), voucherCode: ' sale10 ', expectedTotal: 164_000 });
+    expect(orders.preview).toHaveBeenCalledWith(userId, expect.objectContaining({ voucherCode: 'SALE10' }));
+    expect(tx.voucher.findUnique).toHaveBeenCalledWith({ where: { code: 'SALE10' } });
+    expect(tx.voucherUsage.create).toHaveBeenCalled();
+  });
+
   it('hủy trả tồn và ghi log', async () => {
     const { service, tx } = await makeService();
     await service.cancel(userId, 'order-a');

@@ -75,6 +75,19 @@ describe('OrdersService - PRJ-P2-BD2-2', () => {
     prisma.voucherUsage.count.mockResolvedValue(0);
   });
 
+  it('áp dụng mã voucher nhập chữ thường', async () => {
+    mockCart(200000);
+    prisma.voucher.findUnique.mockResolvedValue({
+      id: 'voucher-a', code: 'SALE20', isActive: true,
+      startsAt: new Date('2020-01-01'), endsAt: new Date('2099-01-01'),
+      usageLimit: 100, perUserLimit: 5, minOrderValue: 0,
+      percentOff: 20, amountOff: null, maxDiscount: null,
+    });
+    const result = await preview({ voucherCode: ' sale20 ' });
+    expect(prisma.voucher.findUnique).toHaveBeenCalledWith({ where: { code: 'SALE20' } });
+    expect(result.voucher).toMatchObject({ valid: true, code: 'SALE20', discount: 40000 });
+  });
+
   // =====================================================
   // 3 TEST GỐC - ISSUE #332
   // =====================================================

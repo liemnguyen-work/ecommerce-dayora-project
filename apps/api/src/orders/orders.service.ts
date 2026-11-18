@@ -117,15 +117,16 @@ let voucher: {
   discount?: number;
 } | null = null;
 
-if (dto.voucherCode) {
+const voucherCode = dto.voucherCode?.trim().toUpperCase();
+if (voucherCode) {
   const found = await this.prisma.voucher.findUnique({
-    where: { code: dto.voucherCode },
+    where: { code: voucherCode },
   });
 
   if (!found) {
     voucher = {
       valid: false,
-      code: dto.voucherCode,
+      code: voucherCode,
       reason: 'Không tìm thấy voucher',
     };
   } else {
