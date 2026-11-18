@@ -277,8 +277,6 @@ Các bộ trạng thái trong bảng ghi theo thứ tự `status` / `paymentStat
 3. Với ca thanh toán thành công, dùng thiết lập của `TC-P3-01` và đối chiếu ba trường trạng thái sau IPN. Với ca khách hủy, thao tác bằng tài khoản sở hữu đơn. Với ca hết hạn, để đơn chưa thanh toán qua mốc 15 phút rồi chờ tác vụ hết hạn xử lý.
 4. Đối chiếu dữ liệu và `OrderStatusLog` với Expected. Với ca bị từ chối, xác nhận ba trường trạng thái giữ nguyên và không có log ghi nhận chuyển trạng thái thành công.
 
-**Mã HTTP kỳ vọng:** Theo đề QA, thao tác Admin hợp lệ trả `200 OK`, thao tác chuyển sai trả `400 Bad Request` kèm thông báo. Tài liệu BD2 ghi `422` kèm `allowed` cho lỗi sai luồng. Cần xác nhận mã của hợp đồng API trước khi chấm Pass/Fail. Khi chạy, ghi rõ phản hồi là lỗi dữ liệu đầu vào hay lỗi chuyển trạng thái nếu API phân biệt hai trường hợp.
-
 | Mã ca | Từ | Thao tác / Đích yêu cầu | Hợp lệ? | Expected | Actual | Ngày | Trạng thái |
 |---|---|---|---|---|---|---|---|
 | TC-P3-08 | `CONFIRMED` / `PAID` / `PREPARING` | Admin chuyển đơn sang đang giao. | Có | `200 OK`. Đơn thành `CONFIRMED` / `PAID` / `SHIPPING` và ghi log chuyển trạng thái. | | | Chưa chạy |
