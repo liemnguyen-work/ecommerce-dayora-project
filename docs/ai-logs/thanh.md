@@ -2988,3 +2988,44 @@ Codex chạy và quan sát kết quả lệnh; reviewer chưa kiểm tra lại �
 ### Kiểm tra và minh chứng
 
 `npm.cmd run lint` pass cho API và web. `npm.cmd run build` lần cuối pass: Prisma Client generate, Nest build, TypeScript và Vite build đều thành công. `git diff --check` pass.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-1-MERGE-010
+
+* Thời gian ghi: 2026-11-18T16:34:32+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-cart
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: PR #689; nhánh `prj/p2-fd1-1`; merge `origin/main`.
+
+### Công cụ
+
+Codex; Git; npm.cmd; ESLint; Prisma; NestJS; TypeScript; Vite.
+
+### Mục đích
+
+Giải quyết hai khối conflict trong `apps/api/src/app.module.ts` để PR giỏ hàng có thể tiếp tục review và merge.
+
+### Prompt
+
+Thành cung cấp ảnh GitHub báo hai conflict giữa nhánh `prj/p2-fd1-1` và `main` trong `app.module.ts`.
+
+### Kết quả đề xuất
+
+Codex merge `origin/main` vào nhánh, giữ đồng thời `OrdersModule` của nhánh hiện tại và `AdminVouchersModule`, `AdminPromotionsModule` từ main ở cả phần import và danh sách `imports`. Không bỏ các thay đổi hợp lệ của thành viên khác.
+
+### Phản biện
+
+Chọn riêng current hoặc incoming sẽ làm mất một nhóm module và khiến route tương ứng không được đăng ký. Cần giữ cả hai phía nhưng loại bỏ toàn bộ conflict marker.
+
+### Quyết định của nhóm
+
+Thành yêu cầu xử lý conflict để tiếp tục task; chưa có kết quả reviewer sau merge.
+
+### Người kiểm tra
+
+Codex chạy kiểm tra tự động; chờ reviewer kiểm tra lại PR.
+
+### Kiểm tra và minh chứng
+
+Không còn conflict marker trong `app.module.ts`. `npm.cmd run lint` pass cho API và web; Prisma generate và Nest build pass; web TypeScript/Vite build pass; `git diff --check` pass.

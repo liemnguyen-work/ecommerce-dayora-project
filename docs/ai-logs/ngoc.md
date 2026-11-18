@@ -1176,7 +1176,62 @@ Codex đối chiếu tài liệu trong repo; chờ Ngọc kiểm tra nhận xét
 
 ### Công cụ
 
-Codex.
+Codex.---
+
+## P2 / ngoc-20261118-b6f2-01
+
+* Thời gian ghi: 2026-11-18T02:42:08+07:00
+* Thời gian thực hiện: Tổng hợp các trao đổi về P2 đến ngày 18/11/2026; chưa xác minh thời điểm bắt đầu từng hoạt động.
+* Mã phiên nhật ký: ngoc-20261118-b6f2
+* Người prompt: Ngọc
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-QA-1.1; PRJ-P2-QA-1.2; PRJ-P2-QA-1.3; PR #679; PR #684
+
+### Công cụ
+
+ChatGPT.
+
+### Mục đích
+
+Rà soát yêu cầu ca kiểm thử P2, sửa mã FR theo góp ý reviewer, mô tả kịch bản tranh tồn và giải thích kết quả chạy test checkout. Hướng dẫn kiểm tra diff, commit, push và điền mô tả PR.
+
+### Prompt
+
+Tóm lược: Ngọc cung cấp yêu cầu task, bảng ca kiểm thử và góp ý reviewer; yêu cầu sửa cột FR, giữ nguyên nội dung các cột khác và hỗ trợ mô tả TC-P2-32. Sau đó cung cấp ảnh Terminal để hỏi cách đọc kết quả kiểm tra và thực hiện các bước Git.
+
+### Kết quả đề xuất
+
+ChatGPT hướng dẫn dùng FR09 cho ca giỏ hàng, FR13 cho voucher và FR10 cho các ca phí giao trong checkout cùng ca tranh tồn; giữ chung đường dẫn `docs/testing/TEST-CASES.md`.
+
+Hỗ trợ soạn kịch bản TC-P2-32 với hai tài khoản độc lập cùng đặt SKU còn tồn khả dụng bằng 1. Kỳ vọng một yêu cầu thành công, yêu cầu còn lại nhận 409 do tồn kho, chỉ tạo một đơn và tồn kho không âm.
+
+Giải thích thông báo “No test files found” là không tìm thấy file khớp bộ lọc checkout.service trong lần chạy đó; chưa có test checkout nào được thực thi. Hướng dẫn ghi rõ phạm vi tài liệu, kết quả kiểm tra thực tế và phần chưa chạy trong mô tả PR.
+
+### Phản biện
+
+Ngọc yêu cầu giữ nguyên các nội dung ngoài phạm vi sửa FR. Một bản đề xuất của AI đã rút gọn cả các ca cũ nên không được giữ lại. Ngọc khôi phục bản cũ, yêu cầu sửa đúng cột FR và giữ phần bổ sung ca 32.
+
+Không dùng kết quả không tìm thấy file test để kết luận kiểm thử đạt.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới hoặc xác nhận nghiệm thu toàn bộ P2 trong phần trao đổi này. Ngọc đã đẩy thay đổi tài liệu lên nhánh `prj/p2-qa-1` để reviewer kiểm tra. Các ca chưa thực hiện giữ trạng thái Chưa chạy, Actual và ngày chạy để trống.
+
+### Người kiểm tra
+
+Ngọc chạy lệnh trên máy và cung cấp ảnh Terminal. ChatGPT hỗ trợ đọc kết quả, đối chiếu nội dung và hướng dẫn thao tác.
+
+Tiến Minh có góp ý về mã FR, đường dẫn tài liệu và mô tả PR. Chưa có xác nhận nghiệm thu thực nghiệm tranh tồn trong các minh chứng của mục này.
+
+### Kiểm tra và minh chứng
+
+- `grep -cF '| Giỏ |' docs/testing/TEST-CASES.md` trả về `0`.
+- Kết quả tìm `TC-P2-32` cho thấy ca mang mã FR10 và nằm trong cùng file.
+- `npm test -w api -- checkout.service` báo “No test files found”, mã thoát `1`; chưa thực thi test checkout.
+- Chưa có kết quả chạy TC-P2-32 bằng hai phiên trình duyệt và đối chiếu CSDL.
+- Chưa có kết quả lint/build cho thay đổi này trong minh chứng đã cung cấp.
+- Các commit đã đẩy: `d157263` cho bước 1.1, `9e2863f` cho bước 1.2 và `3a9be58` cho bước 1.3.
+- PR liên quan: #679 và #684 trong repo nhóm.
 
 ### Mục đích
 
@@ -1205,3 +1260,70 @@ Codex đối chiếu câu trả lời với nội dung thảo luận và mục l
 ### Kiểm tra và minh chứng
 
 Đọc lại mục `ngoc-20261116-b79e-01` trước khi nối thêm. Không chạy lại test, kiểm tra dữ liệu hay CI trong lượt này. Tệp thay đổi: `docs/ai-logs/ngoc.md`.
+
+---
+
+## P1 / ngoc-20261118-b6f2-02
+
+* Thời gian ghi: 2026-11-18T03:13:05+07:00
+* Thời gian thực hiện: Ngày 18/11/2026; tổng hợp hoạt động trong phiên, thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: ngoc-20261118-b6f2
+* Người prompt: Ngọc
+* Loại mục: Hoạt động
+* Liên quan: ngoc-20261118-b6f2-01; ca hồi quy P1; PR #684
+
+### Công cụ
+
+ChatGPT.
+
+### Mục đích
+
+Xác định các trường hợp cần kiểm thử hồi quy cho giới hạn mật khẩu, điều hướng tới section trên trang chủ và quản trị tình huống sản phẩm. Hoàn thiện bảng ca kiểm thử và kiểm tra thay đổi trước khi commit.
+
+### Prompt
+
+Tóm lược: Ngọc cung cấp mô tả lỗi, phạm vi sửa và tiêu chí kiểm tra, trao đổi với ChatGPT để xác định các ca hồi quy cần có. Ngọc yêu cầu bản Markdown đầy đủ, giữ nguyên các ca cũ và mô tả phạm vi bằng tên chức năng. Sau khi đưa nội dung vào tài liệu, Ngọc gửi ảnh Terminal để kiểm tra diff và thao tác Git.
+
+### Kết quả đề xuất
+
+ChatGPT phân tích yêu cầu thành ba nhóm, đề xuất 17 ca TC-P1-29–45 và soạn bản nháp Markdown:
+
+- TC-P1-29–33: kiểm tra mật khẩu mới dài 128 ký tự, từ chối 129 ký tự, giữ kiểm tra mật khẩu hiện tại, chống ghi đè khi đổi đồng thời và cho phép đổi lại mật khẩu dài đã lưu khi còn phiên hợp lệ.
+- TC-P1-34–39: điều hướng tới hash Home khi bỏ qua hoặc hoàn tất intro, dùng Back/Forward, intro đã xem, reduced motion và hash không tồn tại.
+- TC-P1-40–45: tạo và cập nhật scenarios, giữ dữ liệu khi thiếu trường, xóa gán bằng mảng rỗng, chặn enum sai và xử lý sản phẩm không tồn tại.
+
+Ngọc yêu cầu bỏ các số tham chiếu không thuộc repo nhóm, giữ nguyên nội dung kiểm thử. ChatGPT chỉnh lại dòng phạm vi và các tiêu đề theo yêu cầu.
+
+Ngọc đưa nội dung vào `docs/testing/TEST-CASES.md`, sau phần tổng kết P1 và trước Phase 2, lưu file rồi gửi ảnh diff. ChatGPT hỗ trợ đọc thay đổi, nhắc giữ trạng thái Chưa chạy và hướng dẫn stage, commit, push.
+
+### Phản biện
+
+Ngọc yêu cầu chỉ dùng thông tin truy vết thuộc repo nhóm, giữ nguyên các ca đã có và phân biệt việc thiết kế ca với kết quả chạy thực tế.
+
+Phần mô tả được chỉnh lại theo tên chức năng. Bảng ghi rõ Prisma mock chỉ kiểm tra validation, phản hồi HTTP và dữ liệu truyền tới Prisma; việc lưu bền vững cần được kiểm chứng riêng trên CSDL thử.
+
+Các ca mới giữ Actual và Ngày trống, trạng thái Chưa chạy.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới hoặc xác nhận nghiệm thu các bản sửa trong phần trao đổi này.
+
+Ngọc đưa phần thiết kế ca hồi quy lên nhánh `prj/p2-qa-1` để reviewer kiểm tra. Việc commit tài liệu không xác nhận các lỗi đã được sửa hoặc các ca đã Pass.
+
+### Người kiểm tra
+
+Ngọc thực hiện thao tác lưu file, xem diff, stage, commit và push trên máy, cung cấp ảnh Terminal trong cuộc trao đổi.
+
+ChatGPT hỗ trợ đối chiếu phần thay đổi hiển thị trong ảnh, đọc thống kê Git và kết quả push. Chưa có kết quả reviewer thực hiện các ca hồi quy trong hoạt động này.
+
+### Kiểm tra và minh chứng
+
+- File thay đổi: `docs/testing/TEST-CASES.md`.
+- Đã thêm 17 ca hồi quy TC-P1-29–45.
+- `git diff --check` không in lỗi trong ảnh Terminal được cung cấp.
+- `git diff --cached --stat` hiển thị 1 file thay đổi, 46 dòng thêm và không có dòng xóa.
+- Commit: `add5cea` — `docs(testing): add P1 regression test cases`.
+- Terminal xác nhận push thành công lên `origin/prj/p2-qa-1`.
+- Minh chứng commit: https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/add5cea
+- Chưa chạy 17 ca hồi quy; Actual và Ngày vẫn trống, trạng thái Chưa chạy.
+- Không chạy lint, test hoặc build trong lượt soạn và commit tài liệu này.
