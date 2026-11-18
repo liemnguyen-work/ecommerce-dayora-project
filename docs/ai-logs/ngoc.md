@@ -1263,67 +1263,85 @@ Codex đối chiếu câu trả lời với nội dung thảo luận và mục l
 
 ---
 
-## P1 / ngoc-20261118-b6f2-02
+## P3 / ngoc-20261118-d1c1-01
 
-* Thời gian ghi: 2026-11-18T03:13:05+07:00
-* Thời gian thực hiện: Ngày 18/11/2026; tổng hợp hoạt động trong phiên, thời điểm bắt đầu chưa xác minh.
-* Mã phiên nhật ký: ngoc-20261118-b6f2
+* Thời gian ghi: 2026-11-18T04:05:18+07:00
+* Thời gian thực hiện: Ngày 18/11/2026; tổng hợp các trao đổi và thao tác trong phiên, thời điểm bắt đầu chưa xác minh.
+* Mã phiên nhật ký: ngoc-20261118-d1c1
 * Người prompt: Ngọc
 * Loại mục: Hoạt động
-* Liên quan: ngoc-20261118-b6f2-01; ca hồi quy P1; PR #684
+* Liên quan: PRJ-P3-QA-1.1
 
 ### Công cụ
 
-ChatGPT.
+ChatGPT, Git.
 
 ### Mục đích
 
-Xác định các trường hợp cần kiểm thử hồi quy cho giới hạn mật khẩu, điều hướng tới section trên trang chủ và quản trị tình huống sản phẩm. Hoàn thiện bảng ca kiểm thử và kiểm tra thay đổi trước khi commit.
+Làm rõ yêu cầu thiết kế ca thanh toán P3, xác định dữ liệu và kết quả mong đợi cho từng tình huống IPN. Rà soát cách kiểm tra sai chữ ký, sai số tiền và IPN gửi lặp; đưa tài liệu lên đúng nhánh để reviewer kiểm tra.
 
 ### Prompt
 
-Tóm lược: Ngọc cung cấp mô tả lỗi, phạm vi sửa và tiêu chí kiểm tra, trao đổi với ChatGPT để xác định các ca hồi quy cần có. Ngọc yêu cầu bản Markdown đầy đủ, giữ nguyên các ca cũ và mô tả phạm vi bằng tên chức năng. Sau khi đưa nội dung vào tài liệu, Ngọc gửi ảnh Terminal để kiểm tra diff và thao tác Git.
+Tóm lược: Ngọc cung cấp task cha, hướng dẫn phase, lộ trình cá nhân và yêu cầu bước Viết ca thanh toán. Ngọc yêu cầu nội dung bám sát task 1 và gửi ảnh VS Code, Terminal để kiểm tra thao tác Git.
+
+Trong phần trao đổi tiếp theo, Ngọc giải thích cách tạo ca sai số tiền và những dữ liệu cần đối chiếu khi kiểm tra IPN gửi lặp, nhờ ChatGPT nhận xét.
 
 ### Kết quả đề xuất
 
-ChatGPT phân tích yêu cầu thành ba nhóm, đề xuất 17 ca TC-P1-29–45 và soạn bản nháp Markdown:
+ChatGPT phân tích phạm vi bước 1: chỉ thiết kế ca, chưa cần chạy code; Actual và Ngày để trống, trạng thái Chưa chạy.
 
-- TC-P1-29–33: kiểm tra mật khẩu mới dài 128 ký tự, từ chối 129 ký tự, giữ kiểm tra mật khẩu hiện tại, chống ghi đè khi đổi đồng thời và cho phép đổi lại mật khẩu dài đã lưu khi còn phiên hợp lệ.
-- TC-P1-34–39: điều hướng tới hash Home khi bỏ qua hoặc hoàn tất intro, dùng Back/Forward, intro đã xem, reduced motion và hash không tồn tại.
-- TC-P1-40–45: tạo và cập nhật scenarios, giữ dữ liệu khi thiếu trường, xóa gán bằng mảng rỗng, chặn enum sai và xử lý sản phẩm không tồn tại.
+Đối chiếu tài liệu VNPay và tài liệu nghiệp vụ của repo nhóm, định hướng cách chuẩn bị dữ liệu, phân biệt vnp_ResponseCode với RspCode và mô tả tác động lên đơn, thanh toán, stock/reserved.
 
-Ngọc yêu cầu bỏ các số tham chiếu không thuộc repo nhóm, giữ nguyên nội dung kiểm thử. ChatGPT chỉnh lại dòng phạm vi và các tiêu đề theo yêu cầu.
+ChatGPT hỗ trợ soạn bản nháp gồm 7 ca TC-P3-01–07: thanh toán thành công, không đủ số dư, khách hủy, sai chữ ký, sai số tiền, IPN gửi lặp và không tìm thấy tham chiếu thanh toán.
 
-Ngọc đưa nội dung vào `docs/testing/TEST-CASES.md`, sau phần tổng kết P1 và trước Phase 2, lưu file rồi gửi ảnh diff. ChatGPT hỗ trợ đọc thay đổi, nhắc giữ trạng thái Chưa chạy và hướng dẫn stage, commit, push.
+Ngọc yêu cầu kiểm tra lại từng ca theo task. ChatGPT lập bảng đối chiếu các yêu cầu, giải thích quy đổi vnp_Amount và nhắc chữ ký của ca sai tiền phải hợp lệ.
+
+Ngọc đưa nội dung vào `docs/testing/TEST-CASES.md`, lưu trong VS Code, kiểm tra diff, stage riêng tài liệu rồi commit và push lên nhánh `prj/p3-qa-1`.
+
+Sau đó, Ngọc giải thích hai tình huống:
+
+- Sửa vnp_Amount nhưng giữ chữ ký cũ sẽ bị chặn ở bước kiểm tra chữ ký, chưa kiểm được nhánh sai tiền. Muốn kiểm tra nhánh sai tiền cần ký hợp lệ payload đã sửa trong môi trường thử nghiệm.
+- Đơn vẫn PAID chưa đủ chứng minh xử lý lặp an toàn; cần kiểm tra thêm phản hồi IPN, bản ghi thanh toán, tồn kho và các tác động nghiệp vụ liên quan.
+
+ChatGPT nhận xét hai câu trả lời đúng trọng tâm và bổ sung những điểm cần làm rõ.
 
 ### Phản biện
 
-Ngọc yêu cầu chỉ dùng thông tin truy vết thuộc repo nhóm, giữ nguyên các ca đã có và phân biệt việc thiết kế ca với kết quả chạy thực tế.
+Ngọc yêu cầu bản ca kiểm thử phải bám sát phạm vi task 1, đồng thời giải thích lý do cần chữ ký hợp lệ ở ca sai tiền và kiểm tra dữ liệu ngoài trạng thái đơn ở ca IPN lặp.
 
-Phần mô tả được chỉnh lại theo tên chức năng. Bảng ghi rõ Prisma mock chỉ kiểm tra validation, phản hồi HTTP và dữ liệu truyền tới Prisma; việc lưu bền vững cần được kiểm chứng riêng trên CSDL thử.
+ChatGPT góp ý:
 
-Các ca mới giữ Actual và Ngày trống, trạng thái Chưa chạy.
+- Khi tạo chuỗi ký, cần loại vnp_SecureHash và vnp_SecureHashType nếu có, rồi sắp xếp và mã hóa tham số đúng quy tắc tích hợp.
+- Theo Expected của task, IPN gửi lặp trả RspCode=02; không khái quát thành mọi tích hợp đều phải cấm trả 00.
+- Có thể ghi thêm log tiếp nhận IPN; điều cần ngăn là ghi nhận thanh toán hoặc thực hiện tác động nghiệp vụ trùng.
+- Kiểm tra cả stock và reserved; dùng tên bảng theo schema thật.
+- Email, điểm thưởng hoặc tác động khác chỉ đưa vào phạm vi kiểm tra khi dự án thực sự triển khai.
+
+Các góp ý mới đang chờ Ngọc kiểm tra và diễn đạt lại; chưa có kết quả thực thi để xác nhận.
 
 ### Quyết định của nhóm
 
-Chưa có quyết định chung mới hoặc xác nhận nghiệm thu các bản sửa trong phần trao đổi này.
+Chưa có quyết định chung mới hoặc xác nhận nghiệm thu chức năng thanh toán trong phần trao đổi này.
 
-Ngọc đưa phần thiết kế ca hồi quy lên nhánh `prj/p2-qa-1` để reviewer kiểm tra. Việc commit tài liệu không xác nhận các lỗi đã được sửa hoặc các ca đã Pass.
+Ngọc đưa phần thiết kế ca thanh toán lên nhánh `prj/p3-qa-1` để reviewer kiểm tra. Các ca vẫn giữ trạng thái Chưa chạy. Quy tắc tồn kho D06 được ghi rõ đang ở trạng thái đề xuất trong tài liệu đã đối chiếu và cần reviewer xác nhận trước nghiệm thu.
 
 ### Người kiểm tra
 
-Ngọc thực hiện thao tác lưu file, xem diff, stage, commit và push trên máy, cung cấp ảnh Terminal trong cuộc trao đổi.
+Ngọc thực hiện thao tác trên máy, cung cấp ảnh VS Code và Terminal, đồng thời trả lời hai câu hỏi về thiết kế ca kiểm thử.
 
-ChatGPT hỗ trợ đối chiếu phần thay đổi hiển thị trong ảnh, đọc thống kê Git và kết quả push. Chưa có kết quả reviewer thực hiện các ca hồi quy trong hoạt động này.
+ChatGPT đối chiếu yêu cầu với bản nháp, đọc kết quả Git và nhận xét phần giải thích của Ngọc dựa trên tài liệu VNPay. Chưa có kết quả reviewer chạy ca hoặc duyệt tài liệu trong minh chứng đã cung cấp.
 
 ### Kiểm tra và minh chứng
 
+- Nhánh P3 được tạo từ `origin/main`.
 - File thay đổi: `docs/testing/TEST-CASES.md`.
-- Đã thêm 17 ca hồi quy TC-P1-29–45.
+- Phần P3 gồm 7 ca TC-P3-01–07; Actual và Ngày trống, trạng thái Chưa chạy.
 - `git diff --check` không in lỗi trong ảnh Terminal được cung cấp.
-- `git diff --cached --stat` hiển thị 1 file thay đổi, 46 dòng thêm và không có dòng xóa.
-- Commit: `add5cea` — `docs(testing): add P1 regression test cases`.
-- Terminal xác nhận push thành công lên `origin/prj/p2-qa-1`.
-- Minh chứng commit: https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/add5cea
-- Chưa chạy 17 ca hồi quy; Actual và Ngày vẫn trống, trạng thái Chưa chạy.
-- Không chạy lint, test hoặc build trong lượt soạn và commit tài liệu này.
+- Thống kê staged: 1 file thay đổi, 37 dòng thêm, không có dòng xóa.
+- Commit `120fd53`: `docs(testing): add phase 3 payment IPN test cases`.
+- Nội dung commit có dòng `Task: PRJ-P3-QA-1.1`.
+- Terminal xác nhận push thành công và thiết lập theo dõi `origin/prj/p3-qa-1`.
+- Minh chứng commit: https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/120fd53
+- Phần trả lời hai câu hỏi là minh chứng trao đổi kiến thức, chưa phải kết quả chạy kiểm thử.
+- Chưa gọi IPN, thực hiện giao dịch Sandbox hoặc kiểm tra CSDL trong hoạt động này.
+- Không chạy test, lint hoặc build trong lượt thiết kế và commit tài liệu này.
