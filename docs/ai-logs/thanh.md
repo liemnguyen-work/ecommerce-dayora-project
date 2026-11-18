@@ -3316,3 +3316,44 @@ Thành kiểm tra trực quan luồng 409 thật trên localhost; Codex chạy k
 ### Kiểm tra và minh chứng
 
 Ảnh Thành cung cấp cho thấy tiền hàng đổi 139.000 thành 149.000 đồng và tổng đổi 159.000 thành 169.000 đồng trong dialog. `npm.cmd run lint -w web`, `npm.cmd run build -w web`, `git diff --check` pass; 7/7 test `checkout.service` pass. Tệp sửa: CheckoutPage, catalog.css và mục log này.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-3-1-008
+
+* Thời gian ghi: 2026-11-18T22:08:00+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-product-cart
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: PRJ-P2-FD1-3.1 #486; commit prerequisite `7eedb62`.
+
+### Công cụ
+
+Codex; React; TypeScript; npm.cmd; ESLint; Vite; Git.
+
+### Mục đích
+
+Đối chiếu và kiểm chứng chức năng chọn SKU trong ProductPage theo tiêu chí sub-issue #486.
+
+### Prompt
+
+Thành cung cấp nội dung issue #486, thử đổi giá các SKU qua Admin để quan sát giá theo biến thể rồi xác nhận kết quả ổn và yêu cầu commit.
+
+### Kết quả đề xuất
+
+Codex xác định chức năng đã có đầy đủ từ prerequisite phase trước: selectedId mặc định, tìm SKU, aria-pressed, nhãn hết hàng, đổi ảnh/giá/tồn và reset số lượng/thông báo khi đổi SKU. Không sửa lại ProductPage đang đúng; ghi minh chứng kiểm tra thay vì tạo thay đổi tính năng giả.
+
+### Phản biện
+
+Tạo commit rỗng hoặc sửa cơ học ProductPage chỉ để có diff sẽ không tạo giá trị và có thể làm hỏng chức năng đã kiểm chứng. Commit `7eedb62` là nguồn triển khai thực tế; commit hiện tại chỉ ghi nhận kiểm chứng cho task mới.
+
+### Quyết định của nhóm
+
+Thành kiểm tra trên localhost và yêu cầu commit bước 3.1. Không có thay đổi nghiệp vụ mới hoặc review độc lập từ PD Đạt.
+
+### Người kiểm tra
+
+Thành kiểm tra thao tác đổi SKU và giá; Codex đối chiếu source và chạy kiểm tra tự động.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web`, `npm.cmd run build -w web` và `git diff --check` pass. Source đáp ứng từng tiêu chí #486; triển khai gốc nằm ở commit `7eedb62 feat(web): select product variants`.
