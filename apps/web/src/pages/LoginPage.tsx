@@ -1,5 +1,5 @@
 import { useRef, useState, type FormEvent } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, Navigate, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../lib/auth.tsx';
 
 type FormErrors = { fullName?: string; email?: string; password?: string };
@@ -27,7 +27,7 @@ function safeNext(value: string | null): string {
 }
 
 export function AuthPage({ register = false }: { register?: boolean }) {
-  const { login, register: createAccount } = useAuth();
+  const { user, loading, login, register: createAccount } = useAuth();
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const next = safeNext(params.get('next'));
@@ -78,6 +78,10 @@ export function AuthPage({ register = false }: { register?: boolean }) {
   }
 
   const inputClass = 'mt-2 min-h-12 w-full rounded-xl border border-ink/30 bg-paper px-4 text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink';
+
+  if (!loading && user) {
+    return <Navigate to={next} replace />;
+  }
 
   return (
     <main className="min-h-[65vh] bg-paper px-4 py-12 text-ink sm:px-6 sm:py-16">
