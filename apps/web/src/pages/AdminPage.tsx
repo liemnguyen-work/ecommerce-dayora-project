@@ -279,6 +279,288 @@ function Users() {
   );
 }
 
+type VoucherItem = {
+  id: string;
+  code: string;
+  description: string | null;
+  percentOff: number | null;
+  amountOff: number | null;
+  maxDiscount: number | null;
+  minOrderValue: number | null;
+  usageLimit: number | null;
+  usedCount: number;
+  endsAt: string;
+  isActive: boolean;
+  status: string;
+};
+
+const formatPrice = (value: number) => `${value.toLocaleString('vi-VN')} đ`;
+
+function Vouchers() {
+  const { data, error, loading, reload } = useLoad<{ items: VoucherItem[]; total: number; page: number }>('/admin/vouchers');
+  const [kind, setKind] = useState('percent');
+  const [sending, setSending] = useState(false);
+  const [msg, setMsg] = useState('');
+  const [actionError, setActionError] = useState('');
+  const pending = useRef(false);
+
+  async function create(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (pending.current) return;
+    const form = event.currentTarget;
+    const values = new FormData(form);
+    const now = new Date();
+    const endsAt = new Date(`${String(values.get('endsAt'))}T00:00:00`);
+    setMsg('');
+    setActionError('');
+    if (!Number.isFinite(endsAt.getTime()) || endsAt <= now) {
+      setActionError('Ngày hết hạn phải sau thời điểm hiện tại.');
+      return;
+    }
+    const code = String(values.get('code') ?? '').trim().toUpperCase();
+    const description = String(values.get('description') ?? '').trim();
+    if (!/^[A-Z0-9_-]{3,30}$/.test(code) || !description) {
+      setActionError('Nhập mã 3–30 ký tự chữ, số, gạch dưới hoặc gạch ngang và mô tả không rỗng.');
+      return;
+    }
+    const value = Number(values.get('value'));
+    if (!Number.isSafeInteger(value) || value <= 0 || (kind === 'percent' && value > 100)) {
+      setActionError('Giá trị giảm phải là số nguyên dương; phần trăm không vượt quá 100.');
+      return;
+    }
+    const optional: Record<string, number> = {};
+    for (const field of ['maxDiscount', 'minOrderValue', 'usageLimit']) {
+      if (field === 'maxDiscount' && kind !== 'percent') continue;
+      const raw = String(values.get(field) ?? '').trim();
+      if (!raw) continue;
+      const number = Number(raw);
+      if (!Number.isSafeInteger(number) || number < (field === 'minOrderValue' ? 0 : 1)) {
+        setActionError('Trần giảm và tổng lượt phải là số nguyên dương; đơn tối thiểu không được âm.');
+        return;
+      }
+      optional[field] = number;
+    }
+    pending.current = true;
+    setSending(true);
+    try {
+      await api('/admin/vouchers', {
+        method: 'POST',
+        body: JSON.stringify({ code, description, ...optional,
+          ...(kind === 'percent' ? { percentOff: value } : { amountOff: value }),
+          perUserLimit: 1, startsAt: now.toISOString(), endsAt: endsAt.toISOString(),
+        }),
+      });
+      form.reset();
+      setKind('percent');
+      setMsg(`Đã tạo voucher ${code}.`);
+      await reload();
+    } catch (error: unknown) {
+      setActionError(errText(error));
+    } finally {
+      pending.current = false;
+      setSending(false);
+    }
+  }
+
+  async function toggle(id: string, isActive: boolean) {
+    if (pending.current) return;
+    pending.current = true;
+    setSending(true);
+    setMsg('');
+    setActionError('');
+    try {
+      await api(`/admin/vouchers/${encodeURIComponent(id)}/active`, {
+        method: 'PATCH', body: JSON.stringify({ isActive }),
+      });
+      setMsg(isActive ? 'Đã bật voucher.' : 'Đã tắt voucher.');
+      await reload();
+    } catch (error: unknown) {
+      setActionError(errText(error));
+    } finally {
+      pending.current = false;
+      setSending(false);
+    }
+  }
+  const statusLabels: Record<string, string> = {
+    active: 'Đang hiệu lực',
+    scheduled: 'Chưa bắt đầu',
+    expired: 'Đã hết hạn',
+    disabled: 'Đã tắt',
+  };
+
+  return (
+    <div className="mt-4 space-y-4" aria-busy={loading || sending}>
+      <form className="admin-form" onSubmit={event => { void create(event); }}>
+        <fieldset disabled={sending || loading} className="grid min-w-0 gap-4 rounded-2xl border border-ink/20 p-4 sm:grid-cols-2">
+          <legend className="px-2 font-semibold">Tạo voucher</legend>
+          <label className="grid gap-1">Mã voucher<input className="admin-input !w-full" name="code" required pattern="[A-Za-z0-9_-]{3,30}" minLength={3} maxLength={30} placeholder="VD: TEST2026" /></label>
+          <label className="grid gap-1">Mô tả<input className="admin-input !w-full" name="description" required /></label>
+          <label className="grid gap-1">Loại giảm<select className="admin-input !w-full" name="kind" value={kind} onChange={event => setKind(event.target.value)}><option value="percent">Giảm %</option><option value="amount">Giảm số tiền</option></select></label>
+          <label className="grid gap-1">{kind === 'percent' ? 'Giá trị giảm (%)' : 'Giá trị giảm (đ)'}<input className="admin-input !w-full" name="value" type="number" min={1} max={kind === 'percent' ? 100 : undefined} step={1} required /></label>
+          {kind === 'percent' && <label className="grid gap-1">Trần giảm (đ, tùy chọn)<input className="admin-input !w-full" name="maxDiscount" type="number" min={1} step={1} /></label>}
+          <label className="grid gap-1">Đơn tối thiểu (đ, tùy chọn)<input className="admin-input !w-full" name="minOrderValue" type="number" min={0} step={1} /></label>
+          <label className="grid gap-1">Tổng lượt dùng (trống: không giới hạn)<input className="admin-input !w-full" name="usageLimit" type="number" min={1} step={1} /></label>
+          <label className="grid gap-1">Ngày hết hạn<input className="admin-input !w-full" name="endsAt" type="date" required aria-describedby="voucher-date-help" /></label>
+          <p id="voucher-date-help" className="text-sm sm:col-span-2">Bắt đầu ngay; hết hạn lúc 00:00 ngày đã chọn theo múi giờ trên máy. Mỗi tài khoản tối đa 1 lượt sử dụng.</p>
+          <button type="submit" className="admin-button sm:col-span-2">{sending ? 'Đang xử lý…' : 'Tạo voucher'}</button>
+        </fieldset>
+      </form>
+      {msg && <p role="status">{msg}</p>}
+      {actionError && <p role="alert" className="text-berry">{actionError}</p>}
+      {loading && <p role="status" className="shop-muted">Đang tải…</p>}
+      {error && <p role="alert" className="text-berry">{error}</p>}
+      {data && <>
+        <p>Tổng số: {data.total} voucher. Trang {data.page}, hiển thị {data.items.length} voucher.</p>
+        {data.items.length === 0 ? <p>Chưa có voucher.</p> : (
+          <div className="admin-table-wrap" tabIndex={0} role="region" aria-label="Danh sách voucher, cuộn ngang để xem thêm">
+            <table className="admin-table admin-cards">
+              <caption className="sr-only">Mã giảm giá, điều kiện và trạng thái từ hệ thống</caption>
+              <thead><tr>{['Mã', 'Giảm', 'Điều kiện', 'Đã dùng', 'Hết hạn', 'Trạng thái'].map(label => <th scope="col" key={label}>{label}</th>)}</tr></thead>
+              <tbody>{data.items.map(voucher => (
+                <tr key={voucher.id}>
+                  <th scope="row" data-label="Mã"><span className="block font-semibold">{voucher.code}</span><span className="block text-sm font-normal">{voucher.description}</span></th>
+                  <td data-label="Giảm">{voucher.percentOff !== null
+                    ? <>{voucher.percentOff}%{voucher.maxDiscount !== null && <span className="block">Tối đa {formatPrice(voucher.maxDiscount)}</span>}</>
+                    : formatPrice(voucher.amountOff ?? 0)}</td>
+                  <td data-label="Điều kiện">{voucher.minOrderValue === null ? 'Không yêu cầu đơn tối thiểu' : `Đơn tối thiểu ${formatPrice(voucher.minOrderValue)}`}</td>
+                  <td data-label="Đã dùng">{voucher.usedCount}/{voucher.usageLimit ?? '∞'}</td>
+                  <td data-label="Hết hạn"><time dateTime={voucher.endsAt}>{new Date(voucher.endsAt).toLocaleDateString('vi-VN')}</time></td>
+                  <td data-label="Trạng thái"><span className="block">{statusLabels[voucher.status] ?? voucher.status}</span><label className="inline-flex min-h-11 items-center gap-2"><input type="checkbox" checked={voucher.isActive} disabled={sending || loading} onChange={event => { void toggle(voucher.id, event.target.checked); }} aria-label={`Bật hoặc tắt voucher ${voucher.code}`} className="h-5 w-5 accent-ink" /></label></td>
+                </tr>
+              ))}</tbody>
+            </table>
+          </div>
+        )}
+      </>}
+      <button type="button" disabled={loading || sending} onClick={() => { void reload(); }} className="admin-button">
+        {loading ? 'Đang tải…' : error ? 'Thử lại' : 'Tải lại'}
+      </button>
+    </div>
+  );
+}
+
+type PromotionItem = {
+  id: string;
+  title: string;
+  subtitle: string | null;
+  link: string | null;
+  endsAt: string | null;
+  isActive: boolean;
+};
+
+const validPromotionLink = (value: string) => /^\/(?!\/)[^\\\s\p{Cc}]*$/u.test(value);
+
+function Promotions() {
+  const { data, error, loading, reload } = useLoad<PromotionItem[] | { items: PromotionItem[] }>('/admin/promotions');
+  const [sending, setSending] = useState(false);
+  const [msg, setMsg] = useState('');
+  const [actionError, setActionError] = useState('');
+  const pending = useRef(false);
+  const items = data ? (Array.isArray(data) ? data : data.items) : [];
+
+  async function toggle(id: string, isActive: boolean) {
+    if (pending.current) return;
+    pending.current = true;
+    setSending(true);
+    setMsg('');
+    setActionError('');
+    try {
+      await api(`/admin/promotions/${encodeURIComponent(id)}/active`, {
+        method: 'PATCH',
+        body: JSON.stringify({ isActive }),
+      });
+      setMsg(isActive ? 'Đã bật khuyến mãi.' : 'Đã tắt khuyến mãi.');
+      await reload();
+    } catch (error: unknown) {
+      setActionError(errText(error));
+    } finally {
+      pending.current = false;
+      setSending(false);
+    }
+  }
+
+  async function create(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (pending.current) return;
+    const form = event.currentTarget;
+    const values = new FormData(form);
+    const title = String(values.get('title') ?? '').trim();
+    const subtitle = String(values.get('subtitle') ?? '').trim();
+    const link = String(values.get('link') ?? '').trim();
+    const startsAt = new Date();
+    const endsAt = new Date(`${String(values.get('endsAt') ?? '')}T00:00:00`);
+    setMsg('');
+    setActionError('');
+    if (title.length < 3 || title.length > 120) {
+      setActionError('Tiêu đề cần từ 3 đến 120 ký tự.');
+      return;
+    }
+    if (link && !validPromotionLink(link)) {
+      setActionError('Liên kết phải bắt đầu bằng một dấu / và không chứa khoảng trắng, dấu gạch chéo ngược hoặc ký tự điều khiển.');
+      return;
+    }
+    if (!Number.isFinite(endsAt.getTime()) || endsAt <= startsAt) {
+      setActionError('Ngày hết hạn phải sau thời điểm hiện tại.');
+      return;
+    }
+    pending.current = true;
+    setSending(true);
+    try {
+      await api('/admin/promotions', {
+        method: 'POST',
+        body: JSON.stringify({ title, ...(subtitle ? { subtitle } : {}), ...(link ? { link } : {}), startsAt: startsAt.toISOString(), endsAt: endsAt.toISOString() }),
+      });
+      form.reset();
+      setMsg('Đã tạo khuyến mãi.');
+      await reload();
+    } catch (error: unknown) {
+      setActionError(errText(error));
+    } finally {
+      pending.current = false;
+      setSending(false);
+    }
+  }
+
+  return (
+    <div className="mt-4 space-y-4" aria-busy={loading || sending}>
+      <form className="admin-form" onSubmit={event => { void create(event); }}>
+        <fieldset disabled={loading || sending} className="grid min-w-0 gap-4 rounded-2xl border border-ink/20 p-4 sm:grid-cols-2">
+          <legend className="px-2 font-semibold">Tạo khuyến mãi</legend>
+          <label className="grid gap-1">Tiêu đề<input name="title" required minLength={3} maxLength={120} className="admin-input !w-full" /></label>
+          <label className="grid gap-1">Mô tả ngắn (tùy chọn)<input name="subtitle" maxLength={2000} className="admin-input !w-full" /></label>
+          <label className="grid gap-1">Liên kết nội bộ (tùy chọn)<input name="link" pattern="/.*" maxLength={2000} placeholder="/san-pham" className="admin-input !w-full" /></label>
+          <label className="grid gap-1">Ngày hết hạn<input name="endsAt" type="date" required aria-describedby="promotion-date-help" className="admin-input !w-full" /></label>
+          <p id="promotion-date-help" className="text-sm sm:col-span-2">Bắt đầu ngay; hết hạn lúc 00:00 ngày đã chọn theo múi giờ trên máy.</p>
+          <button type="submit" className="admin-button sm:col-span-2">{sending ? 'Đang xử lý…' : 'Tạo khuyến mãi'}</button>
+        </fieldset>
+      </form>
+      {msg && <p role="status">{msg}</p>}
+      {actionError && <p role="alert" className="text-berry">{actionError}</p>}
+      {loading && <p role="status">Đang tải…</p>}
+      {error && <p role="alert" className="text-berry">{error}</p>}
+      {data && (items.length === 0 ? <p>Chưa có khuyến mãi.</p> : (
+        <div className="admin-table-wrap" tabIndex={0} role="region" aria-label="Danh sách khuyến mãi, cuộn ngang để xem thêm">
+          <table className="admin-table admin-cards">
+            <caption className="sr-only">Các chương trình khuyến mãi</caption>
+            <thead><tr>{['Tiêu đề', 'Liên kết', 'Hết hạn', 'Bật/Tắt'].map(label => <th key={label} scope="col">{label}</th>)}</tr></thead>
+            <tbody>{items.map(promotion => (
+              <tr key={promotion.id}>
+                <th scope="row" data-label="Tiêu đề"><span className="block font-semibold">{promotion.title}</span><span className="block text-sm font-normal">{promotion.subtitle}</span></th>
+                <td data-label="Liên kết">{promotion.link ? validPromotionLink(promotion.link)
+                  ? <Link to={promotion.link} className="break-all underline underline-offset-4">{promotion.link}</Link>
+                  : 'Liên kết không hợp lệ' : 'Không có liên kết'}</td>
+                <td data-label="Hết hạn">{promotion.endsAt ? <time dateTime={promotion.endsAt}>{new Date(promotion.endsAt).toLocaleDateString('vi-VN')}</time> : 'Không giới hạn'}</td>
+                <td data-label="Bật/Tắt"><label className="inline-flex min-h-11 items-center gap-2"><span>{promotion.isActive ? 'Đang bật' : 'Đã tắt'}</span><input type="checkbox" checked={promotion.isActive} disabled={loading || sending} onChange={event => { void toggle(promotion.id, event.target.checked); }} aria-label={`Bật hoặc tắt khuyến mãi ${promotion.title}`} className="h-5 w-5 accent-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink" /></label></td>
+              </tr>
+            ))}</tbody>
+          </table>
+        </div>
+      ))}
+      <button type="button" disabled={loading || sending} onClick={() => { void reload(); }} className="admin-button">{loading ? 'Đang tải…' : error ? 'Thử lại' : 'Tải lại'}</button>
+    </div>
+  );
+}
+
 export default function AdminPage() {
   const { user, loading } = useAuth();
   const [params, setParams] = useSearchParams();
@@ -328,7 +610,11 @@ export default function AdminPage() {
             ? <Products />
             : section === 'tai-khoan'
               ? <Users />
-              : <p className="mt-4">Mục {title} đang được xây dựng.</p>}
+              : section === 'voucher'
+                ? <Vouchers />
+                : section === 'khuyen-mai'
+                  ? <Promotions />
+                  : <p className="mt-4">Mục {title} đang được xây dựng.</p>}
         </section>
       </div>
     </main>
