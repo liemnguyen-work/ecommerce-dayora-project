@@ -3357,3 +3357,44 @@ Thành kiểm tra thao tác đổi SKU và giá; Codex đối chiếu source và
 ### Kiểm tra và minh chứng
 
 `npm.cmd run lint -w web`, `npm.cmd run build -w web` và `git diff --check` pass. Source đáp ứng từng tiêu chí #486; triển khai gốc nằm ở commit `7eedb62 feat(web): select product variants`.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-3-2-009
+
+* Thời gian ghi: 2026-11-18T22:17:04+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-product-cart
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: THANH-20261118-PRJ-P2-FD1-3-1-008; PRJ-P2-FD1-3.2 #487.
+
+### Công cụ
+
+Codex; React; TypeScript; REST API; npm.cmd; ESLint; Vite; Git.
+
+### Mục đích
+
+Hoàn thiện phản hồi khi thêm SKU và số lượng đã chọn vào giỏ, đồng thời giữ luồng chuyển đăng nhập với tham số `next`.
+
+### Prompt
+
+Thành cung cấp issue #487, kiểm tra trên localhost rồi xác nhận thêm giỏ đúng và khi đăng xuất, bấm thêm vào giỏ sẽ chuyển sang trang đăng nhập.
+
+### Kết quả đề xuất
+
+ProductPage dùng trạng thái notice gồm `ok` và `text`; thông báo thành công hiển thị số lượng, tên sản phẩm và màu SKU, thông báo lỗi có kiểu riêng. Nút được đổi thành “Thêm vào giỏ hàng”, liên kết xem giỏ chỉ hiện sau thành công. Luồng gọi `addToCart(sku.id, quantity)` và redirect đăng nhập có `next` được giữ nguyên.
+
+### Phản biện
+
+Code trước đã gọi đúng API nhưng thông báo chung không cho khách biết SKU/màu nào vừa được thêm và không phân biệt trực quan thành công với lỗi. Thay đổi chỉ bổ sung phản hồi cần thiết, không viết lại luồng API đang hoạt động.
+
+### Quyết định của nhóm
+
+Thành xác nhận hai ca kiểm tra đạt và yêu cầu commit. Chưa có review độc lập từ PD Đạt.
+
+### Người kiểm tra
+
+Thành kiểm tra thao tác thêm giỏ và redirect khi đăng xuất; Codex chạy lint/build và kiểm tra endpoint localhost.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web`, `npm.cmd run build -w web`, `git diff --check` pass; API health và web `/san-pham` trả HTTP 200. Tệp sửa: `apps/web/src/pages/ProductPage.tsx` và mục log này.
