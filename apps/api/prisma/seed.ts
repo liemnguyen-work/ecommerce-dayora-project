@@ -1088,3 +1088,67 @@ const product = await prisma.product.upsert({
   }
 }
 await main().finally(() => prisma.$disconnect());
+
+  // PRJ-P2-BD2-3.1 — Seed voucher DAYORA10
+  const startsAt = new Date();
+  const endsAt = new Date('2026-12-31T17:00:00.000Z');
+
+  await prisma.voucher.upsert({
+    where: {
+      code: 'DAYORA10',
+    },
+    update: {},
+    create: {
+      code: 'DAYORA10',
+      percentOff: 10,
+      amountOff: null,
+      maxDiscount: 50000,
+      minOrderValue: 300000,
+      usageLimit: 200,
+      perUserLimit: 1,
+      startsAt,
+      endsAt,
+      isActive: true,
+    },
+  });
+  console.log('Seed voucher DAYORA10 thành công');
+  // PRJ-P2-BD2-3.2 — Voucher giảm tiền cố định PICNIC50K
+  await prisma.voucher.upsert({
+    where: {
+      code: 'PICNIC50K',
+    },
+    update: {},
+    create: {
+      code: 'PICNIC50K',
+      percentOff: null,
+      amountOff: 50000,
+      maxDiscount: null,
+      minOrderValue: 500000,
+      usageLimit: 100,
+      perUserLimit: 1,
+      startsAt,
+      endsAt,
+      isActive: true,
+    },
+  });
+// PRJ-P2-BD2-3.3 — Seed khuyến mãi mùa picnic
+await prisma.promotion.upsert({
+  where: {
+    id: '0d3797d7-c916-4e43-aead-0667f73ad032',
+  },
+  update: {},
+  create: {
+    id: '0d3797d7-c916-4e43-aead-0667f73ad032',
+    title: 'Ưu đãi mùa picnic',
+    imageUrl: '/home/trip-picnic.jpg',
+    linkUrl: '/san-pham',
+    startsAt,
+    endsAt,
+    isActive: true,
+  },
+});
+
+console.log('Seed khuyến mãi mùa picnic thành công');
+
+  console.log('Seed voucher PICNIC50K thành công');
+

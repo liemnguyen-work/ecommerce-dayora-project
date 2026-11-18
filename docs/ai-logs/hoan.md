@@ -4028,14 +4028,14 @@ Cập nhật file docs/learning/BD1-Hoan/kiem-tra/PRJ-P2-BD1-1.md; chưa commit 
 
 ---
 
-## Phase 2 / hoan-20261118-adminvoucher-01
+## Phase 2 / hoan-20261118-checkout-01
 
-* Thời gian ghi: 2026-11-18T03:31:06+07:00
+* Thời gian ghi: 2026-11-18T02:24:41+07:00
 * Thời gian thực hiện: theo thời gian ghi.
-* Mã phiên nhật ký: hoan-20261118-adminvoucher
+* Mã phiên nhật ký: hoan-20261118-checkout
 * Người prompt: Hoàn
 * Loại mục: Hoạt động
-* Liên quan: PRJ-P2-BD1-3; PRJ-P1-BD1-1
+* Liên quan: PRJ-P2-BD1-2; PRJ-P2-BD2-2
 
 ### Công cụ
 
@@ -4043,42 +4043,42 @@ Codex và Git.
 
 ### Mục đích
 
-Chuẩn bị nhánh cho task quản trị voucher và khuyến mãi.
+Kiểm tra điều kiện phụ thuộc và chuẩn bị nhánh cho task tạo đơn, giữ tồn, hủy và hết hạn.
 
 ### Prompt
 
-Tóm lược: Hoàn cung cấp mô tả task cha và danh sách bảy sub-issue.
+Tóm lược: Hoàn cung cấp task cha PRJ-P2-BD1-2 và yêu cầu tiếp tục.
 
 ### Kết quả đề xuất
 
-Fetch origin, kiểm tra auth và promotions có trên origin/main tại 6c258ca, tạo nhánh prj/p2-bd1-3 từ origin/main. Chưa tạo test hoặc chức năng.
+Fetch origin; xác nhận nhánh preview origin/prj/p2-bd2-2 và commit pricing 21cd3e6 là tổ tiên của origin/main tại 6c258ca. Tạo nhánh prj/p2-bd1-2 từ origin/main. Chưa tạo test hoặc chức năng.
 
 ### Phản biện
 
-Cần nội dung chi tiết các sub-issue để xác định ca test và ràng buộc trước khi viết test nghiệm thu.
+Cần nội dung chi tiết các sub-issue để xác định tên và điều kiện test nghiệm thu trước; giao dịch, tồn và voucher cần được QA xem xét.
 
 ### Quyết định của nhóm
 
-Chưa có xác nhận QA duyệt test cho task mới.
+Chưa có xác nhận QA duyệt test của task checkout.
 
 ### Người kiểm tra
 
-Codex kiểm tra Git; chờ Hoàn cung cấp chi tiết và QA xem xét.
+Codex kiểm tra Git và tài liệu lộ trình; chờ Hoàn cung cấp nội dung chi tiết sub-issue và QA xem xét.
 
 ### Kiểm tra và minh chứng
 
-Nhánh mới được tạo tại 6c258ca; chưa chạy test, chưa commit hoặc push.
+origin/main: 6c258ca (merge PR #682); git merge-base xác nhận hai điều kiện trên. Chưa chạy test checkout, chưa commit hoặc push nhánh mới.
 
 ---
 
-## Phase 2 / hoan-20261118-adminvoucher-02
+## Phase 2 / hoan-20261118-checkout-02
 
-* Thời gian ghi: 2026-11-18T03:39:59+07:00
+* Thời gian ghi: 2026-11-18T02:27:50+07:00
 * Thời gian thực hiện: theo thời gian ghi.
-* Mã phiên nhật ký: hoan-20261118-adminvoucher
+* Mã phiên nhật ký: hoan-20261118-checkout
 * Người prompt: Hoàn
 * Loại mục: Hoạt động
-* Liên quan: PRJ-P2-BD1-3.1; hoan-20261118-adminvoucher-01
+* Liên quan: PRJ-P2-BD1-2.1; hoan-20261118-checkout-01
 
 ### Công cụ
 
@@ -4086,401 +4086,43 @@ Codex và Vitest.
 
 ### Mục đích
 
-Chuẩn bị test nghiệm thu admin voucher và khuyến mãi.
+Chuẩn bị test nghiệm thu trước chức năng checkout.
 
 ### Prompt
 
-Tóm lược: Hoàn cung cấp các sub-issue và đồng ý phương án giữ schema được đề xuất.
+Tóm lược: Hoàn cung cấp yêu cầu test trước và sáu sub-issue chức năng của task tạo đơn.
 
 ### Kết quả đề xuất
 
-Tạo năm ca test theo tên sub-issue: phân quyền hai route, tạo voucher trùng mã, giới hạn lượt, bật tắt và lọc, khuyến mãi link nội bộ. Giả định không có description, đếm VoucherUsage, sử dụng linkUrl và không thêm subtitle.
+Codex tạo bảy ca trong apps/api/src/orders/checkout.service.spec.ts: tạo đơn, mô phỏng tranh tồn, xác nhận lại, ghi lượt voucher, hủy, hết hạn và kiểm tra quyền sở hữu. Các ca sử dụng Prisma mock, chưa truy cập database.
 
 ### Phản biện
 
-Hoàn đồng ý phương án đề xuất, chưa có xác nhận riêng của QA hoặc reviewer. Ca giới hạn hiện chỉ mô phỏng số lượt đã vượt giới hạn, chưa mô phỏng thay đổi đồng thời; cần hoàn thiện và QA xem xét trước khi chốt. Các ca khác dùng mock, một số giả định cấu trúc service và DTO cần review.
+Schema Voucher không có usedCount trong khi sub-issue mô tả tăng trường này; OrdersService.preview đếm VoucherUsage. Schema OrderStatusLog cũng không có các trường fromValue, toValue và actorId như ví dụ. Codex đã hỏi Hoàn về cách quản lý lượt voucher; chờ phản hồi. Test tranh tồn bằng mock không chứng minh tính an toàn đồng thời trên PostgreSQL. Các giả định về DTO và cấu trúc gọi cần QA review.
 
 ### Quyết định của nhóm
 
-Hoàn đồng ý tiến hành theo phương án giữ schema; chưa có xác nhận QA duyệt test.
+Chưa nhận xác nhận QA duyệt test hoặc quyết định về điểm chưa khớp schema.
 
 ### Người kiểm tra
 
-Codex chạy Vitest; chờ Hoàn, QA và reviewer xem xét.
+Codex chạy Vitest; chờ Hoàn, QA và nhóm xem xét.
 
 ### Kiểm tra và minh chứng
 
-npm test -w api -- admin-vouchers: 5 ca được thu thập, cả 5 fail do thiếu controller hoặc service; assertion chưa chạy. Chưa commit hoặc push.
+- npm test -w api -- checkout.service: thu thập 7 ca, cả 7 fail vì chưa có module checkout.service.js; assertion chưa chạy.
+- Chưa commit hoặc push các thay đổi của bước này.
 
 ---
 
-## Phase 2 / hoan-20261118-adminvoucher-03
+## Phase 2 / hoan-20261118-checkout-03
 
-* Thời gian ghi: 2026-11-18T03:43:31+07:00
+* Thời gian ghi: 2026-11-18T02:28:10+07:00
 * Thời gian thực hiện: theo thời gian ghi.
-* Mã phiên nhật ký: hoan-20261118-adminvoucher
+* Mã phiên nhật ký: hoan-20261118-checkout
 * Người prompt: Hoàn
-* Loại mục: Hoạt động
-* Liên quan: PRJ-P2-BD1-3.2; hoan-20261118-adminvoucher-02
-
-### Công cụ
-
-Codex, Vitest và ESLint.
-
-### Mục đích
-
-Bảo vệ hai controller quản trị bằng JwtAuthGuard, RolesGuard và vai trò ADMIN.
-
-### Prompt
-
-Tóm lược: Hoàn cung cấp sub-issue 3.2 và yêu cầu tiếp tục.
-
-### Kết quả đề xuất
-
-Tạo hai controller admin và service khung; phương thức list hiện trả NotImplementedException, chưa triển khai chức năng. Chưa đăng ký module trong ứng dụng.
-
-### Phản biện
-
-Test HTTP mô phỏng người dùng CUSTOMER bằng cách thay JwtAuthGuard; chưa kiểm tra xác thực cookie thật hoặc tích hợp module ứng dụng. Test trước chưa được xác nhận QA duyệt và ca thay đổi đồng thời còn thiếu. Các chức năng service tiếp tục ở bước sau.
-
-### Quyết định của nhóm
-
-Hoàn yêu cầu tiếp tục; chưa có xác nhận reviewer hoặc QA duyệt.
-
-### Người kiểm tra
-
-Codex chạy test và lint; chờ Hoàn, QA và reviewer.
-
-### Kiểm tra và minh chứng
-
-- npm test -w api -- admin-vouchers.spec.ts -t "khách bị chặn cả hai route": 1 pass, 4 skipped.
-- npm run lint -w api: pass.
-- Chưa build API, chưa đăng ký module, chưa commit hoặc push.
-
----
-
-## Phase 2 / hoan-20261118-adminvoucher-04
-
-* Thời gian ghi: 2026-11-18T03:46:09+07:00
-* Thời gian thực hiện: theo thời gian ghi.
-* Mã phiên nhật ký: hoan-20261118-adminvoucher
-* Người prompt: Hoàn
-* Loại mục: Hoạt động
-* Liên quan: PRJ-P2-BD1-3.3; hoan-20261118-adminvoucher-03
-
-### Công cụ
-
-Codex, Vitest, ESLint, Prisma và Nest CLI.
-
-### Mục đích
-
-Thêm tạo voucher và xử lý lỗi mã trùng.
-
-### Prompt
-
-Tóm lược: Hoàn cung cấp sub-issue PRJ-P2-BD1-3.3.
-
-### Kết quả đề xuất
-
-Thêm create vào AdminVouchersService: kiểm tra mã, thời gian, một loại giảm giá và các giá trị số; chuyển lỗi P2002 thành HTTP 409. Không yêu cầu description theo phương án giữ schema Hoàn đã chọn.
-
-### Phản biện
-
-Ca test dùng mock và chưa kiểm tra riêng mọi điều kiện đầu vào; API controller chưa có route tạo và module chưa được đăng ký. Phương án bỏ description khác nội dung task, cần reviewer xác nhận. Bộ test chưa được xác nhận QA duyệt.
-
-### Quyết định của nhóm
-
-Hoàn đã đồng ý tiến hành phương án giữ schema; chưa có xác nhận riêng từ reviewer.
-
-### Người kiểm tra
-
-Codex chạy test, lint và build API; chờ Hoàn, QA và reviewer.
-
-### Kiểm tra và minh chứng
-
-- Hai ca tạo voucher trùng mã và phân quyền: 2 pass, 3 skipped.
-- npm run lint -w api: pass.
-- npm run build -w api: pass.
-- Chưa test database thật, chưa commit hoặc push.
-
----
-
-## Phase 2 / hoan-20261118-adminvoucher-05
-
-* Thời gian ghi: 2026-11-18T03:50:43+07:00
-* Thời gian thực hiện: theo thời gian ghi.
-* Mã phiên nhật ký: hoan-20261118-adminvoucher
-* Người prompt: Hoàn
-* Loại mục: Hoạt động
-* Liên quan: PRJ-P2-BD1-3.3; hoan-20261118-adminvoucher-04
-
-### Công cụ
-
-Codex, Vitest, Prisma, ESLint và Nest CLI.
-
-### Mục đích
-
-Bổ sung mô tả voucher theo yêu cầu task và giữ tương thích dữ liệu cũ.
-
-### Prompt
-
-Tóm lược: Hoàn hỏi có thể thêm description vào schema hay không và yêu cầu thực hiện.
-
-### Kết quả đề xuất
-
-Thêm Voucher.description nullable và migration ADD COLUMN; service yêu cầu mô tả không rỗng khi tạo mới. Bổ sung description vào fixture test nghiệm thu và thêm test mô tả riêng. Không áp dụng migration vào database.
-
-### Phản biện
-
-Trường nullable giúp migration không yêu cầu điền dữ liệu cũ; các voucher hiện hữu có thể có description null. Fixture test nghiệm thu đã thay đổi để phù hợp schema, cần thông báo QA review trước khi chốt. Lần build đầu thất bại do trường chưa vào đúng model; sửa schema và chạy lại thành công.
-
-### Quyết định của nhóm
-
-Hoàn yêu cầu thêm description; chưa có xác nhận reviewer hoặc QA duyệt migration và test.
-
-### Người kiểm tra
-
-Codex chạy test, lint, build API; chờ Hoàn, reviewer và QA.
-
-### Kiểm tra và minh chứng
-
-- Test tạo voucher và phân quyền: 2 pass, 3 skipped.
-- Test description riêng: 1 pass.
-- npm run lint -w api và npm run build -w api: pass sau sửa schema.
-- Migration chưa được áp dụng vào database; chưa commit hoặc push.
-
----
-
-## Phase 2 / hoan-20261118-adminvoucher-06
-
-* Thời gian ghi: 2026-11-18T03:53:47+07:00
-* Thời gian thực hiện: theo thời gian ghi.
-* Mã phiên nhật ký: hoan-20261118-adminvoucher
-* Người prompt: Hoàn
-* Loại mục: Hoạt động
-* Liên quan: PRJ-P2-BD1-3.4; hoan-20261118-adminvoucher-05
-
-### Công cụ
-
-Codex, Vitest, ESLint, Prisma và Nest CLI.
-
-### Mục đích
-
-Ngăn giảm giới hạn voucher xuống dưới số lượt đã sử dụng theo schema hiện tại.
-
-### Prompt
-
-Tóm lược: Hoàn cung cấp nội dung sub-issue PRJ-P2-BD1-3.4.
-
-### Kết quả đề xuất
-
-Thêm update giới hạn voucher trong transaction: khóa dòng Voucher, đếm VoucherUsage và kiểm tra giới hạn trước khi cập nhật.
-
-### Phản biện
-
-Ca test hiện chỉ mô phỏng số lượt vượt giới hạn, không kiểm tra hai giao dịch đồng thời; chưa chứng minh an toàn trên PostgreSQL thật. Các luồng sử dụng voucher cũng phải tuân thủ cùng cơ chế khóa. Chưa xác nhận QA duyệt bộ test.
-
-### Quyết định của nhóm
-
-Làm theo phương án giữ schema và đếm VoucherUsage Hoàn đã chọn; chưa có xác nhận reviewer duyệt code.
-
-### Người kiểm tra
-
-Codex chạy test, lint, build API; chờ Hoàn, QA và reviewer.
-
-### Kiểm tra và minh chứng
-
-- Ba ca test voucher được chọn: 3 pass, 2 skipped.
-- npm run lint -w api và npm run build -w api: pass.
-- Chưa kiểm tra đồng thời trên database thật, chưa commit hoặc push.
-
----
-
-## Phase 2 / hoan-20261118-adminvoucher-07
-
-* Thời gian ghi: 2026-11-18T03:57:47+07:00
-* Thời gian thực hiện: theo thời gian ghi.
-* Mã phiên nhật ký: hoan-20261118-adminvoucher
-* Người prompt: Hoàn
-* Loại mục: Hoạt động
-* Liên quan: PRJ-P2-BD1-3.5; hoan-20261118-adminvoucher-06
-
-### Công cụ
-
-Codex, Vitest, ESLint, Prisma và Nest CLI.
-
-### Mục đích
-
-Bật tắt voucher và lọc danh sách theo trạng thái.
-
-### Prompt
-
-Tóm lược: Hoàn cung cấp nội dung sub-issue PRJ-P2-BD1-3.5.
-
-### Kết quả đề xuất
-
-Thêm DTO và controller route bật tắt, cập nhật service và danh sách lọc bốn trạng thái, phân trang 20 và thứ tự code/id.
-
-### Phản biện
-
-Ca test hiện chủ yếu kiểm tra trạng thái disabled và gọi cập nhật, chưa xác nhận riêng mọi trạng thái hay HTTP thực tế. Module chưa được đăng ký. Ca đồng thời ở bước trước còn thiếu; QA chưa xác nhận duyệt bộ test.
-
-### Quyết định của nhóm
-
-Thực hiện theo task Hoàn cung cấp; chưa có reviewer duyệt thay đổi.
-
-### Người kiểm tra
-
-Codex chạy test chọn lọc, lint và build API; chờ Hoàn và reviewer.
-
-### Kiểm tra và minh chứng
-
-- Bốn ca voucher chọn lọc: 4 pass, 1 skipped.
-- npm run lint -w api và npm run build -w api: pass.
-- Chưa test database thật; chưa commit hoặc push.
-
----
-
-## Phase 2 / hoan-20261118-adminvoucher-08
-
-* Thời gian ghi: 2026-11-18T03:59:16+07:00
-* Thời gian thực hiện: theo thời gian ghi.
-* Mã phiên nhật ký: hoan-20261118-adminvoucher
-* Người prompt: Hoàn
-* Loại mục: Kiểm tra
-* Liên quan: PRJ-P2-BD1-3.5; hoan-20261118-adminvoucher-07
-
-### Công cụ
-
-Codex và Vitest.
-
-### Mục đích
-
-Kiểm tra riêng bộ lọc và kết quả bốn trạng thái voucher.
-
-### Prompt
-
-Tóm lược: Hoàn hỏi có thể xử lý việc chưa kiểm tra đủ bốn trạng thái và module chưa đăng ký hay không.
-
-### Kết quả đề xuất
-
-Thêm file test riêng admin-vouchers-status.spec.ts với bốn ca điều kiện lọc và một ca phân loại tại biên thời gian.
-
-### Phản biện
-
-Test dùng mock, chưa gọi route thật hoặc kết nối database. Việc đăng ký module được nêu trong bước 3.6; chưa thực hiện. Ca đồng thời của bước 3.4 vẫn thiếu và chưa xác nhận QA duyệt test.
-
-### Quyết định của nhóm
-
-Hoàn yêu cầu xem xét xử lý; chưa có xác nhận reviewer duyệt thay đổi.
-
-### Người kiểm tra
-
-Codex chạy Vitest; chờ Hoàn, QA và reviewer.
-
-### Kiểm tra và minh chứng
-
-npm test -w api -- admin-vouchers-status.spec.ts: 5/5 pass. Chưa commit hoặc push.
-
----
-
-## Phase 2 / hoan-20261118-adminvoucher-09
-
-* Thời gian ghi: 2026-11-18T04:04:19+07:00
-* Thời gian thực hiện: theo thời gian ghi.
-* Mã phiên nhật ký: hoan-20261118-adminvoucher
-* Người prompt: Hoàn
-* Loại mục: Hoạt động
-* Liên quan: PRJ-P2-BD1-3.6; hoan-20261118-adminvoucher-08
-
-### Công cụ
-
-Codex, Vitest, ESLint, Prisma và Nest CLI.
-
-### Mục đích
-
-Tạo, sửa khuyến mãi với link nội bộ và đăng ký module quản trị.
-
-### Prompt
-
-Tóm lược: Hoàn cung cấp sub-issue PRJ-P2-BD1-3.6.
-
-### Kết quả đề xuất
-
-Thêm DTO, service và route quản trị khuyến mãi, kiểm tra link nội bộ; đăng ký module khuyến mãi và voucher, bổ sung route tạo voucher. Giữ linkUrl và không thêm subtitle theo schema hiện có; yêu cầu imageUrl vì schema bắt buộc. Cập nhật fixture test với imageUrl.
-
-### Phản biện
-
-Lần test đầu lỗi do phương thức create ném lỗi đồng bộ trong khi test chờ promise; đã chuyển sang async rồi chạy lại. Thay đổi fixture test nghiệm thu cần QA review. Ca giới hạn thay đổi đồng thời chưa mô phỏng concurrency; chưa test HTTP tích hợp toàn bộ module hoặc database thật. Chưa xác nhận QA duyệt test.
-
-### Quyết định của nhóm
-
-Tiếp tục giữ schema Promotion theo quyết định Hoàn đã cung cấp; chưa có reviewer duyệt code.
-
-### Người kiểm tra
-
-Codex chạy test, lint và build API; chờ Hoàn, QA và reviewer.
-
-### Kiểm tra và minh chứng
-
-- npm test -w api -- admin-vouchers: 11/11 pass bằng mock.
-- npm run lint -w api: pass.
-- npm run build -w api: pass.
-- Chưa test ứng dụng với database thật; migration voucher description chưa áp dụng; chưa commit hoặc push.
-
----
-
-## Phase 2 / hoan-20261118-adminvoucher-10
-
-* Thời gian ghi: 2026-11-18T04:06:02+07:00
-* Thời gian thực hiện: theo thời gian ghi.
-* Mã phiên nhật ký: hoan-20261118-adminvoucher
-* Người prompt: Hoàn
-* Loại mục: Kiểm tra
-* Liên quan: PRJ-P2-BD1-3.6; hoan-20261118-adminvoucher-09
-
-### Công cụ
-
-Codex, Git và PostgreSQL client pg.
-
-### Mục đích
-
-Kiểm tra an toàn trạng thái migration và khả năng kiểm thử database thật.
-
-### Prompt
-
-Tóm lược: Hoàn hỏi có thể kiểm tra ứng dụng với database thật, thay đổi lượt voucher đồng thời và trạng thái migration không.
-
-### Kết quả đề xuất
-
-Chỉ đọc metadata database theo cấu hình local, ưu tiên DIRECT_URL: public.Voucher chưa có description và chưa thấy migration 20261118040000_add_voucher_description áp dụng thành công. Không ghi dữ liệu hoặc áp dụng migration. Kiểm tra PATH không tìm thấy docker hoặc psql.
-
-### Phản biện
-
-Chưa xác minh database được cấu hình có trùng môi trường Supabase mà nhóm dự định sử dụng hay không. Chưa có database test riêng được xác nhận; không chạy thử hai giao dịch ghi trên database chung. Lock voucher chỉ bảo vệ khi mọi luồng ghi lượt dùng tuân thủ cùng quy ước.
-
-### Quyết định của nhóm
-
-Chưa có quyết định chọn môi trường database test hoặc áp dụng migration. Hoàn yêu cầu kiểm tra; không yêu cầu thay đổi database.
-
-### Người kiểm tra
-
-Codex kiểm tra metadata và công cụ; chờ Hoàn và nhóm xác nhận môi trường test.
-
-### Kiểm tra và minh chứng
-
-Truy vấn chỉ đọc information_schema và bảng lịch sử migration; không in thông tin kết nối. Chưa test HTTP với database thật hoặc kiểm tra giao dịch đồng thời.
-
----
-
-## Phase 2 / hoan-20261118-adminvoucher-11
-
-* Thời gian ghi: 2026-11-18T04:08:51+07:00
-* Thời gian thực hiện: theo thời gian ghi.
-* Mã phiên nhật ký: hoan-20261118-adminvoucher
-* Người prompt: Hoàn
-* Loại mục: Hoạt động
-* Liên quan: PRJ-P2-BD1-3.7; hoan-20261118-adminvoucher-10
+* Loại mục: Quyết định
+* Liên quan: PRJ-P2-BD1-2.1; hoan-20261118-checkout-02
 
 ### Công cụ
 
@@ -4488,7 +4130,458 @@ Codex.
 
 ### Mục đích
 
-Chuẩn bị mẫu tự kiểm tra kiến thức quản trị voucher và khuyến mãi.
+Ghi nhận lựa chọn xử lý lượt dùng voucher khi task và schema khác nhau.
+
+### Prompt
+
+Tóm lược: Codex hỏi chọn đếm VoucherUsage hay thêm Voucher.usedCount vào schema; Hoàn chọn đếm VoucherUsage và giữ schema.
+
+### Kết quả đề xuất
+
+Dự kiến tiếp tục dùng bản ghi VoucherUsage để đếm lượt, tương thích cách preview hiện tại. Chưa thay đổi schema hoặc chức năng checkout.
+
+### Phản biện
+
+Việc đếm và ghi trong giao dịch vẫn cần cơ chế khóa thích hợp để tránh vượt giới hạn khi dùng đồng thời; test mock chưa chứng minh được tính an toàn đồng thời.
+
+### Quyết định của nhóm
+
+Hoàn chọn đếm từ VoucherUsage, giữ schema. Chưa có xác nhận riêng từ reviewer hoặc QA.
+
+### Người kiểm tra
+
+Hoàn chọn phương án; chờ reviewer và QA kiểm tra.
+
+### Kiểm tra và minh chứng
+
+Chưa chạy test mới sau lựa chọn; các test đang fail vì chưa có checkout.service.
+
+---
+
+## Phase 2 / hoan-20261118-checkout-04
+
+* Thời gian ghi: 2026-11-18T02:40:10+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-checkout
+* Người prompt: Hoàn
+* Loại mục: Quyết định
+* Liên quan: PRJ-P2-BD1-2.1; hoan-20261118-checkout-03
+
+### Công cụ
+
+Codex và Vitest.
+
+### Mục đích
+
+Ghi nhận quyết định về lịch sử trạng thái đơn và chuẩn bị test nghiệm thu để QA xem xét.
+
+### Prompt
+
+Tóm lược: Hoàn trao đổi về khác biệt giữa ví dụ task và schema OrderStatusLog, thông báo nhóm thống nhất giữ schema và ghi trạng thái mới cùng ghi chú; sau đó yêu cầu commit, push test và AI logs.
+
+### Kết quả đề xuất
+
+Dự kiến dùng các trường status, paymentStatus, note và createdAt hiện có khi ghi lịch sử. Test checkout đã được tạo; chưa sửa schema hoặc viết chức năng.
+
+### Phản biện
+
+Schema hiện tại không có trường riêng cho trạng thái cũ và người thực hiện. Các ca test và phương án ghi lịch sử cần QA và reviewer xem xét; test tranh tồn mock không chứng minh an toàn đồng thời trên database thật.
+
+### Quyết định của nhóm
+
+Theo Hoàn cung cấp, nhóm thống nhất giữ schema hiện tại và ghi trạng thái mới cùng ghi chú.
+
+### Người kiểm tra
+
+Codex đã chạy Vitest; chờ QA và reviewer duyệt test.
+
+### Kiểm tra và minh chứng
+
+- npm.cmd test -w api -- checkout.service: thu thập 7 ca, 7 fail vì chưa có checkout.service.js; các assertion chưa chạy.
+- Chưa kiểm thử tranh tồn với PostgreSQL.
+
+---
+
+## Phase 2 / hoan-20261118-checkout-05
+
+* Thời gian ghi: 2026-11-18T02:47:45+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-checkout
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-2.1; PRJ-P2-BD1-2.2; hoan-20261118-checkout-04
+
+### Công cụ
+
+Codex và Git.
+
+### Mục đích
+
+Làm rõ yêu cầu QA duyệt test và cách kiểm tra tình huống tranh tồn với database thật.
+
+### Prompt
+
+Tóm lược: Hoàn hỏi về yêu cầu QA duyệt, việc có bắt buộc test database thật không và cách kiểm tra; sau đó yêu cầu commit, push và cập nhật AI logs.
+
+### Kết quả đề xuất
+
+Codex giải thích test nghiệm thu hiện dùng Prisma mock; đề xuất dùng PostgreSQL riêng với dữ liệu giả, một SKU còn một sản phẩm và hai yêu cầu đồng thời để kiểm tra tranh tồn sau khi triển khai chức năng.
+
+### Phản biện
+
+Ca mock không chứng minh an toàn đồng thời trên PostgreSQL. Nội dung sub-issue được cung cấp không nêu rõ bắt buộc database thật, nhưng lộ trình có hướng dẫn thử tranh tồn trên database thật. Chưa chốt với QA môi trường hoặc điều kiện merge.
+
+### Quyết định của nhóm
+
+Chưa có xác nhận rõ QA đã duyệt test hoặc quyết định chọn môi trường database test. Không thực hiện thay đổi database.
+
+### Người kiểm tra
+
+Codex kiểm tra trạng thái Git; chờ QA duyệt test và Hoàn, nhóm quyết định môi trường test.
+
+### Kiểm tra và minh chứng
+
+- Test bước 2.1 đã commit b33f266 và push; AI logs chuẩn bị đã commit eca9111.
+- Chưa có apps/api/src/orders/checkout.service.ts; chưa triển khai bước 2.2 và chưa test tranh tồn trên database thật.
+
+---
+
+## Phase 2 / hoan-20261118-checkout-06
+
+* Thời gian ghi: 2026-11-18T02:52:35+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-checkout
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-2.2; hoan-20261118-checkout-05
+
+### Công cụ
+
+Codex, Vitest, ESLint, Prisma và Nest CLI.
+
+### Mục đích
+
+Triển khai bước tạo đơn, lưu giá snapshot và giữ tồn trong transaction.
+
+### Prompt
+
+Tóm lược: Hoàn làm rõ yêu cầu thực hiện bước 2.2 trước bước xác nhận giá.
+
+### Kết quả đề xuất
+
+Tạo checkout.service.ts: lấy preview, so sánh dữ liệu dự kiến, kiểm tra giỏ, giữ hàng bằng cập nhật có điều kiện theo thứ tự SKU, tạo đơn và lịch sử, xóa các dòng giỏ trong transaction. Đơn có hạn giữ 15 phút và snapshot giá sale. Tạm từ chối đơn có voucher vì xử lý giao dịch voucher ở bước sau.
+
+### Phản biện
+
+Test tranh tồn dùng mock không chứng minh an toàn đồng thời trên PostgreSQL. Chưa có controller hoặc module kết nối API; chưa kiểm tra database thật. Chưa xác nhận QA duyệt test trước khi triển khai. Schema CartItem không lưu ruleSetVersion nên chưa có dữ liệu này cho snapshot.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu thực hiện bước 2.2. Chưa có xác nhận riêng của QA duyệt test hoặc reviewer duyệt thay đổi.
+
+### Người kiểm tra
+
+Codex chạy hai ca liên quan, lint và build API; chờ Hoàn, QA và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- npm test -w api -- checkout.service.spec.ts -t "tạo đơn với snapshot giá sale|hai yêu cầu tranh tồn": 2 pass, 5 skipped.
+- npm run lint -w api: pass.
+- npm run build -w api: pass.
+- Chưa test với database thật, chưa commit hoặc push.
+
+---
+
+## Phase 2 / hoan-20261118-checkout-07
+
+* Thời gian ghi: 2026-11-18T02:56:08+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-checkout
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-2.3; hoan-20261118-checkout-06
+
+### Công cụ
+
+Codex, Vitest, ESLint, Prisma và Nest CLI.
+
+### Mục đích
+
+Kiểm tra lại preview khi giá, tổng tiền hoặc voucher thay đổi trước khi tạo đơn.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp sub-issue PRJ-P2-BD1-2.3 và yêu cầu tiếp tục.
+
+### Kết quả đề xuất
+
+Codex cập nhật checkout.service.ts để truyền voucherCode vào preview, kiểm tra voucher không hợp lệ và danh sách giá dự kiến trùng SKU; khi cần xác nhận trả CONFIRM_REQUIRED cùng preview trước transaction. Kiểm tra cảnh báo, tổng tiền và giá đã có từ bước 2.2.
+
+### Phản biện
+
+Voucher hợp lệ vẫn tạm bị từ chối vì chưa có giao dịch ghi lượt voucher; chưa kiểm thử thực tế qua HTTP hoặc database. Ca test nghiệm thu hiện chỉ mô phỏng tổng lệch, chưa xác minh riêng mọi nhánh điều kiện. Chưa xác nhận QA duyệt test.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu tiếp tục bước 2.3; chưa có xác nhận reviewer duyệt thay đổi.
+
+### Người kiểm tra
+
+Codex chạy các ca test liên quan, lint và build API; chờ Hoàn, QA và reviewer kiểm tra.
+
+### Kiểm tra và minh chứng
+
+- npm test -w api -- checkout.service.spec.ts với ba ca xác nhận giá và tạo đơn: 3 pass, 4 skipped.
+- npm run lint -w api: pass.
+- npm run build -w api: pass.
+- Chưa commit hoặc push bước này.
+
+---
+
+## Phase 2 / hoan-20261118-checkout-08
+
+* Thời gian ghi: 2026-11-18T02:59:03+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-checkout
+* Người prompt: Hoàn
+* Loại mục: Kiểm tra
+* Liên quan: PRJ-P2-BD1-2.3; hoan-20261118-checkout-07
+
+### Công cụ
+
+Codex và Vitest.
+
+### Mục đích
+
+Kiểm tra bổ sung các nhánh yêu cầu xác nhận trước khi commit.
+
+### Prompt
+
+Tóm lược: Hoàn đồng ý kiểm tra thêm và yêu cầu commit, push cùng AI logs.
+
+### Kết quả đề xuất
+
+Codex chạy bốn ca test tạm thời với mock: giá thay đổi, danh sách SKU không khớp, cảnh báo tồn và voucher không hợp lệ. Các ca kiểm tra lỗi 409 CONFIRM_REQUIRED kèm preview và không mở transaction. File test tạm đã được xóa; test nghiệm thu được giữ nguyên.
+
+### Phản biện
+
+Các kiểm tra dùng mock, không kiểm tra qua HTTP hoặc database. Voucher hợp lệ vẫn tạm bị từ chối đến khi hoàn thành bước ghi lượt voucher. Chưa xác nhận QA duyệt bộ test nghiệm thu.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu kiểm tra thêm rồi commit, push; chưa có xác nhận reviewer duyệt.
+
+### Người kiểm tra
+
+Codex chạy Vitest; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- Bốn ca kiểm tra bổ sung: 4/4 pass.
+- Các ca xác nhận giá và tạo đơn trước đó: 3 pass, 4 skipped; lint và build API pass như mục checkout-07.
+
+---
+
+## Phase 2 / hoan-20261118-checkout-09
+
+* Thời gian ghi: 2026-11-18T03:01:48+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-checkout
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-2.4; hoan-20261118-checkout-03
+
+### Công cụ
+
+Codex, Vitest, ESLint, Prisma và Nest CLI.
+
+### Mục đích
+
+Kiểm tra và ghi lượt sử dụng voucher cùng transaction tạo đơn.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp sub-issue PRJ-P2-BD1-2.4 và yêu cầu tiếp tục.
+
+### Kết quả đề xuất
+
+Checkout khóa dòng Voucher bằng FOR UPDATE, đếm số lượt tổng và theo user từ VoucherUsage, tính lại điều kiện và mức giảm, tạo VoucherUsage cùng orderId trong transaction. Giữ schema theo lựa chọn Hoàn đã cung cấp; không có trường Voucher.usedCount.
+
+### Phản biện
+
+Test dùng mock; chưa kiểm tra cạnh tranh voucher và rollback với database PostgreSQL thật. Khóa hàng voucher chỉ bảo vệ nếu các luồng khác ghi lượt dùng cùng tuân theo cơ chế khóa. Chưa xác nhận QA đã duyệt test. Preview trong lỗi là dữ liệu đã lấy trước transaction và có thể không còn mới nhất.
+
+### Quyết định của nhóm
+
+Hoàn đã chọn đếm VoucherUsage và giữ schema; chưa có xác nhận reviewer duyệt phần thực hiện.
+
+### Người kiểm tra
+
+Codex chạy test các bước hiện có, lint và build API; chờ Hoàn, QA và reviewer kiểm tra.
+
+### Kiểm tra và minh chứng
+
+- Bốn ca checkout đã triển khai: 4 pass, 3 skipped.
+- npm run lint -w api: pass.
+- npm run build -w api: pass.
+- Chưa kiểm tra database thật, chưa commit hoặc push.
+
+---
+
+## Phase 2 / hoan-20261118-checkout-10
+
+* Thời gian ghi: 2026-11-18T03:05:24+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-checkout
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-2.5; hoan-20261118-checkout-09
+
+### Công cụ
+
+Codex, Vitest, ESLint, Prisma và Nest CLI.
+
+### Mục đích
+
+Hủy đơn chưa thanh toán, trả tồn đã giữ và ghi lịch sử trong transaction.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp sub-issue PRJ-P2-BD1-2.5 và yêu cầu tiếp tục.
+
+### Kết quả đề xuất
+
+Codex thêm cancel, release và detail trong checkout.service.ts: lọc theo chủ sở hữu, chỉ chuyển đơn chưa thanh toán sang CANCELLED, giảm reserved có điều kiện, báo lỗi khi không trả đủ và ghi trạng thái cùng ghi chú theo schema hiện có. Detail được thêm để trả đơn sau hủy.
+
+### Phản biện
+
+Test dùng Prisma mock, chưa xác minh rollback và cạnh tranh thanh toán/hủy trên PostgreSQL. Chưa xác nhận QA duyệt test. Task này không mô tả chính sách hoàn lượt voucher khi hủy; chưa thêm xử lý hoàn lượt. Xử lý hết hạn thuộc bước sau.
+
+### Quyết định của nhóm
+
+Hoàn cho biết nhóm giữ schema OrderStatusLog và ghi trạng thái mới, ghi chú; chưa có xác nhận reviewer duyệt code.
+
+### Người kiểm tra
+
+Codex chạy test chọn lọc, lint và build API; chờ Hoàn, QA và reviewer.
+
+### Kiểm tra và minh chứng
+
+- Sáu ca checkout được chọn: 6 pass, 1 skipped.
+- npm run lint -w api: pass.
+- npm run build -w api: pass.
+- Chưa kiểm thử database thật, chưa commit hoặc push.
+
+---
+
+## Phase 2 / hoan-20261118-checkout-11
+
+* Thời gian ghi: 2026-11-18T03:08:31+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-checkout
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-2.6; hoan-20261118-checkout-10
+
+### Công cụ
+
+Codex, Vitest, ESLint, Prisma và Nest CLI.
+
+### Mục đích
+
+Xử lý đơn chưa thanh toán hết hạn, trả tồn và ghi trạng thái.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp sub-issue PRJ-P2-BD1-2.6 và yêu cầu tiếp tục.
+
+### Kết quả đề xuất
+
+Bổ sung quét đơn hết hạn, kiểm tra lại trạng thái và hạn khi cập nhật trong transaction, trả tồn, cập nhật payment chưa thanh toán sang EXPIRED, ghi lịch sử và thiết lập bộ hẹn giờ 60 giây có thể tắt bằng DISABLE_ORDER_EXPIRY.
+
+### Phản biện
+
+Test dùng mock chưa kiểm tra rollback và cạnh tranh thanh toán trên PostgreSQL. Bộ hẹn giờ cần service được đăng ký trong module ứng dụng mới hoạt động; chưa xác nhận QA duyệt bộ test. Chưa kiểm tra chính sách hoàn lượt voucher khi đơn hết hạn.
+
+### Quyết định của nhóm
+
+Thực hiện theo task Hoàn cung cấp; chưa có xác nhận reviewer duyệt code.
+
+### Người kiểm tra
+
+Codex chạy test, lint và build API; chờ Hoàn, QA và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- npm test -w api -- checkout.service: 7/7 pass bằng mock.
+- npm run lint -w api: pass.
+- npm run build -w api: pass.
+- Chưa kiểm tra database thật hoặc bộ hẹn giờ trong ứng dụng chạy thực tế; chưa commit hoặc push.
+
+---
+
+## Phase 2 / hoan-20261118-checkout-12
+
+* Thời gian ghi: 2026-11-18T03:14:45+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-checkout
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-2.7; hoan-20261118-checkout-10
+
+### Công cụ
+
+Codex, Vitest, ESLint, Prisma và Nest CLI.
+
+### Mục đích
+
+Kiểm tra quyền sở hữu khi xem hoặc hủy đơn.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp sub-issue PRJ-P2-BD1-2.7 và yêu cầu tiếp tục.
+
+### Kết quả đề xuất
+
+Phần tìm theo id và userId cùng lỗi 404 đã được thêm trong bước hủy đơn. Codex bổ sung từ chối userId thiếu hoặc rỗng tại detail và cancel để tránh bỏ qua điều kiện chủ sở hữu.
+
+### Phản biện
+
+Test hiện dùng mock và chưa kiểm tra HTTP thực tế; controller cần lấy userId từ phiên đăng nhập. Chưa có xác nhận QA duyệt test, chưa có test riêng cho userId thiếu hoặc rỗng.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu tiếp tục; chưa có xác nhận reviewer duyệt code.
+
+### Người kiểm tra
+
+Codex chạy test checkout, lint và build API; chờ Hoàn, QA và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- npm test -w api -- checkout.service: 7/7 pass bằng mock.
+- npm run lint -w api: pass.
+- npm run build -w api: pass.
+- Chưa kiểm tra HTTP hoặc database thật, chưa commit hoặc push.
+
+---
+
+## Phase 2 / hoan-20261118-checkout-13
+
+* Thời gian ghi: 2026-11-18T03:19:12+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-checkout
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-2.8; hoan-20261118-checkout-12
+
+### Công cụ
+
+Codex.
+
+### Mục đích
+
+Chuẩn bị mẫu tự kiểm tra kiến thức checkout.
 
 ### Prompt
 
@@ -4496,11 +4589,11 @@ Tóm lược: Hoàn cung cấp yêu cầu bước kiểm tra kiến thức cuố
 
 ### Kết quả đề xuất
 
-Tạo docs/learning/BD1-Hoan/kiem-tra/PRJ-P2-BD1-3.md với câu hỏi và ô trả lời trống.
+Tạo file câu hỏi docs/learning/BD1-Hoan/kiem-tra/PRJ-P2-BD1-2.md với ô trả lời trống.
 
 ### Phản biện
 
-Hoàn cần tự trả lời theo yêu cầu task; tạo mẫu không chứng minh hoàn thành kiểm tra kiến thức.
+Hoàn cần tự trả lời theo yêu cầu task; việc tạo mẫu không chứng minh hoàn thành kiểm tra kiến thức.
 
 ### Quyết định của nhóm
 
@@ -4516,43 +4609,43 @@ File mẫu được tạo, chưa có câu trả lời và chưa commit hoặc pu
 
 ---
 
-## Phase 2 / hoan-20261118-adminvoucher-12
+## Phase 2 / hoan-20261118-checkout-14
 
-* Thời gian ghi: 2026-11-18T04:14:00+07:00
+* Thời gian ghi: 2026-11-18T03:27:12+07:00
 * Thời gian thực hiện: theo thời gian ghi.
-* Mã phiên nhật ký: hoan-20261118-adminvoucher
+* Mã phiên nhật ký: hoan-20261118-checkout
 * Người prompt: Hoàn
 * Loại mục: Hoạt động
-* Liên quan: PRJ-P2-BD1-3.7; hoan-20261118-adminvoucher-11
+* Liên quan: PRJ-P2-BD1-2.8; hoan-20261118-checkout-13
 
 ### Công cụ
 
-Codex và Git.
+Codex.
 
 ### Mục đích
 
-Ghi nhận câu trả lời tự kiểm tra kiến thức admin voucher và khuyến mãi.
+Ghi nhận câu trả lời tự kiểm tra kiến thức checkout và phần luyện tập.
 
 ### Prompt
 
-Tóm lược: Hoàn cung cấp câu trả lời và trả lời hai câu luyện về giới hạn voucher và link nội bộ; yêu cầu ghi file, commit, push và cập nhật AI logs.
+Tóm lược: Hoàn cung cấp câu trả lời, trả lời hai câu luyện về tranh tồn và thanh toán đồng thời với hết hạn, rồi yêu cầu ghi vào file, commit, push và cập nhật AI logs.
 
 ### Kết quả đề xuất
 
-Codex nhận xét câu trả lời, ghi nội dung Hoàn cung cấp và bổ sung tình trạng migration chưa áp dụng vào file tự kiểm tra.
+Codex nhận xét các câu, xác nhận hai câu luyện phù hợp và ghi nội dung trả lời do Hoàn cung cấp vào file tự kiểm tra.
 
 ### Phản biện
 
-Test chưa kiểm tra riêng giới hạn bằng số lượt đã dùng và tình huống cập nhật đồng thời; reviewer cần đánh giá khả năng giải thích trực tiếp.
+Test cạnh tranh và hết hạn hiện dùng mock; chưa mô phỏng giao dịch đồng thời trên PostgreSQL. Khả năng giải thích trước reviewer cần được đánh giá trực tiếp.
 
 ### Quyết định của nhóm
 
-Hoàn yêu cầu ghi câu trả lời và push; chưa có reviewer duyệt bài.
+Hoàn yêu cầu ghi câu trả lời, commit và push; chưa có xác nhận reviewer duyệt bài.
 
 ### Người kiểm tra
 
-Codex nhận xét câu trả lời và hai câu luyện; chờ reviewer xem xét.
+Codex nhận xét câu trả lời; chờ reviewer xem xét.
 
 ### Kiểm tra và minh chứng
 
-Ghi file docs/learning/BD1-Hoan/kiem-tra/PRJ-P2-BD1-3.md; không chạy test code trong bước tài liệu.
+Nội dung được ghi vào docs/learning/BD1-Hoan/kiem-tra/PRJ-P2-BD1-2.md; không chạy test phần code trong bước tài liệu.
