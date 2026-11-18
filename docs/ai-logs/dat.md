@@ -1543,3 +1543,67 @@ Giữ hai ảnh voucher làm minh chứng kiểm tra trực tiếp. Không tạo
 - Báo cáo có đề xuất câu chữ và hành động tiếp theo.
 - Không sửa mã nguồn, giá, tồn kho hoặc dữ liệu dùng chung.
 - `git diff --check`: PASS.
+
+---
+
+## P2 — Kiểm tra kiến thức đối chiếu giỏ hàng và thanh toán / DAT-20261119-P2-004
+
+* **Thời gian ghi:** 19/11/2026
+* **Thời gian thực hiện:** 19/11/2026
+* **Mã phiên nhật ký:** DAT-20261119-P2-004
+* **Người prompt:** Đạt (PD)
+* **Loại mục:** Học tập và tự đánh giá
+* **Liên quan:** PRJ-P2-PD-1.4; nhánh `prj/p2-pd-1`
+
+### Công cụ
+
+ChatGPT, Visual Studio Code, CMD, Git và GitHub.
+
+### Mục đích
+
+Tổng hợp lại những nội dung tôi đã thực hiện trong PRJ-P2-PD-1, gồm đối chiếu giỏ hàng, khảo sát luồng thanh toán, kiểm tra phí giao và đánh giá câu chữ thông báo để chuẩn bị giải thích với reviewer.
+
+### Quá trình thực hiện
+
+Tôi đã xem lại kết quả của ba bước trước và chọn các nội dung quan trọng để trả lời:
+
+- Kiểm tra giỏ có sản phẩm và giỏ rỗng ở desktop, mobile.
+- Đếm thao tác cần thiết trong luồng thanh toán.
+- Kiểm tra phí giao tự thay đổi khi đổi tỉnh/thành.
+- Thử voucher không tồn tại và voucher chưa đạt giá trị tối thiểu.
+- Đánh giá cách hiển thị `CONFIRM_REQUIRED` và `OUT_OF_STOCK`.
+- Nhớ lại khó khăn khi checkout chưa có trên nhánh và quá trình đồng bộ `main`.
+
+ChatGPT hỗ trợ hệ thống hóa các ý và diễn đạt câu trả lời ngắn gọn. Tôi chịu trách nhiệm đọc lại, điều chỉnh và giải thích nội dung khi reviewer hỏi.
+
+### Kết quả
+
+Tôi đã chuẩn bị file `docs/learning/PD-Dat/kiem-tra/PRJ-P2-PD-1.md` với bốn câu trả lời:
+
+1. Mục đích đối chiếu giao diện giỏ hàng.
+2. Mục đích khảo sát và đếm thao tác thanh toán.
+3. Vai trò của câu chữ trong thông báo lỗi và trạng thái.
+4. Khó khăn khi đồng bộ checkout và kiểm tra lại dự án.
+
+Các câu trả lời được viết ngắn gọn, bám theo những việc đã trực tiếp thực hiện trong task.
+
+### Phản biện
+
+Ảnh chụp chỉ phản ánh trạng thái giao diện tại thời điểm kiểm tra. Hộp `CONFIRM_REQUIRED` và lỗi `OUT_OF_STOCK` không được cưỡng ép bằng cách sửa dữ liệu dùng chung; phần này được đối chiếu thêm từ implementation hiện tại.
+
+Tài liệu kiểm tra kiến thức giúp hệ thống hóa nội dung nhưng không thay thế việc tự hiểu và giải thích. Tôi cần luyện nói lại bằng lời của mình trước khi reviewer hỏi ngẫu nhiên.
+
+### Quyết định
+
+Giữ câu trả lời ở mức ngắn, tập trung vào mục đích, rủi ro nếu bỏ qua và cách xử lý khó khăn thực tế. Không bổ sung nội dung ngoài phạm vi PRJ-P2-PD-1.
+
+### Người kiểm tra
+
+Đạt trực tiếp thực hiện task, kiểm tra giao diện, thử voucher, ghi nhận kết quả và chịu trách nhiệm trả lời reviewer. ChatGPT hỗ trợ hệ thống hóa nội dung và rà soát cách diễn đạt. FD1 Thành là reviewer xác nhận kiến thức.
+
+### Kiểm tra và minh chứng
+
+- File kiến thức: `docs/learning/PD-Dat/kiem-tra/PRJ-P2-PD-1.md`.
+- Có đủ bốn nội dung kiểm tra.
+- Nội dung bám theo kết quả thực hiện PRJ-P2-PD-1.1 đến PRJ-P2-PD-1.3.
+- Nhật ký không ghi nhận reviewer đã nghiệm thu khi chưa có xác nhận.
