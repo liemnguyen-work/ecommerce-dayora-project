@@ -4920,3 +4920,48 @@ Codex chạy test, lint và build; chờ Hoàn và reviewer kiểm tra giao di�
 - `npm test -w api -- promotions`: 6/6 test pass khi chạy lại riêng.
 - `npm run lint` và `npm run build`: pass toàn bộ workspace.
 - Chưa commit, push hoặc kiểm tra trình duyệt cho thay đổi này.
+
+---
+
+## Phase 2 / hoan-20261118-promotion-active-01
+
+* Thời gian ghi: 2026-11-18T23:13:43+07:00
+* Thời gian thực hiện: 18/11/2026.
+* Mã phiên nhật ký: hoan-20261118-promotion-contract-b92
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: #494, hoan-20261118-public-promotion-subtitle-01
+
+### Công cụ
+
+Codex, NestJS, Vitest, ESLint và Prisma.
+
+### Mục đích
+
+Bổ sung route riêng để quản trị viên bật hoặc tắt khuyến mãi theo yêu cầu bước #494.
+
+### Prompt
+
+Hoàn yêu cầu PATCH /admin/promotions/:id/active nhận boolean isActive, sử dụng service hiện có, giữ route cũ và kiểm thử quyền cùng dữ liệu không hợp lệ.
+
+### Kết quả đề xuất
+
+Codex thêm DTO yêu cầu isActive là boolean, route mới gọi service update và giữ route PATCH :id; thêm test HTTP cho ADMIN, CUSTOMER, body sai và route cũ.
+
+### Phản biện
+
+Test HTTP giả lập phiên xác thực và service; chưa kiểm tra cùng database thật hoặc ứng dụng đã triển khai.
+
+### Quyết định của nhóm
+
+Thực hiện theo yêu cầu Hoàn cung cấp; chờ reviewer xem xét.
+
+### Người kiểm tra
+
+Codex chạy test, lint và build API; chờ Hoàn và reviewer kiểm tra.
+
+### Kiểm tra và minh chứng
+
+- `npm test -w api -- promotions`: 10/10 test pass.
+- `npm run lint -w api` và `npm run build -w api`: pass.
+- Không có migration; chưa commit hoặc push thay đổi này.
