@@ -4694,3 +4694,48 @@ Codex chạy test checkout và lint API; chờ Hoàn, QA và reviewer.
 - npm test -w api -- checkout.service.spec.ts: 9/9 pass.
 - npm run lint -w api: pass.
 - Chưa test database thật, chưa commit hoặc push.
+
+---
+
+## Phase 2 / hoan-20261118-voucher-release-02
+
+* Thời gian ghi: 2026-11-18T16:51:18+07:00
+* Thời gian thực hiện: theo thời gian ghi.
+* Mã phiên nhật ký: hoan-20261118-voucher-release
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PR #688; hoan-20261118-voucher-release-01
+
+### Công cụ
+
+Codex, Vitest, ESLint, Prisma và Nest CLI.
+
+### Mục đích
+
+Chuẩn hóa mã voucher và ngăn tạo voucher có mức giảm bằng 0.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp hai nhận xét review của PR #688 và yêu cầu sửa thêm.
+
+### Kết quả đề xuất
+
+Chuẩn hóa trim và chữ hoa khi tạo voucher, preview và checkout; kiểm tra mức giảm ít nhất 1 tại DTO và service. Bổ sung các ca test trùng mã sau chuẩn hóa, mức giảm 0, preview và checkout với mã chữ thường.
+
+### Phản biện
+
+Các test dùng mock, chưa kiểm tra dữ liệu voucher đã tồn tại có mã chữ thường hoặc xung đột hoa/thường trong database thật. Chuẩn hóa đầu vào không tự chuyển đổi mã cũ; cần nhóm kiểm tra dữ liệu trước khi triển khai. Test nghiệm thu được bổ sung theo review, cần QA xem xét.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu sửa hai lỗi; chưa có xác nhận reviewer duyệt.
+
+### Người kiểm tra
+
+Codex chạy test, lint và build API; chờ Hoàn, QA và reviewer.
+
+### Kiểm tra và minh chứng
+
+- npm test -w api -- admin-vouchers.spec.ts orders.service.spec.ts checkout.service.spec.ts: 24/24 pass.
+- npm run lint -w api và npm run build -w api: pass.
+- Chưa kiểm tra database thật, chưa commit hoặc push phần sửa mới.
