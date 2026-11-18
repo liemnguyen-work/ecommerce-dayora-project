@@ -11,3 +11,7 @@ export class PromotionDto {
   @IsOptional() @IsBoolean() isActive?: boolean;
   @IsOptional() @IsInt() @Min(0) sortOrder?: number;
 }
+
+export class PromotionActiveDto {
+  @IsBoolean() isActive!: boolean;
+}

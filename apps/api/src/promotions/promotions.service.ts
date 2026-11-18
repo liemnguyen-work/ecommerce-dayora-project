@@ -18,6 +18,7 @@ export class PromotionsService {
       select: {
         id: true,
         title: true,
+        subtitle: true,
         imageUrl: true,
         linkUrl: true,
         startsAt: true,

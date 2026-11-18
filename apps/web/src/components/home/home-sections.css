@@ -16,6 +16,7 @@
 .home-trip, .home-offer-grid article { overflow: hidden; border-radius: 20px; background: #f5f2e8; }
 .home-trip img, .home-offer-grid img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
 .home-trip h3, .home-offer-grid h3 { margin: 0; padding: 1.2rem; font-weight: 700; }
+.home-offer-grid p { margin: -.6rem 0 0; padding: 0 1.2rem 1.2rem; }
 .home-faq details { padding: 1.2rem 0; border-bottom: 1px solid #b9c8b1; }
 .home-faq summary { cursor: pointer; font-weight: 700; }
 .home-faq details p { margin-top: .8rem; }

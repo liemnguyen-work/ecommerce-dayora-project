@@ -3316,3 +3316,208 @@ Thành kiểm tra trực quan luồng 409 thật trên localhost; Codex chạy k
 ### Kiểm tra và minh chứng
 
 Ảnh Thành cung cấp cho thấy tiền hàng đổi 139.000 thành 149.000 đồng và tổng đổi 159.000 thành 169.000 đồng trong dialog. `npm.cmd run lint -w web`, `npm.cmd run build -w web`, `git diff --check` pass; 7/7 test `checkout.service` pass. Tệp sửa: CheckoutPage, catalog.css và mục log này.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-3-1-008
+
+* Thời gian ghi: 2026-11-18T22:08:00+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-product-cart
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: PRJ-P2-FD1-3.1 #486; commit prerequisite `7eedb62`.
+
+### Công cụ
+
+Codex; React; TypeScript; npm.cmd; ESLint; Vite; Git.
+
+### Mục đích
+
+Đối chiếu và kiểm chứng chức năng chọn SKU trong ProductPage theo tiêu chí sub-issue #486.
+
+### Prompt
+
+Thành cung cấp nội dung issue #486, thử đổi giá các SKU qua Admin để quan sát giá theo biến thể rồi xác nhận kết quả ổn và yêu cầu commit.
+
+### Kết quả đề xuất
+
+Codex xác định chức năng đã có đầy đủ từ prerequisite phase trước: selectedId mặc định, tìm SKU, aria-pressed, nhãn hết hàng, đổi ảnh/giá/tồn và reset số lượng/thông báo khi đổi SKU. Không sửa lại ProductPage đang đúng; ghi minh chứng kiểm tra thay vì tạo thay đổi tính năng giả.
+
+### Phản biện
+
+Tạo commit rỗng hoặc sửa cơ học ProductPage chỉ để có diff sẽ không tạo giá trị và có thể làm hỏng chức năng đã kiểm chứng. Commit `7eedb62` là nguồn triển khai thực tế; commit hiện tại chỉ ghi nhận kiểm chứng cho task mới.
+
+### Quyết định của nhóm
+
+Thành kiểm tra trên localhost và yêu cầu commit bước 3.1. Không có thay đổi nghiệp vụ mới hoặc review độc lập từ PD Đạt.
+
+### Người kiểm tra
+
+Thành kiểm tra thao tác đổi SKU và giá; Codex đối chiếu source và chạy kiểm tra tự động.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web`, `npm.cmd run build -w web` và `git diff --check` pass. Source đáp ứng từng tiêu chí #486; triển khai gốc nằm ở commit `7eedb62 feat(web): select product variants`.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-3-2-009
+
+* Thời gian ghi: 2026-11-18T22:17:04+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-product-cart
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: THANH-20261118-PRJ-P2-FD1-3-1-008; PRJ-P2-FD1-3.2 #487.
+
+### Công cụ
+
+Codex; React; TypeScript; REST API; npm.cmd; ESLint; Vite; Git.
+
+### Mục đích
+
+Hoàn thiện phản hồi khi thêm SKU và số lượng đã chọn vào giỏ, đồng thời giữ luồng chuyển đăng nhập với tham số `next`.
+
+### Prompt
+
+Thành cung cấp issue #487, kiểm tra trên localhost rồi xác nhận thêm giỏ đúng và khi đăng xuất, bấm thêm vào giỏ sẽ chuyển sang trang đăng nhập.
+
+### Kết quả đề xuất
+
+ProductPage dùng trạng thái notice gồm `ok` và `text`; thông báo thành công hiển thị số lượng, tên sản phẩm và màu SKU, thông báo lỗi có kiểu riêng. Nút được đổi thành “Thêm vào giỏ hàng”, liên kết xem giỏ chỉ hiện sau thành công. Luồng gọi `addToCart(sku.id, quantity)` và redirect đăng nhập có `next` được giữ nguyên.
+
+### Phản biện
+
+Code trước đã gọi đúng API nhưng thông báo chung không cho khách biết SKU/màu nào vừa được thêm và không phân biệt trực quan thành công với lỗi. Thay đổi chỉ bổ sung phản hồi cần thiết, không viết lại luồng API đang hoạt động.
+
+### Quyết định của nhóm
+
+Thành xác nhận hai ca kiểm tra đạt và yêu cầu commit. Chưa có review độc lập từ PD Đạt.
+
+### Người kiểm tra
+
+Thành kiểm tra thao tác thêm giỏ và redirect khi đăng xuất; Codex chạy lint/build và kiểm tra endpoint localhost.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web`, `npm.cmd run build -w web`, `git diff --check` pass; API health và web `/san-pham` trả HTTP 200. Tệp sửa: `apps/web/src/pages/ProductPage.tsx` và mục log này.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-3-3-010
+
+* Thời gian ghi: 2026-11-18T22:25:24+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-product-cart
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: THANH-20261118-PRJ-P2-FD1-3-2-009; PRJ-P2-FD1-3.3 #488.
+
+### Công cụ
+
+Codex; React; TypeScript; REST API; npm.cmd; ESLint; Vite; Git.
+
+### Mục đích
+
+Ghi sản phẩm khách đã xem khi mở trang chi tiết và cung cấp giao diện tài khoản để kiểm chứng danh sách lịch sử.
+
+### Prompt
+
+Thành cung cấp issue #488, kiểm tra localhost và phản hồi trang tài khoản chưa có mục sản phẩm đã xem. Sau khi bổ sung tab, Thành xác nhận đã thấy danh sách và yêu cầu commit.
+
+### Kết quả đề xuất
+
+ProductDetails gọi `POST /me/viewed` với productId khi có user; lỗi ghi lịch sử được bỏ qua để không làm hỏng trang và dependency không phụ thuộc SKU. AccountPage được bổ sung tab “Sản phẩm đã xem”, chỉ tải `GET /me/viewed` khi mở tab và hiển thị trạng thái tải, lỗi, rỗng hoặc danh sách ProductCard.
+
+### Phản biện
+
+Chỉ thêm request POST theo hướng dẫn chưa đủ để hoàn thành ca tự kiểm tra vì AccountPage trên main không có nơi đọc lịch sử. Phần hiển thị được bổ sung tối thiểu bằng API và component có sẵn; không thay đổi backend đã hoạt động.
+
+### Quyết định của nhóm
+
+Thành xác nhận đã thấy sản phẩm trong tab lịch sử và yêu cầu commit. Chưa có review độc lập từ PD Đạt.
+
+### Người kiểm tra
+
+Thành kiểm tra trực quan trên localhost; Codex chạy lint/build và kiểm tra diff.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web`, `npm.cmd run build -w web` và `git diff --check` pass. Thành xác nhận danh sách sản phẩm đã xem xuất hiện tại `/tai-khoan`. Tệp sửa: ProductPage, AccountPage và mục log này.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-3-4-011
+
+* Thời gian ghi: 2026-11-18T22:33:51+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-product-cart
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: THANH-20261118-PRJ-P2-FD1-3-3-010; PRJ-P2-FD1-3.4 #489.
+
+### Công cụ
+
+Codex; React; CSS; npm.cmd; ESLint; Vite; Git.
+
+### Mục đích
+
+Hoàn thiện phản hồi thị giác cho thao tác thêm giỏ trên trang chi tiết sản phẩm ở desktop và mobile.
+
+### Prompt
+
+Thành cung cấp issue #489, xem giao diện localhost, xác nhận nút “Thêm vào giỏ hàng” và các trạng thái hoạt động đúng rồi phản hồi kết quả ổn.
+
+### Kết quả đề xuất
+
+ProductPage dùng các class bắt buộc `product-add`, `cta-glow`, `product-notice`, `is-ok`, `is-error`; liên kết thành công hiển thị “Xem giỏ hàng →”. CSS bổ sung trạng thái hover, đang khóa/hết hàng, khung thành công/lỗi có độ tương phản và bố cục 100% chiều rộng dưới 480px.
+
+### Phản biện
+
+Logic thêm giỏ và notice đã có từ bước 3.2 nên bước này chỉ hoàn thiện phản hồi thị giác, không lặp nghiệp vụ. Cụm “nút mua” trong hướng dẫn được đối chiếu là nút “Thêm vào giỏ hàng”, không bổ sung nút mua ngay ngoài phạm vi.
+
+### Quyết định của nhóm
+
+Thành xác nhận toàn bộ phản hồi giao diện hoạt động ổn. Chưa có review độc lập từ PD Đạt.
+
+### Người kiểm tra
+
+Thành kiểm tra trực quan trên localhost; Codex chạy lint/build và kiểm tra diff.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web`, `npm.cmd run build -w web`, `git diff --check` pass. Tệp sửa: ProductPage, catalog.css và mục log này.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-3-5-012
+
+* Thời gian ghi: 2026-11-18T22:39:48+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-product-cart
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: THANH-20261118-PRJ-P2-FD1-3-4-011; PRJ-P2-FD1-3.5 #490.
+
+### Công cụ
+
+Codex; Markdown; Git; npm.cmd; ESLint; TypeScript; Vite; NestJS; Prisma.
+
+### Mục đích
+
+Phản biện và ghi lại phần Thành tự trả lời kiểm tra kiến thức sau task thêm giỏ và lịch sử xem.
+
+### Prompt
+
+Thành tự trả lời năm câu về SKU, payload thêm giỏ, effect ghi lịch sử, phản hồi UI và chỗ khó; sau đó trả lời hai câu vặn và xác nhận chính xác logic reset số lượng khi đổi SKU.
+
+### Kết quả đề xuất
+
+Codex chấm từng câu, chỉ ra dự án không có nút mua ngay, thêm giỏ lặp làm tăng số lượng chứ chưa tạo đơn trùng, và code reset số lượng về 1 thay vì clamp sang tồn mới. Sau khi Thành sửa đúng, Codex lưu bản tóm lược câu trả lời vào file kiểm tra kiến thức.
+
+### Phản biện
+
+Câu phản tư ban đầu là gợi ý chung, không phản ánh phiên làm việc; Thành viết lại bằng sự cố thực tế là thiếu tab lịch sử và import trùng. Câu số lượng ban đầu mô tả clamp về 2; Thành xác nhận lại code thực tế reset về 1.
+
+### Quyết định của nhóm
+
+Thành xác nhận đã hiểu logic hiện tại và yêu cầu tạo file, commit bước 3.5. Chưa có reviewer hỏi ngẫu nhiên hoặc xác nhận checklist issue cha.
+
+### Người kiểm tra
+
+Thành tự viết và sửa câu trả lời; Codex đối chiếu với code. Reviewer chưa kiểm tra độc lập.
+
+### Kiểm tra và minh chứng
+
+File `docs/learning/FD1-Thanh/kiem-tra/PRJ-P2-FD1-3.md` có đủ bốn bước, trải nghiệm thực tế và hai câu hỏi vặn. Kiểm tra toàn repo được chạy trước commit; kết quả được báo theo output thực tế.

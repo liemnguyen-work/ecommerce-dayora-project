@@ -35,7 +35,7 @@ describe('Promotions', () => {
       ],
     });
     expect(options.select).toEqual({
-      id: true, title: true, imageUrl: true, linkUrl: true,
+      id: true, title: true, subtitle: true, imageUrl: true, linkUrl: true,
       startsAt: true, endsAt: true,
     });
     expect(options.orderBy).toEqual([{ startsAt: 'desc' }, { id: 'asc' }]);
@@ -64,7 +64,10 @@ describe('Promotions', () => {
     const { NestFactory } = await import('@nestjs/core');
     const { PrismaService: Prisma } = await import('../prisma/prisma.service.js');
     const { PromotionsModule } = await import('./promotions.module.js');
-    const expected = [{ id: 'promo-1', title: 'Ưu đãi', imageUrl: 'banner.jpg', linkUrl: null, startsAt: null, endsAt: null }];
+    const expected = [
+      { id: 'promo-1', title: 'Ưu đãi', subtitle: 'Giảm 10%', imageUrl: 'banner.jpg', linkUrl: null, startsAt: null, endsAt: null },
+      { id: 'promo-2', title: 'Ưu đãi khác', subtitle: null, imageUrl: null, linkUrl: null, startsAt: null, endsAt: null },
+    ];
     const app = await NestFactory.create(PromotionsModule, { logger: false, abortOnError: false });
     try {
       const prisma = app.get(Prisma);
