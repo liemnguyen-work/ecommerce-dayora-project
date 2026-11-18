@@ -7,6 +7,7 @@ import '../catalog.css';
 
 type RecipientErrors = Partial<Record<'name' | 'phone' | 'address' | 'province', string>>;
 type ErrorBody = { code?: string; message?: string | string[]; preview?: Preview };
+type Confirmation = { before: Preview; after: Preview };
 
 class ConfirmError extends Error {
   preview: Preview;
@@ -36,6 +37,7 @@ function CheckoutForm({ user }: { user: User }) {
   const [previewing, setPreviewing] = useState(false);
   const [requestError, setRequestError] = useState('');
   const [sending, setSending] = useState(false);
+  const [confirm, setConfirm] = useState<Confirmation | null>(null);
   const voucher = savedVoucher();
 
   useEffect(() => {
@@ -98,8 +100,8 @@ function CheckoutForm({ user }: { user: User }) {
     return Object.keys(next).length === 0;
   }
 
-  async function placeOrder(total: number) {
-    if (!cart) throw new Error('Giỏ hàng chưa sẵn sàng.');
+  async function placeOrder(total: number, orderCart = cart, voucherCode = voucher) {
+    if (!orderCart) throw new Error('Giỏ hàng chưa sẵn sàng.');
     const normalizedProvince = province.trim().toLocaleLowerCase('vi');
     const isHcm = ['hồ chí minh', 'tp hồ chí minh', 'thành phố hồ chí minh', 'hcm', 'tphcm'].includes(normalizedProvince);
     const response = await fetch(`${API_BASE}/orders`, {
@@ -115,8 +117,8 @@ function CheckoutForm({ user }: { user: User }) {
           district: district.trim() || '-',
           ...(isHcm ? { isInnerHcm } : {}),
         },
-        voucherCode: voucher || undefined,
-        expected: expectedOf(cart),
+        voucherCode: voucherCode || undefined,
+        expected: expectedOf(orderCart),
         expectedTotal: total,
       }),
     });
@@ -154,9 +156,36 @@ function CheckoutForm({ user }: { user: User }) {
       navigate(`/don-hang/${encodeURIComponent(order.id)}?moi=1`);
     } catch (error) {
       if (error instanceof ConfirmError) {
-        setPreview(error.preview);
+        setConfirm({ before: preview, after: error.preview });
+        setRequestError('');
+      } else {
+        setRequestError(error instanceof Error ? error.message : 'Không thể tạo đơn hàng.');
       }
-      setRequestError(error instanceof Error ? error.message : 'Không thể tạo đơn hàng.');
+    } finally {
+      setSending(false);
+    }
+  }
+
+  async function acceptChanges() {
+    if (!confirm) return;
+    setSending(true);
+    setRequestError('');
+    try {
+      const latestCart = await getCart();
+      const acceptedVoucher = confirm.after.voucher?.valid ? voucher : '';
+      setCart(latestCart);
+      setPreview(confirm.after);
+      const order = await placeOrder(confirm.after.total, latestCart, acceptedVoucher);
+      saveVoucher('');
+      setConfirm(null);
+      navigate(`/don-hang/${encodeURIComponent(order.id)}?moi=1`);
+    } catch (error) {
+      if (error instanceof ConfirmError) {
+        setConfirm({ before: confirm.after, after: error.preview });
+      } else {
+        setConfirm(null);
+        setRequestError(error instanceof Error ? error.message : 'Không thể tạo đơn hàng.');
+      }
     } finally {
       setSending(false);
     }
@@ -254,6 +283,30 @@ function CheckoutForm({ user }: { user: User }) {
           </section>
         </aside>
       </div>
+      {confirm && (
+        <div className="confirm-backdrop" role="presentation">
+          <section className="confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+            <p className="confirm-eyebrow">ĐƠN HÀNG VỪA THAY ĐỔI</p>
+            <h2 id="confirm-title">Xác nhận tổng tiền mới</h2>
+            <p>Giá hoặc phí của đơn đã thay đổi. Vui lòng đối chiếu trước khi tiếp tục đặt hàng.</p>
+            <div className="confirm-table">
+              <div className="confirm-row confirm-head"><span>Khoản tiền</span><strong>Trước</strong><strong>Sau</strong></div>
+              <div className="confirm-row"><span>Tiền hàng</span><del>{formatPrice(confirm.before.subtotal)}</del><strong>{formatPrice(confirm.after.subtotal)}</strong></div>
+              <div className="confirm-row"><span>Phí giao</span><del>{formatPrice(confirm.before.shippingFee)}</del><strong>{formatPrice(confirm.after.shippingFee)}</strong></div>
+              <div className="confirm-row confirm-total"><span>Tổng tiền</span><del>{formatPrice(confirm.before.total)}</del><strong>{formatPrice(confirm.after.total)}</strong></div>
+            </div>
+            {confirm.after.voucher && !confirm.after.voucher.valid && (
+              <p className="confirm-warning">Voucher không còn áp dụng: {confirm.after.voucher.reason ?? 'Điều kiện voucher đã thay đổi.'}</p>
+            )}
+            <div className="confirm-actions">
+              <button className="cart-button" type="button" disabled={sending} onClick={() => setConfirm(null)}>Hủy đơn</button>
+              <button className="cart-button cart-button-primary" type="button" disabled={sending} onClick={() => void acceptChanges()}>
+                {sending ? 'Đang xử lý…' : 'Đồng ý thay đổi & Đặt hàng'}
+              </button>
+            </div>
+          </section>
+        </div>
+      )}
     </main>
   );
 }

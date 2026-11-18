@@ -3275,3 +3275,44 @@ Codex đối chiếu bằng `Get-Date` trong môi trường làm việc.
 ### Kiểm tra và minh chứng
 
 Đồng hồ hệ thống trả `2026-11-18T17:42:58+07:00` trước khi commit.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-2-4-007
+
+* Thời gian ghi: 2026-11-18T21:42:34+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-checkout
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-FD1-2.4 #484; THANH-20261118-PRJ-P2-FD1-2-5-005.
+
+### Công cụ
+
+Codex; React; TypeScript; CSS; npm.cmd; ESLint; Vitest; Vite; Git.
+
+### Mục đích
+
+Hiển thị hộp đối chiếu khi tạo đơn nhận 409 CONFIRM_REQUIRED, yêu cầu khách xác nhận tổng mới trước khi gửi lại.
+
+### Prompt
+
+Thành cung cấp toàn bộ sub-issue #484, tự kiểm tra bằng cách đổi giá SKU ở tài khoản Admin trong trình duyệt khác và gửi ảnh hộp đối chiếu. Thành phản hồi thêm các vùng có độ tương phản thấp và yêu cầu hoàn thiện rồi commit.
+
+### Kết quả đề xuất
+
+CheckoutPage lưu preview trước/sau, hiển thị dialog so sánh tiền hàng, phí giao và tổng; nút hủy đóng dialog, nút đồng ý tải giỏ mới và gửi lại với expectedTotal đã được khách chấp nhận. Nếu voucher mất hiệu lực, lần gửi lại không tiếp tục mang mã lỗi thời. CSS responsive cho desktop/mobile và độ tương phản của dialog, số bước, thông báo hợp lệ, tổng thanh toán được cải thiện.
+
+### Phản biện
+
+Lần kiểm tra đầu dùng Admin và khách trong hai tab cùng trình duyệt làm cookie đăng nhập bị thay thế, khiến API báo giỏ Admin trống; Thành kiểm tra lại bằng hai phiên trình duyệt riêng và hộp 409 xuất hiện đúng. Sau ảnh kiểm tra, nút hủy, số bước, thông báo hợp lệ và dòng tổng còn quá nhạt nên được chuyển sang xanh đậm.
+
+### Quyết định của nhóm
+
+Thành xác nhận hộp đối chiếu 409 hiển thị đúng giá trước/sau và yêu cầu hoàn thiện tương phản rồi commit. Chưa có review độc lập từ PD Đạt.
+
+### Người kiểm tra
+
+Thành kiểm tra trực quan luồng 409 thật trên localhost; Codex chạy kiểm tra tự động. Reviewer chưa kiểm tra độc lập.
+
+### Kiểm tra và minh chứng
+
+Ảnh Thành cung cấp cho thấy tiền hàng đổi 139.000 thành 149.000 đồng và tổng đổi 159.000 thành 169.000 đồng trong dialog. `npm.cmd run lint -w web`, `npm.cmd run build -w web`, `git diff --check` pass; 7/7 test `checkout.service` pass. Tệp sửa: CheckoutPage, catalog.css và mục log này.
