@@ -9,6 +9,7 @@ import {
 import { JwtAuthGuard } from '../auth/auth.guard.js';
 import { PreviewDto } from './orders.dto.js';
 import { OrdersService } from './orders.service.js';
+import { CheckoutService, type CreateOrderInput } from './checkout.service.js';
 
 type AuthRequest = {
   user: {
@@ -19,7 +20,18 @@ type AuthRequest = {
 @Controller('orders')
 @UseGuards(JwtAuthGuard)
 export class OrdersController {
-  constructor(private readonly orders: OrdersService) {}
+  constructor(
+    private readonly orders: OrdersService,
+    private readonly checkout: CheckoutService,
+  ) {}
+
+  @Post()
+  create(
+    @Req() req: AuthRequest,
+    @Body() dto: CreateOrderInput,
+  ) {
+    return this.checkout.create(req.user.id, dto);
+  }
 
   @Post('preview')
   preview(

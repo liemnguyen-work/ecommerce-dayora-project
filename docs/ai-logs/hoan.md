@@ -4785,3 +4785,183 @@ Codex chạy các lệnh kiểm tra; chờ Hoàn và reviewer xem xét.
 - `npm run lint`: pass toàn bộ workspace.
 - `npm run build`: pass toàn bộ workspace.
 - Chưa gọi API với database thật; không có migration.
+
+---
+
+## Phase 2 / hoan-20261118-promotion-contract-b92-01
+
+* Thời gian ghi: 2026-11-18T22:08:26+07:00
+* Thời gian thực hiện: 18/11/2026.
+* Mã phiên nhật ký: hoan-20261118-promotion-contract-b92
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: #493, API quản trị khuyến mãi
+
+### Công cụ
+
+Codex, Git, Prisma, Vitest, ESLint và công cụ build của dự án.
+
+### Mục đích
+
+Cập nhật hợp đồng API quản trị khuyến mãi và duy trì tương thích với các trường ảnh và liên kết cũ.
+
+### Prompt
+
+Hoàn chuyển yêu cầu #493: nhận title, subtitle, link, thời gian, cho phép không có ảnh; giữ imageUrl/linkUrl, kiểm tra link nội bộ và tạo migration nếu cần.
+
+### Kết quả đề xuất
+
+Codex bổ sung subtitle vào schema, cho phép imageUrl null và tạo migration; DTO và service hỗ trợ link cùng linkUrl, từ chối hai giá trị mâu thuẫn; thêm test HTTP với Prisma mock. API công khai tiếp tục sử dụng các trường cũ.
+
+### Phản biện
+
+Chưa chạy migration hoặc kiểm tra trên PostgreSQL thật; migration cần được triển khai lên đúng database trước khi chạy phiên bản API mới. Test dùng mock không xác minh việc lưu dữ liệu thật.
+
+### Quyết định của nhóm
+
+Thực hiện theo yêu cầu Hoàn cung cấp; chưa có xác nhận review kết quả hay phê duyệt áp dụng migration.
+
+### Người kiểm tra
+
+Codex chạy các kiểm tra tự động; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm test -w api`: 93/93 test pass.
+- `npm run lint` và `npm run build`: pass; sau sửa cuối chạy lại lint và build workspace api đều pass.
+- Chưa áp dụng migration lên Supabase; chưa kiểm tra database thật.
+
+---
+
+## Phase 2 / hoan-20261118-promotion-deploy-01
+
+* Thời gian ghi: 2026-11-18T22:22:27+07:00
+* Thời gian thực hiện: 18/11/2026.
+* Mã phiên nhật ký: hoan-20261118-promotion-contract-b92
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261118-promotion-contract-b92-01, #493
+
+### Công cụ
+
+Codex, Prisma migrate và PostgreSQL trên Supabase.
+
+### Mục đích
+
+Áp dụng migration khuyến mãi lên database DAYORA production theo xác nhận của Hoàn.
+
+### Prompt
+
+Hoàn đồng ý áp dụng lên Supabase sau khi được hỏi về DAYORA main production.
+
+### Kết quả đề xuất
+
+Đối chiếu project Supabase đã xác nhận và lịch sử migration; chỉ migration 20261118193000_promotion_subtitle_optional_image đang chờ. Đã chạy Prisma migrate deploy thành công.
+
+### Phản biện
+
+Chưa kiểm tra tạo hoặc sửa khuyến mãi qua API với database thật; code API và migration trong repo chưa được commit, push hoặc review.
+
+### Quyết định của nhóm
+
+Hoàn xác nhận áp dụng migration lên Supabase production; chưa có xác nhận reviewer cho phần code.
+
+### Người kiểm tra
+
+Codex kiểm tra chỉ đọc cấu trúc và số lượng dữ liệu trước và sau migration; chờ Hoàn và reviewer kiểm tra chức năng.
+
+### Kiểm tra và minh chứng
+
+- Prisma báo migration hoàn thành; lịch sử migration ghi finished và chưa rollback.
+- Hai cột Promotion.subtitle và Promotion.imageUrl đều cho phép null; số khuyến mãi trước và sau đều là 1.
+- Không tạo hoặc sửa dữ liệu khuyến mãi để kiểm thử.
+
+---
+
+## Phase 2 / hoan-20261118-public-promotion-subtitle-01
+
+* Thời gian ghi: 2026-11-18T22:44:43+07:00
+* Thời gian thực hiện: 18/11/2026.
+* Mã phiên nhật ký: hoan-20261118-promotion-contract-b92
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261118-promotion-contract-b92-01, #493
+
+### Công cụ
+
+Codex, Prisma, Vitest, ESLint và công cụ build của dự án.
+
+### Mục đích
+
+Hiển thị mô tả ngắn của ưu đãi trên trang chủ công khai khi có dữ liệu.
+
+### Prompt
+
+Hoàn yêu cầu hiển thị subtitle của khuyến mãi trên trang công khai.
+
+### Kết quả đề xuất
+
+API GET /promotions chọn thêm subtitle; trang chủ hiển thị mô tả dưới tiêu đề nếu có, giữ tương thích với kết quả cũ hoặc subtitle null. Cập nhật kỳ vọng test công khai và thêm dữ liệu có và không có subtitle.
+
+### Phản biện
+
+Test API sử dụng Prisma mock; chưa kiểm tra giao diện thực tế trong trình duyệt hay dữ liệu thật. Lần chạy test song song lint và build bị quá thời gian 5 giây; chạy lại riêng thì pass.
+
+### Quyết định của nhóm
+
+Thực hiện bổ sung theo yêu cầu Hoàn; chờ reviewer đánh giá.
+
+### Người kiểm tra
+
+Codex chạy test, lint và build; chờ Hoàn và reviewer kiểm tra giao diện.
+
+### Kiểm tra và minh chứng
+
+- `npm test -w api -- promotions`: 6/6 test pass khi chạy lại riêng.
+- `npm run lint` và `npm run build`: pass toàn bộ workspace.
+- Chưa commit, push hoặc kiểm tra trình duyệt cho thay đổi này.
+
+---
+
+## Phase 2 / hoan-20261118-promotion-active-01
+
+* Thời gian ghi: 2026-11-18T23:13:43+07:00
+* Thời gian thực hiện: 18/11/2026.
+* Mã phiên nhật ký: hoan-20261118-promotion-contract-b92
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: #494, hoan-20261118-public-promotion-subtitle-01
+
+### Công cụ
+
+Codex, NestJS, Vitest, ESLint và Prisma.
+
+### Mục đích
+
+Bổ sung route riêng để quản trị viên bật hoặc tắt khuyến mãi theo yêu cầu bước #494.
+
+### Prompt
+
+Hoàn yêu cầu PATCH /admin/promotions/:id/active nhận boolean isActive, sử dụng service hiện có, giữ route cũ và kiểm thử quyền cùng dữ liệu không hợp lệ.
+
+### Kết quả đề xuất
+
+Codex thêm DTO yêu cầu isActive là boolean, route mới gọi service update và giữ route PATCH :id; thêm test HTTP cho ADMIN, CUSTOMER, body sai và route cũ.
+
+### Phản biện
+
+Test HTTP giả lập phiên xác thực và service; chưa kiểm tra cùng database thật hoặc ứng dụng đã triển khai.
+
+### Quyết định của nhóm
+
+Thực hiện theo yêu cầu Hoàn cung cấp; chờ reviewer xem xét.
+
+### Người kiểm tra
+
+Codex chạy test, lint và build API; chờ Hoàn và reviewer kiểm tra.
+
+### Kiểm tra và minh chứng
+
+- `npm test -w api -- promotions`: 10/10 test pass.
+- `npm run lint -w api` và `npm run build -w api`: pass.
+- Không có migration; chưa commit hoặc push thay đổi này.

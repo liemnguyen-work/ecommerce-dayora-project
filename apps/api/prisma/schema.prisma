@@ -197,7 +197,8 @@ model VoucherUsage {
 model Promotion {
   id        String    @id @default(uuid())
   title     String
-  imageUrl  String
+  subtitle  String?
+  imageUrl  String?
   linkUrl   String?
   sortOrder Int       @default(0)
   isActive  Boolean   @default(true)
