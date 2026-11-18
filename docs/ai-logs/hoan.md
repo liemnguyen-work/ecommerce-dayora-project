@@ -4785,3 +4785,93 @@ Codex chạy các lệnh kiểm tra; chờ Hoàn và reviewer xem xét.
 - `npm run lint`: pass toàn bộ workspace.
 - `npm run build`: pass toàn bộ workspace.
 - Chưa gọi API với database thật; không có migration.
+
+---
+
+## Phase 2 / hoan-20261118-promotion-contract-b92-01
+
+* Thời gian ghi: 2026-11-18T22:08:26+07:00
+* Thời gian thực hiện: 18/11/2026.
+* Mã phiên nhật ký: hoan-20261118-promotion-contract-b92
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: #493, API quản trị khuyến mãi
+
+### Công cụ
+
+Codex, Git, Prisma, Vitest, ESLint và công cụ build của dự án.
+
+### Mục đích
+
+Cập nhật hợp đồng API quản trị khuyến mãi và duy trì tương thích với các trường ảnh và liên kết cũ.
+
+### Prompt
+
+Hoàn chuyển yêu cầu #493: nhận title, subtitle, link, thời gian, cho phép không có ảnh; giữ imageUrl/linkUrl, kiểm tra link nội bộ và tạo migration nếu cần.
+
+### Kết quả đề xuất
+
+Codex bổ sung subtitle vào schema, cho phép imageUrl null và tạo migration; DTO và service hỗ trợ link cùng linkUrl, từ chối hai giá trị mâu thuẫn; thêm test HTTP với Prisma mock. API công khai tiếp tục sử dụng các trường cũ.
+
+### Phản biện
+
+Chưa chạy migration hoặc kiểm tra trên PostgreSQL thật; migration cần được triển khai lên đúng database trước khi chạy phiên bản API mới. Test dùng mock không xác minh việc lưu dữ liệu thật.
+
+### Quyết định của nhóm
+
+Thực hiện theo yêu cầu Hoàn cung cấp; chưa có xác nhận review kết quả hay phê duyệt áp dụng migration.
+
+### Người kiểm tra
+
+Codex chạy các kiểm tra tự động; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm test -w api`: 93/93 test pass.
+- `npm run lint` và `npm run build`: pass; sau sửa cuối chạy lại lint và build workspace api đều pass.
+- Chưa áp dụng migration lên Supabase; chưa kiểm tra database thật.
+
+---
+
+## Phase 2 / hoan-20261118-promotion-deploy-01
+
+* Thời gian ghi: 2026-11-18T22:22:27+07:00
+* Thời gian thực hiện: 18/11/2026.
+* Mã phiên nhật ký: hoan-20261118-promotion-contract-b92
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261118-promotion-contract-b92-01, #493
+
+### Công cụ
+
+Codex, Prisma migrate và PostgreSQL trên Supabase.
+
+### Mục đích
+
+Áp dụng migration khuyến mãi lên database DAYORA production theo xác nhận của Hoàn.
+
+### Prompt
+
+Hoàn đồng ý áp dụng lên Supabase sau khi được hỏi về DAYORA main production.
+
+### Kết quả đề xuất
+
+Đối chiếu project Supabase đã xác nhận và lịch sử migration; chỉ migration 20261118193000_promotion_subtitle_optional_image đang chờ. Đã chạy Prisma migrate deploy thành công.
+
+### Phản biện
+
+Chưa kiểm tra tạo hoặc sửa khuyến mãi qua API với database thật; code API và migration trong repo chưa được commit, push hoặc review.
+
+### Quyết định của nhóm
+
+Hoàn xác nhận áp dụng migration lên Supabase production; chưa có xác nhận reviewer cho phần code.
+
+### Người kiểm tra
+
+Codex kiểm tra chỉ đọc cấu trúc và số lượng dữ liệu trước và sau migration; chờ Hoàn và reviewer kiểm tra chức năng.
+
+### Kiểm tra và minh chứng
+
+- Prisma báo migration hoàn thành; lịch sử migration ghi finished và chưa rollback.
+- Hai cột Promotion.subtitle và Promotion.imageUrl đều cho phép null; số khuyến mãi trước và sau đều là 1.
+- Không tạo hoặc sửa dữ liệu khuyến mãi để kiểm thử.
