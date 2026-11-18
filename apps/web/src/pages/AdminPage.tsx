@@ -279,6 +279,66 @@ function Users() {
   );
 }
 
+type VoucherItem = {
+  id: string;
+  code: string;
+  description: string | null;
+  percentOff: number | null;
+  amountOff: number | null;
+  maxDiscount: number | null;
+  minOrderValue: number | null;
+  usageLimit: number | null;
+  usedCount: number;
+  endsAt: string;
+  isActive: boolean;
+  status: string;
+};
+
+const formatPrice = (value: number) => `${value.toLocaleString('vi-VN')} đ`;
+
+function Vouchers() {
+  const { data, error, loading, reload } = useLoad<{ items: VoucherItem[]; total: number; page: number }>('/admin/vouchers');
+  const statusLabels: Record<string, string> = {
+    active: 'Đang hiệu lực',
+    scheduled: 'Chưa bắt đầu',
+    expired: 'Đã hết hạn',
+    disabled: 'Đã tắt',
+  };
+
+  return (
+    <div className="mt-4 space-y-4" aria-busy={loading}>
+      {loading && <p role="status" className="shop-muted">Đang tải…</p>}
+      {error && <p role="alert" className="text-berry">{error}</p>}
+      {data && <>
+        <p>Tổng số: {data.total} voucher. Trang {data.page}, hiển thị {data.items.length} voucher.</p>
+        {data.items.length === 0 ? <p>Chưa có voucher.</p> : (
+          <div className="admin-table-wrap" tabIndex={0} role="region" aria-label="Danh sách voucher, cuộn ngang để xem thêm">
+            <table className="admin-table admin-cards">
+              <caption className="sr-only">Mã giảm giá, điều kiện và trạng thái từ hệ thống</caption>
+              <thead><tr>{['Mã', 'Giảm', 'Điều kiện', 'Đã dùng', 'Hết hạn', 'Trạng thái'].map(label => <th scope="col" key={label}>{label}</th>)}</tr></thead>
+              <tbody>{data.items.map(voucher => (
+                <tr key={voucher.id}>
+                  <th scope="row" data-label="Mã"><span className="block font-semibold">{voucher.code}</span><span className="block text-sm font-normal">{voucher.description}</span></th>
+                  <td data-label="Giảm">{voucher.percentOff !== null
+                    ? <>{voucher.percentOff}%{voucher.maxDiscount !== null && <span className="block">Tối đa {formatPrice(voucher.maxDiscount)}</span>}</>
+                    : formatPrice(voucher.amountOff ?? 0)}</td>
+                  <td data-label="Điều kiện">{voucher.minOrderValue === null ? 'Không yêu cầu đơn tối thiểu' : `Đơn tối thiểu ${formatPrice(voucher.minOrderValue)}`}</td>
+                  <td data-label="Đã dùng">{voucher.usedCount}/{voucher.usageLimit ?? '∞'}</td>
+                  <td data-label="Hết hạn"><time dateTime={voucher.endsAt}>{new Date(voucher.endsAt).toLocaleDateString('vi-VN')}</time></td>
+                  <td data-label="Trạng thái">{statusLabels[voucher.status] ?? voucher.status}</td>
+                </tr>
+              ))}</tbody>
+            </table>
+          </div>
+        )}
+      </>}
+      <button type="button" disabled={loading} onClick={() => { void reload(); }} className="admin-button">
+        {loading ? 'Đang tải…' : error ? 'Thử lại' : 'Tải lại'}
+      </button>
+    </div>
+  );
+}
+
 export default function AdminPage() {
   const { user, loading } = useAuth();
   const [params, setParams] = useSearchParams();
@@ -328,7 +388,9 @@ export default function AdminPage() {
             ? <Products />
             : section === 'tai-khoan'
               ? <Users />
-              : <p className="mt-4">Mục {title} đang được xây dựng.</p>}
+              : section === 'voucher'
+                ? <Vouchers />
+                : <p className="mt-4">Mục {title} đang được xây dựng.</p>}
         </section>
       </div>
     </main>
