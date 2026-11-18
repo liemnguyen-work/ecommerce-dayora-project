@@ -3193,3 +3193,85 @@ Codex chạy kiểm tra tự động; chờ Thành tải lại localhost để q
 ### Kiểm tra và minh chứng
 
 `npm.cmd run lint -w web`, `npm.cmd run build -w web` và `git diff --check` đều pass. Tệp sửa: `apps/web/src/pages/OrderCreatedPage.tsx`, `apps/web/src/catalog.css` và mục log này.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-2-5-005
+
+* Thời gian ghi: 2026-11-18T17:38:00+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-checkout
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: PRJ-P2-FD1-2.5 #485; bước 2.4 đang chờ.
+
+### Công cụ
+
+Codex; Markdown; Git.
+
+### Mục đích
+
+Phản biện và ghi lại phần Thành tự trả lời kiểm tra kiến thức cho task checkout.
+
+### Prompt
+
+Thành tự trả lời năm câu về recipient, preview, gửi đơn, 409 và chỗ khó; sau đó trả lời hai câu vặn về expectedTotal mới và payload recipient. Thành yêu cầu commit tài liệu 2.5 trước và làm 2.4 sau.
+
+### Kết quả đề xuất
+
+Codex chấm từng câu, sửa nhận định `expected` có số lượng, chỉ rõ bước 2.4 chưa tồn tại và lưu bản tóm lược câu trả lời của Thành vào file kiểm tra. Trạng thái chờ 2.4 và reviewer được ghi công khai, không tuyên bố task cha hoàn thành.
+
+### Phản biện
+
+Câu 3 ban đầu nói `expected` chứa số lượng nhưng code chỉ gửi `skuId` và `unitPrice`. Câu 5 mô tả xử lý 409 như đã hoàn thành dù bước 2.4 chưa làm. Nhận định ValidationPipe cũng được bổ sung giới hạn: type TypeScript không tạo metadata runtime như DTO class.
+
+### Quyết định của nhóm
+
+Thành yêu cầu commit bước 2.5 trước thứ tự issue và chấp nhận làm bước 2.4 sau. Không có xác nhận reviewer hoặc quyết định đóng task cha.
+
+### Người kiểm tra
+
+Thành tự viết câu trả lời; Codex đối chiếu với code và yêu cầu issue. Reviewer chưa hỏi ngẫu nhiên hai câu.
+
+### Kiểm tra và minh chứng
+
+File `docs/learning/FD1-Thanh/kiem-tra/PRJ-P2-FD1-2.md` ghi rõ bước 2.4 đang chờ và không đánh dấu task cha hoàn thành. Kiểm tra Markdown bằng `git diff --check` trước commit.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-2-5-006
+
+* Thời gian ghi: 2026-11-18T17:42:58+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-checkout
+* Người prompt: Thành
+* Loại mục: Đính chính
+* Liên quan: THANH-20261118-PRJ-P2-FD1-2-5-005.
+
+### Công cụ
+
+Codex; đồng hồ hệ thống.
+
+### Mục đích
+
+Đính chính thời gian ghi của mục kiểm tra kiến thức ngay trước commit.
+
+### Prompt
+
+Không có prompt mới; Codex phát hiện mốc thời gian ở mục liên quan chưa lấy từ đồng hồ thực tế.
+
+### Kết quả đề xuất
+
+Thời gian ghi thực tế của hoạt động là 2026-11-18T17:42:58+07:00; mốc 17:38:00 trong mục liên quan không có căn cứ và không được sử dụng.
+
+### Phản biện
+
+Quy tắc log yêu cầu thời gian thực tế, không dùng giá trị ước lượng.
+
+### Quyết định của nhóm
+
+Không có quyết định mới; đây là đính chính tính chính xác của nhật ký.
+
+### Người kiểm tra
+
+Codex đối chiếu bằng `Get-Date` trong môi trường làm việc.
+
+### Kiểm tra và minh chứng
+
+Đồng hồ hệ thống trả `2026-11-18T17:42:58+07:00` trước khi commit.
