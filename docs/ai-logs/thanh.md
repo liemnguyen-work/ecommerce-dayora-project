@@ -2865,3 +2865,44 @@ Codex chạy kiểm tra tự động; Thành kiểm tra giao diện local và ch
 ### Kiểm tra và minh chứng
 
 API và web lint pass; web build pass; `npm.cmd test -w api -- orders.service` trả 7/7 test pass; `git diff --check` pass. Route preview đã chuyển từ 404 sang 401 khi gọi không cookie, chứng minh controller được đăng ký và guard hoạt động. Thành cung cấp ảnh DAYORA10 áp dụng với mức giảm 38.700 đồng trên giỏ 387.000 đồng.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-1-4-007
+
+* Thời gian ghi: 2026-11-18T16:19:30+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-cart
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: THANH-20261118-PRJ-P2-FD1-1-3-006; PRJ-P2-FD1-1.4 #474.
+
+### Công cụ
+
+Codex; React Router; React; CSS; npm.cmd; ESLint; TypeScript; Vite; Git.
+
+### Mục đích
+
+Nối luồng từ giỏ hàng sang `/thanh-toan`, khóa thao tác khi có sản phẩm hết hàng và bảo đảm bố cục phù hợp desktop/mobile.
+
+### Prompt
+
+Thành cung cấp mô tả sub-issue PRJ-P2-FD1-1.4, yêu cầu tiếp tục, phản hồi trang chuyển tiếp ban đầu quá sơ sài và sau khi xem bản sửa đã yêu cầu commit.
+
+### Kết quả đề xuất
+
+Codex thêm nút `.cart-checkout` hiển thị tổng server, chuyển route `/thanh-toan`, khóa khi request đang chạy hoặc giỏ có cảnh báo `OUT_OF_STOCK`, đồng thời hiển thị cảnh báo yêu cầu điều chỉnh giỏ. Route thanh toán có màn hình chuyển tiếp responsive, tiến trình đặt hàng và đường quay lại giỏ; chưa triển khai form checkout thuộc task sau.
+
+### Phản biện
+
+Màn hình chuyển tiếp đầu tiên chỉ là placeholder trắng nên Thành phản hồi chưa đạt thẩm mỹ; Codex thay bằng bố cục thương hiệu hoàn chỉnh. Yêu cầu “khung tiền bên phải/bên dưới” áp dụng cho ảnh trang `/gio-hang`, không phải trang `/thanh-toan`; điểm này đã được giải thích lại.
+
+### Quyết định của nhóm
+
+Thành yêu cầu mọi bước sau phải được kiểm tra local trước khi commit và đã cho phép commit bước 1.4 sau khi xem bản sửa. Nội dung form thanh toán thật để task PRJ-P2-FD1-2.
+
+### Người kiểm tra
+
+Codex chạy lint/build; Thành kiểm tra việc chuyển sang trang `/thanh-toan` và cho phép commit. Chưa nhận được ảnh minh chứng riêng ở chiều rộng 390px nên không ghi ca chụp ảnh mobile đã hoàn tất.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web`, `npm.cmd run build -w web` và `git diff --check` thành công. Thành cung cấp ảnh trang `/thanh-toan` desktop sau khi chuyển route. Ảnh `/gio-hang` 1366px và 390px vẫn cần lưu vào PR nếu reviewer yêu cầu đủ minh chứng.

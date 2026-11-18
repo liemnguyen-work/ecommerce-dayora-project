@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   getCart,
   previewOrder,
@@ -40,6 +40,7 @@ async function cartWithPreview(code: string) {
 }
 
 export default function CartPage() {
+  const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
   const [cart, setCart] = useState<Cart | null>(null);
   const [loading, setLoading] = useState(true);
@@ -165,6 +166,8 @@ export default function CartPage() {
     );
   }
 
+  const hasOutOfStock = cart.warnings.some((warning) => warning.type === 'OUT_OF_STOCK');
+
   return (
     <main className="cart-page">
       <header className="cart-heading">
@@ -173,6 +176,11 @@ export default function CartPage() {
         <p>Kiểm tra lại sản phẩm và số lượng trước khi tiếp tục.</p>
       </header>
       {error && <p className="cart-error" role="alert">{error}</p>}
+      {hasOutOfStock && (
+        <p className="cart-stock-alert" role="alert">
+          Giỏ hàng có sản phẩm đã hết hàng. Vui lòng xóa hoặc điều chỉnh sản phẩm trước khi thanh toán.
+        </p>
+      )}
       <div className="cart-layout">
         <ul className="cart-lines" aria-busy={busy}>
           {cart.items.map((item) => {
@@ -226,6 +234,14 @@ export default function CartPage() {
           </div>
           <p className="cart-summary-total"><span>Tổng dự kiến</span><strong>{formatPrice(preview?.total ?? cart.subtotal)}</strong></p>
           <small>Đã gồm phí giao tạm tính. Giá trị được server kiểm tra và tính toán.</small>
+          <button
+            type="button"
+            className="catalog-button cta-glow cart-checkout"
+            disabled={busy || hasOutOfStock}
+            onClick={() => navigate('/thanh-toan')}
+          >
+            Thanh toán {preview ? formatPrice(preview.total) : ''} <span aria-hidden="true">→</span>
+          </button>
         </aside>
       </div>
     </main>

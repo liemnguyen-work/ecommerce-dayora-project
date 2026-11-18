@@ -327,10 +327,56 @@
   color: #d8f8c2;
 }
 
+.cart-checkout {
+  display: flex;
+  width: 100%;
+  min-height: 52px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--color-berry);
+  color: #fff;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 12px 28px rgba(204, 69, 55, 0.28);
+  transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
+}
+
+.cart-checkout:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px rgba(204, 69, 55, 0.34);
+}
+
+.cart-checkout:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  box-shadow: none;
+}
+
+.cart-checkout:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
 .cart-warning,
 .cart-error {
   color: var(--color-berry) !important;
   font-weight: 700;
+}
+
+.cart-stock-alert {
+  margin: 0 0 20px;
+  padding: 14px 18px;
+  border: 1px solid rgba(204, 69, 55, 0.28);
+  border-radius: 14px;
+  background: rgba(204, 69, 55, 0.08);
+  color: var(--color-berry);
+  font-weight: 700;
+  line-height: 1.5;
 }
 
 .cart-error {
@@ -375,6 +421,166 @@
   color: #fff;
 }
 
+.checkout-handoff {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(300px, 0.95fr);
+  width: min(1120px, calc(100% - 40px));
+  min-height: 68vh;
+  margin: 0 auto;
+  padding: 64px 0 88px;
+  gap: 28px;
+  color: var(--color-ink);
+}
+
+.checkout-handoff-card,
+.checkout-handoff-visual {
+  border-radius: 30px;
+}
+
+.checkout-handoff-card {
+  padding: clamp(30px, 5vw, 58px);
+  border: 1px solid rgba(36, 68, 48, 0.15);
+  background: #fff;
+  box-shadow: 0 24px 60px rgba(36, 68, 48, 0.08);
+}
+
+.checkout-handoff-eyebrow {
+  margin: 0 0 14px;
+  color: var(--color-berry);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.checkout-handoff h1 {
+  max-width: 560px;
+  margin: 0 0 16px;
+  font-size: clamp(2.25rem, 5vw, 4rem);
+  line-height: 1.04;
+}
+
+.checkout-handoff-lead {
+  max-width: 600px;
+  margin: 0;
+  color: var(--ink-soft);
+  line-height: 1.7;
+}
+
+.checkout-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 34px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.checkout-steps li {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+  text-align: center;
+}
+
+.checkout-steps li:not(:last-child)::after {
+  position: absolute;
+  z-index: 0;
+  top: 16px;
+  left: calc(50% + 18px);
+  width: calc(100% - 36px);
+  height: 2px;
+  background: rgba(36, 68, 48, 0.16);
+  content: '';
+}
+
+.checkout-steps span {
+  z-index: 1;
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 2px solid rgba(36, 68, 48, 0.2);
+  border-radius: 50%;
+  background: #fff;
+  font-weight: 800;
+}
+
+.checkout-steps .is-complete span,
+.checkout-steps .is-current span {
+  border-color: var(--color-leaf);
+  background: var(--color-leaf);
+  color: #fff;
+}
+
+.checkout-steps .is-complete,
+.checkout-steps .is-current {
+  color: var(--color-ink);
+}
+
+.checkout-handoff-note {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 18px;
+  border-radius: 18px;
+  background: rgba(157, 208, 125, 0.18);
+}
+
+.checkout-handoff-note > span {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--color-leaf);
+  color: #fff;
+  font-weight: 800;
+}
+
+.checkout-handoff-note p,
+.checkout-handoff-note small {
+  display: block;
+  margin: 0;
+}
+
+.checkout-handoff-note small {
+  margin-top: 3px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+.checkout-handoff-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.checkout-handoff-visual {
+  display: grid;
+  align-content: end;
+  min-height: 500px;
+  padding: clamp(30px, 5vw, 54px);
+  background: linear-gradient(160deg, rgba(36, 76, 53, 0.78), rgba(23, 54, 36, 0.96)), url('/products/DAY-TM-002.jpg') center / cover;
+  color: #fff;
+}
+
+.checkout-handoff-visual span {
+  margin-bottom: 10px;
+  color: #dfffc8;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+}
+
+.checkout-handoff-visual strong {
+  font-size: clamp(1.7rem, 3vw, 2.6rem);
+  line-height: 1.2;
+}
+
 @media (max-width: 900px) {
   .cart-layout {
     grid-template-columns: 1fr;
@@ -382,6 +588,14 @@
 
   .cart-summary {
     position: static;
+  }
+
+  .checkout-handoff {
+    grid-template-columns: 1fr;
+  }
+
+  .checkout-handoff-visual {
+    min-height: 300px;
   }
 }
 
@@ -408,6 +622,24 @@
   .cart-line-total {
     grid-column: 2 / 3;
     justify-self: end;
+  }
+
+  .checkout-handoff {
+    width: min(100% - 24px, 1120px);
+    padding: 36px 0 64px;
+  }
+
+  .checkout-handoff-card {
+    padding: 26px 20px;
+    border-radius: 22px;
+  }
+
+  .checkout-handoff-visual {
+    display: none;
+  }
+
+  .checkout-handoff-actions {
+    display: grid;
   }
 }
 
