@@ -2906,3 +2906,85 @@ Codex chạy lint/build; Thành kiểm tra việc chuyển sang trang `/thanh-to
 ### Kiểm tra và minh chứng
 
 `npm.cmd run lint -w web`, `npm.cmd run build -w web` và `git diff --check` thành công. Thành cung cấp ảnh trang `/thanh-toan` desktop sau khi chuyển route. Ảnh `/gio-hang` 1366px và 390px vẫn cần lưu vào PR nếu reviewer yêu cầu đủ minh chứng.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-1-5-008
+
+* Thời gian ghi: 2026-11-18T16:25:34+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-cart
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: THANH-20261118-PRJ-P2-FD1-1-4-007; PRJ-P2-FD1-1.5 #476.
+
+### Công cụ
+
+Codex; tài liệu Markdown; Git.
+
+### Mục đích
+
+Thực hiện bài tự đánh giá kiến thức sau task giỏ hàng và voucher, phản biện câu trả lời rồi ghi lại phần Thành đã tự sửa.
+
+### Prompt
+
+Thành cung cấp nội dung sub-issue kiểm tra kiến thức, yêu cầu hỏi toàn bộ một lượt, sau đó tự trả lời bảy câu về API giỏ, CartPage, voucher preview, điều hướng thanh toán, khó khăn thực tế, `expectedOf` và nơi lưu dữ liệu.
+
+### Kết quả đề xuất
+
+Codex chấm câu trả lời lần đầu, chỉ ra `cart.ts` không lưu giỏ trong localStorage, code không có debounce/AbortController và điều kiện khóa nút thực tế. Thành tự sửa các câu chưa đúng; Codex ghi lại câu trả lời đã sửa vào `docs/learning/FD1-Thanh/kiem-tra/PRJ-P2-FD1-1.md` và ghi rõ phần reviewer hỏi trực tiếp vẫn đang chờ.
+
+### Phản biện
+
+Lần đầu, câu 1 mô tả sai nơi lưu giỏ, câu 4 thêm điều kiện không có trong code và câu 5 nêu một race condition chưa xảy ra. Sau phản biện, Thành sửa đúng vai trò API client, điều kiện `OUT_OF_STOCK`, sự khác nhau với `INSUFFICIENT_STOCK` và chọn khó khăn thực tế là route preview/CORS/cách trình bày phí giao.
+
+### Quyết định của nhóm
+
+Thành tự trả lời trước theo quy tắc liêm chính và yêu cầu commit sau khi sửa đúng. Chưa có kết quả reviewer hỏi ngẫu nhiên hoặc xác nhận checklist issue cha.
+
+### Người kiểm tra
+
+Codex đối chiếu câu trả lời với code và lịch sử lỗi đã quan sát; Thành tự viết lại câu trả lời. Chờ reviewer kiểm tra khả năng giải thích không mở code.
+
+### Kiểm tra và minh chứng
+
+File kiểm tra kiến thức có đủ bốn bước, chỗ khó nhất và hai câu hỏi vặn; `git diff --check` thành công trước khi ghi log. Chưa tuyên bố reviewer đã duyệt hoặc issue đã đạt hoàn toàn.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-1-5-009
+
+* Thời gian ghi: 2026-11-18T16:27:51+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-cart
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: THANH-20261118-PRJ-P2-FD1-1-5-008; PRJ-P2-FD1-1.5 #476.
+
+### Công cụ
+
+Codex; npm.cmd; ESLint; TypeScript; NestJS; Prisma; Vite; Git.
+
+### Mục đích
+
+Chạy kiểm tra toàn bộ workspaces theo tiêu chí cuối task trước khi commit bài kiểm tra kiến thức.
+
+### Prompt
+
+Thành hoàn tất phần tự trả lời, sửa câu 4 và yêu cầu commit; Codex thực hiện bước kiểm tra toàn repo trước commit.
+
+### Kết quả đề xuất
+
+Lint toàn repo thành công. Build lần đầu bị khóa Prisma DLL do API dev đang chạy; Codex xác định đúng cây Nest watcher của worktree, dừng tiến trình đó và chạy lại build toàn repo thành công.
+
+### Phản biện
+
+Lỗi EPERM lần đầu là xung đột file đang được tiến trình API sử dụng, không phải lỗi mã nguồn. API local đã được dừng để kiểm tra; cần chạy lại `npm.cmd run dev:api` nếu tiếp tục test trình duyệt.
+
+### Quyết định của nhóm
+
+Không có quyết định chung mới; thực hiện kiểm tra bắt buộc trước commit theo yêu cầu task cha.
+
+### Người kiểm tra
+
+Codex chạy và quan sát kết quả lệnh; reviewer chưa kiểm tra lại độc lập.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint` pass cho API và web. `npm.cmd run build` lần cuối pass: Prisma Client generate, Nest build, TypeScript và Vite build đều thành công. `git diff --check` pass.
