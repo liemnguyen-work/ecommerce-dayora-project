@@ -64,6 +64,7 @@ export class CheckoutService implements OnModuleInit, OnModuleDestroy {
         throw new ConflictException('Không thể trả tồn kho đã giữ');
       }
     }
+    await tx.voucherUsage.deleteMany({ where: { orderId: id } });
     if (expired) {
       await tx.payment.updateMany({
         where: { orderId: id, status: 'UNPAID' },
