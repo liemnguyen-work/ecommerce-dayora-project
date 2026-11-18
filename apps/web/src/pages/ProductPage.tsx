@@ -5,6 +5,7 @@ import { useAuth } from '../lib/auth';
 import { addToCart } from '../lib/cart';
 import { formatPrice, type Category, type Product, type Sku } from '../lib/catalog';
 import ProductCard from '../components/catalog/ProductCard';
+import '../catalog.css';
 
 type ProductDetail = {
   id: string;
@@ -16,6 +17,11 @@ type ProductDetail = {
   related: Product[];
 };
 
+type CartNotice = {
+  ok: boolean;
+  text: string;
+};
+
 function ProductDetails({ product }: { product: ProductDetail }) {
   const location = useLocation();
   const navigate = useNavigate();
@@ -24,7 +30,7 @@ function ProductDetails({ product }: { product: ProductDetail }) {
   const [selectedId, setSelectedId] = useState(product.skus[0]?.id);
   const [quantity, setQuantity] = useState(1);
   const [quantityInput, setQuantityInput] = useState('1');
-  const [notice, setNotice] = useState('');
+  const [notice, setNotice] = useState<CartNotice | null>(null);
   const [adding, setAdding] = useState(false);
   const sku = product.skus.find((item) => item.id === selectedId);
   const available = Boolean(sku?.inStock && sku.availableStock > 0);
@@ -34,6 +40,15 @@ function ProductDetails({ product }: { product: ProductDetail }) {
     ['Dài (cm)', sku?.lengthCm], ['Rộng (cm)', sku?.widthCm], ['Cao (cm)', sku?.heightCm],
     ['Dung tích (ml)', sku?.volumeMl], ['Sức chứa (người)', sku?.capacityPeople],
   ];
+
+  useEffect(() => {
+    if (!user) return;
+    void api('/me/viewed', {
+      method: 'POST',
+      body: JSON.stringify({ productId: product.id }),
+    }).catch(() => undefined);
+  }, [user, product.id]);
+
   function updateQuantity(value: number) {
     const next = Math.max(1, Math.min(maxQty, value));
     setQuantity(next);
@@ -49,12 +64,12 @@ function ProductDetails({ product }: { product: ProductDetail }) {
     }
 
     setAdding(true);
-    setNotice('');
+    setNotice(null);
     try {
       await addToCart(sku.id, quantity);
-      setNotice(`Đã thêm ${quantity} sản phẩm vào giỏ.`);
+      setNotice({ ok: true, text: `Đã thêm ${quantity} × ${product.name} (${sku.color}) vào giỏ.` });
     } catch (error) {
-      setNotice(error instanceof Error ? error.message : 'Không thể thêm sản phẩm vào giỏ.');
+      setNotice({ ok: false, text: error instanceof Error ? error.message : 'Chưa thêm được vào giỏ.' });
     } finally {
       setAdding(false);
     }
@@ -73,7 +88,7 @@ function ProductDetails({ product }: { product: ProductDetail }) {
         <fieldset className="space-y-3">
           <legend className="font-bold">Chọn biến thể</legend>
           <div className="flex flex-wrap gap-2">{product.skus.map((item) => (
-            <button key={item.id} type="button" aria-pressed={item.id === selectedId} onClick={() => { setSelectedId(item.id); setQuantity(1); setQuantityInput('1'); setNotice(''); }} className="rounded-full border border-ink px-4 py-2 aria-pressed:bg-ink aria-pressed:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-berry">
+            <button key={item.id} type="button" aria-pressed={item.id === selectedId} onClick={() => { setSelectedId(item.id); setQuantity(1); setQuantityInput('1'); setNotice(null); }} className="rounded-full border border-ink px-4 py-2 aria-pressed:bg-ink aria-pressed:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-berry">
               {item.color || item.code}{(!item.inStock || item.availableStock <= 0) && ' · Hết hàng'}
             </button>
           ))}</div>
@@ -88,10 +103,10 @@ function ProductDetails({ product }: { product: ProductDetail }) {
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-4">
-          <button type="button" disabled={!available || adding} onClick={() => void handleAddToCart()} className="min-h-11 rounded-full bg-berry px-6 py-3 font-semibold text-white disabled:cursor-not-allowed disabled:bg-ink/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink">{adding ? 'Đang thêm…' : available ? 'Thêm vào giỏ' : 'Tạm hết hàng'}</button>
+          <button type="button" disabled={!available || adding} onClick={() => void handleAddToCart()} className="catalog-button cta-glow product-add">{adding ? 'Đang thêm…' : available ? 'Thêm vào giỏ hàng' : 'Tạm hết hàng'}</button>
           <Link className="rounded-full px-3 py-2 font-semibold text-ink underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-berry" to="/san-pham">← Về danh mục</Link>
         </div>
-        {notice && <p role="status" className="text-sm">{notice} {notice.startsWith('Đã thêm') && <Link className="font-semibold underline" to="/gio-hang">Xem giỏ hàng</Link>}</p>}
+        {notice && <p role="status" className={`product-notice ${notice.ok ? 'is-ok' : 'is-error'}`}>{notice.text} {notice.ok && <Link to="/gio-hang">Xem giỏ hàng →</Link>}</p>}
       </div>
     </article>
     <section aria-labelledby="product-specs" className="mt-16">
