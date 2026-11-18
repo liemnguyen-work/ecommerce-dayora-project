@@ -979,3 +979,259 @@ Nhật ký này tổng hợp nội dung học tập và trao đổi với AI the
 Các nội dung phản biện tập trung vào việc đánh giá tính phù hợp của phản hồi AI với dự án DAYORA, xác định rủi ro và lựa chọn hướng xử lý có cơ sở kỹ thuật.
 
 Các kết quả kiểm thử, commit và nhận xét reviewer chỉ được cập nhật khi có minh chứng tương ứng.
+
+## P2 — Admin Voucher + Khuyến mãi / PHUC-P2-FD2-1-01
+
+* Thời gian ghi: 2026-11-19T00:07:00+07:00 (mốc lập bản hồi cứu; phút thực tế chưa được đối chiếu với lịch sử ghi tệp)
+* Thời gian thực hiện: 2026-11-18; dựa trên commit của `PRJ-P2-FD2-1.1`; thời gian tương tác AI chưa xác minh
+* Mã phiên nhật ký: PHUC-P2-FD2-1 (mã do người biên soạn đặt, không phải session ID công cụ)
+* Người prompt: Phúc (người phụ trách task); người gửi từng prompt lịch sử chưa xác minh
+* Loại mục: Hoạt động — hồi cứu
+* Liên quan: `PRJ-P2-FD2-1.1` — Bước 1: Hiện danh sách voucher
+
+### Công cụ
+
+ChatGPT dùng để tổng hợp nhật ký từ thông tin task và GitHub; công cụ AI dùng trong lúc viết code chưa xác minh, không xác nhận model của các phiên trước.
+
+### Mục đích
+
+Xác định cách lấy và hiển thị danh sách voucher từ API quản trị, bao gồm mã voucher, hình thức giảm, giới hạn sử dụng, số lượt đã dùng và trạng thái nghiệp vụ. Phân biệt trạng thái backend cung cấp với trạng thái hiển thị trên giao diện.
+
+### Prompt
+
+**Tóm lược nội dung trao đổi theo sub-issue (không phải nguyên văn được xác minh):**
+
+> Tôi đang thực hiện `PRJ-P2-FD2-1.1` — hiện danh sách voucher trong `AdminPage.tsx` của DAYORA. Hãy hướng dẫn cách đọc dữ liệu từ `/admin/vouchers`, hiển thị các trường giảm theo phần trăm hoặc số tiền, số lượt đã sử dụng, ngày kết thúc và trạng thái `active`, `scheduled`, `expired`, `disabled`. Tôi cần tự triển khai và muốn biết cách xử lý loading, error, dữ liệu rỗng; không viết toàn bộ code thay tôi.
+
+### Kết quả đề xuất
+
+Hướng xử lý phù hợp: dùng `useLoad` để lấy danh sách từ `/admin/vouchers`; khai báo kiểu dữ liệu voucher; hiển thị giá trị giảm tùy loại và ánh xạ trạng thái từ response sang nhãn dễ hiểu. Không tự suy luận trạng thái bằng thời gian trình duyệt nếu API đã cung cấp `status`.
+
+**Phần mã nguồn đã xác nhận:** PR #697 bổ sung kiểu `VoucherItem` và component `Vouchers()`, có `useLoad('/admin/vouchers')`, các trường `percentOff`, `amountOff`, `usedCount`, `usageLimit`, `endsAt`, `isActive`, `status` và nhãn trạng thái. Không có đủ lịch sử để kết luận từng dòng code xuất phát từ câu trả lời AI nào.
+
+### Phản biện
+
+**Điểm cần tự đối chiếu:** Hiển thị trạng thái tính sẵn từ API giúp tránh lệch do đồng hồ thiết bị; tuy nhiên phải thử dữ liệu `scheduled`, `expired`, `disabled` để đảm bảo nhãn đúng. Cần phân biệt `usedCount` với `usageLimit` để không trình bày nhầm số lượt đã dùng thành số lượt còn lại. Không có bản ghi phản biện của thành viên trong lần hồi cứu này.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung riêng cho mục này được xác minh. Phạm vi chức năng đã được đưa vào nhánh và PR #697, sau đó merge vào `main`.
+
+### Người kiểm tra
+
+FD1 Thành là reviewer được phân công theo yêu cầu task. Chưa xác minh người trực tiếp kiểm tra sub-issue này hoặc biên bản nghiệm thu chi tiết.
+
+### Kiểm tra và minh chứng
+
+- Commit: [`8708c1a` — `feat(admin): add vouchers list`](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/8708c1a6917e97e31d1dad65e005128539010955).
+- Tệp xác nhận trong diff PR: `apps/web/src/pages/AdminPage.tsx`.
+- PR: [#697](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/697) — đã merge ngày 2026-11-18 (giờ Việt Nam).
+- Chưa có bằng chứng độc lập về ca kiểm thử thủ công, ảnh giao diện hay kết quả lint/build của riêng bước này.
+
+---
+
+## P2 — Admin Voucher + Khuyến mãi / PHUC-P2-FD2-1-02
+
+* Thời gian ghi: 2026-11-19T00:07:00+07:00 (mốc lập bản hồi cứu)
+* Thời gian thực hiện: 2026-11-18; có commit của `PRJ-P2-FD2-1.2`; thời điểm prompt chưa xác minh
+* Mã phiên nhật ký: PHUC-P2-FD2-1 (mã nhật ký do người biên soạn đặt)
+* Người prompt: Phúc (người phụ trách task); lịch sử prompt nguyên văn chưa xác minh
+* Loại mục: Hoạt động — hồi cứu
+* Liên quan: `PRJ-P2-FD2-1.2` — Bước 2: Tạo và bật tắt voucher; `PHUC-P2-FD2-1-01`
+
+### Công cụ
+
+ChatGPT hỗ trợ biên soạn mục hồi cứu; công cụ AI trong thời điểm lập trình chưa xác minh.
+
+### Mục đích
+
+Hiểu và triển khai form tạo voucher với ràng buộc loại giảm, giá trị giảm, thời hạn, trần giảm và giới hạn lượt; hiển thị lỗi hợp lệ từ frontend hoặc lỗi 400 do server trả về; cho phép bật/tắt mà không xóa voucher.
+
+### Prompt
+
+**Tóm lược nội dung trao đổi theo sub-issue:**
+
+> Tôi làm `PRJ-P2-FD2-1.2` — tạo và bật/tắt voucher. Hãy giải thích ràng buộc chỉ chọn một trong `percentOff` hoặc `amountOff`, `maxDiscount`, `usageLimit ≥ usedCount`, điều kiện ngày hết hạn, và cách hiện lỗi HTTP 400 ngay trên form. Tôi muốn tự viết form và gọi API, nhờ chỉ ra các trường hợp sai cần kiểm thử; không viết thay toàn bộ component.
+
+### Kết quả đề xuất
+
+Hướng xử lý phù hợp: chọn một loại giảm tại một thời điểm; tạo payload chỉ chứa trường giảm tương ứng; kiểm tra số nguyên dương, phần trăm không vượt 100, ngày hết hạn phải sau hiện tại; giữ lỗi form ở trạng thái riêng; gọi `POST /admin/vouchers` và `PATCH /admin/vouchers/:id/active`, sau đó reload danh sách. API vẫn phải kiểm tra tính hợp lệ thay vì dựa hoàn toàn vào form.
+
+**Đối chiếu mã nguồn PR:** Form voucher sử dụng `FormData`, chọn `kind` là `percent` hoặc `amount`, kiểm tra mã, mô tả, giá trị giảm, ngày hết hạn và các trường tùy chọn; xử lý `try/catch/finally`, `errText(error)`, `sending`, `pending.current`; gọi POST và PATCH, sau thao tác thành công thì `reload()`. Diff cũng cho thấy thông báo thành công và lỗi riêng. Không suy ra rằng đã có test thành công chỉ từ sự tồn tại của code.
+
+### Phản biện
+
+**Điểm cần tự đối chiếu:** Điều kiện `usageLimit ≥ usedCount` có ý nghĩa khi sửa giới hạn của voucher đã được sử dụng; với form tạo mới, `usedCount` thường do backend quản lý. Thời gian `endsAt` được xây dựng từ ngày chọn ở trình duyệt nên cần kiểm tra ảnh hưởng múi giờ. Không nên chỉ dựa vào thông báo frontend để khẳng định lỗi 400 được hiển thị đúng trong mọi tình huống; cần thử phản hồi server thực tế.
+
+### Quyết định của nhóm
+
+Chưa có bằng chứng về quyết định chung hoặc ý kiến duyệt riêng của nhóm cho cách xử lý này. Mã nguồn tạo và bật/tắt voucher đã được đưa vào PR #697 và merge.
+
+### Người kiểm tra
+
+FD1 Thành được phân công reviewer. Chưa có xác nhận cụ thể về việc chạy thử voucher hợp lệ và ba voucher sai trong các tài liệu đã kiểm tra.
+
+### Kiểm tra và minh chứng
+
+- Commit: [`c8bf4a3` — `feat(admin): add voucher create form and active toggle`](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/c8bf4a3ce8c6cc7cb7e392de2c3c70ef633eb7df).
+- Diff PR #697 thể hiện các lời gọi POST/PATCH và cơ chế hiển thị lỗi.
+- Ca cần đối chiếu thêm: voucher hợp lệ; cả `percentOff` và `amountOff`; tỷ lệ > 100%; ngày hết hạn không hợp lệ; lỗi 400; trạng thái sau bật/tắt. Chưa ghi “pass” khi không có kết quả chạy cụ thể.
+
+---
+
+## P2 — Admin Voucher + Khuyến mãi / PHUC-P2-FD2-1-03
+
+* Thời gian ghi: 2026-11-19T00:07:00+07:00 (mốc lập bản hồi cứu)
+* Thời gian thực hiện: 2026-11-18; xác minh bằng commit của `PRJ-P2-FD2-1.3`; thời điểm trao đổi AI chưa xác minh
+* Mã phiên nhật ký: PHUC-P2-FD2-1 (mã nhật ký riêng)
+* Người prompt: Phúc (người phụ trách task); chưa xác minh nguyên văn prompt
+* Loại mục: Hoạt động — hồi cứu
+* Liên quan: `PRJ-P2-FD2-1.3` — Bước 3: Hiện và tạo khuyến mãi; `PHUC-P2-FD2-1-02`
+
+### Công cụ
+
+ChatGPT dùng để tổng hợp nhật ký; công cụ trong phiên thực hiện tính năng chưa được xác minh.
+
+### Mục đích
+
+Hiển thị danh sách khuyến mãi/banner và xây dựng biểu mẫu tạo khuyến mãi. Hiểu các trường cần nhập, cơ chế tải lại dữ liệu và nguyên tắc link khuyến mãi chỉ được trỏ vào đường dẫn nội bộ.
+
+### Prompt
+
+**Tóm lược nội dung trao đổi theo sub-issue:**
+
+> Tôi làm `PRJ-P2-FD2-1.3` — hiển thị và tạo khuyến mãi trên trang quản trị DAYORA. Hãy giúp tôi phân tích các trường cần hiển thị, cách gửi form tới API và cách kiểm tra link điều hướng chỉ được là đường dẫn nội bộ bắt đầu bằng `/`. Tôi cần biết cách xử lý lỗi từ server và reload danh sách sau khi tạo, chưa cần code hoàn chỉnh.
+
+### Kết quả đề xuất
+
+Hướng xử lý phù hợp: hiển thị danh sách khuyến mãi qua endpoint admin; có form nhập nội dung và đường dẫn điều hướng; thực hiện validate tại giao diện để giảm lỗi nhập liệu, đồng thời dựa vào DTO/backend để chặn link ngoài; sau POST thành công, gọi lại API tải danh sách.
+
+**Mã nguồn đã xác nhận:** PR #697 có phần bổ sung cho quản trị khuyến mãi trong `AdminPage.tsx`; commit của bước này mô tả thêm danh sách và form tạo. Cần kiểm tra chi tiết tên trường và các trường hợp lỗi bằng code/Network nếu ghi thành biên bản kiểm thử.
+
+### Phản biện
+
+**Điểm cần tự đối chiếu:** Chỉ kiểm tra link bắt đầu bằng `/` là chưa đủ nếu chấp nhận đường dẫn `//example.com` (URL theo host ngoài). Điều kiện hợp lệ nên được định nghĩa nhất quán với API, bao gồm việc loại bỏ đường dẫn dạng protocol-relative và các giá trị không phải đường dẫn trong website. Không có phản biện người dùng được xác minh từ lịch sử phiên này.
+
+### Quyết định của nhóm
+
+Chưa xác minh quyết định nhóm riêng cho cơ chế validate. Phần danh sách và form tạo khuyến mãi đã xuất hiện trong PR được merge.
+
+### Người kiểm tra
+
+FD1 Thành là reviewer được phân công; chưa tìm thấy kết quả review từng trường hợp link trong phạm vi nguồn đã đọc.
+
+### Kiểm tra và minh chứng
+
+- Commit: [`0d836a6` — `feat(admin): add promotions list and create form`](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/0d836a65cc54224cc9ed7b8bb2dcdce18b05dedd).
+- PR chứa thay đổi: [#697](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/697).
+- Cần kiểm thử: đường dẫn `/products`, URL ngoài `https://...`, URL `//...`, trường rỗng, lỗi trả từ API, reload sau khi tạo. Chưa xác nhận kết quả từng ca.
+
+---
+
+## P2 — Admin Voucher + Khuyến mãi / PHUC-P2-FD2-1-04
+
+* Thời gian ghi: 2026-11-19T00:07:00+07:00 (mốc lập bản hồi cứu)
+* Thời gian thực hiện: 2026-11-18; có commit của `PRJ-P2-FD2-1.4`; thời điểm trao đổi AI chưa xác minh
+* Mã phiên nhật ký: PHUC-P2-FD2-1 (mã nhật ký riêng)
+* Người prompt: Phúc (người phụ trách task); lịch sử prompt nguyên văn chưa xác minh
+* Loại mục: Hoạt động — hồi cứu
+* Liên quan: `PRJ-P2-FD2-1.4` — Bước 4: Bật tắt khuyến mãi; `PHUC-P2-FD2-1-03`
+
+### Công cụ
+
+ChatGPT hỗ trợ lập nhật ký hồi cứu; công cụ AI dùng khi triển khai code chưa xác minh.
+
+### Mục đích
+
+Quản lý trạng thái hiển thị khuyến mãi qua hành động bật/tắt, thay vì xóa dữ liệu; đồng bộ danh sách với API sau khi cập nhật và xử lý lỗi khi thao tác thất bại.
+
+### Prompt
+
+**Tóm lược nội dung trao đổi theo sub-issue:**
+
+> Tôi làm `PRJ-P2-FD2-1.4` — chức năng bật/tắt khuyến mãi. Hãy giải thích luồng thao tác cập nhật trạng thái thông qua PATCH, cách tránh nhấn liên tục gây gửi yêu cầu trùng, xử lý loading/error và khi nào cần tải lại danh sách. Tôi muốn tự triển khai và review thay đổi trong `AdminPage.tsx`.
+
+### Kết quả đề xuất
+
+Hướng xử lý phù hợp: sử dụng endpoint thay đổi `isActive`, gửi giá trị mới theo thao tác; khóa hoặc giới hạn thao tác trong lúc request đang chạy; sau thành công gọi lại dữ liệu và hiển thị kết quả. Nếu request thất bại, giữ dữ liệu đang có và thể hiện lỗi để người quản trị biết.
+
+**Mã nguồn đã xác nhận:** Commit của bước 4 có tiêu đề bổ sung thao tác bật/tắt khuyến mãi; thay đổi được đưa vào PR #697. Chưa có dữ liệu để xác nhận người viết đã trao đổi đúng prompt nêu trên hay reviewer đã yêu cầu chỉnh sửa gì.
+
+### Phản biện
+
+**Điểm cần tự đối chiếu:** Không nên cập nhật giao diện thành “đã bật” trước khi server phản hồi thành công nếu chưa có cơ chế hoàn tác. Nút bật/tắt cũng cần được kiểm tra với khuyến mãi đã hết hạn hoặc không còn hợp lệ; thay đổi `isActive` không nhất thiết khiến khuyến mãi trở thành đang hiệu lực. Chưa có phản biện của thành viên được xác minh.
+
+### Quyết định của nhóm
+
+Chưa có quyết định riêng được ghi nhận. Chức năng bật/tắt khuyến mãi đã có commit và được merge trong PR #697.
+
+### Người kiểm tra
+
+FD1 Thành là reviewer theo phân công; chưa xác minh kết quả chạy kiểm thử riêng của bước này.
+
+### Kiểm tra và minh chứng
+
+- Commit: [`b42896d` — `feat(admin): add promotion active toggle`](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/b42896dffba78bf4ba911d329d25bcdbdbf71830).
+- PR: [#697](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/697), đã merge.
+- Các trường hợp chưa có biên bản thử: bật thành công, tắt thành công, request lỗi, nhấn liên tiếp, reload và thay đổi trạng thái sau tải lại.
+
+---
+
+## P2 — Admin Voucher + Khuyến mãi / PHUC-P2-FD2-1-05
+
+* Thời gian ghi: 2026-11-19T00:07:00+07:00 (mốc lập bản hồi cứu)
+* Thời gian thực hiện: Chưa xác minh thời điểm kiểm tra kiến thức; tên sub-issue được xác nhận trong repo nhóm
+* Mã phiên nhật ký: PHUC-P2-FD2-1 (mã nhật ký riêng)
+* Người prompt: Phúc (người phụ trách task); chưa xác minh phiên hỏi đáp thực tế
+* Loại mục: Kiểm tra — hồi cứu
+* Liên quan: `PRJ-P2-FD2-1.5` — Kiểm tra kiến thức; `PHUC-P2-FD2-1-01` đến `PHUC-P2-FD2-1-04`
+
+### Công cụ
+
+ChatGPT được dùng biên soạn bộ nội dung tự kiểm tra từ lộ trình P2 và mã nguồn; không xác nhận đã có buổi hỏi đáp AI tương ứng ở thời điểm lập trình.
+
+### Mục đích
+
+Tổng hợp các kiến thức mà FD2 cần giải thích được trước khi bảo vệ: ràng buộc voucher; lỗi 400 từ server; trạng thái tính sẵn; không xóa voucher; link khuyến mãi nội bộ; múi giờ; vòng đời lượt sử dụng; cách tách hai component mà không đổi hành vi.
+
+### Prompt
+
+**Tóm lược prompt phục vụ tự kiểm tra (chưa có bằng chứng đã gửi nguyên văn trong phiên trước):**
+
+> Đóng vai giảng viên chấm phần `PRJ-P2-FD2-1.5`. Hỏi tôi lần lượt: vì sao chỉ được có `percentOff` hoặc `amountOff`; khi nào dùng `maxDiscount`; vì sao `usageLimit` không thể nhỏ hơn `usedCount`; vì sao không có nút xóa; tại sao link ngoài bị chặn; trạng thái `active/scheduled/expired/disabled` lấy từ đâu; vì sao ngày hết hạn dễ sai múi giờ; nếu thêm ô đơn tối thiểu cần sửa những phần nào. Chỉ hỏi từng câu để tôi tự trả lời, rồi nhận xét lỗ hổng kiến thức.
+
+### Kết quả đề xuất
+
+**Các điểm cần tự giải thích theo tài liệu:**
+
+1. Voucher cần chọn chính xác một loại giảm để tránh tính giảm chồng hoặc payload mơ hồ.
+2. `maxDiscount` giới hạn số tiền giảm tối đa của voucher phần trăm; `usageLimit` không thấp hơn lượt đã được ghi nhận.
+3. Lỗi HTTP 400 nên được chuyển thành thông điệp có thể hiểu trên form; frontend không thay thế validate backend.
+4. Trạng thái `active`, `scheduled`, `expired`, `disabled` là trạng thái do API cung cấp; bật `isActive` không tự biến voucher đã hết hạn thành hợp lệ.
+5. Không có chức năng xóa voucher trong phạm vi bài; giữ lịch sử sử dụng và quản lý bằng bật/tắt phù hợp hơn với yêu cầu.
+6. Khuyến mãi phải liên kết nội bộ, không cho phép chuyển người dùng sang URL ngoài ngoài phạm vi kiểm soát.
+7. Thời gian tạo từ `datetime-local` hoặc chuỗi ngày cần kiểm tra việc chuyển múi giờ; khác biệt UTC và UTC+07 có thể làm thời hạn hiển thị lệch.
+8. Khi tách `Vouchers` và `Promotions` thành file riêng, phải giữ nguyên luồng props/API, loading/error và các thao tác CRUD liên quan.
+
+Các mục trên là **nội dung ôn tập**, không phải kết quả chấm đáp án thực tế của Phúc.
+
+### Phản biện
+
+Chưa có bài trả lời thực tế của Phúc hoặc nhận xét từ người chấm để ghi phản biện cá nhân. Cần tách biệt “hiểu tiêu chí” với “đã chứng minh bằng kiểm thử”; việc một PR được merge không tự chứng minh người thực hiện trả lời đúng mọi câu hỏi kiến thức.
+
+### Quyết định của nhóm
+
+Chưa ghi nhận quyết định chung về kết quả kiểm tra kiến thức hoặc việc tách module theo bài tập mở rộng.
+
+### Người kiểm tra
+
+Chờ Phúc tự trả lời và FD1 Thành hoặc người được phân công xác nhận. Chưa có bằng chứng chấm điểm kiến thức.
+
+### Kiểm tra và minh chứng
+
+- Sub-issue đã nhận diện trong repo nhóm: [`PRJ-P2-FD2-1.5 — Kiểm tra kiến thức`](https://github.com/liemnguyen-work/ecommerce-dayora-project/issues/643).
+- Lộ trình kiến thức: [`LP-FD2-Phuc-P2.md`](https://github.com/liemnguyen-work/ecommerce-dayora-project/blob/main/docs/learning/FD2-Phuc/LP-FD2-Phuc-P2.md).
+- PR hoàn thành phần chức năng: [#697](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/697), đã merge. Chưa xác minh commit riêng tương ứng bước kiểm tra kiến thức.
+- Cần bổ sung bằng chứng: câu trả lời thực tế; ca tạo voucher hợp lệ và ba ca sai; ảnh lỗi validate; ảnh 1366 px và 390 px; kết quả `npm run lint`, `npm run build` và kiểm thử thủ công; xác nhận của reviewer/QA.
+
+---
