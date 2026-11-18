@@ -3029,3 +3029,44 @@ Codex chạy kiểm tra tự động; chờ reviewer kiểm tra lại PR.
 ### Kiểm tra và minh chứng
 
 Không còn conflict marker trong `app.module.ts`. `npm.cmd run lint` pass cho API và web; Prisma generate và Nest build pass; web TypeScript/Vite build pass; `git diff --check` pass.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-2-1-001
+
+* Thời gian ghi: 2026-11-18T17:00:37+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-checkout
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-FD1-2.1 #478.
+
+### Công cụ
+
+Codex; React; TypeScript; CSS; npm.cmd; ESLint; Vite; NestJS; Prisma; Git.
+
+### Mục đích
+
+Thay trang bàn giao thanh toán tạm bằng giao diện nhập thông tin người nhận, bảo vệ route khi chưa đăng nhập, điền sẵn thông tin tài khoản và kiểm tra dữ liệu đầu vào trong phạm vi bước 1.
+
+### Prompt
+
+Tóm lược: Thành giao task PRJ-P2-FD1-2 “Thanh toán + hộp đối chiếu 409”, yêu cầu làm lần lượt từng sub-issue, ưu tiên kết quả tốt và cho kiểm tra trên localhost trước khi commit. Sau khi xem giao diện bước 1, Thành phản hồi tiêu đề ở khung xanh bị chìm vào nền và yêu cầu sửa rồi commit.
+
+### Kết quả đề xuất
+
+Codex tạo `CheckoutPage.tsx` với form tên, số điện thoại, địa chỉ, tỉnh/thành, quận/huyện và khu vực nội thành; thêm kiểm tra bắt buộc, định dạng điện thoại, trạng thái báo hợp lệ và chuyển người chưa đăng nhập đến `/dang-nhap?next=/thanh-toan`. Route `/thanh-toan`, kiểu `User.phone` và CSS responsive được cập nhật. Tiêu đề khung trợ giúp được đặt màu trắng sau phản hồi về độ tương phản.
+
+### Phản biện
+
+Thành kiểm tra giao diện trên localhost và phát hiện tiêu đề “Giao đúng nơi, đi đúng lúc.” có màu quá tối trên nền xanh. Codex xác nhận nguyên nhân là quy tắc màu heading toàn cục và bổ sung màu trắng trực tiếp cho `.checkout-help h2`. Thành sau đó yêu cầu commit.
+
+### Quyết định của nhóm
+
+Thành xác nhận tiếp tục bằng yêu cầu commit sau khi lỗi tương phản được sửa. Chưa có quyết định chung hoặc kết quả review từ PD Đạt; chưa triển khai preview, tạo đơn hay hộp 409 trong sub-issue này.
+
+### Người kiểm tra
+
+Thành kiểm tra trực quan trên localhost và phản hồi lỗi màu chữ; Codex sửa và chạy lại kiểm tra tự động. Reviewer chưa kiểm tra độc lập.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web` pass; `npm.cmd run build -w web` pass; `npm.cmd run build -w api` pass sau khi tạo Prisma Client. API `/api/health` và web `/thanh-toan` đều trả HTTP 200. Các tệp liên quan: `apps/web/src/App.tsx`, `apps/web/src/catalog.css`, `apps/web/src/lib/auth.tsx`, `apps/web/src/pages/CheckoutPage.tsx` và mục log này.
