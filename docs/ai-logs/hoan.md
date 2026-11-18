@@ -4875,3 +4875,48 @@ Codex kiểm tra chỉ đọc cấu trúc và số lượng dữ liệu trước
 - Prisma báo migration hoàn thành; lịch sử migration ghi finished và chưa rollback.
 - Hai cột Promotion.subtitle và Promotion.imageUrl đều cho phép null; số khuyến mãi trước và sau đều là 1.
 - Không tạo hoặc sửa dữ liệu khuyến mãi để kiểm thử.
+
+---
+
+## Phase 2 / hoan-20261118-public-promotion-subtitle-01
+
+* Thời gian ghi: 2026-11-18T22:44:43+07:00
+* Thời gian thực hiện: 18/11/2026.
+* Mã phiên nhật ký: hoan-20261118-promotion-contract-b92
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261118-promotion-contract-b92-01, #493
+
+### Công cụ
+
+Codex, Prisma, Vitest, ESLint và công cụ build của dự án.
+
+### Mục đích
+
+Hiển thị mô tả ngắn của ưu đãi trên trang chủ công khai khi có dữ liệu.
+
+### Prompt
+
+Hoàn yêu cầu hiển thị subtitle của khuyến mãi trên trang công khai.
+
+### Kết quả đề xuất
+
+API GET /promotions chọn thêm subtitle; trang chủ hiển thị mô tả dưới tiêu đề nếu có, giữ tương thích với kết quả cũ hoặc subtitle null. Cập nhật kỳ vọng test công khai và thêm dữ liệu có và không có subtitle.
+
+### Phản biện
+
+Test API sử dụng Prisma mock; chưa kiểm tra giao diện thực tế trong trình duyệt hay dữ liệu thật. Lần chạy test song song lint và build bị quá thời gian 5 giây; chạy lại riêng thì pass.
+
+### Quyết định của nhóm
+
+Thực hiện bổ sung theo yêu cầu Hoàn; chờ reviewer đánh giá.
+
+### Người kiểm tra
+
+Codex chạy test, lint và build; chờ Hoàn và reviewer kiểm tra giao diện.
+
+### Kiểm tra và minh chứng
+
+- `npm test -w api -- promotions`: 6/6 test pass khi chạy lại riêng.
+- `npm run lint` và `npm run build`: pass toàn bộ workspace.
+- Chưa commit, push hoặc kiểm tra trình duyệt cho thay đổi này.
