@@ -35,12 +35,13 @@ export class AdminVouchersService {
       ...(query.status ? statusWhere[query.status] : {}),
     };
     const [items, total] = await Promise.all([
-      this.prisma.voucher.findMany({ where, orderBy: [{ code: 'asc' }, { id: 'asc' }], skip: (page - 1) * 20, take: 20 }),
+      this.prisma.voucher.findMany({ where, orderBy: [{ code: 'asc' }, { id: 'asc' }], skip: (page - 1) * 20, take: 20, include: { _count: { select: { usages: true } } } }),
       this.prisma.voucher.count({ where }),
     ]);
     return {
-      items: items.map((voucher) => ({
+      items: items.map(({ _count, ...voucher }) => ({
         ...voucher,
+        usedCount: _count.usages,
         status: !voucher.isActive ? 'disabled' : voucher.endsAt <= now ? 'expired' : voucher.startsAt > now ? 'scheduled' : 'active',
       })),
       total,

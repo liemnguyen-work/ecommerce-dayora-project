@@ -27,13 +27,34 @@ describe('lọc trạng thái voucher', () => {
     const earlier = new Date(now.getTime() - 1);
     const later = new Date(now.getTime() + 1);
     const findMany = vi.fn().mockResolvedValue([
-      { isActive: false, startsAt: earlier, endsAt: later },
-      { isActive: true, startsAt: earlier, endsAt: now },
-      { isActive: true, startsAt: later, endsAt: later },
-      { isActive: true, startsAt: now, endsAt: later },
+      { isActive: false, startsAt: earlier, endsAt: later, _count: { usages: 0 } },
+      { isActive: true, startsAt: earlier, endsAt: now, _count: { usages: 0 } },
+      { isActive: true, startsAt: later, endsAt: later, _count: { usages: 0 } },
+      { isActive: true, startsAt: now, endsAt: later, _count: { usages: 0 } },
     ]);
     const service = new AdminVouchersService({ voucher: { findMany, count: vi.fn().mockResolvedValue(4) } } as never);
     const result = await service.list({});
     expect(result.items.map((item) => item.status)).toEqual(['disabled', 'expired', 'scheduled', 'active']);
+  });
+  it('trả số lượt sử dụng và không lộ _count, giữ phân trang và bộ lọc', async () => {
+    const startsAt = new Date('2026-01-01T00:00:00Z');
+    const endsAt = new Date('2027-01-01T00:00:00Z');
+    const findMany = vi.fn().mockResolvedValue([
+      { id: 'used', code: 'USED', isActive: false, startsAt, endsAt, _count: { usages: 2 } },
+      { id: 'unused', code: 'UNUSED', isActive: false, startsAt, endsAt, _count: { usages: 0 } },
+    ]);
+    const count = vi.fn().mockResolvedValue(22);
+    const service = new AdminVouchersService({ voucher: { findMany, count } } as never);
+    const result = await service.list({ status: 'disabled', page: 2 });
+    expect(findMany).toHaveBeenCalledWith({
+      where: { isActive: false }, orderBy: [{ code: 'asc' }, { id: 'asc' }],
+      skip: 20, take: 20, include: { _count: { select: { usages: true } } },
+    });
+    expect(count).toHaveBeenCalledWith({ where: { isActive: false } });
+    expect(result).toMatchObject({ total: 22, page: 2, items: [
+      { id: 'used', usedCount: 2, status: 'disabled' },
+      { id: 'unused', usedCount: 0, status: 'disabled' },
+    ] });
+    expect(result.items.every((item) => !('_count' in item))).toBe(true);
   });
 });

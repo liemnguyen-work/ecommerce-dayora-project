@@ -19,7 +19,7 @@ function fixture() {
       create: vi.fn().mockResolvedValue(base),
       update: vi.fn().mockResolvedValue(base),
       updateMany: vi.fn().mockResolvedValue({ count: 1 }),
-      findMany: vi.fn().mockResolvedValue([base]),
+      findMany: vi.fn().mockResolvedValue([{ ...base, _count: { usages: 0 } }]),
       count: vi.fn().mockResolvedValue(1),
     },
     voucherUsage: { count: vi.fn().mockResolvedValue(0) },
