@@ -2701,3 +2701,85 @@ Codex chạy lệnh và quan sát output Vitest; chờ Thành/reviewer đối ch
 ### Kiểm tra và minh chứng
 
 `npm.cmd run build -w api` thành công. Hai lệnh test đều trả `Test Files 1 passed`, `Tests 1 passed | 6 skipped` và exit code 0.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-1-2-003
+
+* Thời gian ghi: 2026-11-18T15:31:34+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-cart
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: THANH-20261118-PRJ-P2-FD1-1-1-002; PRJ-P2-FD1-1.2 #470 (theo issue nguồn NguyenTienMinh2510/dayora).
+
+### Công cụ
+
+Codex; Git; npm.cmd; React; TypeScript; ESLint; Vite.
+
+### Mục đích
+
+Triển khai Bước 2 của task Giỏ hàng + voucher: hiển thị và cập nhật giỏ tại route `/gio-hang`, chưa làm voucher hoặc preview của bước sau.
+
+### Prompt
+
+Thành cung cấp mô tả sub-issue PRJ-P2-FD1-1.2, gọi skill DAYORA và sau đó yêu cầu Codex làm hết phần triển khai.
+
+### Kết quả đề xuất
+
+Codex tạo `apps/web/src/pages/CartPage.tsx`, nối route trong `apps/web/src/App.tsx` và bổ sung giao diện responsive trong `apps/web/src/catalog.css`. Trang xử lý trạng thái xác thực, tải/lỗi, giỏ trống, danh sách món, cảnh báo tồn kho, tạm tính từ server và thao tác tăng, giảm, xóa có khóa nút khi request đang chạy.
+
+### Phản biện
+
+ESLint lần đầu báo `react-hooks/set-state-in-effect` do effect gọi gián tiếp hàm có cập nhật state; Codex đổi phần tải ban đầu sang Promise callbacks có cleanup để tránh cập nhật sau unmount. Bản build lần đầu không ghi được file tạm trong worktree ngoài sandbox; chạy lại với quyền ghi được cấp thì thành công. Chưa kiểm thử trình duyệt với tài khoản và giỏ thật nên chưa xác nhận trực quan các thao tác API.
+
+### Quyết định của nhóm
+
+Thành cho phép Codex triển khai toàn bộ sub-issue 1.2. Chưa có kết quả duyệt của reviewer hoặc quyết định chung mới.
+
+### Người kiểm tra
+
+Codex kiểm tra tĩnh và build; chờ Thành và reviewer PD Đạt kiểm tra thao tác thực tế trên trình duyệt.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web`, `npm.cmd run build -w web` và `git diff --check` thành công. Các tệp thay đổi thuộc đúng bước 1.2; chưa commit/push tại thời điểm ghi mục này.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-1-2-004
+
+* Thời gian ghi: 2026-11-18T15:46:23+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-cart
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: THANH-20261118-PRJ-P2-FD1-1-2-003; PRJ-P2-FD1-1.2 #470.
+
+### Công cụ
+
+Codex; PowerShell; NestJS; React; TypeScript; ESLint; Vite.
+
+### Mục đích
+
+Khắc phục trở ngại khi Thành kiểm tra giỏ hàng trên localhost: API cũ gây sai CORS và nút chi tiết sản phẩm chưa gọi API thêm giỏ.
+
+### Prompt
+
+Thành cung cấp ảnh trang sản phẩm hiện thông báo “Chức năng thêm vào giỏ đang được phát triển” và yêu cầu sửa để kiểm tra giỏ hàng.
+
+### Kết quả đề xuất
+
+Codex dừng đúng tiến trình API cũ chiếm cổng 3000, đặt `WEB_ORIGIN` local về `http://localhost:5173`, bật API từ worktree P2 và xác minh health/products trả 200. `ProductPage.tsx` được nối với `addToCart`, chuyển khách chưa đăng nhập đến trang đăng nhập, khóa nút khi gửi request, báo kết quả và cung cấp liên kết xem giỏ.
+
+### Phản biện
+
+Tệp `.env` chỉ dùng local và bị `.gitignore` loại trừ. Thao tác thêm sản phẩm với cookie đăng nhập thật chưa được Codex xác minh trên trình duyệt; cần Thành thực hiện bước này trước khi duyệt.
+
+### Quyết định của nhóm
+
+Thành yêu cầu sửa trở ngại để có thể test bước 1.2 trên localhost; chưa có kết quả reviewer hoặc quyết định chung mới.
+
+### Người kiểm tra
+
+Codex kiểm tra API bằng HTTP và chạy lint/build; chờ Thành xác nhận thao tác thêm, tăng, giảm và xóa trên trình duyệt.
+
+### Kiểm tra và minh chứng
+
+`GET /api/health` và `GET /api/products` trả 200 với header CORS cho `http://localhost:5173`. `npm.cmd run lint -w web`, `npm.cmd run build -w web` và `git diff --check` thành công. Thay đổi sửa nút thêm giỏ và mục log này chưa commit/push tại thời điểm ghi.
