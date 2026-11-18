@@ -8,7 +8,7 @@ import { FaqItem } from './FaqItem';
 import { faqs } from './faqs';
 import './home-sections.css';
 
-type Promotion = { id: string; title: string; imageUrl: string | null };
+type Promotion = { id: string; title: string; subtitle?: string | null; imageUrl: string | null };
 type Category = { id: string; code: string; name: string };
 type FeaturedProduct = Product & { isFeatured: boolean };
 type Result<T> = { data: T | null; loading: boolean; error: boolean };
@@ -63,7 +63,7 @@ export default function HomeSections() {
       </section>
       <section className="home-section home-offers" id="promotions">
         <p className="home-kicker">ƯU ĐÃI</p><h2>Thêm niềm vui cho chuyến đi.</h2>
-        {promotions.loading ? <p role="status">Đang tải ưu đãi...</p> : promotions.error ? <p role="alert">Chưa tải được ưu đãi. <button type="button" onClick={promotions.retry}>Thử lại</button></p> : !promotions.data?.length ? <p>Hiện chưa có ưu đãi đang áp dụng.</p> : <div className="home-offer-grid">{promotions.data.map((promotion) => <article key={promotion.id}>{promotion.imageUrl && <img src={promotion.imageUrl} alt="" loading="lazy" />}<h3>{promotion.title}</h3></article>)}</div>}
+        {promotions.loading ? <p role="status">Đang tải ưu đãi...</p> : promotions.error ? <p role="alert">Chưa tải được ưu đãi. <button type="button" onClick={promotions.retry}>Thử lại</button></p> : !promotions.data?.length ? <p>Hiện chưa có ưu đãi đang áp dụng.</p> : <div className="home-offer-grid">{promotions.data.map((promotion) => <article key={promotion.id}>{promotion.imageUrl && <img src={promotion.imageUrl} alt="" loading="lazy" />}<h3>{promotion.title}</h3>{promotion.subtitle && <p>{promotion.subtitle}</p>}</article>)}</div>}
       </section>
       <section className="home-section home-faq" id="faq">
         <p className="home-kicker">CÂU HỎI THƯỜNG GẶP</p><h2>Chuẩn bị chuyến đi cùng DAYORA.</h2>
