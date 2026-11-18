@@ -959,3 +959,734 @@ Codex đặt câu hỏi và chấm nội dung trả lời của Châu trong hộ
 ### Kiểm tra và minh chứng
 
 Minh chứng: hai câu trả lời của Châu và phản hồi chấm ngay trước yêu cầu lưu; chi tiết đã nối tại chau-20261109-q7m2-04. Đã đọc phần cuối log trước khi nối thêm; không sửa các mục cũ. Không chạy lại validate, migration, kiểm thử hoặc truy cập Supabase. Tệp thay đổi: docs/ai-logs/chau.md. Không commit hoặc push.
+
+---
+
+## P2 — Chẩn đoán service đặt nhầm tệp test / chau-20261118-k4r8-18
+
+* Thời gian ghi: 2026-11-18T01:57:40+07:00
+* Thời gian thực hiện: Trong lượt hội thoại hiện tại.
+* Mã phiên nhật ký: chau-20261118-k4r8
+* Người prompt: Châu
+* Loại mục: Kiểm tra
+* Liên quan: PRJ-P2-BD2-2
+
+### Công cụ
+
+Codex; terminal; Git đọc lịch sử.
+
+### Mục đích
+
+Kiểm tra mã preview và lỗi No test suite found do Châu cung cấp.
+
+### Prompt
+
+Tóm lược: Châu cung cấp OrdersService, output build/lint không lỗi, cart tests pass và orders.service test không tìm thấy suite; yêu cầu kiểm tra.
+
+### Kết quả đề xuất
+
+Xác nhận orders.service.spec.ts hiện chứa class OrdersService, chưa có orders.service.ts. Hướng dẫn bảo toàn mã bằng chuyển sang orders.service.ts, khôi phục nguyên test gốc từ commit 9ac2ee6 sau khi giữ mã service, rồi chạy test đúng. Đã xác minh commit này có test Vitest và assertion total=220000. Logic đọc giỏ, giữ warnings, so giá theo SKU và chống cảnh báo trùng đúng ý bước. Tuy nhiên voucher chưa làm khiến total hiện là 230000 với giỏ 200000, khác test 220000. Không sửa mã nguồn hoặc tự khôi phục tệp.
+
+### Phản biện
+
+Build/lint và test cart không chứng minh OrdersService đúng. No test suite found chưa chạy bất kỳ assertion nào. Không sửa test hoặc kỳ vọng để làm xanh. Tham chiếu Issue #347 trong comment là do mã Châu cung cấp, chưa xác minh nội dung Issue.
+
+### Quyết định của nhóm
+
+Châu yêu cầu kiểm tra, chưa xác nhận áp dụng thay đổi hoặc hoàn thành bước.
+
+### Người kiểm tra
+
+Codex đọc hiện trạng, git status và test tại commit 9ac2ee6; chờ Châu sửa và kiểm tra lại.
+
+### Kiểm tra và minh chứng
+
+rg --files xác nhận thư mục chỉ có DTO và spec; head spec chứa service; git status báo spec đang sửa. git show 9ac2ee6:apps/api/src/orders/orders.service.spec.ts xác nhận test gốc còn trong lịch sử. Không chạy build/test trong lượt này. Chỉ nối thêm docs/ai-logs/chau.md sau khi đọc cuối tệp; không sửa code, commit hoặc push.
+
+---
+
+## P2 — Kiểm tra sau tạo tệp service / chau-20261118-k4r8-19
+
+* Thời gian ghi: 2026-11-18T01:59:56+07:00
+* Thời gian thực hiện: Trong lượt hội thoại hiện tại; Vitest bắt đầu 01:59:55.
+* Mã phiên nhật ký: chau-20261118-k4r8
+* Người prompt: Châu
+* Loại mục: Kiểm tra
+* Liên quan: PRJ-P2-BD2-2; chau-20261118-k4r8-18
+
+### Công cụ
+
+Codex; terminal; Vitest.
+
+### Mục đích
+
+Xác minh Châu đã tách service khỏi spec và chạy lại test mục tiêu.
+
+### Prompt
+
+Châu báo “tôi đã sửa”, cung cấp OrdersService trong orders.service.ts.
+
+### Kết quả đề xuất
+
+Đã có orders.service.ts, nhưng orders.service.spec.ts vẫn mở đầu bằng mã service, chưa khôi phục test. Chạy test mục tiêu vẫn báo No test suite found, 0 test. Hướng dẫn khôi phục đúng test gốc từ commit 9ac2ee6 sau khi đã giữ service trong tệp riêng, không đổi assertion. Nhắc còn thiếu xử lý voucher để đạt tổng 220000 theo test gốc.
+
+### Phản biện
+
+Chưa có assertion nào được chạy; không coi tạo tệp service là test đạt. Mã xử lý voucher chưa được bổ sung theo nội dung Châu cung cấp.
+
+### Quyết định của nhóm
+
+Châu báo đã sửa; kiểm tra thực tế cho thấy mới hoàn tất phần tạo tệp service. Chưa nghiệm thu bước.
+
+### Người kiểm tra
+
+Codex đọc đầu hai tệp và chạy test; chờ Châu khôi phục spec và kiểm tra tiếp.
+
+### Kiểm tra và minh chứng
+
+npm test -w api -- orders.service -t 'áp trần phần trăm và cảnh báo giá, tồn' thất bại: 1 failed suite, no tests, No test suite found. Lệnh npm báo exit code 1 trong output; shell có các lệnh đọc log tiếp theo nên exit code tổng không dùng để kết luận test. Chỉ nối thêm docs/ai-logs/chau.md sau khi đọc cuối tệp; không sửa code, commit hoặc push.
+
+---
+
+## P2 — Test preview chạy được nhưng thiếu giảm voucher / chau-20261118-k4r8-20
+
+* Thời gian ghi: 2026-11-18T02:02:18+07:00
+* Thời gian thực hiện: Châu cung cấp output test bắt đầu 02:01:50.
+* Mã phiên nhật ký: chau-20261118-k4r8
+* Người prompt: Châu
+* Loại mục: Kiểm tra
+* Liên quan: PRJ-P2-BD2-2; chau-20261118-k4r8-19
+
+### Công cụ
+
+Codex; terminal đọc hàm pricing; output Vitest do Châu cung cấp.
+
+### Mục đích
+
+Giải thích lỗi assertion total sau khi khôi phục test preview.
+
+### Prompt
+
+Tóm lược: Châu báo đã sửa tệp test, cung cấp kết quả 1 failed, 2 skipped; total thực tế 230000 khác kỳ vọng 220000.
+
+### Kết quả đề xuất
+
+Test đã được thu thập và chạy, lỗi No test suite found được giải quyết theo output. Tổng thiếu giảm voucher: 20% của 200000 là 40000 nhưng bị trần 10000; total đúng là 200000 - 10000 + 30000 = 220000. Hướng dẫn lấy voucher theo mã, lấy lượt sử dụng của user và nối calculatePricing có sẵn thay vì gán cứng giảm 10000 hoặc đổi test. Chỉ ra assertion warnings nằm sau assertion total nên output hiện tại chưa xác nhận cảnh báo pass.
+
+### Phản biện
+
+Chưa đạt tiêu chí test xanh. Không kết luận toàn bộ phần PRICE_CHANGED pass từ output này. Không tự thay đổi phạm vi hoặc triển khai voucher trong lượt giải thích.
+
+### Quyết định của nhóm
+
+Châu cung cấp kết quả lỗi mới; chưa có xác nhận hoàn thành bước.
+
+### Người kiểm tra
+
+Châu chạy test; Codex đọc output và đối chiếu calculatePricing export cùng kết quả trả về. Chờ Châu triển khai tiếp và kiểm tra.
+
+### Kiểm tra và minh chứng
+
+Không chạy lại test. Đã đọc các phần liên quan trong apps/api/src/pricing/pricing.ts. Nguồn assertion thất bại là output Châu cung cấp. Chỉ nối thêm docs/ai-logs/chau.md sau khi đọc cuối tệp, không sửa code, commit hoặc push.
+
+---
+
+## P2 — Preview nối pricing và đạt test / chau-20261118-k4r8-21
+
+* Thời gian ghi: 2026-11-18T02:08:36+07:00
+* Thời gian thực hiện: Trong lượt hội thoại hiện tại, Vitest bắt đầu 02:08:35.
+* Mã phiên nhật ký: chau-20261118-k4r8
+* Người prompt: Châu
+* Loại mục: Kiểm tra
+* Liên quan: PRJ-P2-BD2-2; chau-20261118-k4r8-20
+
+### Công cụ
+
+Codex; terminal; Vitest. Châu cung cấp output ESLint và Nest build.
+
+### Mục đích
+
+Đối chiếu bài sửa preview gọi calculatePricing và kết quả test.
+
+### Prompt
+
+Tóm lược: Châu cung cấp mã đã nối pricing, lấy voucher và đếm lượt dùng, output lint/build thành công và 3 test orders.service pass; báo đã sửa.
+
+### Kết quả đề xuất
+
+Chạy lại npm test -w api -- orders.service: 3 passed. Test mục tiêu gồm total, PRICE_CHANGED và cảnh báo tồn đã pass. Đối chiếu calculatePricing xác nhận dùng giá sale nếu có, trần giảm voucher, phí giao và miễn phí theo merchandiseTotal sau giảm. Không sửa mã nguồn. Góp ý căn lề; saleDiscount=0 chưa thể hiện chênh lệch giá gốc/giá sale nếu hợp đồng response yêu cầu trường đó, cần đối chiếu trước khi kết luận đầy đủ response.
+
+### Phản biện
+
+Ba test hiện tại dùng salePrice=null nên chưa xác minh cách trình bày saleDiscount khi sản phẩm có giá sale. Chưa kiểm tra database thật, endpoint hoặc toàn bộ API. Lint/build là output Châu cung cấp, không chạy lại trong lượt này.
+
+### Quyết định của nhóm
+
+Châu báo đã sửa; tiêu chí test mục tiêu đạt trong lần chạy thực tế. Chưa có quyết định nhóm nghiệm thu toàn bộ task hoặc merge.
+
+### Người kiểm tra
+
+Codex chạy test và đọc calculatePricing; Châu cung cấp code và output lint/build. Mục bổ sung chờ Châu kiểm tra.
+
+### Kiểm tra và minh chứng
+
+npm test -w api -- orders.service exit 0: 1 file, 3 tests passed. Đọc apps/api/src/pricing/pricing.ts. Đã đọc cuối log trước khi nối thêm; chỉ sửa docs/ai-logs/chau.md, không sửa code, commit hoặc push.
+
+---
+
+## P2 — Châu báo hoàn thành và bổ sung test preview / chau-20261118-k4r8-22
+
+* Thời gian ghi: 2026-11-18T02:21:34+07:00
+* Thời gian thực hiện: Trong lượt hội thoại hiện tại.
+* Mã phiên nhật ký: chau-20261118-k4r8
+* Người prompt: Châu
+* Loại mục: Kiểm tra
+* Liên quan: PRJ-P2-BD2-2; chau-20261118-k4r8-21
+
+### Công cụ
+
+Codex; terminal; Vitest và Git đọc trạng thái nhánh.
+
+### Mục đích
+
+Đối chiếu báo cáo hoàn thành và 7 test preview Châu cung cấp.
+
+### Prompt
+
+Châu cung cấp mã spec gồm 3 test gốc và 4 test bổ sung, báo “đã xong hết và test đúng”.
+
+### Kết quả đề xuất
+
+Ghi nhận Châu báo hoàn thành và test đúng; chưa có output chạy 7 test trong tin nhắn. Codex thử npm test -w api -- orders.service nhưng workspace hiện ở nhánh prj/p2-bd2-3, không có thư mục apps/api/src/orders; Vitest báo No test files found. Không chuyển nhánh hoặc khôi phục tệp. Vì vậy chưa xác minh độc lập 7 test; kết quả 3 test pass trước đó ở mục -21 vẫn là minh chứng riêng của lần kiểm tra trước.
+
+### Phản biện
+
+Không coi No test files found là lỗi logic preview hoặc test pass. Mã spec được cung cấp chưa phải bằng chứng đã chạy. Test bổ sung dùng TP. Hồ Chí Minh; triển khai phải nhận diện đúng tên này, trong khi phiên bản service đã đọc trước dùng so sánh Hồ Chí Minh chính xác. Chưa có mã service mới để đối chiếu việc sửa nhận diện tỉnh.
+
+### Quyết định của nhóm
+
+Châu tự xác nhận hoàn thành và test đúng; chưa có xác nhận nhóm duyệt hoặc nghiệm thu độc lập toàn bộ 7 test.
+
+### Người kiểm tra
+
+Châu báo đã kiểm tra; Codex chưa tái xác minh được do workspace hiện không có các tệp orders. Mục log chờ Châu kiểm tra.
+
+### Kiểm tra và minh chứng
+
+npm test -w api -- orders.service exit 1, No test files found; git branch --show-current trả prj/p2-bd2-3; rg --files apps/api/src/orders báo không có thư mục. Chỉ nối thêm docs/ai-logs/chau.md sau khi đọc cuối tệp; không sửa code, chuyển nhánh, commit hoặc push.
+
+---
+
+## P2 — Review seed DAYORA10 / chau-20261118-k4r8-23
+
+* Thời gian ghi: 2026-11-18T02:24:49+07:00
+* Thời gian thực hiện: Trong lượt hội thoại hiện tại.
+* Mã phiên nhật ký: chau-20261118-k4r8
+* Người prompt: Châu
+* Loại mục: Phản biện
+* Liên quan: PRJ-P2-BD2-3
+
+### Công cụ
+
+Codex; terminal đọc mã và schema.
+
+### Mục đích
+
+Giải thích yêu cầu seed voucher, chỉ lỗi và gợi ý để Châu tự sửa, không viết code hoàn chỉnh.
+
+### Prompt
+
+Tóm lược: Châu cung cấp seed.ts, yêu cầu giải thích DAYORA10 giảm 10%, trần 50000, đơn tối thiểu 300000, giới hạn 200 lượt; chỉ lỗi, gợi ý hướng sửa và chờ Châu sửa.
+
+### Kết quả đề xuất
+
+Các giá trị phần trăm/trần/đơn tối thiểu/giới hạn và amountOff=null đúng yêu cầu nêu. Vấn đề luồng: đoạn voucher nằm sau await main().finally(disconnect), ngoài phần việc được main và finally bao; có thể truy vấn kết nối lại tùy Prisma, không khẳng định chắc chắn lỗi do disconnect. Đề xuất đặt seed voucher trong main trước khi kết thúc hoặc tách hàm được main await; giữ disconnect ở cuối mọi việc. update={} không đồng bộ voucher đã có sai cấu hình, nên cân nhắc cập nhật trường cấu hình theo mục tiêu seed; không đụng bản ghi usages. perUserLimit=1 và ngày hiệu lực cần đối chiếu chính sách, không tự xác nhận. endsAt hiện quy đổi là 2027-01-01 00:00 UTC+07. Hướng dẫn kiểm tra DB rồi chạy seed lần hai xác minh một mã duy nhất và cấu hình đúng. Không sửa hoặc chạy seed.
+
+### Phản biện
+
+Chưa có output thực thi hay truy vấn database; console.log chưa chứng minh dữ liệu. Không mặc định update={} là sai nếu chủ đích chỉ tạo mới, nhưng chưa đảm bảo tiêu chí cấu hình đúng khi dữ liệu tồn tại khác. Không áp chính sách mới.
+
+### Quyết định của nhóm
+
+Châu yêu cầu chỉ hướng dẫn, không viết code thay và chờ Châu sửa. Chưa có nghiệm thu bước.
+
+### Người kiểm tra
+
+Codex đọc cuối seed.ts và model Voucher/VoucherUsage. Chờ Châu sửa và kiểm tra database.
+
+### Kiểm tra và minh chứng
+
+Đọc mã và schema cục bộ; không chạy seed, build hoặc truy cập database. Chỉ nối thêm docs/ai-logs/chau.md sau khi đọc cuối tệp; không sửa mã nguồn, commit hoặc push.
+
+---
+
+## P2 — Minh chứng DAYORA10 do Châu cung cấp / chau-20261118-k4r8-24
+
+* Thời gian ghi: 2026-11-18T02:26:08+07:00
+* Thời gian thực hiện: Châu cung cấp test bắt đầu 02:24:28; thời điểm truy vấn Supabase chưa xác minh.
+* Mã phiên nhật ký: chau-20261118-k4r8
+* Người prompt: Châu
+* Loại mục: Kiểm tra
+* Liên quan: PRJ-P2-BD2-3; chau-20261118-k4r8-23
+
+### Công cụ
+
+Codex đọc minh chứng; Châu cung cấp output npm/Vitest, ESLint, Nest build và truy vấn SQL Supabase.
+
+### Mục đích
+
+Đánh giá kết quả kiểm tra seed DAYORA10 theo báo cáo của Châu.
+
+### Prompt
+
+Tóm lược: Châu báo kiểm thử thành công, cung cấp 59 tests passed, lint/build không lỗi, diff seed và kết quả SELECT Voucher cho DAYORA10.
+
+### Kết quả đề xuất
+
+Dữ liệu Châu cung cấp có code DAYORA10, percentOff=10, maxDiscount=50000, minOrderValue=300000, usageLimit=200, perUserLimit=1, phù hợp các giá trị được nêu. Có minh chứng do thành viên báo cáo cho tiêu chí tồn tại voucher với mức tối thiểu và giới hạn đúng. Tuy nhiên diff vẫn đặt voucher sau main().finally(disconnect), chưa sửa vấn đề tổ chức luồng được nêu ở mục -23. Hướng dẫn chuyển vào main trước disconnect, giữ nguyên giá trị. update={} chỉ tạo mới/giữ nguyên bản ghi cũ, không đồng bộ cấu hình cũ sai.
+
+### Phản biện
+
+Output lint quét src/**/*.ts và Nest build cấu hình src không trực tiếp chứng minh seed.ts trong prisma được kiểm tra. Danh sách 59 test không có test seed voucher hoặc orders.service. Kết quả SQL dán chưa thể hiện giá trị isActive/startsAt/endsAt; chưa có minh chứng chạy seed lần hai. Không khẳng định lỗi runtime chắc chắn chỉ vì gọi disconnect trước voucher.
+
+### Quyết định của nhóm
+
+Châu báo kiểm tra thành công; chưa có phê duyệt chung. Không tự coi góp ý tổ chức luồng đã được sửa.
+
+### Người kiểm tra
+
+Châu chạy các lệnh và truy vấn Supabase theo báo cáo; Codex đối chiếu minh chứng. Chờ Châu kiểm tra log và chỉnh vị trí seed.
+
+### Kiểm tra và minh chứng
+
+Nguồn là output và bảng dữ liệu Châu cung cấp, không truy cập database độc lập. Không chạy lại test/build/seed. Đã đọc cuối log trước khi nối; chỉ sửa docs/ai-logs/chau.md, không sửa code, commit hoặc push.
+
+---
+
+## P2 — Châu báo kết thúc mục 3.1 / chau-20261118-k4r8-25
+
+* Thời gian ghi: 2026-11-18T02:26:53+07:00
+* Thời gian thực hiện: Phản hồi trong hội thoại hiện tại; thời điểm push chưa xác minh.
+* Mã phiên nhật ký: chau-20261118-k4r8
+* Người prompt: Châu
+* Loại mục: Quyết định
+* Liên quan: PRJ-P2-BD2-3; chau-20261118-k4r8-24
+
+### Công cụ
+
+Codex.
+
+### Mục đích
+
+Ghi nhận thông báo hoàn thành cá nhân mục 3.1 seed DAYORA10.
+
+### Prompt
+
+Châu: “Đã đủ điều kiện và push lên github kết thúc 3.1”.
+
+### Kết quả đề xuất
+
+Ghi nhận Châu tự xác nhận đủ điều kiện, báo đã push GitHub và kết thúc mục 3.1. Minh chứng dữ liệu voucher do Châu cung cấp ở mục -24 đáp ứng các giá trị chính. Giữ rõ góp ý chưa được sửa trong mã dán: seed voucher vẫn nằm sau main().finally(disconnect). Không xác nhận độc lập remote hoặc toàn bộ task seed hai voucher và khuyến mãi.
+
+### Phản biện
+
+Chưa có minh chứng mới về vị trí seed đã chỉnh, chạy seed lần hai hoặc các giá trị hiệu lực. Không tự nâng trạng thái góp ý cũ thành đã khắc phục.
+
+### Quyết định của nhóm
+
+Châu xác nhận kết thúc mục 3.1 của mình và báo đã push; chưa có xác nhận nhóm duyệt hoặc merge.
+
+### Người kiểm tra
+
+Châu tự xác nhận hoàn thành; Codex ghi nhận và giữ giới hạn kiểm tra đã nêu. Log bổ sung chờ Châu kiểm tra.
+
+### Kiểm tra và minh chứng
+
+Không chạy test/build/seed hoặc kiểm tra remote trong lượt này. Đã đọc cuối log trước khi nối thêm; chỉ sửa docs/ai-logs/chau.md, không sửa mã nguồn, commit hoặc push.
+
+---
+
+## P2 — Giải thích seed PICNIC50K / chau-20261118-k4r8-26
+
+* Thời gian ghi: 2026-11-18T02:28:26+07:00
+* Thời gian thực hiện: Trong lượt hội thoại hiện tại.
+* Mã phiên nhật ký: chau-20261118-k4r8
+* Người prompt: Châu
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD2-3
+
+### Công cụ
+
+Codex.
+
+### Mục đích
+
+Giải thích ngắn bước seed voucher giảm tiền cố định PICNIC50K để Châu tự làm.
+
+### Prompt
+
+Tóm lược: Châu yêu cầu giải thích bước seed PICNIC50K giảm 50000, đơn tối thiểu 500000, giới hạn 100 lượt, kèm code upsert hiện tại.
+
+### Kết quả đề xuất
+
+Giải thích code PICNIC50K, amountOff=50000, percentOff=null, minOrderValue=500000, usageLimit=100; upsert theo code để tạo khi chưa có và tránh trùng khi chạy lại. Ví dụ đơn đủ điều kiện 600000 giảm 50000 còn 550000 tiền hàng, chưa cộng giao. Mức giới hạn 100 là tổng lượt, khác perUserLimit. Nhắc phần voucher trong mã dán còn nằm sau disconnect, nên đặt trong main trước khi đóng kết nối.
+
+### Phản biện
+
+update={} giữ cấu hình cũ nếu voucher đã tồn tại. Chưa có output seed hoặc truy vấn PICNIC50K, không xác nhận database đã đạt.
+
+### Quyết định của nhóm
+
+Châu yêu cầu giải thích để tự triển khai; chưa xác nhận hoàn thành bước hoặc chính sách bổ sung.
+
+### Người kiểm tra
+
+Codex đối chiếu yêu cầu với mã Châu dán; chờ Châu kiểm tra và thực hiện.
+
+### Kiểm tra và minh chứng
+
+Không chạy seed/test/build, không truy cập database. Chỉ nối thêm docs/ai-logs/chau.md sau khi đọc cuối tệp; không sửa mã nguồn, commit hoặc push.
+
+---
+
+## P2 — Nhận xét đoạn seed PICNIC50K / chau-20261118-k4r8-27
+
+* Thời gian ghi: 2026-11-18T02:29:10+07:00
+* Thời gian thực hiện: Trong lượt hội thoại hiện tại.
+* Mã phiên nhật ký: chau-20261118-k4r8
+* Người prompt: Châu
+* Loại mục: Phản biện
+* Liên quan: PRJ-P2-BD2-3; chau-20261118-k4r8-26
+
+### Công cụ
+
+Codex; terminal đọc seed.ts.
+
+### Mục đích
+
+Nhận xét đoạn thêm PICNIC50K và vị trí trong seed.
+
+### Prompt
+
+Tóm lược: Châu dán đoạn upsert PICNIC50K và yêu cầu nhận xét phần thêm vào seed.
+
+### Kết quả đề xuất
+
+Các trường amountOff=50000, percentOff=null, minOrderValue=500000, usageLimit=100 đúng yêu cầu. maxDiscount=null không đặt trần riêng, phù hợp giảm cố định; perUserLimit=1 là giới hạn riêng mỗi người cần theo chính sách đã duyệt. where theo code unique tránh trùng; update={} không đồng bộ cấu hình bản ghi cũ. Thời gian được dùng lại từ DAYORA10 nên hai voucher cùng khoảng hiệu lực. Xác nhận trong tệp hiện tại cả hai voucher vẫn sau main().finally(disconnect); hướng dẫn chuyển cả biến ngày và các đoạn seed vào main trước khi kết thúc. Không viết mã hoàn chỉnh thay Châu.
+
+### Phản biện
+
+Chưa có kết quả seed hoặc SELECT PICNIC50K; không kết luận dữ liệu đã có trong database. Không khẳng định truy vấn sau disconnect chắc chắn lỗi runtime.
+
+### Quyết định của nhóm
+
+Châu yêu cầu nhận xét, chưa có xác nhận sửa vị trí hoặc nghiệm thu bước.
+
+### Người kiểm tra
+
+Codex đọc cuối seed.ts; chờ Châu tự sửa và kiểm tra.
+
+### Kiểm tra và minh chứng
+
+Đã đọc 80 dòng cuối apps/api/prisma/seed.ts và cuối log. Không chạy seed/test/build hoặc truy cập DB. Chỉ nối thêm docs/ai-logs/chau.md, không sửa code, commit hoặc push.
+
+---
+
+## P2 — Giữ nguyên seed theo quyết định của Châu / chau-20261118-k4r8-28
+
+* Thời gian ghi: 2026-11-18T02:30:42+07:00
+* Thời gian thực hiện: Châu cung cấp output test bắt đầu 02:29:49; không xác minh riêng giờ hai lần seed.
+* Mã phiên nhật ký: chau-20261118-k4r8
+* Người prompt: Châu
+* Loại mục: Quyết định
+* Liên quan: PRJ-P2-BD2-3; chau-20261118-k4r8-27
+
+### Công cụ
+
+Codex đọc báo cáo; Châu cung cấp output Git, Prisma seed, Vitest, ESLint và Nest build.
+
+### Mục đích
+
+Ghi nhận quyết định không chỉnh thêm seed và kết quả kiểm tra mới do Châu cung cấp.
+
+### Prompt
+
+Tóm lược: Châu đánh giá đã đủ tiêu chí, kết quả đúng kỳ vọng, quyết định giữ nguyên và chỉ update khi cần; cung cấp hai lần db:seed thành công, 59 tests passed, lint/build không lỗi.
+
+### Kết quả đề xuất
+
+Tôn trọng quyết định giữ nguyên code, không sửa thêm. Output hai lần seed đều báo DAYORA10/PICNIC50K thành công và lệnh hoàn tất, bổ sung minh chứng chạy lặp thành công trong môi trường Châu. Góp ý tổ chức luồng sau disconnect là hạn chế đã biết được Châu chọn chưa chỉnh, không tiếp tục coi đó là lỗi runtime đã xảy ra. update={} là chủ đích giữ bản ghi hiện có. Output báo thiếu biến seed admin nên admin và RuleSet bị bỏ qua, không phải seed toàn bộ thành phần đều chạy.
+
+### Phản biện
+
+Không có SELECT PICNIC50K kèm tin nhắn nên chưa xác minh độc lập các trường database; không suy từ log console rằng mọi trường đúng. Kết quả 59 test không chứa orders.service hoặc test seed chuyên biệt. Không chạy lại các lệnh hoặc truy cập database.
+
+### Quyết định của nhóm
+
+Châu xác nhận giữ nguyên triển khai hiện tại và hoãn cập nhật đến khi cần; đây là quyết định của Châu, không tự gán phê duyệt chung. Không sửa code hoặc yêu cầu chỉnh lại trong lượt này.
+
+### Người kiểm tra
+
+Châu thực thi và cung cấp output; Codex đối chiếu báo cáo. Mục log bổ sung chờ Châu kiểm tra.
+
+### Kiểm tra và minh chứng
+
+Theo output Châu: npm run db:seed -w api hoàn tất hai lần; npm test -w api có 9 files/59 tests passed; lint/build thành công. Git output có HEAD và origin/prj/p2-bd2-3 tại 5e3453d, thông điệp feat(db): seed DAYORA10 percent voucher; không xác minh độc lập nội dung commit hoặc remote. Đã đọc cuối log trước khi nối; chỉ sửa docs/ai-logs/chau.md, không sửa mã nguồn, commit hoặc push.
+
+---
+
+## P2 — Châu báo kết thúc mục 3.2 / chau-20261118-k4r8-29
+
+* Thời gian ghi: 2026-11-18T02:31:14+07:00
+* Thời gian thực hiện: Phản hồi trong hội thoại hiện tại; thời điểm commit/push chưa xác minh.
+* Mã phiên nhật ký: chau-20261118-k4r8
+* Người prompt: Châu
+* Loại mục: Quyết định
+* Liên quan: PRJ-P2-BD2-3; chau-20261118-k4r8-28
+
+### Công cụ
+
+Codex.
+
+### Mục đích
+
+Ghi nhận Châu báo hoàn thành mục 3.2 seed voucher PICNIC50K.
+
+### Prompt
+
+Châu: “mình đã commit và push lên github kết thúc 3.2”.
+
+### Kết quả đề xuất
+
+Ghi nhận Châu báo đã commit, push GitHub và kết thúc mục 3.2. Dẫn minh chứng seed hai lần thành công, 59 tests passed, lint/build thành công do Châu cung cấp tại mục -28. Giữ nguyên quyết định chưa chỉnh thêm code và giới hạn xác minh đã ghi, không suy ra toàn bộ task gồm khuyến mãi đã hoàn thành.
+
+### Phản biện
+
+Chưa có commit hash mới hoặc kiểm tra remote độc lập. Không có kết quả kiểm tra mới trong lượt này.
+
+### Quyết định của nhóm
+
+Châu xác nhận kết thúc mục cá nhân 3.2; chưa có xác nhận nhóm duyệt hoặc merge.
+
+### Người kiểm tra
+
+Châu báo hoàn thành; Codex ghi nhận. Mục log bổ sung chờ Châu kiểm tra.
+
+### Kiểm tra và minh chứng
+
+Nguồn trạng thái commit/push là tin nhắn trực tiếp của Châu. Đã đọc cuối log trước khi nối thêm. Không chạy lại test/build/seed hoặc kiểm tra GitHub. Chỉ sửa docs/ai-logs/chau.md, không sửa mã nguồn, commit hoặc push.
+
+---
+
+## P2 — Giải thích seed Promotion mùa picnic / chau-20261118-k4r8-30
+
+* Thời gian ghi: 2026-11-18T02:34:20+07:00
+* Thời gian thực hiện: Trong lượt hội thoại hiện tại.
+* Mã phiên nhật ký: chau-20261118-k4r8
+* Người prompt: Châu
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD2-3
+
+### Công cụ
+
+Codex.
+
+### Mục đích
+
+Giải thích ngắn yêu cầu seed Promotion mùa picnic và không tạo dòng trùng khi chạy lại.
+
+### Prompt
+
+Tóm lược: Châu cung cấp đoạn promotion.upsert và yêu cầu giải thích bước seed banner Ưu đãi mùa picnic liên kết /san-pham, chạy lại không trùng.
+
+### Kết quả đề xuất
+
+Giải thích cần bản ghi Promotion có title, imageUrl, linkUrl, thời gian hiệu lực và isActive để API/frontend có dữ liệu banner. Upsert theo id cố định dùng cùng id ở where/create bảo đảm chạy lại tìm cùng bản ghi; update={} giữ nguyên nếu đã có. Promotion là dữ liệu banner, không tự áp giảm giá voucher. Kiểm tra bằng seed hai lần và truy vấn đúng id xác nhận một bản ghi với trường đúng; kiểm tra ảnh có tồn tại để banner hiển thị được.
+
+### Phản biện
+
+Chưa chạy seed hoặc truy vấn Promotion; không khẳng định đã đạt tiêu chí. Không đề nghị lại thay đổi cấu trúc seed mà Châu đã quyết định giữ nguyên.
+
+### Quyết định của nhóm
+
+Châu yêu cầu giải thích để tự làm; chưa xác nhận hoàn thành hoặc phê duyệt chung.
+
+### Người kiểm tra
+
+Codex đối chiếu yêu cầu với mã Châu dán; chờ Châu thực hiện và kiểm tra.
+
+### Kiểm tra và minh chứng
+
+Không chạy test/build/seed, kiểm tra ảnh hoặc truy cập database. Chỉ nối thêm docs/ai-logs/chau.md sau khi đọc cuối tệp; không sửa mã nguồn, commit hoặc push.
+
+---
+
+## P2 — Review đoạn Promotion upsert / chau-20261118-k4r8-31
+
+* Thời gian ghi: 2026-11-18T02:35:09+07:00
+* Thời gian thực hiện: Trong lượt hội thoại hiện tại.
+* Mã phiên nhật ký: chau-20261118-k4r8
+* Người prompt: Châu
+* Loại mục: Phản biện
+* Liên quan: PRJ-P2-BD2-3; chau-20261118-k4r8-30
+
+### Công cụ
+
+Codex; terminal đọc schema và tìm tệp ảnh.
+
+### Mục đích
+
+Nhận xét đoạn seed Promotion do Châu cung cấp.
+
+### Prompt
+
+Tóm lược: Châu dán promotion.upsert với ID cố định, title Ưu đãi mùa picnic, ảnh /home/trip-picnic.jpg và link /san-pham, yêu cầu nhận xét.
+
+### Kết quả đề xuất
+
+Đoạn code phù hợp schema Promotion. ID cố định trùng ở where/create giúp chạy lại không tạo thêm bản ghi với cùng ID. update={} giữ dữ liệu hiện có; sortOrder bỏ qua nhận default 0 khi tạo. Ảnh có tại apps/web/public/home/trip-picnic.jpg. startsAt/endsAt cần được khai báo trong phạm vi và dùng khoảng hiệu lực mong muốn. Không thấy lỗi trong đoạn dán đối với mục tiêu tạo mới và không trùng theo ID.
+
+### Phản biện
+
+Không xác minh route frontend /san-pham hoạt động, hiển thị banner hoặc dữ liệu database. ID cố định không loại bỏ bản ghi khác ID nhưng cùng tiêu đề nếu trước đó đã tồn tại. Chưa có minh chứng seed hai lần cho Promotion.
+
+### Quyết định của nhóm
+
+Châu yêu cầu review; chưa có nghiệm thu database hoặc phê duyệt chung mới. Giữ quyết định trước của Châu về cấu trúc seed, không sửa code.
+
+### Người kiểm tra
+
+Codex đọc schema và tìm ảnh trong repo; chờ Châu kiểm tra và chạy seed.
+
+### Kiểm tra và minh chứng
+
+rg xác nhận model Promotion có đủ trường, sortOrder default 0; rg --files xác nhận tệp ảnh. Không chạy build/test/seed hoặc truy cập DB. Chỉ nối thêm docs/ai-logs/chau.md sau khi đọc cuối tệp; không sửa mã nguồn, commit hoặc push.
+
+---
+
+## P2 — Châu xác nhận truy vấn Promotion / chau-20261118-k4r8-32
+
+* Thời gian ghi: 2026-11-18T02:36:08+07:00
+* Thời gian thực hiện: Phản hồi trong hội thoại hiện tại; giờ truy vấn chưa xác minh.
+* Mã phiên nhật ký: chau-20261118-k4r8
+* Người prompt: Châu
+* Loại mục: Kiểm tra
+* Liên quan: PRJ-P2-BD2-3; chau-20261118-k4r8-31
+
+### Công cụ
+
+Codex ghi nhận; Supabase theo báo cáo của Châu.
+
+### Mục đích
+
+Bổ sung kết quả truy vấn Promotion do thành viên cung cấp.
+
+### Prompt
+
+Tóm lược: Châu cung cấp SELECT id, title, imageUrl, linkUrl, isActive FROM Promotion WHERE id='0d3797d7-c916-4e43-aead-0667f73ad032' và báo trên Supabase có kết quả như kỳ vọng.
+
+### Kết quả đề xuất
+
+Ghi nhận Châu báo đã thấy Promotion đúng kỳ vọng qua truy vấn ID cố định. Đây là minh chứng thành viên tự báo cáo, chưa có bảng giá trị trả về trong tin nhắn. Nhắc kiểm tra chạy seed lần hai vẫn một bản ghi để xác nhận tiêu chí chạy lặp.
+
+### Phản biện
+
+Truy vấn trên không chọn startsAt/endsAt, chưa xác minh thời gian hiệu lực hoặc banner hiển thị qua API/frontend. Chưa có kết quả chạy seed lần hai riêng cho Promotion.
+
+### Quyết định của nhóm
+
+Châu xác nhận kết quả truy vấn đúng kỳ vọng; chưa có phê duyệt chung, merge hoặc thông báo kết thúc mục 3.3.
+
+### Người kiểm tra
+
+Châu thực hiện truy vấn và báo kết quả; Codex chưa truy cập DB độc lập. Log bổ sung chờ Châu kiểm tra.
+
+### Kiểm tra và minh chứng
+
+Nguồn là SQL và phản hồi trực tiếp của Châu. Không chạy seed/test/build hoặc truy vấn DB. Chỉ nối thêm docs/ai-logs/chau.md sau khi đọc cuối tệp; không sửa mã nguồn, commit hoặc push.
+
+---
+
+## P2 — Minh chứng seed Promotion chạy lặp / chau-20261118-k4r8-33
+
+* Thời gian ghi: 2026-11-18T02:36:54+07:00
+* Thời gian thực hiện: Châu cung cấp test bắt đầu 02:36:20; không xác minh riêng giờ seed/lint/build.
+* Mã phiên nhật ký: chau-20261118-k4r8
+* Người prompt: Châu
+* Loại mục: Kiểm tra
+* Liên quan: PRJ-P2-BD2-3; chau-20261118-k4r8-32
+
+### Công cụ
+
+Codex đọc báo cáo; Châu cung cấp output terminal Prisma seed, Vitest, ESLint và Nest build.
+
+### Mục đích
+
+Ghi nhận minh chứng chạy seed hai lần và kiểm tra API sau thêm Promotion.
+
+### Prompt
+
+Tóm lược: Châu cung cấp output tìm thấy ảnh trip-picnic.jpg, seed hai lần thành công có log Promotion, 59 tests passed, lint/build không lỗi; báo các trường hợp test đều pass.
+
+### Kết quả đề xuất
+
+Xác nhận theo output do Châu cung cấp: cả hai lần seed hoàn tất và ghi log khuyến mãi; 9 files/59 tests pass; lint/build thành công. Kết hợp báo cáo truy vấn đúng kỳ vọng ở mục -32 và upsert theo ID cố định ở mục -31, có minh chứng phù hợp bước seed Promotion. Không suy ra đã kiểm tra mọi trường hợp hoặc banner hiển thị thực tế. Không sửa code.
+
+### Phản biện
+
+Output chưa có truy vấn sau lần seed thứ hai để đối chiếu số dòng database độc lập. Không truy cập Supabase; không chạy lại lệnh. Admin/RuleSet được bỏ qua vì thiếu biến môi trường theo output; không ghi hai phần đó đã seed trong lần này.
+
+### Quyết định của nhóm
+
+Châu báo test pass; chưa có thông báo commit/push phần Promotion hoặc phê duyệt chung mới.
+
+### Người kiểm tra
+
+Châu thực thi và cung cấp output; Codex đối chiếu. Log bổ sung chờ Châu kiểm tra.
+
+### Kiểm tra và minh chứng
+
+Nguồn là terminal trong tin nhắn: db:seed hoàn tất hai lần, có Seed khuyến mãi mùa picnic thành công; npm test -w api 59 passed; lint/build không báo lỗi. Chỉ nối thêm docs/ai-logs/chau.md sau khi đọc cuối tệp; không sửa mã nguồn, commit hoặc push.
+
+---
+
+## P2 — Châu báo kết thúc mục 3.3 / chau-20261118-k4r8-34
+
+* Thời gian ghi: 2026-11-18T02:37:49+07:00
+* Thời gian thực hiện: Phản hồi trong hội thoại hiện tại; thời điểm push chưa xác minh.
+* Mã phiên nhật ký: chau-20261118-k4r8
+* Người prompt: Châu
+* Loại mục: Quyết định
+* Liên quan: PRJ-P2-BD2-3; chau-20261118-k4r8-33
+
+### Công cụ
+
+Codex.
+
+### Mục đích
+
+Ghi nhận mốc hoàn thành cá nhân mục 3.3 seed Promotion mùa picnic.
+
+### Prompt
+
+Châu: “Đã khớp yêu cầu nên tôi đã push và kết thúc 3.3”.
+
+### Kết quả đề xuất
+
+Ghi nhận Châu xác nhận khớp yêu cầu, báo đã push và kết thúc mục 3.3. Minh chứng kiểm tra trước ở mục -33: seed hai lần hoàn tất, 59 tests passed, lint/build thành công theo output Châu cung cấp; kết quả truy vấn đúng kỳ vọng do Châu báo ở mục -32.
+
+### Phản biện
+
+Chưa có commit hash mới hoặc kiểm tra remote độc lập. Không suy ra nhóm duyệt, merge hoặc đã kiểm tra hiển thị banner qua giao diện.
+
+### Quyết định của nhóm
+
+Châu xác nhận kết thúc mục cá nhân 3.3 và báo đã push; chưa có phê duyệt chung mới.
+
+### Người kiểm tra
+
+Châu xác nhận hoàn thành; Codex ghi nhận. Mục log bổ sung chờ Châu kiểm tra.
+
+### Kiểm tra và minh chứng
+
+Nguồn trạng thái push là tin nhắn trực tiếp của Châu. Đã đọc cuối log trước khi nối; không chạy lại test/build/seed, không truy cập database hoặc remote. Chỉ sửa docs/ai-logs/chau.md; không sửa mã nguồn, commit hoặc push.
