@@ -458,6 +458,27 @@ function Promotions() {
   const pending = useRef(false);
   const items = data ? (Array.isArray(data) ? data : data.items) : [];
 
+  async function toggle(id: string, isActive: boolean) {
+    if (pending.current) return;
+    pending.current = true;
+    setSending(true);
+    setMsg('');
+    setActionError('');
+    try {
+      await api(`/admin/promotions/${encodeURIComponent(id)}/active`, {
+        method: 'PATCH',
+        body: JSON.stringify({ isActive }),
+      });
+      setMsg(isActive ? 'Đã bật khuyến mãi.' : 'Đã tắt khuyến mãi.');
+      await reload();
+    } catch (error: unknown) {
+      setActionError(errText(error));
+    } finally {
+      pending.current = false;
+      setSending(false);
+    }
+  }
+
   async function create(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (pending.current) return;
@@ -529,7 +550,7 @@ function Promotions() {
                   ? <Link to={promotion.link} className="break-all underline underline-offset-4">{promotion.link}</Link>
                   : 'Liên kết không hợp lệ' : 'Không có liên kết'}</td>
                 <td data-label="Hết hạn">{promotion.endsAt ? <time dateTime={promotion.endsAt}>{new Date(promotion.endsAt).toLocaleDateString('vi-VN')}</time> : 'Không giới hạn'}</td>
-                <td data-label="Bật/Tắt">{promotion.isActive ? 'Đang bật' : 'Đã tắt'}</td>
+                <td data-label="Bật/Tắt"><label className="inline-flex min-h-11 items-center gap-2"><span>{promotion.isActive ? 'Đang bật' : 'Đã tắt'}</span><input type="checkbox" checked={promotion.isActive} disabled={loading || sending} onChange={event => { void toggle(promotion.id, event.target.checked); }} aria-label={`Bật hoặc tắt khuyến mãi ${promotion.title}`} className="h-5 w-5 accent-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink" /></label></td>
               </tr>
             ))}</tbody>
           </table>
