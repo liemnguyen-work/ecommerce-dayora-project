@@ -1345,3 +1345,51 @@ ChatGPT đối chiếu yêu cầu với bản nháp, đọc kết quả Git và 
 - Phần trả lời hai câu hỏi là minh chứng trao đổi kiến thức, chưa phải kết quả chạy kiểm thử.
 - Chưa gọi IPN, thực hiện giao dịch Sandbox hoặc kiểm tra CSDL trong hoạt động này.
 - Không chạy test, lint hoặc build trong lượt thiết kế và commit tài liệu này.
+
+---
+
+## P3 / ngoc-20261119-7c2e-01
+
+* Thời gian ghi: 2026-11-19T00:34:28+07:00
+* Thời gian thực hiện: 19/11/2026
+* Mã phiên nhật ký: ngoc-20261119-7c2e
+* Người prompt: Ngọc
+* Loại mục: Hoạt động
+* Liên quan: `PRJ-P3-QA-1.2`, issue #319, mục `ngoc-20261118-d1c1-01`
+
+### Mục đích
+
+Thiết kế ma trận kiểm thử chuyển trạng thái đơn hàng cho bước 2 của Phase 3. Đối chiếu các trạng thái trong đề QA với D08 và Prisma schema của repo nhóm để xác định điều kiện ban đầu, thao tác và kết quả kỳ vọng cho từng ca.
+
+### Prompt
+
+Tóm lược yêu cầu của Ngọc. Ngọc cung cấp nội dung sub-issue `PRJ-P3-QA-1.2` và chủ động đề nghị AI đối chiếu với task của Châu, Hoàn và Phúc. Nội dung cần rà gồm tên trường trạng thái, giá trị enum, mã HTTP kỳ vọng và phạm vi của từng ca. Sau khi push commit, Ngọc yêu cầu AI đặt câu hỏi phản biện về cách thiết kế ma trận và cách đánh giá kết quả khi chạy ca.
+
+### Kết quả đề xuất
+
+AI đối chiếu D08, Prisma schema và tài liệu của các thành viên trong repo nhóm, sau đó soạn bản nháp Markdown gồm 12 ca từ `TC-P3-08` đến `TC-P3-19`. Theo yêu cầu rà lại phạm vi của Ngọc, nội dung được tập trung vào chuyển trạng thái và lịch sử đơn hàng. Ca `TC-P3-10` dẫn chiếu `TC-P3-01` để dùng chung thiết lập thanh toán.
+
+Ngọc đưa ma trận vào `docs/testing/TEST-CASES.md`, kiểm tra diff, stage đúng file và push commit lên nhánh `prj/p3-qa-1`.
+
+### Phản biện
+
+- **Biểu diễn trạng thái theo D08.** Ngọc đề xuất đối chiếu các giá trị trong đề với ba trường `status`, `paymentStatus` và `shippingStatus` trong schema. Cách ghi này phân biệt hai trường hợp cùng có `status=CANCELLED`. Khi khách hủy đơn chưa thanh toán, `paymentStatus` giữ `UNPAID`. Khi đơn hết hạn, `paymentStatus` chuyển sang `EXPIRED`. Với `TC-P3-12`, trạng thái đơn chuyển sang `COMPLETED`, vận chuyển chuyển sang `DELIVERED` và thanh toán giữ `PAID`.
+- **Phạm vi của `TC-P3-10`.** Khi AI đặt vấn đề về khả năng trùng với `TC-P3-01`, Ngọc chọn giữ `TC-P3-10` vì đây là điểm chuyển từ đơn chờ thanh toán sang đơn đã xác nhận trong ma trận. Ca này dùng lại thiết lập IPN của `TC-P3-01` và tập trung đối chiếu bộ trạng thái `CONFIRMED` / `PAID` / `NOT_SHIPPED`.
+- **Xử lý chênh lệch mã HTTP.** Nếu API trả `422`, Ngọc sẽ ghi mã và nội dung phản hồi thực tế vào Actual, gồm `allowed` nếu có. Việc đánh giá cần đối chiếu mã HTTP theo hợp đồng API đã xác nhận, ba trường trạng thái sau thao tác và lịch sử chuyển trạng thái của đơn.
+- **Phân biệt lỗi đầu vào và lỗi chuyển trạng thái.** Qua tình huống AI đặt ra, Ngọc xác định phản hồi `400` do sai tên trường chưa đủ bằng chứng về quy tắc chuyển trạng thái. Khi chạy ca, Ngọc sẽ gửi lại yêu cầu với payload đúng hợp đồng API, đọc nội dung lỗi và đối chiếu CSDL cùng `OrderStatusLog` để xác nhận thao tác bị chặn mà trạng thái đơn không đổi.
+
+### Quyết định của nhóm
+
+Chưa có xác nhận chung về mã HTTP cho lỗi chuyển sai trạng thái.
+
+### Người kiểm tra
+
+Ngọc kiểm tra diff và phạm vi file đã stage trên máy. ChatGPT đối chiếu ma trận với tài liệu repo nhóm và kiểm tra nội dung commit sau khi push. Chưa có kết quả chạy ca hoặc nhận xét của reviewer trong lượt này.
+
+### Kiểm tra và minh chứng
+
+- `git diff --cached --check` không báo lỗi.
+- Commit thêm 28 dòng trong `docs/testing/TEST-CASES.md`, gồm 6 ca chuyển hợp lệ và 6 ca chuyển không hợp lệ. Nội dung trước ma trận giữ nguyên.
+- Cả 12 ca để trống Actual và Ngày, trạng thái `Chưa chạy`.
+- Phản hồi API, tác vụ hết hạn 15 phút, dữ liệu trạng thái trong CSDL và `OrderStatusLog` sẽ được kiểm chứng ở bước chạy ca.
+- Minh chứng [commit `d8bb3e9` trên nhánh `prj/p3-qa-1`](https://github.com/liemnguyen-work/ecommerce-dayora-project/commit/d8bb3e9).

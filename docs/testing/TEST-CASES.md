@@ -265,3 +265,29 @@ Các lượt tạo hoặc cập nhật dùng sản phẩm thử nghiệm riêng.
 | TC-P3-05 | FR11 — Từ chối IPN sai số tiền | Đơn chưa thanh toán có tổng 500.000 đ; tham chiếu tồn tại, đơn còn hạn và các điều kiện khác hợp lệ. | 1. Chuẩn bị payload có số tiền khác tổng đơn.<br>2. Tạo chữ ký hợp lệ cho chính payload sai tiền đó.<br>3. Gửi IPN.<br>4. Kiểm tra JSON và đối chiếu dữ liệu trước/sau. | Tổng đơn 500.000 đ; vnp_Amount=1000000 tương ứng 10.000 đ; vnp_ResponseCode=00; vnp_TransactionStatus=00; chữ ký hợp lệ. | Trả {"RspCode":"04","Message":"Invalid amount"}. Không xác nhận thanh toán hoặc chuyển đơn sang PAID; không thay đổi stock/reserved. Ca phải đi tới nhánh kiểm tra số tiền, không bị chặn trước bởi chữ ký sai. | | | Chưa chạy |
 | TC-P3-06 | FR11 — IPN thành công gửi lặp | IPN thành công lần đầu đã được xử lý; đơn đã PAID; với dữ liệu thử nghiệm, stock hiện là 8 và reserved là 0. Đã giữ lại payload lần đầu. | 1. Ghi trạng thái và số liệu sau IPN lần đầu.<br>2. Gửi lại nguyên payload thành công đó lần thứ hai.<br>3. Ghi JSON phản hồi.<br>4. Đối chiếu đơn, bản ghi thanh toán và tồn kho trước/sau lần gửi lặp. | Cùng vnp_TxnRef, mã giao dịch VNPay, số tiền, kết quả và chữ ký của IPN đã xử lý. | Trả {"RspCode":"02","Message":"Order already confirmed"}. Đơn vẫn PAID; không ghi nhận thanh toán thành công thêm lần nữa. Stock vẫn 8, reserved vẫn 0; không trừ tồn, giải phóng giữ tồn hoặc phát sinh tác động nghiệp vụ lần hai. | | | Chưa chạy |
 | TC-P3-07 | FR11 — Không tìm thấy tham chiếu thanh toán | Đã xác nhận tham chiếu thử nghiệm không tồn tại trong dữ liệu thanh toán của hệ thống. Có công cụ tạo payload ký hợp lệ. | 1. Chuẩn bị payload dùng vnp_TxnRef không tồn tại.<br>2. Ký hợp lệ trên toàn bộ payload.<br>3. Gửi tới IPN.<br>4. Kiểm tra JSON và xác nhận không tạo hoặc cập nhật đơn, thanh toán và tồn kho. | vnp_TxnRef không tồn tại; vnp_Amount=50000000; vnp_ResponseCode=00; vnp_TransactionStatus=00; chữ ký hợp lệ. | Trả RspCode=01, thông báo không tìm thấy giao dịch hoặc đơn theo hợp đồng API. Không tự tạo đơn hay thanh toán từ dữ liệu IPN; không thay đổi tồn kho hoặc dữ liệu của đơn khác. | | | Chưa chạy |
+
+### 2. Ma trận chuyển trạng thái đơn hàng (State Transition Matrix)
+
+Các bộ trạng thái trong bảng ghi theo thứ tự `status` / `paymentStatus` / `shippingStatus`, theo D08 và schema của repo nhóm.
+
+#### Cách kiểm tra khi chạy ca
+
+1. Chuẩn bị đơn thử nghiệm ở đúng trạng thái ban đầu. Ghi lại ba trường trạng thái trước thao tác.
+2. Với ca Admin, dùng tài khoản quản trị gọi `PATCH /api/admin/orders/:id/status` theo đề QA. Dùng ID đơn thử và dữ liệu đúng định dạng theo hợp đồng API. Ghi mã HTTP, nội dung phản hồi và trạng thái đơn sau thao tác.
+3. Với ca thanh toán thành công, dùng thiết lập của `TC-P3-01` và đối chiếu ba trường trạng thái sau IPN. Với ca khách hủy, thao tác bằng tài khoản sở hữu đơn. Với ca hết hạn, để đơn chưa thanh toán qua mốc 15 phút rồi chờ tác vụ hết hạn xử lý.
+4. Đối chiếu dữ liệu và `OrderStatusLog` với Expected. Với ca bị từ chối, xác nhận ba trường trạng thái giữ nguyên và không có log ghi nhận chuyển trạng thái thành công.
+
+| Mã ca | Từ | Thao tác / Đích yêu cầu | Hợp lệ? | Expected | Actual | Ngày | Trạng thái |
+|---|---|---|---|---|---|---|---|
+| TC-P3-08 | `CONFIRMED` / `PAID` / `PREPARING` | Admin chuyển đơn sang đang giao. | Có | `200 OK`. Đơn thành `CONFIRMED` / `PAID` / `SHIPPING` và ghi log chuyển trạng thái. | | | Chưa chạy |
+| TC-P3-09 | `PENDING_PAYMENT` / `UNPAID` / `NOT_SHIPPED` | Admin yêu cầu chuyển thẳng sang `shippingStatus=DELIVERED`. | Không | `400 Bad Request` theo đề QA, kèm thông báo từ chối. Ba trường trạng thái giữ nguyên. | | | Chưa chạy |
+| TC-P3-10 | `PENDING_PAYMENT` / `UNPAID` / `NOT_SHIPPED` | Hệ thống xử lý IPN thanh toán thành công cho đơn còn hạn, theo `TC-P3-01`. | Có | Phản hồi IPN theo `TC-P3-01`. Đơn thành `CONFIRMED` / `PAID` / `NOT_SHIPPED`. | | | Chưa chạy |
+| TC-P3-11 | `CONFIRMED` / `PAID` / `NOT_SHIPPED` | Admin chuyển đơn sang đang chuẩn bị hàng. | Có | `200 OK`. Đơn thành `CONFIRMED` / `PAID` / `PREPARING` và ghi log chuyển trạng thái. | | | Chưa chạy |
+| TC-P3-12 | `CONFIRMED` / `PAID` / `SHIPPING` | Admin xác nhận đã giao hàng. | Có | `200 OK`. Đơn thành `COMPLETED` / `PAID` / `DELIVERED` và ghi log chuyển trạng thái. | | | Chưa chạy |
+| TC-P3-13 | `PENDING_PAYMENT` / `UNPAID` / `NOT_SHIPPED` | Khách hủy đơn của mình khi đơn còn hạn và chưa thanh toán. | Có | Hủy thành công. Đơn thành `CANCELLED` / `UNPAID` / `NOT_SHIPPED` và có log hủy. | | | Chưa chạy |
+| TC-P3-14 | `PENDING_PAYMENT` / `UNPAID` / `NOT_SHIPPED` | Tác vụ hết hạn xử lý đơn quá 15 phút chưa thanh toán. | Có | Đơn thành `CANCELLED` / `EXPIRED` / `NOT_SHIPPED` và có log hết hạn. | | | Chưa chạy |
+| TC-P3-15 | `PENDING_PAYMENT` / `UNPAID` / `NOT_SHIPPED` | Admin yêu cầu chuyển thẳng sang `shippingStatus=SHIPPING`. | Không | `400 Bad Request` theo đề QA, kèm thông báo từ chối. Ba trường trạng thái giữ nguyên. | | | Chưa chạy |
+| TC-P3-16 | `COMPLETED` / `PAID` / `DELIVERED` | Admin yêu cầu đưa đơn đã giao về `shippingStatus=PREPARING`. | Không | `400 Bad Request` theo đề QA, kèm thông báo từ chối. Đơn vẫn hoàn tất và đã giao. | | | Chưa chạy |
+| TC-P3-17 | `COMPLETED` / `PAID` / `DELIVERED` | Admin yêu cầu đưa đơn đã giao về `status=PENDING_PAYMENT`. | Không | `400 Bad Request` theo đề QA, kèm thông báo từ chối. Đơn vẫn hoàn tất, đã thanh toán và đã giao. | | | Chưa chạy |
+| TC-P3-18 | `CANCELLED` / `UNPAID` / `NOT_SHIPPED` | Admin thử đánh dấu `paymentStatus=PAID` cho đơn khách đã hủy. | Không | `400 Bad Request` theo đề QA, kèm thông báo từ chối. Đơn vẫn `CANCELLED`, thanh toán vẫn `UNPAID`. | | | Chưa chạy |
+| TC-P3-19 | `CANCELLED` / `UNPAID` / `NOT_SHIPPED` | Admin yêu cầu chuyển đơn đã hủy sang `shippingStatus=DELIVERED`. | Không | `400 Bad Request` theo đề QA, kèm thông báo từ chối. Đơn vẫn `CANCELLED`, vận chuyển vẫn `NOT_SHIPPED`. | | | Chưa chạy |
