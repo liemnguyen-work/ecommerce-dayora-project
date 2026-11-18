@@ -133,3 +133,73 @@ Khi đổi tỉnh/thành từ Hồ Chí Minh sang Hà Nội, giao diện tự g�
 ### 2.8. Kết luận bước 2
 
 Trang thanh toán hiển thị và tự cập nhật phí giao đúng ở desktop và mobile. Luồng kiểm tra cần sáu thao tác từ giỏ hàng đến nút đặt hàng, hoặc bảy thao tác nếu chọn nội thành Hồ Chí Minh. Báo cáo ghi nhận bốn điểm mức **Nên sửa**, nổi bật là trường địa chỉ nhập tự do và checkbox nội thành Hồ Chí Minh vẫn xuất hiện khi tỉnh/thành là Hà Nội. Không ghi nhận khác biệt mức **Chặn** trong phạm vi kiểm tra.
+
+## 3. Câu chữ thông báo và hộp đối chiếu NFR02
+
+### 3.1. Phạm vi kiểm tra
+
+- **Ngày kiểm tra:** 19/11/2026
+- **Các trường hợp:** voucher không tồn tại, voucher chưa đạt giá trị tối thiểu, `CONFIRM_REQUIRED` và `OUT_OF_STOCK`.
+- Hai thông báo voucher được kiểm tra trực tiếp trên giao diện.
+- Hộp đối chiếu và lỗi hết hàng được đánh giá dựa trên implementation hiện tại; không thay đổi dữ liệu giá hoặc tồn kho trên hệ thống để cưỡng ép lỗi.
+
+### 3.2. Ảnh minh chứng voucher
+
+| Tình huống | Ảnh |
+|---|---|
+| Voucher không tồn tại `SAIMAKY` | [voucher-invalid-1366.png](../images/p2/voucher-invalid-1366.png) |
+| Voucher `PICNIC50K` chưa đạt đơn tối thiểu | [voucher-minimum-1366.png](../images/p2/voucher-minimum-1366.png) |
+
+### 3.3. Đánh giá câu chữ voucher
+
+| Tình huống | Câu hiện tại | Nhận xét | Câu đề xuất | Lý do |
+|---|---|---|---|---|
+| Voucher không tồn tại | “Không tìm thấy voucher” | Ngắn gọn nhưng chưa cho biết người dùng nên làm gì tiếp theo | “Mã voucher không tồn tại hoặc đã được nhập sai. Vui lòng kiểm tra mã và thử lại.” | Giải thích được nguyên nhân có thể xảy ra và hướng dẫn hành động tiếp theo |
+| Voucher chưa đạt giá trị tối thiểu | “Chưa đạt đơn tối thiểu” | Không nêu mức tối thiểu hoặc số tiền còn thiếu | “Đơn hàng của bạn còn thiếu 152.000đ để áp dụng mã PICNIC50K. Mã áp dụng cho đơn từ 500.000đ.” | Cung cấp số liệu cụ thể để người dùng biết cần bổ sung bao nhiêu |
+| Voucher hết hạn | “Voucher ngoài hạn hiệu lực” | Đúng nguyên nhân nhưng cách diễn đạt còn mang tính hệ thống | “Mã voucher này đã hết hạn. Vui lòng chọn ưu đãi khác hoặc tiếp tục thanh toán không dùng mã.” | Dùng tiếng Việt tự nhiên và đưa ra lựa chọn tiếp theo |
+| Voucher hết lượt | “Voucher hết lượt sử dụng” | Dễ hiểu nhưng chưa có hướng xử lý | “Mã voucher đã hết lượt sử dụng. Vui lòng thử mã khác hoặc tiếp tục thanh toán.” | Giúp người dùng không bị dừng luồng mua hàng |
+
+Với giỏ hàng 348.000đ, mã `PICNIC50K` yêu cầu tối thiểu 500.000đ nên còn thiếu 152.000đ. Giao diện hiện chỉ trả về điều kiện chung thay vì số tiền cụ thể.
+
+### 3.4. Đánh giá hộp đối chiếu và lỗi tồn kho
+
+| Tình huống | Có nêu giá cũ – mới? | Có nêu món hoặc số lượng bị ảnh hưởng? | Nút rõ nghĩa? | Nhận xét và đề xuất |
+|---|---|---|---|---|
+| `CONFIRM_REQUIRED` — giá hoặc phí thay đổi | Có; hộp thoại hiển thị tiền hàng, phí giao và tổng tiền ở cột “Trước” và “Sau” | Không; không hiển thị tên sản phẩm có giá thay đổi | Một phần; “Đồng ý thay đổi & Đặt hàng” rõ, nhưng “Hủy đơn” chưa chính xác vì đơn chưa được tạo | Bổ sung tên sản phẩm và giá cũ – mới theo từng món; đổi “Hủy đơn” thành “Quay lại giỏ hàng” hoặc “Tiếp tục chỉnh sửa” |
+| `CONFIRM_REQUIRED` — tồn hoặc voucher thay đổi | Có hiển thị tổng tiền trước – sau | Không nêu sản phẩm bị giảm số lượng; voucher không hợp lệ chỉ được hiển thị dưới dạng cảnh báo chung | Một phần | Hiển thị tên món, số lượng yêu cầu và số lượng còn lại; giải thích voucher nào bị loại và ảnh hưởng bao nhiêu tiền |
+| `OUT_OF_STOCK` | — | Không; câu hiện tại chỉ ghi “Một số món vừa hết hàng” | Không có nút hành động trực tiếp | Hiển thị tên sản phẩm hết hàng và nút “Quay lại giỏ hàng để điều chỉnh” |
+
+### 3.5. Câu chữ hiện tại của hộp đối chiếu
+
+Các nội dung đang được sử dụng:
+
+- Tiêu đề: **“Xác nhận tổng tiền mới”**.
+- Giải thích: **“Giá hoặc phí của đơn đã thay đổi. Vui lòng đối chiếu trước khi tiếp tục đặt hàng.”**
+- Nút phụ: **“Hủy đơn”**.
+- Nút chính: **“Đồng ý thay đổi & Đặt hàng”**.
+- Lỗi hết hàng: **“Một số món vừa hết hàng. Hãy quay lại giỏ để điều chỉnh.”**
+
+Hộp thoại không hiển thị thuật ngữ kỹ thuật như “Conflict 409” hoặc “Payload invalid”, phù hợp với người dùng phổ thông. Tuy nhiên, nội dung mới chỉ so sánh các khoản tổng hợp và chưa trả lời rõ sản phẩm nào đã thay đổi.
+
+### 3.6. Mẫu câu chữ đề xuất
+
+**Khi giá thay đổi:**
+
+> Giá của “{tên sản phẩm}” đã thay đổi từ {giá cũ} thành {giá mới}. Vui lòng kiểm tra tổng tiền mới trước khi tiếp tục.
+
+**Khi số lượng tồn kho không đủ:**
+
+> “{tên sản phẩm}” chỉ còn {số lượng còn lại} sản phẩm, thấp hơn số lượng bạn đã chọn. Vui lòng quay lại giỏ hàng để điều chỉnh.
+
+**Khi tổng tiền hoặc phí giao thay đổi:**
+
+> Phí giao hoặc tổng tiền của đơn hàng vừa thay đổi. Vui lòng kiểm tra các khoản trước và sau rồi xác nhận để tiếp tục.
+
+**Nhãn nút đề xuất:**
+
+- Nút phụ: **“Quay lại giỏ hàng”**.
+- Nút chính: **“Xác nhận thay đổi và đặt hàng”**.
+
+### 3.7. Kết luận bước 3
+
+Các thông báo hiện tại không sử dụng mã lỗi kỹ thuật và nhìn chung có thể hiểu được. Tuy nhiên, thông báo voucher còn thiếu số liệu và hướng dẫn khắc phục; hộp đối chiếu chưa nêu sản phẩm hoặc số lượng bị ảnh hưởng; lỗi hết hàng chưa có nút quay lại giỏ trực tiếp. Các câu đề xuất bổ sung nguyên nhân, số tiền hoặc số lượng cụ thể và hành động tiếp theo để giảm gián đoạn trong luồng thanh toán.

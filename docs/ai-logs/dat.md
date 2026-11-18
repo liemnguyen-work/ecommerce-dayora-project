@@ -1476,3 +1476,70 @@ Không tạo đơn thật trong lúc khảo sát. Bốn điểm quan sát đư�
 - Báo cáo có bốn dòng mức **Nên sửa** trong mục thanh toán.
 - `git diff --check`: PASS.
 - Không thực hiện đặt đơn thật trong quá trình kiểm tra.
+
+---
+
+## P2 — Đánh giá câu chữ trạng thái và hộp đối chiếu / DAT-20261119-P2-003
+
+* **Thời gian ghi:** 19/11/2026
+* **Thời gian thực hiện:** 19/11/2026
+* **Mã phiên nhật ký:** DAT-20261119-P2-003
+* **Người prompt:** Đạt (PD)
+* **Loại mục:** Hoạt động
+* **Liên quan:** PRJ-P2-PD-1.3; nhánh `prj/p2-pd-1`
+
+### Công cụ
+
+ChatGPT, Visual Studio Code, Chrome, CMD, Git và GitHub.
+
+### Mục đích
+
+Đánh giá chất lượng câu chữ của thông báo voucher, lỗi hết hàng và hộp đối chiếu thay đổi giá hoặc phí theo NFR02; đề xuất nội dung tiếng Việt rõ nguyên nhân, số liệu và hành động tiếp theo.
+
+### Prompt
+
+Đạt cung cấp nội dung sub-issue PRJ-P2-PD-1.3 và yêu cầu tiếp tục theo flow các bước trước. Đạt trực tiếp thử voucher trên giao diện và gửi ảnh kết quả để ChatGPT hỗ trợ đối chiếu câu chữ hiện tại, phân tích hộp thoại 409 và chuẩn hóa phần báo cáo.
+
+### Kết quả đề xuất
+
+ChatGPT hỗ trợ:
+
+- Xác định hai mã dùng để kiểm tra là `SAIMAKY` và `PICNIC50K`.
+- Đọc implementation của `CartPage.tsx`, `CheckoutPage.tsx`, `orders.service.ts`, `checkout.service.ts` và `pricing.ts`.
+- Xác định nguyên văn thông báo voucher, lỗi tồn kho và nội dung hộp `CONFIRM_REQUIRED`.
+- Tính số tiền còn thiếu của giỏ 348.000đ so với điều kiện tối thiểu 500.000đ là 152.000đ.
+- Đánh giá khả năng giải thích nguyên nhân và hướng dẫn hành động của từng thông báo.
+- Đề xuất câu chữ thân thiện hơn và nhãn nút phù hợp với trạng thái thực tế.
+- Chuẩn hóa hai ảnh minh chứng thành `voucher-invalid-1366.png` và `voucher-minimum-1366.png`.
+- Hỗ trợ soạn mục 3 trong `docs/report/ux/P2-doi-chieu.md`.
+
+### Phản biện
+
+Hai thông báo voucher hiện tại là “Không tìm thấy voucher” và “Chưa đạt đơn tối thiểu”. Nội dung đúng nguyên nhân nhưng còn ngắn, chưa cho biết người dùng nên làm gì và chưa nêu số tiền còn thiếu.
+
+Không thay đổi giá, tồn kho hoặc dữ liệu dùng chung để cưỡng ép lỗi 409. Phần `CONFIRM_REQUIRED` và `OUT_OF_STOCK` được đánh giá từ implementation hiện tại và được ghi rõ là chưa kích hoạt trực tiếp trong phiên kiểm tra.
+
+Hộp đối chiếu đã hiển thị tiền hàng, phí giao và tổng tiền ở cột trước/sau, nhưng chưa nêu tên sản phẩm hoặc số lượng bị ảnh hưởng. Nút “Hủy đơn” chưa chính xác vì tại thời điểm đó đơn hàng chưa được tạo.
+
+### Quyết định của nhóm
+
+Giữ hai ảnh voucher làm minh chứng kiểm tra trực tiếp. Không tạo thêm ảnh giả lập cho lỗi 409 và không chỉnh sửa database.
+
+Đề xuất đổi nút phụ thành “Quay lại giỏ hàng”, nút chính thành “Xác nhận thay đổi và đặt hàng”; đồng thời bổ sung tên sản phẩm, giá, số lượng hoặc số tiền còn thiếu trong từng thông báo.
+
+### Người kiểm tra
+
+Đạt trực tiếp nhập hai mã voucher, quan sát câu chữ và chụp ảnh minh chứng. ChatGPT hỗ trợ đọc implementation, phân tích microcopy, tính số tiền còn thiếu và chuẩn hóa nội dung báo cáo. FD1 Thành là reviewer phụ trách xác nhận kết quả.
+
+### Kiểm tra và minh chứng
+
+- `SAIMAKY`: hiển thị “Không tìm thấy voucher”.
+- `PICNIC50K`: hiển thị “Chưa đạt đơn tối thiểu”.
+- Giá trị giỏ: 348.000đ.
+- Điều kiện mã `PICNIC50K`: đơn từ 500.000đ.
+- Số tiền còn thiếu: 152.000đ.
+- Có hai ảnh voucher trong `docs/report/images/p2/`.
+- Báo cáo có nội dung `CONFIRM_REQUIRED` và `OUT_OF_STOCK`.
+- Báo cáo có đề xuất câu chữ và hành động tiếp theo.
+- Không sửa mã nguồn, giá, tồn kho hoặc dữ liệu dùng chung.
+- `git diff --check`: PASS.
