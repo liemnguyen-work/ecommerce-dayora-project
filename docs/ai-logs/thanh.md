@@ -2619,3 +2619,413 @@ Codex chạy lint và build web; chờ Thành và thành viên phụ trách Abou
 
 ### Kiểm tra và minh chứng
 npm run lint -w web, npm run build -w web và git diff --check thành công; chưa kiểm thử trang About.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-1-1-001
+
+* Thời gian ghi: 2026-11-18T15:11:33+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-cart
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-FD1-1.1 #468 (theo issue nguồn NguyenTienMinh2510/dayora); nhánh `prj/p2-fd1-1` trong repo Liêm.
+
+### Công cụ
+
+Codex; Git; npm.cmd; TypeScript; ESLint; Vite.
+
+### Mục đích
+
+Triển khai Bước 1 của task Giỏ hàng + voucher: client API và kiểu dữ liệu cho giỏ hàng.
+
+### Prompt
+
+Thành cung cấp mô tả sub-issue PRJ-P2-FD1-1.1, yêu cầu đọc và áp dụng skill DAYORA, sau đó cho phép làm sớm và triển khai trực tiếp.
+
+### Kết quả đề xuất
+
+Codex tạo `apps/web/src/lib/cart.ts` với CartSku, CartItem, CartWarning, Cart và các hàm getCart, addToCart, updateCartItem, removeCartItem. Client gọi API server `/cart` và `/cart/items`; không lưu giỏ ở localStorage. Dùng `kitGroupId` vì backend hiện trả đúng field này thay vì `kitId` trong ví dụ issue.
+
+### Phản biện
+
+Chưa thử API trong trình duyệt với cookie đăng nhập thật; không thể xác nhận thao tác tăng/giảm/xóa UI vì CartPage thuộc Bước 2. Contract backend được đối chiếu từ CartController và CartService ở commit nền `origin/main`.
+
+### Quyết định của nhóm
+
+Thành cho phép làm sớm và triển khai trực tiếp Bước 1; chưa có quyết định reviewer hoặc kết quả duyệt.
+
+### Người kiểm tra
+
+Codex chạy lint/build; chờ Thành và reviewer PD Đạt kiểm tra tích hợp UI/API.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web`, `npm.cmd run build -w web` và `git diff --check` thành công. `node_modules` của worktree mới được cài bằng `npm ci` theo lockfile. Chưa commit/push tại thời điểm ghi.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-1-1-002
+
+* Thời gian ghi: 2026-11-18T15:15:36+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-cart
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: THANH-20261118-PRJ-P2-FD1-1-1-001; commit 25cfd9e; tiêu chí test OrdersService do Thành cung cấp.
+
+### Công cụ
+
+Codex; npm.cmd; Vitest; NestJS build; Prisma generate.
+
+### Mục đích
+
+Chạy hai ca test OrdersService được Thành yêu cầu trước khi tiếp tục task giỏ hàng.
+
+### Prompt
+
+Thành yêu cầu chạy `orders.service` cho hai ca “miễn phí HCM khi đủ 500.000 sau giảm” và “rejects a voucher before its start date and after the user limit”.
+
+### Kết quả đề xuất
+
+Lần chạy đầu cả hai ca đỏ với thông báo bao ngoài “OrdersService chưa được triển khai” vì Prisma Client chưa được generate trong worktree mới. Codex chạy `npm.cmd run build -w api`, Prisma generate và Nest build thành công; sau đó chạy lại đúng hai ca và cả hai đều pass.
+
+### Phản biện
+
+Thông báo lỗi lần đầu từ `catch` dynamic import không phản ánh đúng việc OrdersService có tồn tại; cần kiểm tra build/generate trước khi kết luận thiếu triển khai. Không sửa mã backend.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới; chỉ thực hiện kiểm tra theo yêu cầu Thành.
+
+### Người kiểm tra
+
+Codex chạy lệnh và quan sát output Vitest; chờ Thành/reviewer đối chiếu.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run build -w api` thành công. Hai lệnh test đều trả `Test Files 1 passed`, `Tests 1 passed | 6 skipped` và exit code 0.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-1-2-003
+
+* Thời gian ghi: 2026-11-18T15:31:34+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-cart
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: THANH-20261118-PRJ-P2-FD1-1-1-002; PRJ-P2-FD1-1.2 #470 (theo issue nguồn NguyenTienMinh2510/dayora).
+
+### Công cụ
+
+Codex; Git; npm.cmd; React; TypeScript; ESLint; Vite.
+
+### Mục đích
+
+Triển khai Bước 2 của task Giỏ hàng + voucher: hiển thị và cập nhật giỏ tại route `/gio-hang`, chưa làm voucher hoặc preview của bước sau.
+
+### Prompt
+
+Thành cung cấp mô tả sub-issue PRJ-P2-FD1-1.2, gọi skill DAYORA và sau đó yêu cầu Codex làm hết phần triển khai.
+
+### Kết quả đề xuất
+
+Codex tạo `apps/web/src/pages/CartPage.tsx`, nối route trong `apps/web/src/App.tsx` và bổ sung giao diện responsive trong `apps/web/src/catalog.css`. Trang xử lý trạng thái xác thực, tải/lỗi, giỏ trống, danh sách món, cảnh báo tồn kho, tạm tính từ server và thao tác tăng, giảm, xóa có khóa nút khi request đang chạy.
+
+### Phản biện
+
+ESLint lần đầu báo `react-hooks/set-state-in-effect` do effect gọi gián tiếp hàm có cập nhật state; Codex đổi phần tải ban đầu sang Promise callbacks có cleanup để tránh cập nhật sau unmount. Bản build lần đầu không ghi được file tạm trong worktree ngoài sandbox; chạy lại với quyền ghi được cấp thì thành công. Chưa kiểm thử trình duyệt với tài khoản và giỏ thật nên chưa xác nhận trực quan các thao tác API.
+
+### Quyết định của nhóm
+
+Thành cho phép Codex triển khai toàn bộ sub-issue 1.2. Chưa có kết quả duyệt của reviewer hoặc quyết định chung mới.
+
+### Người kiểm tra
+
+Codex kiểm tra tĩnh và build; chờ Thành và reviewer PD Đạt kiểm tra thao tác thực tế trên trình duyệt.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web`, `npm.cmd run build -w web` và `git diff --check` thành công. Các tệp thay đổi thuộc đúng bước 1.2; chưa commit/push tại thời điểm ghi mục này.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-1-2-004
+
+* Thời gian ghi: 2026-11-18T15:46:23+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-cart
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: THANH-20261118-PRJ-P2-FD1-1-2-003; PRJ-P2-FD1-1.2 #470.
+
+### Công cụ
+
+Codex; PowerShell; NestJS; React; TypeScript; ESLint; Vite.
+
+### Mục đích
+
+Khắc phục trở ngại khi Thành kiểm tra giỏ hàng trên localhost: API cũ gây sai CORS và nút chi tiết sản phẩm chưa gọi API thêm giỏ.
+
+### Prompt
+
+Thành cung cấp ảnh trang sản phẩm hiện thông báo “Chức năng thêm vào giỏ đang được phát triển” và yêu cầu sửa để kiểm tra giỏ hàng.
+
+### Kết quả đề xuất
+
+Codex dừng đúng tiến trình API cũ chiếm cổng 3000, đặt `WEB_ORIGIN` local về `http://localhost:5173`, bật API từ worktree P2 và xác minh health/products trả 200. `ProductPage.tsx` được nối với `addToCart`, chuyển khách chưa đăng nhập đến trang đăng nhập, khóa nút khi gửi request, báo kết quả và cung cấp liên kết xem giỏ.
+
+### Phản biện
+
+Tệp `.env` chỉ dùng local và bị `.gitignore` loại trừ. Thao tác thêm sản phẩm với cookie đăng nhập thật chưa được Codex xác minh trên trình duyệt; cần Thành thực hiện bước này trước khi duyệt.
+
+### Quyết định của nhóm
+
+Thành yêu cầu sửa trở ngại để có thể test bước 1.2 trên localhost; chưa có kết quả reviewer hoặc quyết định chung mới.
+
+### Người kiểm tra
+
+Codex kiểm tra API bằng HTTP và chạy lint/build; chờ Thành xác nhận thao tác thêm, tăng, giảm và xóa trên trình duyệt.
+
+### Kiểm tra và minh chứng
+
+`GET /api/health` và `GET /api/products` trả 200 với header CORS cho `http://localhost:5173`. `npm.cmd run lint -w web`, `npm.cmd run build -w web` và `git diff --check` thành công. Thay đổi sửa nút thêm giỏ và mục log này chưa commit/push tại thời điểm ghi.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-1-3-005
+
+* Thời gian ghi: 2026-11-18T15:56:55+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-cart
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: THANH-20261118-PRJ-P2-FD1-1-2-004; PRJ-P2-FD1-1.3 #472.
+
+### Công cụ
+
+Codex; Git; npm.cmd; React; TypeScript; ESLint; Vite; Vitest; curl.
+
+### Mục đích
+
+Triển khai Bước 3 của task Giỏ hàng + voucher: lưu mã trong sessionStorage, gọi server preview và hiển thị kết quả voucher cùng tổng tiền do server trả.
+
+### Prompt
+
+Thành cung cấp toàn bộ mô tả sub-issue PRJ-P2-FD1-1.3 và yêu cầu tiếp tục task kế tiếp.
+
+### Kết quả đề xuất
+
+Codex bổ sung kiểu `Preview`, `expectedOf`, `previewOrder`, `savedVoucher`, `saveVoucher` trong `lib/cart.ts`; thêm form voucher, trạng thái hợp lệ/từ chối, phí giao tạm tính và tổng server trong `CartPage.tsx`; bổ sung CSS responsive cho form. Mã được chuẩn hóa chữ hoa khi áp dụng, lưu với khóa `dayora:voucher`, và trang giỏ vẫn hiển thị nếu riêng preview gặp lỗi.
+
+### Phản biện
+
+`OrdersService` và 7 test nghiệp vụ đã có, nhưng cả `origin/main` lẫn `origin/prj/p2-bd2-2` không có `OrdersController`/`OrdersModule` đăng ký endpoint. Vì vậy `POST /api/orders/preview` thực tế trả 404; chưa thể xác minh ca DAYORA10 hoặc mã sai trên trình duyệt. Không tự thêm backend ngoài phạm vi FD1.
+
+### Quyết định của nhóm
+
+Thành yêu cầu tiếp tục sub-issue 1.3. Chưa có quyết định cho phép mở rộng sang sửa dependency backend hoặc kết quả reviewer.
+
+### Người kiểm tra
+
+Codex chạy kiểm tra frontend, test service backend và HTTP endpoint; chờ chủ phụ trách backend bổ sung route, sau đó Thành/reviewer kiểm tra tay voucher trên trình duyệt.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web`, `npm.cmd run build -w web`, `git diff --check` thành công. `npm.cmd test -w api -- orders.service` trả 1 file và 7 test đều pass. `POST /api/orders/preview` trả 404 `Cannot POST /api/orders/preview`; tiêu chí “/gio-hang báo kết quả áp mã và cập nhật tổng” chưa được xác minh tích hợp.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-1-3-006
+
+* Thời gian ghi: 2026-11-18T16:06:32+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-cart
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: THANH-20261118-PRJ-P2-FD1-1-3-005; PRJ-P2-FD1-1.3 #472; commit eb2395b trước khi amend.
+
+### Công cụ
+
+Codex; PowerShell; NestJS; React; TypeScript; ESLint; Vite; Vitest.
+
+### Mục đích
+
+Sửa trở ngại tích hợp preview và làm rõ giao diện tính voucher sau khi Thành kiểm tra bản local.
+
+### Prompt
+
+Thành báo trang giỏ trả `Cannot POST /api/orders/preview`, sau đó phản hồi giao diện chưa nói rõ voucher giảm 10% và yêu cầu sửa đẹp hơn; cuối cùng cho phép commit bản sửa.
+
+### Kết quả đề xuất
+
+Codex bổ sung `OrdersController`, `OrdersModule` và đăng ký module để route `POST /api/orders/preview` tồn tại. Response voucher có thêm mã và phần trăm; giao diện thể hiện công thức tiền hàng, voucher âm, phí giao dương và tổng dự kiến, kèm ghi chú tổng đã gồm phí giao tạm tính. Khối voucher được chỉnh khoảng cách, màu, typography và trạng thái thành công.
+
+### Phản biện
+
+Với giỏ 387.000 đồng, DAYORA10 giảm 38.700 đồng và phí giao tạm tính 30.000 đồng, tổng server là 378.300 đồng; số tổng cao hơn tiền sau giảm vì đã cộng phí giao. Thành đã xem giao diện và cho phép commit; Thành chưa cung cấp xác nhận riêng bằng lời cho ca `MA_KHONG_TON_TAI`, nên không ghi ca đó đã pass.
+
+### Quyết định của nhóm
+
+Thành yêu cầu hoàn thiện local trước, tự kiểm tra rồi mới commit; quy trình này được áp dụng cho các bước sau. Thành cho phép amend và cập nhật commit bước 1.3 sau khi xem bản sửa.
+
+### Người kiểm tra
+
+Codex chạy kiểm tra tự động; Thành kiểm tra giao diện local và cho phép commit. Ca mã voucher không tồn tại vẫn chờ xác nhận cụ thể của Thành/reviewer.
+
+### Kiểm tra và minh chứng
+
+API và web lint pass; web build pass; `npm.cmd test -w api -- orders.service` trả 7/7 test pass; `git diff --check` pass. Route preview đã chuyển từ 404 sang 401 khi gọi không cookie, chứng minh controller được đăng ký và guard hoạt động. Thành cung cấp ảnh DAYORA10 áp dụng với mức giảm 38.700 đồng trên giỏ 387.000 đồng.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-1-4-007
+
+* Thời gian ghi: 2026-11-18T16:19:30+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-cart
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: THANH-20261118-PRJ-P2-FD1-1-3-006; PRJ-P2-FD1-1.4 #474.
+
+### Công cụ
+
+Codex; React Router; React; CSS; npm.cmd; ESLint; TypeScript; Vite; Git.
+
+### Mục đích
+
+Nối luồng từ giỏ hàng sang `/thanh-toan`, khóa thao tác khi có sản phẩm hết hàng và bảo đảm bố cục phù hợp desktop/mobile.
+
+### Prompt
+
+Thành cung cấp mô tả sub-issue PRJ-P2-FD1-1.4, yêu cầu tiếp tục, phản hồi trang chuyển tiếp ban đầu quá sơ sài và sau khi xem bản sửa đã yêu cầu commit.
+
+### Kết quả đề xuất
+
+Codex thêm nút `.cart-checkout` hiển thị tổng server, chuyển route `/thanh-toan`, khóa khi request đang chạy hoặc giỏ có cảnh báo `OUT_OF_STOCK`, đồng thời hiển thị cảnh báo yêu cầu điều chỉnh giỏ. Route thanh toán có màn hình chuyển tiếp responsive, tiến trình đặt hàng và đường quay lại giỏ; chưa triển khai form checkout thuộc task sau.
+
+### Phản biện
+
+Màn hình chuyển tiếp đầu tiên chỉ là placeholder trắng nên Thành phản hồi chưa đạt thẩm mỹ; Codex thay bằng bố cục thương hiệu hoàn chỉnh. Yêu cầu “khung tiền bên phải/bên dưới” áp dụng cho ảnh trang `/gio-hang`, không phải trang `/thanh-toan`; điểm này đã được giải thích lại.
+
+### Quyết định của nhóm
+
+Thành yêu cầu mọi bước sau phải được kiểm tra local trước khi commit và đã cho phép commit bước 1.4 sau khi xem bản sửa. Nội dung form thanh toán thật để task PRJ-P2-FD1-2.
+
+### Người kiểm tra
+
+Codex chạy lint/build; Thành kiểm tra việc chuyển sang trang `/thanh-toan` và cho phép commit. Chưa nhận được ảnh minh chứng riêng ở chiều rộng 390px nên không ghi ca chụp ảnh mobile đã hoàn tất.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web`, `npm.cmd run build -w web` và `git diff --check` thành công. Thành cung cấp ảnh trang `/thanh-toan` desktop sau khi chuyển route. Ảnh `/gio-hang` 1366px và 390px vẫn cần lưu vào PR nếu reviewer yêu cầu đủ minh chứng.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-1-5-008
+
+* Thời gian ghi: 2026-11-18T16:25:34+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-cart
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: THANH-20261118-PRJ-P2-FD1-1-4-007; PRJ-P2-FD1-1.5 #476.
+
+### Công cụ
+
+Codex; tài liệu Markdown; Git.
+
+### Mục đích
+
+Thực hiện bài tự đánh giá kiến thức sau task giỏ hàng và voucher, phản biện câu trả lời rồi ghi lại phần Thành đã tự sửa.
+
+### Prompt
+
+Thành cung cấp nội dung sub-issue kiểm tra kiến thức, yêu cầu hỏi toàn bộ một lượt, sau đó tự trả lời bảy câu về API giỏ, CartPage, voucher preview, điều hướng thanh toán, khó khăn thực tế, `expectedOf` và nơi lưu dữ liệu.
+
+### Kết quả đề xuất
+
+Codex chấm câu trả lời lần đầu, chỉ ra `cart.ts` không lưu giỏ trong localStorage, code không có debounce/AbortController và điều kiện khóa nút thực tế. Thành tự sửa các câu chưa đúng; Codex ghi lại câu trả lời đã sửa vào `docs/learning/FD1-Thanh/kiem-tra/PRJ-P2-FD1-1.md` và ghi rõ phần reviewer hỏi trực tiếp vẫn đang chờ.
+
+### Phản biện
+
+Lần đầu, câu 1 mô tả sai nơi lưu giỏ, câu 4 thêm điều kiện không có trong code và câu 5 nêu một race condition chưa xảy ra. Sau phản biện, Thành sửa đúng vai trò API client, điều kiện `OUT_OF_STOCK`, sự khác nhau với `INSUFFICIENT_STOCK` và chọn khó khăn thực tế là route preview/CORS/cách trình bày phí giao.
+
+### Quyết định của nhóm
+
+Thành tự trả lời trước theo quy tắc liêm chính và yêu cầu commit sau khi sửa đúng. Chưa có kết quả reviewer hỏi ngẫu nhiên hoặc xác nhận checklist issue cha.
+
+### Người kiểm tra
+
+Codex đối chiếu câu trả lời với code và lịch sử lỗi đã quan sát; Thành tự viết lại câu trả lời. Chờ reviewer kiểm tra khả năng giải thích không mở code.
+
+### Kiểm tra và minh chứng
+
+File kiểm tra kiến thức có đủ bốn bước, chỗ khó nhất và hai câu hỏi vặn; `git diff --check` thành công trước khi ghi log. Chưa tuyên bố reviewer đã duyệt hoặc issue đã đạt hoàn toàn.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-1-5-009
+
+* Thời gian ghi: 2026-11-18T16:27:51+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-cart
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: THANH-20261118-PRJ-P2-FD1-1-5-008; PRJ-P2-FD1-1.5 #476.
+
+### Công cụ
+
+Codex; npm.cmd; ESLint; TypeScript; NestJS; Prisma; Vite; Git.
+
+### Mục đích
+
+Chạy kiểm tra toàn bộ workspaces theo tiêu chí cuối task trước khi commit bài kiểm tra kiến thức.
+
+### Prompt
+
+Thành hoàn tất phần tự trả lời, sửa câu 4 và yêu cầu commit; Codex thực hiện bước kiểm tra toàn repo trước commit.
+
+### Kết quả đề xuất
+
+Lint toàn repo thành công. Build lần đầu bị khóa Prisma DLL do API dev đang chạy; Codex xác định đúng cây Nest watcher của worktree, dừng tiến trình đó và chạy lại build toàn repo thành công.
+
+### Phản biện
+
+Lỗi EPERM lần đầu là xung đột file đang được tiến trình API sử dụng, không phải lỗi mã nguồn. API local đã được dừng để kiểm tra; cần chạy lại `npm.cmd run dev:api` nếu tiếp tục test trình duyệt.
+
+### Quyết định của nhóm
+
+Không có quyết định chung mới; thực hiện kiểm tra bắt buộc trước commit theo yêu cầu task cha.
+
+### Người kiểm tra
+
+Codex chạy và quan sát kết quả lệnh; reviewer chưa kiểm tra lại độc lập.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint` pass cho API và web. `npm.cmd run build` lần cuối pass: Prisma Client generate, Nest build, TypeScript và Vite build đều thành công. `git diff --check` pass.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-1-MERGE-010
+
+* Thời gian ghi: 2026-11-18T16:34:32+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-cart
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: PR #689; nhánh `prj/p2-fd1-1`; merge `origin/main`.
+
+### Công cụ
+
+Codex; Git; npm.cmd; ESLint; Prisma; NestJS; TypeScript; Vite.
+
+### Mục đích
+
+Giải quyết hai khối conflict trong `apps/api/src/app.module.ts` để PR giỏ hàng có thể tiếp tục review và merge.
+
+### Prompt
+
+Thành cung cấp ảnh GitHub báo hai conflict giữa nhánh `prj/p2-fd1-1` và `main` trong `app.module.ts`.
+
+### Kết quả đề xuất
+
+Codex merge `origin/main` vào nhánh, giữ đồng thời `OrdersModule` của nhánh hiện tại và `AdminVouchersModule`, `AdminPromotionsModule` từ main ở cả phần import và danh sách `imports`. Không bỏ các thay đổi hợp lệ của thành viên khác.
+
+### Phản biện
+
+Chọn riêng current hoặc incoming sẽ làm mất một nhóm module và khiến route tương ứng không được đăng ký. Cần giữ cả hai phía nhưng loại bỏ toàn bộ conflict marker.
+
+### Quyết định của nhóm
+
+Thành yêu cầu xử lý conflict để tiếp tục task; chưa có kết quả reviewer sau merge.
+
+### Người kiểm tra
+
+Codex chạy kiểm tra tự động; chờ reviewer kiểm tra lại PR.
+
+### Kiểm tra và minh chứng
+
+Không còn conflict marker trong `app.module.ts`. `npm.cmd run lint` pass cho API và web; Prisma generate và Nest build pass; web TypeScript/Vite build pass; `git diff --check` pass.

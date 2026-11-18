@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { api } from '../lib/api';
+import { useAuth } from '../lib/auth';
+import { addToCart } from '../lib/cart';
 import { formatPrice, type Category, type Product, type Sku } from '../lib/catalog';
 import ProductCard from '../components/catalog/ProductCard';
 
@@ -15,11 +17,15 @@ type ProductDetail = {
 };
 
 function ProductDetails({ product }: { product: ProductDetail }) {
-  const { search } = useLocation();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const { search } = location;
   const [selectedId, setSelectedId] = useState(product.skus[0]?.id);
   const [quantity, setQuantity] = useState(1);
   const [quantityInput, setQuantityInput] = useState('1');
   const [notice, setNotice] = useState('');
+  const [adding, setAdding] = useState(false);
   const sku = product.skus.find((item) => item.id === selectedId);
   const available = Boolean(sku?.inStock && sku.availableStock > 0);
   const maxQty = Math.max(1, Math.min(99, sku?.availableStock ?? 1));
@@ -32,6 +38,26 @@ function ProductDetails({ product }: { product: ProductDetail }) {
     const next = Math.max(1, Math.min(maxQty, value));
     setQuantity(next);
     setQuantityInput(String(next));
+  }
+
+  async function handleAddToCart() {
+    if (!sku || !available) return;
+    if (!user) {
+      const next = `${location.pathname}${location.search}`;
+      navigate(`/dang-nhap?next=${encodeURIComponent(next)}`);
+      return;
+    }
+
+    setAdding(true);
+    setNotice('');
+    try {
+      await addToCart(sku.id, quantity);
+      setNotice(`Đã thêm ${quantity} sản phẩm vào giỏ.`);
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : 'Không thể thêm sản phẩm vào giỏ.');
+    } finally {
+      setAdding(false);
+    }
   }
   return (
     <>
@@ -62,10 +88,10 @@ function ProductDetails({ product }: { product: ProductDetail }) {
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-4">
-          <button type="button" disabled={!available} onClick={() => setNotice('Chức năng thêm vào giỏ đang được phát triển.')} className="min-h-11 rounded-full bg-berry px-6 py-3 font-semibold text-white disabled:cursor-not-allowed disabled:bg-ink/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink">{available ? 'Thêm vào giỏ' : 'Tạm hết hàng'}</button>
+          <button type="button" disabled={!available || adding} onClick={() => void handleAddToCart()} className="min-h-11 rounded-full bg-berry px-6 py-3 font-semibold text-white disabled:cursor-not-allowed disabled:bg-ink/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink">{adding ? 'Đang thêm…' : available ? 'Thêm vào giỏ' : 'Tạm hết hàng'}</button>
           <Link className="rounded-full px-3 py-2 font-semibold text-ink underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-berry" to="/san-pham">← Về danh mục</Link>
         </div>
-        {notice && <p role="status" className="text-sm">{notice}</p>}
+        {notice && <p role="status" className="text-sm">{notice} {notice.startsWith('Đã thêm') && <Link className="font-semibold underline" to="/gio-hang">Xem giỏ hàng</Link>}</p>}
       </div>
     </article>
     <section aria-labelledby="product-specs" className="mt-16">
