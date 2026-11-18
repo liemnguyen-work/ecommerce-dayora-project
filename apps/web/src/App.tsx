@@ -13,6 +13,7 @@ import ProductPage from './pages/ProductPage';
 import AboutPage from './pages/AboutPage';
 import CartPage from './pages/CartPage';
 import CheckoutPage from './pages/CheckoutPage';
+import OrderCreatedPage from './pages/OrderCreatedPage';
 import './motion.css';
 
 function ScrollOnNavigation() {
@@ -73,6 +74,7 @@ export default function App() {
         <Route path="/tao-bo" element={<Placeholder title="Tạo bộ" />} />
         <Route path="/gio-hang" element={<CartPage />} />
         <Route path="/thanh-toan" element={<CheckoutPage />} />
+        <Route path="/don-hang/:id" element={<OrderCreatedPage />} />
         <Route path="/tai-khoan" element={<AccountPage />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="*" element={<main className="p-8"><h1>404 - Không tìm thấy trang</h1></main>} />

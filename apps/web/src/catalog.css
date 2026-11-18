@@ -589,6 +589,118 @@
   margin-top: 28px;
 }
 
+.checkout-actions .cart-button {
+  border-color: #244c35;
+  color: #244c35;
+}
+
+.checkout-actions .cart-button-primary {
+  border-color: var(--color-berry);
+  background: var(--color-berry);
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(204, 69, 55, 0.2);
+}
+
+.checkout-actions .cart-button-primary:hover:not(:disabled) {
+  filter: brightness(0.94);
+  transform: translateY(-1px);
+}
+
+.checkout-actions .cart-button:disabled {
+  border-color: rgba(36, 76, 53, 0.25);
+  background: rgba(36, 76, 53, 0.1);
+  color: rgba(36, 76, 53, 0.55);
+  box-shadow: none;
+  opacity: 1;
+}
+
+.order-success-page {
+  display: grid;
+  width: min(760px, calc(100% - 32px));
+  min-height: 72vh;
+  margin: 0 auto;
+  padding: 64px 0 88px;
+  place-items: center;
+}
+
+.order-success-card {
+  width: 100%;
+  box-sizing: border-box;
+  padding: clamp(28px, 6vw, 54px);
+  border: 1px solid rgba(36, 68, 48, 0.16);
+  border-radius: 30px;
+  background: #fff;
+  box-shadow: 0 24px 70px rgba(36, 68, 48, 0.1);
+}
+
+.order-success-icon {
+  display: grid;
+  width: 58px;
+  height: 58px;
+  margin-bottom: 22px;
+  place-items: center;
+  border-radius: 50%;
+  background: #244c35;
+  color: #fff;
+  font-size: 1.7rem;
+  font-weight: 800;
+}
+
+.order-success-eyebrow {
+  margin: 0 0 10px;
+  color: var(--color-berry);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.order-success-card h1 {
+  margin: 0 0 14px;
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  line-height: 1.05;
+}
+
+.order-success-code {
+  display: grid;
+  gap: 6px;
+  margin: 26px 0;
+  padding: 18px 20px;
+  border-radius: 16px;
+  background: rgba(157, 208, 125, 0.18);
+}
+
+.order-success-code span {
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+}
+
+.order-success-code strong {
+  overflow-wrap: anywhere;
+  color: #244c35;
+}
+
+.order-success-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.order-success-actions .cart-button {
+  border-color: #244c35;
+  color: #244c35;
+}
+
+.order-success-actions .cart-button-primary {
+  border-color: #244c35;
+  background: #244c35;
+  color: #fff;
+}
+
+.order-success-actions .cart-button:hover {
+  filter: brightness(0.92);
+}
+
 .checkout-help {
   padding: 30px;
   background: linear-gradient(150deg, #244c35, #173624);

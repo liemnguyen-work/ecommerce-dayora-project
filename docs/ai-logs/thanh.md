@@ -3111,3 +3111,85 @@ Thành kiểm tra chức năng trên localhost và yêu cầu commit; Codex ch�
 ### Kiểm tra và minh chứng
 
 `npm.cmd run lint -w web` pass; `npm.cmd run build -w web` pass; `git diff --check` pass. API `/api/health` và web `/thanh-toan` đều trả HTTP 200. Tệp thay đổi: `apps/web/src/lib/cart.ts`, `apps/web/src/pages/CheckoutPage.tsx`, `apps/web/src/catalog.css` và mục log này.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-2-3-003
+
+* Thời gian ghi: 2026-11-18T17:30:56+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-checkout
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: THANH-20261118-PRJ-P2-FD1-2-2-002; PRJ-P2-FD1-2.3 #482.
+
+### Công cụ
+
+Codex; React; TypeScript; NestJS; Prisma; REST API; CSS; npm.cmd; ESLint; Vitest; Vite; Git.
+
+### Mục đích
+
+Gửi đơn chính thức từ CheckoutPage, chống bấm lặp, xử lý lỗi hết hàng và 409, xóa voucher sau thành công rồi chuyển đến URL đơn vừa tạo.
+
+### Prompt
+
+Thành cung cấp sub-issue #482 và yêu cầu hoàn thiện để tự kiểm tra trước khi commit. Sau khi tạo đơn thật trên localhost, Thành phản hồi nút đặt hàng khó phân biệt trạng thái và trang thành công quá sơ sài; sau lần cải thiện tiếp theo, Thành yêu cầu bỏ các giải thích không cần thiết và commit.
+
+### Kết quả đề xuất
+
+Codex thêm payload recipient, voucher, expected và expectedTotal; gửi `POST /orders`, khóa nút khi đang gửi, xử lý OUT_OF_STOCK/CONFIRM_REQUIRED, xóa voucher và điều hướng đến `/don-hang/:id?moi=1`. Do backend đã có CheckoutService nhưng chưa đăng ký endpoint, Codex nối tối thiểu service vào OrdersModule/OrdersController. Trang xác nhận đơn được tạo với mã đơn và điều hướng; các giải thích kỹ thuật thừa được gỡ theo phản hồi của Thành. Màu nút enabled/disabled được làm rõ.
+
+### Phản biện
+
+Thành kiểm tra thực tế và xác nhận thao tác đã chuyển trang nhưng chỉ ra nút trông như bị khóa và placeholder “Trang đang xây dựng” không đạt yêu cầu. Thành tiếp tục yêu cầu màn hình chỉ thông báo thành công, không hiển thị các dòng về xóa giỏ, voucher, giá server hoặc thời gian giữ hàng. Các nội dung đó đã được loại bỏ.
+
+### Quyết định của nhóm
+
+Thành yêu cầu commit sau khi rút gọn trang xác nhận. Chưa có review độc lập từ PD Đạt và chưa có quyết định chung ngoài phạm vi sub-issue này.
+
+### Người kiểm tra
+
+Thành tạo đơn trên localhost và quan sát việc chuyển sang URL đơn thật; Codex chạy kiểm tra tự động. Reviewer chưa kiểm tra độc lập.
+
+### Kiểm tra và minh chứng
+
+Lint toàn repo pass; build API pass sau khi dừng watcher khóa Prisma; build web pass; 7/7 test `checkout.service` pass; `git diff --check` pass. API ghi nhận route `POST /api/orders`; Thành xác nhận luồng tạo đơn đã chuyển trang. Tệp thay đổi gồm OrdersController, OrdersModule, CheckoutPage, App, catalog.css, OrderCreatedPage và mục log này.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-2-3-004
+
+* Thời gian ghi: 2026-11-18T17:32:25+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-checkout
+* Người prompt: Thành
+* Loại mục: Đính chính
+* Liên quan: THANH-20261118-PRJ-P2-FD1-2-3-003; PRJ-P2-FD1-2.3 #482.
+
+### Công cụ
+
+Codex; React; CSS; npm.cmd; ESLint; TypeScript; Vite; Git.
+
+### Mục đích
+
+Sửa độ tương phản hai nút và nội dung tiêu đề trang xác nhận sau khi Thành kiểm tra bản đã commit cục bộ.
+
+### Prompt
+
+Thành cung cấp ảnh và phản hồi hai nút vẫn hiển thị mờ, đồng thời yêu cầu thông báo chính xác là “Đã tạo đơn thành công”.
+
+### Kết quả đề xuất
+
+Tiêu đề được đổi thành “Đã tạo đơn thành công”. Nút chính dùng nền xanh đậm, nút phụ dùng chữ và viền xanh đậm, kèm trạng thái hover rõ ràng.
+
+### Phản biện
+
+Màu `--color-leaf` chung quá nhạt trên nền trắng nên dù nút hoạt động vẫn giống trạng thái vô hiệu hóa. Quy tắc riêng cho khu vực xác nhận đơn giải quyết tương phản mà không ảnh hưởng nút ở trang khác.
+
+### Quyết định của nhóm
+
+Thành yêu cầu sửa trực tiếp hai điểm giao diện nêu trên. Chưa có review độc lập từ PD Đạt.
+
+### Người kiểm tra
+
+Codex chạy kiểm tra tự động; chờ Thành tải lại localhost để quan sát bản CSS mới.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web`, `npm.cmd run build -w web` và `git diff --check` đều pass. Tệp sửa: `apps/web/src/pages/OrderCreatedPage.tsx`, `apps/web/src/catalog.css` và mục log này.

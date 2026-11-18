@@ -1,13 +1,27 @@
 import { useEffect, useState, type FormEvent } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useAuth, type User } from '../lib/auth';
-import { getCart, previewOrder, savedVoucher, type Cart, type Preview } from '../lib/cart';
+import { expectedOf, getCart, previewOrder, savedVoucher, saveVoucher, type Cart, type Preview } from '../lib/cart';
 import { formatPrice } from '../lib/catalog';
 import '../catalog.css';
 
 type RecipientErrors = Partial<Record<'name' | 'phone' | 'address' | 'province', string>>;
+type ErrorBody = { code?: string; message?: string | string[]; preview?: Preview };
+
+class ConfirmError extends Error {
+  preview: Preview;
+
+  constructor(preview: Preview) {
+    super('Thông tin đơn hàng vừa thay đổi. Vui lòng kiểm tra lại.');
+    this.name = 'ConfirmError';
+    this.preview = preview;
+  }
+}
+
+const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:3000/api';
 
 function CheckoutForm({ user }: { user: User }) {
+  const navigate = useNavigate();
   const [name, setName] = useState(user.fullName);
   const [phone, setPhone] = useState(user.phone ?? '');
   const [address, setAddress] = useState('');
@@ -21,6 +35,7 @@ function CheckoutForm({ user }: { user: User }) {
   const [loadingCart, setLoadingCart] = useState(true);
   const [previewing, setPreviewing] = useState(false);
   const [requestError, setRequestError] = useState('');
+  const [sending, setSending] = useState(false);
   const voucher = savedVoucher();
 
   useEffect(() => {
@@ -83,9 +98,68 @@ function CheckoutForm({ user }: { user: User }) {
     return Object.keys(next).length === 0;
   }
 
-  function submit(event: FormEvent<HTMLFormElement>) {
+  async function placeOrder(total: number) {
+    if (!cart) throw new Error('Giỏ hàng chưa sẵn sàng.');
+    const normalizedProvince = province.trim().toLocaleLowerCase('vi');
+    const isHcm = ['hồ chí minh', 'tp hồ chí minh', 'thành phố hồ chí minh', 'hcm', 'tphcm'].includes(normalizedProvince);
+    const response = await fetch(`${API_BASE}/orders`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        recipient: {
+          name: name.trim(),
+          phone: phone.replace(/\s/g, ''),
+          address: address.trim(),
+          province: province.trim(),
+          district: district.trim() || '-',
+          ...(isHcm ? { isInnerHcm } : {}),
+        },
+        voucherCode: voucher || undefined,
+        expected: expectedOf(cart),
+        expectedTotal: total,
+      }),
+    });
+    const body = await response.json().catch(() => ({})) as ErrorBody & { id?: string };
+    if (response.status === 409 && body.code === 'CONFIRM_REQUIRED' && body.preview) {
+      throw new ConfirmError(body.preview);
+    }
+    if (!response.ok) {
+      if (body.code === 'OUT_OF_STOCK') {
+        throw new Error('Một số món vừa hết hàng. Hãy quay lại giỏ để điều chỉnh.');
+      }
+      const message = Array.isArray(body.message) ? body.message.join('. ') : body.message;
+      throw new Error(message ?? `Không thể tạo đơn (lỗi ${response.status}).`);
+    }
+    if (!body.id) throw new Error('Server không trả về mã đơn hàng.');
+    return { id: body.id };
+  }
+
+  async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setReady(validate());
+    if (!validate()) {
+      setReady(false);
+      return;
+    }
+    if (!preview || previewing) {
+      setRequestError('Vui lòng chờ server tính xong tổng tiền.');
+      return;
+    }
+    setReady(true);
+    setSending(true);
+    setRequestError('');
+    try {
+      const order = await placeOrder(preview.total);
+      saveVoucher('');
+      navigate(`/don-hang/${encodeURIComponent(order.id)}?moi=1`);
+    } catch (error) {
+      if (error instanceof ConfirmError) {
+        setPreview(error.preview);
+      }
+      setRequestError(error instanceof Error ? error.message : 'Không thể tạo đơn hàng.');
+    } finally {
+      setSending(false);
+    }
   }
 
   const inputProps = (field: keyof RecipientErrors) => ({
@@ -144,7 +218,9 @@ function CheckoutForm({ user }: { user: User }) {
 
           <div className="checkout-actions">
             <Link className="cart-button" to="/gio-hang">← Quay lại giỏ hàng</Link>
-            <button className="cart-button cart-button-primary" type="submit">Kiểm tra thông tin</button>
+            <button className="cart-button cart-button-primary" type="submit" disabled={sending || previewing || !preview}>
+              {sending ? 'Đang xử lý…' : 'Đặt hàng'}
+            </button>
           </div>
         </form>
 
