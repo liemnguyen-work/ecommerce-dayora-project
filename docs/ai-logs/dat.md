@@ -1409,3 +1409,70 @@ Phần đo vùng bấm sẽ được kiểm chứng riêng bằng DevTools. Khô
 - Báo cáo ghi nhận bốn dòng mức Nên sửa.
 - Không ghi nhận dòng mức Chặn.
 - Phần kích thước vùng bấm được ghi là chưa kết luận.
+
+---
+
+## P2 — Khảo sát và đối chiếu trang thanh toán / DAT-20261119-P2-002
+
+* **Thời gian ghi:** 19/11/2026
+* **Thời gian thực hiện:** 19/11/2026
+* **Mã phiên nhật ký:** DAT-20261119-P2-002
+* **Người prompt:** Đạt (PD)
+* **Loại mục:** Hoạt động
+* **Liên quan:** PRJ-P2-PD-1.2; nhánh `prj/p2-pd-1`
+
+### Công cụ
+
+ChatGPT, Visual Studio Code, Chrome DevTools, CMD, Git, NestJS, Vite và Prisma.
+
+### Mục đích
+
+Khảo sát trang thanh toán `/thanh-toan` ở hai kích thước 1366 × 768 px và 390 × 844 px; đếm số thao tác của luồng thanh toán, kiểm tra khả năng tự cập nhật phí giao và ghi nhận các điểm chưa nhất quán so với tiêu chí UX/K11.
+
+### Prompt
+
+Đạt cung cấp nội dung sub-issue PRJ-P2-PD-1.2 và yêu cầu hướng dẫn tiếp tục theo đúng flow của các bước trước. Trong quá trình thực hiện, Đạt gửi output Git, build, migration, log API và ảnh giao diện để ChatGPT hỗ trợ kiểm tra từng bước.
+
+### Kết quả đề xuất
+
+ChatGPT hỗ trợ:
+
+- Xác định phần checkout đã được merge vào `main` và hướng dẫn đồng bộ `origin/main` vào nhánh `prj/p2-pd-1`.
+- Hướng dẫn cài dependency, tạo Prisma Client, kiểm tra migration và build API/web.
+- Phân tích giao diện và logic `CheckoutPage.tsx` để xác định các trường bắt buộc, trường tùy chọn và cách tính số thao tác.
+- Hướng dẫn kiểm tra phí giao giữa Hồ Chí Minh nội thành và Hà Nội mà không tải lại trang.
+- Kiểm tra ảnh desktop/mobile và chuẩn hóa tên `checkout-1366.png`, `checkout-390.png`.
+- Hỗ trợ soạn mục 2 trong `docs/report/ux/P2-doi-chieu.md`, gồm bảng thao tác, kết quả phí giao, điểm phù hợp, điểm cần sửa và giới hạn kiểm tra.
+
+### Phản biện
+
+Ví dụ trong issue mô tả các trường `province`, `district`, `ward`, `addressLine` và phương thức thanh toán, nhưng giao diện thực tế không hoàn toàn giống ví dụ. Form hiện tại tự điền họ tên, yêu cầu số điện thoại, địa chỉ và tỉnh/thành; quận/huyện cùng checkbox nội thành là tùy chọn, không có trường phường/xã riêng.
+
+Vì vậy, số thao tác được thống kê theo giao diện chạy thật thay vì sao chép nguyên ví dụ. Luồng kiểm tra có sáu thao tác từ giỏ hàng đến nút đặt hàng; trường hợp chọn nội thành Hồ Chí Minh có thêm một thao tác.
+
+Lần chạy migration đầu tiên gặp lỗi kết nối Prisma `P1001`. Sau khi kiểm tra kết nối cổng 5432 và chạy lại, migration hoàn tất với trạng thái không còn migration chờ áp dụng. Đây được ghi nhận là lỗi kết nối tạm thời, không tự ý thay đổi cấu hình cơ sở dữ liệu.
+
+### Quyết định của nhóm
+
+Giữ hai ảnh checkout thể hiện trạng thái Hà Nội, phí vận chuyển 40.000 đ và tổng thanh toán 388.000 đ. Báo cáo ghi thêm kết quả đối chiếu với Hồ Chí Minh nội thành, nơi phí vận chuyển là 20.000 đ và tổng thanh toán là 368.000 đ.
+
+Không tạo đơn thật trong lúc khảo sát. Bốn điểm quan sát được được phân loại mức **Nên sửa**; không có khác biệt mức **Chặn** trong phạm vi bước này.
+
+### Người kiểm tra
+
+Đạt trực tiếp đồng bộ nhánh, chạy migration/build/API/web, nhập dữ liệu, thay đổi tỉnh/thành, quan sát phí giao và chụp ảnh. ChatGPT hỗ trợ phân tích yêu cầu, kiểm tra output, đối chiếu ảnh, thống kê thao tác và chuẩn hóa nội dung báo cáo. FD1 Thành là reviewer phụ trách xác nhận kết quả.
+
+### Kiểm tra và minh chứng
+
+- API khởi động thành công, TypeScript báo 0 lỗi.
+- Route `POST /api/orders` và `POST /api/orders/preview` được ánh xạ thành công.
+- `npm run build -w api`: PASS.
+- `npm run build -w web`: PASS.
+- Prisma migration: 3 migration, không có migration chờ áp dụng.
+- Hồ Chí Minh nội thành: phí giao 20.000 đ, tổng 368.000 đ.
+- Hà Nội: phí giao 40.000 đ, tổng 388.000 đ.
+- Phí giao tự cập nhật mà không cần tải lại trang.
+- Có đủ hai ảnh `checkout-1366.png` và `checkout-390.png`.
+- Báo cáo có bốn dòng mức **Nên sửa** trong mục thanh toán.
+- `git diff --check`: PASS.
+- Không thực hiện đặt đơn thật trong quá trình kiểm tra.
