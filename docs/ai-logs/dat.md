@@ -1346,3 +1346,66 @@ Sử dụng nội dung tự đánh giá làm tài liệu ôn tập cho PRJ-P1-PD
 - Bộ minh chứng gồm 20 ảnh tại `docs/report/images/p1/`.
 - Nội dung kiểm tra gồm đủ ba bước của task và một khó khăn thực tế.
 - Chưa có xác nhận chính thức từ reviewer tại thời điểm ghi.
+
+---
+
+## P2 — Đối chiếu giao diện giỏ hàng / DAT-20261118-P2-001
+
+* **Thời gian ghi:** 18/11/2026
+* **Thời gian thực hiện:** 18/11/2026
+* **Mã phiên nhật ký:** DAT-20261118-P2-001
+* **Người prompt:** Đạt (PD)
+* **Loại mục:** Hoạt động
+* **Liên quan:** PRJ-P2-PD-1.1; nhánh `prj/p2-pd-1`
+
+### Công cụ
+
+ChatGPT, Visual Studio Code, CMD, Git, Chrome DevTools và Firefox.
+
+### Mục đích
+
+Khảo sát trang Giỏ hàng `/gio-hang` ở kích thước desktop 1366 × 768 px và mobile 390 × 844 px; kiểm tra trạng thái có sản phẩm, trạng thái rỗng và ghi nhận các điểm chưa phù hợp với hệ thiết kế K11.
+
+### Prompt
+
+Đạt cung cấp yêu cầu của PRJ-P2-PD-1.1, kết quả chạy dự án và bốn ảnh chụp trang giỏ hàng. Đạt yêu cầu ChatGPT hướng dẫn đúng quy trình từ nhánh Git, khởi chạy API và web, chuẩn hóa tên ảnh, đối chiếu giao diện và lập báo cáo.
+
+Trong quá trình quan sát, Đạt phát hiện biểu tượng giỏ trên header không hiển thị số lượng dù trong giỏ đang có hai sản phẩm và yêu cầu xác định vấn đề này thuộc phạm vi task nào.
+
+### Kết quả hỗ trợ
+
+ChatGPT hỗ trợ:
+
+- Kiểm tra nhánh `prj/p2-pd-1` được tạo từ commit `ce8258a`.
+- Hướng dẫn đồng bộ dependencies, tạo Prisma Client, kiểm tra migration và khởi chạy API/web.
+- Hướng dẫn tạo giỏ có hai sản phẩm và trạng thái giỏ rỗng.
+- Chuẩn hóa bốn ảnh thành `cart-1366.png`, `cart-390.png`, `cart-empty-1366.png` và `cart-empty-390.png`.
+- Xác định lỗi thiếu số lượng trên biểu tượng giỏ thuộc phạm vi đối chiếu giỏ hàng P2 và phân loại mức Nên sửa.
+- Hỗ trợ lập bảng đối chiếu với bốn điểm Nên sửa và một nội dung chờ đo bằng DevTools.
+
+### Phản biện
+
+Kết luận được giới hạn trong những gì quan sát được từ giao diện chạy thật và bốn ảnh chụp. Ảnh đủ để xác nhận biểu tượng giỏ không hiện số lượng, tiêu đề “Tạm tính” có tương phản thấp, CTA giỏ rỗng khó đọc và placeholder voucher bị cắt trên desktop.
+
+Kích thước vùng bấm của nút `−` và `+` chưa được đo trực tiếp nên báo cáo không kết luận đạt hay không đạt. Các trạng thái focus, thao tác bàn phím, zoom 200% và trình đọc màn hình cũng chưa được kiểm tra.
+
+### Quyết định của nhóm
+
+Giữ bốn điểm quan sát được ở mức Nên sửa vì chúng ảnh hưởng đến phản hồi trạng thái hoặc khả năng đọc nhưng chưa làm gián đoạn thao tác chính. Không ghi nhận lỗi mức Chặn trong phạm vi bước 1.1.
+
+Phần đo vùng bấm sẽ được kiểm chứng riêng bằng DevTools. Không sửa mã nguồn giao diện trong nhánh tài liệu của PD Đạt; các đề xuất được chuyển cho FD1 Thành xem xét.
+
+### Người kiểm tra
+
+Đạt trực tiếp chạy dự án, đăng nhập, thêm hai sản phẩm, xóa sản phẩm và chụp bốn ảnh minh chứng. ChatGPT hỗ trợ hướng dẫn quy trình, rà soát ảnh và chuẩn hóa nội dung báo cáo. FD1 Thành là reviewer xác nhận kết quả.
+
+### Kiểm tra và minh chứng
+
+- API health trả `{"status":"ok","service":"dayora-api"}`.
+- Backend biên dịch với 0 lỗi và khởi động thành công.
+- Prisma báo không còn migration chờ áp dụng.
+- Có đủ bốn ảnh tại `docs/report/images/p2/`.
+- Báo cáo có đúng bốn đường dẫn ảnh.
+- Báo cáo ghi nhận bốn dòng mức Nên sửa.
+- Không ghi nhận dòng mức Chặn.
+- Phần kích thước vùng bấm được ghi là chưa kết luận.
