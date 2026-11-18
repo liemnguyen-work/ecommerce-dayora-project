@@ -3480,3 +3480,44 @@ Thành kiểm tra trực quan trên localhost; Codex chạy lint/build và kiể
 ### Kiểm tra và minh chứng
 
 `npm.cmd run lint -w web`, `npm.cmd run build -w web`, `git diff --check` pass. Tệp sửa: ProductPage, catalog.css và mục log này.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-3-5-012
+
+* Thời gian ghi: 2026-11-18T22:39:48+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-product-cart
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: THANH-20261118-PRJ-P2-FD1-3-4-011; PRJ-P2-FD1-3.5 #490.
+
+### Công cụ
+
+Codex; Markdown; Git; npm.cmd; ESLint; TypeScript; Vite; NestJS; Prisma.
+
+### Mục đích
+
+Phản biện và ghi lại phần Thành tự trả lời kiểm tra kiến thức sau task thêm giỏ và lịch sử xem.
+
+### Prompt
+
+Thành tự trả lời năm câu về SKU, payload thêm giỏ, effect ghi lịch sử, phản hồi UI và chỗ khó; sau đó trả lời hai câu vặn và xác nhận chính xác logic reset số lượng khi đổi SKU.
+
+### Kết quả đề xuất
+
+Codex chấm từng câu, chỉ ra dự án không có nút mua ngay, thêm giỏ lặp làm tăng số lượng chứ chưa tạo đơn trùng, và code reset số lượng về 1 thay vì clamp sang tồn mới. Sau khi Thành sửa đúng, Codex lưu bản tóm lược câu trả lời vào file kiểm tra kiến thức.
+
+### Phản biện
+
+Câu phản tư ban đầu là gợi ý chung, không phản ánh phiên làm việc; Thành viết lại bằng sự cố thực tế là thiếu tab lịch sử và import trùng. Câu số lượng ban đầu mô tả clamp về 2; Thành xác nhận lại code thực tế reset về 1.
+
+### Quyết định của nhóm
+
+Thành xác nhận đã hiểu logic hiện tại và yêu cầu tạo file, commit bước 3.5. Chưa có reviewer hỏi ngẫu nhiên hoặc xác nhận checklist issue cha.
+
+### Người kiểm tra
+
+Thành tự viết và sửa câu trả lời; Codex đối chiếu với code. Reviewer chưa kiểm tra độc lập.
+
+### Kiểm tra và minh chứng
+
+File `docs/learning/FD1-Thanh/kiem-tra/PRJ-P2-FD1-3.md` có đủ bốn bước, trải nghiệm thực tế và hai câu hỏi vặn. Kiểm tra toàn repo được chạy trước commit; kết quả được báo theo output thực tế.
