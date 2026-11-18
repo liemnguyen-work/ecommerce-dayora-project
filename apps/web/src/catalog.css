@@ -40,6 +40,92 @@
 .catalog-message-error { border-color: #edc9c4; background: #fff5f3; }
 .catalog-message button { border: 0; border-radius: 999px; padding: 10px 18px; background: #c8483c; color: #fff; font-weight: 700; cursor: pointer; }
 .catalog-message button:focus-visible { outline: 3px solid #23412e; outline-offset: 3px; }
+
+.catalog-button {
+  display: inline-flex;
+  min-height: 46px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 11px 22px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.product-add {
+  border-color: var(--color-berry);
+  background: var(--color-berry);
+  color: #fff;
+  font-weight: 800;
+}
+
+.product-add:hover:not(:disabled) {
+  background: var(--berry-deep);
+  transform: translateY(-1px);
+}
+
+.product-add:disabled {
+  cursor: not-allowed;
+  border-color: rgba(35, 65, 46, 0.24);
+  background: rgba(35, 65, 46, 0.12);
+  color: rgba(35, 65, 46, 0.62);
+  box-shadow: none;
+}
+
+.cta-glow:not(:disabled) {
+  box-shadow: 0 10px 26px rgba(200, 72, 60, 0.24);
+  transition: box-shadow 180ms ease, transform 180ms ease, background-color 180ms ease;
+}
+
+.cta-glow:hover:not(:disabled) {
+  box-shadow: 0 13px 30px rgba(200, 72, 60, 0.32);
+}
+
+.product-notice {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 12px 15px;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  font-size: 0.92rem;
+  font-weight: 650;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.product-notice.is-ok {
+  border-color: rgba(36, 76, 53, 0.2);
+  background: #e7f2e1;
+  color: #244c35;
+}
+
+.product-notice.is-error {
+  border-color: rgba(200, 72, 60, 0.24);
+  background: #fff0ed;
+  color: #94342c;
+}
+
+.product-notice a {
+  color: inherit;
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 480px) {
+  .product-add,
+  .product-notice {
+    width: 100%;
+  }
+}
+
 .admin-page {
   max-width: 1280px;
   min-height: 60vh;

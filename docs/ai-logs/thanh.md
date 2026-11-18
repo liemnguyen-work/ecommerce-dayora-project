@@ -3439,3 +3439,44 @@ Thành kiểm tra trực quan trên localhost; Codex chạy lint/build và kiể
 ### Kiểm tra và minh chứng
 
 `npm.cmd run lint -w web`, `npm.cmd run build -w web` và `git diff --check` pass. Thành xác nhận danh sách sản phẩm đã xem xuất hiện tại `/tai-khoan`. Tệp sửa: ProductPage, AccountPage và mục log này.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-3-4-011
+
+* Thời gian ghi: 2026-11-18T22:33:51+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-product-cart
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: THANH-20261118-PRJ-P2-FD1-3-3-010; PRJ-P2-FD1-3.4 #489.
+
+### Công cụ
+
+Codex; React; CSS; npm.cmd; ESLint; Vite; Git.
+
+### Mục đích
+
+Hoàn thiện phản hồi thị giác cho thao tác thêm giỏ trên trang chi tiết sản phẩm ở desktop và mobile.
+
+### Prompt
+
+Thành cung cấp issue #489, xem giao diện localhost, xác nhận nút “Thêm vào giỏ hàng” và các trạng thái hoạt động đúng rồi phản hồi kết quả ổn.
+
+### Kết quả đề xuất
+
+ProductPage dùng các class bắt buộc `product-add`, `cta-glow`, `product-notice`, `is-ok`, `is-error`; liên kết thành công hiển thị “Xem giỏ hàng →”. CSS bổ sung trạng thái hover, đang khóa/hết hàng, khung thành công/lỗi có độ tương phản và bố cục 100% chiều rộng dưới 480px.
+
+### Phản biện
+
+Logic thêm giỏ và notice đã có từ bước 3.2 nên bước này chỉ hoàn thiện phản hồi thị giác, không lặp nghiệp vụ. Cụm “nút mua” trong hướng dẫn được đối chiếu là nút “Thêm vào giỏ hàng”, không bổ sung nút mua ngay ngoài phạm vi.
+
+### Quyết định của nhóm
+
+Thành xác nhận toàn bộ phản hồi giao diện hoạt động ổn. Chưa có review độc lập từ PD Đạt.
+
+### Người kiểm tra
+
+Thành kiểm tra trực quan trên localhost; Codex chạy lint/build và kiểm tra diff.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web`, `npm.cmd run build -w web`, `git diff --check` pass. Tệp sửa: ProductPage, catalog.css và mục log này.

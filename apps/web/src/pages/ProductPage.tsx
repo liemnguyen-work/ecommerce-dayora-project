@@ -5,6 +5,7 @@ import { useAuth } from '../lib/auth';
 import { addToCart } from '../lib/cart';
 import { formatPrice, type Category, type Product, type Sku } from '../lib/catalog';
 import ProductCard from '../components/catalog/ProductCard';
+import '../catalog.css';
 
 type ProductDetail = {
   id: string;
@@ -102,10 +103,10 @@ function ProductDetails({ product }: { product: ProductDetail }) {
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-4">
-          <button type="button" disabled={!available || adding} onClick={() => void handleAddToCart()} className="min-h-11 rounded-full bg-berry px-6 py-3 font-semibold text-white disabled:cursor-not-allowed disabled:bg-ink/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink">{adding ? 'Đang thêm…' : available ? 'Thêm vào giỏ hàng' : 'Tạm hết hàng'}</button>
+          <button type="button" disabled={!available || adding} onClick={() => void handleAddToCart()} className="catalog-button cta-glow product-add">{adding ? 'Đang thêm…' : available ? 'Thêm vào giỏ hàng' : 'Tạm hết hàng'}</button>
           <Link className="rounded-full px-3 py-2 font-semibold text-ink underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-berry" to="/san-pham">← Về danh mục</Link>
         </div>
-        {notice && <p role="status" className={`rounded-xl px-4 py-3 text-sm font-medium ${notice.ok ? 'bg-green-50 text-green-900' : 'bg-red-50 text-red-800'}`}>{notice.text} {notice.ok && <Link className="font-semibold underline" to="/gio-hang">Xem giỏ hàng</Link>}</p>}
+        {notice && <p role="status" className={`product-notice ${notice.ok ? 'is-ok' : 'is-error'}`}>{notice.text} {notice.ok && <Link to="/gio-hang">Xem giỏ hàng →</Link>}</p>}
       </div>
     </article>
     <section aria-labelledby="product-specs" className="mt-16">
