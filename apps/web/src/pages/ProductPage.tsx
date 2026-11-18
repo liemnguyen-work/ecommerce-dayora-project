@@ -39,6 +39,15 @@ function ProductDetails({ product }: { product: ProductDetail }) {
     ['Dài (cm)', sku?.lengthCm], ['Rộng (cm)', sku?.widthCm], ['Cao (cm)', sku?.heightCm],
     ['Dung tích (ml)', sku?.volumeMl], ['Sức chứa (người)', sku?.capacityPeople],
   ];
+
+  useEffect(() => {
+    if (!user) return;
+    void api('/me/viewed', {
+      method: 'POST',
+      body: JSON.stringify({ productId: product.id }),
+    }).catch(() => undefined);
+  }, [user, product.id]);
+
   function updateQuantity(value: number) {
     const next = Math.max(1, Math.min(maxQty, value));
     setQuantity(next);

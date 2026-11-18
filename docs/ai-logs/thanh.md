@@ -3398,3 +3398,44 @@ Thành kiểm tra thao tác thêm giỏ và redirect khi đăng xuất; Codex ch
 ### Kiểm tra và minh chứng
 
 `npm.cmd run lint -w web`, `npm.cmd run build -w web`, `git diff --check` pass; API health và web `/san-pham` trả HTTP 200. Tệp sửa: `apps/web/src/pages/ProductPage.tsx` và mục log này.
+
+## P2 / THANH-20261118-PRJ-P2-FD1-3-3-010
+
+* Thời gian ghi: 2026-11-18T22:25:24+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261118-product-cart
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: THANH-20261118-PRJ-P2-FD1-3-2-009; PRJ-P2-FD1-3.3 #488.
+
+### Công cụ
+
+Codex; React; TypeScript; REST API; npm.cmd; ESLint; Vite; Git.
+
+### Mục đích
+
+Ghi sản phẩm khách đã xem khi mở trang chi tiết và cung cấp giao diện tài khoản để kiểm chứng danh sách lịch sử.
+
+### Prompt
+
+Thành cung cấp issue #488, kiểm tra localhost và phản hồi trang tài khoản chưa có mục sản phẩm đã xem. Sau khi bổ sung tab, Thành xác nhận đã thấy danh sách và yêu cầu commit.
+
+### Kết quả đề xuất
+
+ProductDetails gọi `POST /me/viewed` với productId khi có user; lỗi ghi lịch sử được bỏ qua để không làm hỏng trang và dependency không phụ thuộc SKU. AccountPage được bổ sung tab “Sản phẩm đã xem”, chỉ tải `GET /me/viewed` khi mở tab và hiển thị trạng thái tải, lỗi, rỗng hoặc danh sách ProductCard.
+
+### Phản biện
+
+Chỉ thêm request POST theo hướng dẫn chưa đủ để hoàn thành ca tự kiểm tra vì AccountPage trên main không có nơi đọc lịch sử. Phần hiển thị được bổ sung tối thiểu bằng API và component có sẵn; không thay đổi backend đã hoạt động.
+
+### Quyết định của nhóm
+
+Thành xác nhận đã thấy sản phẩm trong tab lịch sử và yêu cầu commit. Chưa có review độc lập từ PD Đạt.
+
+### Người kiểm tra
+
+Thành kiểm tra trực quan trên localhost; Codex chạy lint/build và kiểm tra diff.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web`, `npm.cmd run build -w web` và `git diff --check` pass. Thành xác nhận danh sách sản phẩm đã xem xuất hiện tại `/tai-khoan`. Tệp sửa: ProductPage, AccountPage và mục log này.
