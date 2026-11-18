@@ -78,6 +78,17 @@ describe('Admin vouchers và promotions - PRJ-P2-BD1-3', () => {
     await expect(service.create(base)).rejects.toMatchObject({ status: 409, message: 'Mã voucher đã tồn tại' });
   });
 
+  it('chuẩn hóa mã trước khi kiểm tra trùng và từ chối mức giảm 0', async () => {
+    const { prisma, service } = await voucherService();
+    prisma.voucher.create.mockRejectedValueOnce({ code: 'P2002' });
+    await expect(service.create({ ...base, code: ' dayora10 ' })).rejects.toMatchObject({ status: 409 });
+    expect(prisma.voucher.create).toHaveBeenCalledWith(expect.objectContaining({ data: expect.objectContaining({ code: 'DAYORA10' }) }));
+    prisma.voucher.create.mockClear();
+    await expect(service.create({ ...base, percentOff: 0 })).rejects.toMatchObject({ status: 400 });
+    await expect(service.create({ ...base, percentOff: null, amountOff: 0 })).rejects.toMatchObject({ status: 400 });
+    expect(prisma.voucher.create).not.toHaveBeenCalled();
+  });
+
   it('không hạ giới hạn dưới lượt dùng kể cả khi có thay đổi đồng thời', async () => {
     const { prisma, service } = await voucherService();
     prisma.voucherUsage.count.mockResolvedValue(5);

@@ -27,8 +27,8 @@ export class CreateVoucherDto {
   @IsString() @MinLength(1) description!: string;
   @IsDateString() startsAt!: string;
   @IsDateString() endsAt!: string;
-  @IsOptional() @IsInt() @Min(0) @Max(100) percentOff?: number | null;
-  @IsOptional() @IsInt() @Min(0) amountOff?: number | null;
+  @IsOptional() @IsInt() @Min(1) @Max(100) percentOff?: number | null;
+  @IsOptional() @IsInt() @Min(1) amountOff?: number | null;
   @IsOptional() @IsInt() @Min(0) maxDiscount?: number | null;
   @IsOptional() @IsInt() @Min(0) minOrderValue?: number | null;
   @IsOptional() @IsInt() @Min(0) usageLimit?: number | null;

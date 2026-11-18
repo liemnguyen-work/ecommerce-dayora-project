@@ -68,7 +68,7 @@ export class AdminVouchersService {
   }
 
   async create(dto: CreateVoucherInput) {
-    const code = typeof dto.code === 'string' ? dto.code.trim() : '';
+    const code = typeof dto.code === 'string' ? dto.code.trim().toUpperCase() : '';
     const description = typeof dto.description === 'string' ? dto.description.trim() : '';
     if (!code || !description) throw new BadRequestException('Thiếu mã hoặc mô tả');
     const startsAt = new Date(dto.startsAt);
@@ -78,6 +78,9 @@ export class AdminVouchersService {
     }
     if ((dto.percentOff == null) === (dto.amountOff == null)) {
       throw new BadRequestException('Chọn đúng một loại giảm giá');
+    }
+    if ((dto.percentOff != null && dto.percentOff < 1) || (dto.amountOff != null && dto.amountOff < 1)) {
+      throw new BadRequestException('Mức giảm phải lớn hơn 0');
     }
     for (const value of [dto.percentOff, dto.amountOff, dto.maxDiscount, dto.minOrderValue, dto.usageLimit, dto.perUserLimit]) {
       if (value != null && (!Number.isSafeInteger(value) || value < 0)) {

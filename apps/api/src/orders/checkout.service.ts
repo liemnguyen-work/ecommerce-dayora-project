@@ -64,6 +64,7 @@ export class CheckoutService implements OnModuleInit, OnModuleDestroy {
         throw new ConflictException('Không thể trả tồn kho đã giữ');
       }
     }
+    await tx.voucherUsage.deleteMany({ where: { orderId: id } });
     if (expired) {
       await tx.payment.updateMany({
         where: { orderId: id, status: 'UNPAID' },
@@ -116,8 +117,9 @@ export class CheckoutService implements OnModuleInit, OnModuleDestroy {
   }
 
   async create(userId: string, dto: CreateOrderInput) {
+    const voucherCode = dto.voucherCode?.trim().toUpperCase();
     const preview = await this.orders.preview(userId, {
-      voucherCode: dto.voucherCode,
+      voucherCode,
       address: dto.recipient,
       expected: dto.expected,
     });
@@ -125,7 +127,7 @@ export class CheckoutService implements OnModuleInit, OnModuleDestroy {
     if (
       preview.warnings.length > 0 ||
       preview.total !== dto.expectedTotal ||
-      (dto.voucherCode != null && !preview.voucher?.valid) ||
+      (voucherCode != null && !preview.voucher?.valid) ||
       expectedPrices.size !== dto.expected.length ||
       preview.lines.some((line) => expectedPrices.get(line.skuId) !== line.sku.effectivePrice) ||
       expectedPrices.size !== new Set(preview.lines.map((line) => line.skuId)).size
@@ -153,9 +155,9 @@ export class CheckoutService implements OnModuleInit, OnModuleDestroy {
 
       let voucherId: string | undefined;
       let discount = 0;
-      if (dto.voucherCode) {
-        await tx.$queryRaw`SELECT "id" FROM "Voucher" WHERE "code" = ${dto.voucherCode} FOR UPDATE`;
-        const voucher = await tx.voucher.findUnique({ where: { code: dto.voucherCode } });
+      if (voucherCode) {
+        await tx.$queryRaw`SELECT "id" FROM "Voucher" WHERE "code" = ${voucherCode} FOR UPDATE`;
+        const voucher = await tx.voucher.findUnique({ where: { code: voucherCode } });
         if (!voucher) {
           throw new ConflictException({ code: 'CONFIRM_REQUIRED', preview });
         }
