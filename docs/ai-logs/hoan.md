@@ -5151,3 +5151,51 @@ Codex th?c hi?n c?c l?nh ki?m tra v? ghi nh?n k?t qu?. Ho?n xem l?i n?i dung AI 
 - Hai l?n ch?y tsx g?p l?i uv_os_get_passwd ENOMEM; Codex chuy?n sang d?ng Vitest ?? ki?m tra query.
 - Commit 6a90812 ?? ???c push l?n nh?nh prj/p3-bd1-1. M?c d72-03 ghi ch?a commit, push l? tr?ng th?i t?i th?i ?i?m ghi m?c ??.
 - Ch?a ki?m tra v?i VNPay Sandbox.
+
+---
+
+## Phase 3 / hoan-20261120-vnpay-sign-d72-05
+
+* Thời gian ghi: 2026-11-20T00:55:21+07:00
+* Thời gian thực hiện: 20/11/2026.
+* Mã phiên nhật ký: hoan-20261120-vnpay-start-d72
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-1.3, hoan-20261120-vnpay-query-d72-04
+
+### Công cụ
+
+Codex, TypeScript, Node.js crypto và Vitest.
+
+### Mục đích
+
+Tạo và kiểm tra chữ ký VNPay theo yêu cầu HMAC-SHA512 để phát hiện dữ liệu bị thay đổi.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp bước 1.3 về vnpSign và vnpVerify, yêu cầu tiếp tục task sau phần sắp xếp và mã hóa tham số.
+
+### Kết quả đề xuất
+
+1. Codex kiểm tra nhánh, hàm vnpQuery và các ca test đã viết trước.
+2. Codex thêm vnpSign để ký chuỗi vnpQuery bằng HMAC-SHA512 với secret được truyền vào; test chỉ dùng secret giả.
+3. Codex thêm vnpVerify: từ chối tham số vnp_ không phải chuỗi và chữ ký không đúng 128 ký tự hex; tính chữ ký kỳ vọng và so sánh buffer bằng timingSafeEqual.
+4. Codex chạy lại ca nghiệm thu chung cho bước 1.2 và 1.3; sau đó chạy ca từ chối dữ liệu và chữ ký sai định dạng.
+
+### Phản biện
+
+Hai ca ký và kiểm chữ ký đã pass với dữ liệu giả; chưa kiểm tra với VNPay Sandbox. Chưa có xác nhận QA đã duyệt test. Ca giờ Việt Nam thuộc bước 1.4 chưa được triển khai và không được chạy trong hai lệnh lọc này.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu thực hiện bước ký và kiểm chữ ký; theo thỏa thuận trước đó, xem kết quả và vấn đề còn lại trước khi commit. Chưa có xác nhận QA.
+
+### Người kiểm tra
+
+Codex chạy các ca test được nêu; chờ Hoàn và QA xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm test -w api -- vnpay.spec.ts -t "mã hóa sắp xếp và ký đúng vector cố định"`: 1 ca pass, 2 ca bỏ qua theo bộ lọc.
+- `npm test -w api -- vnpay.spec.ts -t "từ chối chữ ký sai định dạng"`: 1 ca pass, 2 ca bỏ qua theo bộ lọc.
+- Chưa chạy giao dịch thật; chưa commit hoặc push bước 1.3.

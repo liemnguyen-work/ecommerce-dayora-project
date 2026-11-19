@@ -1,3 +1,5 @@
+import { createHmac, timingSafeEqual } from 'node:crypto';
+
 export type VnpParams = Record<string, string>;
 
 export function vnpQuery(params: VnpParams): string {
@@ -7,4 +9,18 @@ export function vnpQuery(params: VnpParams): string {
     .sort()
     .map((key) => `${encode(key)}=${encode(params[key])}`)
     .join('&');
+}
+
+export function vnpSign(params: VnpParams, secret: string): string {
+  return createHmac('sha512', secret).update(vnpQuery(params), 'utf8').digest('hex');
+}
+
+export function vnpVerify(query: Record<string, unknown>, secret: string): query is VnpParams {
+  if (Object.entries(query).some(([key, value]) => key.startsWith('vnp_') && typeof value !== 'string')) {
+    return false;
+  }
+  const supplied = query.vnp_SecureHash;
+  if (typeof supplied !== 'string' || !/^[a-fA-F0-9]{128}$/.test(supplied)) return false;
+  const expected = Buffer.from(vnpSign(query as VnpParams, secret), 'hex');
+  return timingSafeEqual(expected, Buffer.from(supplied, 'hex'));
 }
