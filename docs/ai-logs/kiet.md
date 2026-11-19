@@ -965,3 +965,67 @@ Chưa xác nhận người review hoặc kết quả Approve.
 - Theo xác nhận của Kiệt, hai thành viên khác đã chạy thử thành công.
 - Tên hai người, các lệnh họ đã chạy và ảnh/log minh chứng: bổ sung vào phần mô tả PR khi có thông tin đối chiếu.
 - AI hỗ trợ soạn hướng dẫn thử trên máy mới; Kiệt gửi thông tin và nhận kết quả trực tiếp. Không đưa mật khẩu hoặc URL kết nối vào Git.
+## P2 — Checklist dữ liệu demo / KIET-20261119-P2DEMO-01
+
+- Thời gian ghi: 2026-11-19T09:18:41+07:00
+- Thời gian thực hiện: Ngày 19/11/2026. Terminal được gửi không hiển thị giờ chạy lệnh.
+- Mã phiên nhật ký: KIET-20261119-P2DEMO
+- Người prompt: Mã Tuấn Kiệt
+- Loại mục: Hoạt động, phản biện và kiểm tra
+- Liên quan: PRJ-P2-DO-1.1 đến PRJ-P2-DO-1.4, task phụ thuộc PRJ-P2-BD2-3.
+- Nhánh: `prj/p2-do-1`
+
+### Công cụ
+
+ChatGPT/Codex, GitHub, VS Code, Git Bash, Git, npm, ESLint, Prisma, NestJS và Vite.
+
+### Mục đích
+
+Viết checklist trong `docs/RUNBOOK.md` để nhóm biết cần có dữ liệu gì, chuẩn bị ở đâu và kiểm tra thế nào trước demo DAYORA. Hoàn thành phần kiểm tra kiến thức và xác nhận lint, build trước khi mở PR.
+
+### Prompt
+
+Tổng hợp các yêu cầu và hướng dẫn AI trong task:
+
+1. Kiệt cung cấp yêu cầu của task và nhắc phải pull trước khi bắt đầu. AI hướng dẫn lấy `main` mới nhất và dùng `origin/main` làm điểm bắt đầu cho nhánh P2 vì `main` cục bộ đã phân kỳ.
+2. Kiệt yêu cầu xác nhận phần seed của Châu đã xong dù issue còn mở. AI đối chiếu trên `main` và xác định các commit `5e3453d`, `01ef888` và `cdb8e89` đã bổ sung hai voucher `DAYORA10`, `PICNIC50K` và một khuyến mãi.
+3. AI hướng dẫn chia `docs/RUNBOOK.md` thành ba phần tương ứng với ba commit: dữ liệu cần có, cách chuẩn bị và cách xác nhận. Phần chuẩn bị nêu cách xác định DB demo với Châu trước khi chạy seed.
+4. AI hướng dẫn chỉ stage `docs/RUNBOOK.md`, dùng `git diff --cached --check` để kiểm tra phần đã stage và nối các lệnh bằng `&&` để dừng trước khi commit nếu kiểm tra lỗi.
+5. Với bước 1.4, Kiệt gửi bốn câu kiểm tra kiến thức. AI gợi ý cách giải thích mục đích của từng phần và cách mô tả một khó khăn thực tế trong quá trình làm.
+6. Khi build báo thiếu dependency, AI hướng dẫn chạy lại `npm ci`, sau đó chạy `npm run lint`, `npm run build` và kiểm tra `git status --short`. Kiệt chạy lệnh và gửi kết quả terminal.
+
+### Kết quả đề xuất
+
+- Ghi ba phần trong `docs/RUNBOOK.md`: dữ liệu cần có, cách chuẩn bị và cách xác nhận trước demo.
+- Với tình huống B4, chỉ khởi tạo tồn kho khi seed tạo SKU mới. Khi cập nhật SKU đã có, giữ số tồn hiện tại để lần chạy seed tiếp theo không ghi đè số lượng đã thay đổi do đơn hàng.
+- Ghi kết quả kiểm tra kiến thức vào `docs/learning/DO-Kiet/kiem-tra/PRJ-P2-DO-1.md` và lưu nhật ký sử dụng AI trong `docs/ai-logs/kiet.md`.
+
+### Phản biện
+
+- **Vì sao dùng `Dayora_projectCK_P2` trong khi đã có `Dayora_projectCK`?** Bản clone riêng chỉ là một cách làm. Kiệt kiểm tra trạng thái repo rồi tiếp tục trên `Dayora_projectCK` với nhánh `prj/p2-do-1`.
+- **Châu đã làm xong nhưng quên đóng issue thì xác nhận bằng gì?** Ba commit trên `main` xác nhận mã seed đã được tích hợp. Để biết voucher và khuyến mãi đã có trong DB demo, nhóm cần kiểm tra đúng DB sẽ dùng.
+- **Chuỗi lệnh `git add` → `git diff --cached --check` → `git commit` có đúng không?** Có. Ở bước 1.1, Git báo khoảng trắng thừa tại dòng 16. Ở bước 1.2, Kiệt dùng `&&` để chỉ commit khi kiểm tra thành công và chỉ định `docs/RUNBOOK.md` trong lệnh commit.
+- **Đến bước nào mới chạy demo?** Bước 1.3 ghi cách kiểm tra. Khi thực hiện demo, nhóm xác nhận DB với Châu, kiểm tra dữ liệu theo runbook và ghi kết quả quan sát được.
+- **Chạy lại seed có thể làm sai tồn kho thế nào?** Nếu nhánh `update` của `upsert` gán lại tồn kho mẫu, lần seed sau có thể ghi đè số tồn đã giảm do đơn hàng. Cách kiểm chứng B4 là so sánh số tồn của cùng một SKU trước và sau khi chạy lại seed. Chưa có kết quả chạy thử B4 hoặc định nghĩa R17 được đối chiếu trong phiên này.
+
+### Quyết định của nhóm
+
+Kiệt tiếp tục làm trong repo nhóm hiện có trên nhánh `prj/p2-do-1`, giữ một commit cho mỗi bước. Theo phân công của task, Châu review PR vào `main` và dùng Rebase and merge khi đạt yêu cầu.
+
+### Người kiểm tra
+
+Kiệt trực tiếp sửa tài liệu, chạy lệnh và cung cấp kết quả terminal. ChatGPT/Codex đối chiếu lịch sử Git và đầu ra các lệnh. Chưa có xác nhận Châu đã review.
+
+### Kiểm tra và minh chứng
+
+- Bước 1.2: `9b4fca3` — `docs(runbook): document demo data preparation`.
+- Bước 1.3: `d02e5bd` — `docs(runbook): document demo data verification`.
+- `npm ci` cài thành công 602 package. npm báo 16 lỗ hổng phụ thuộc, gồm 11 mức moderate và 5 mức high.
+- `npm run lint` thành công cho API và web.
+- `npm run build` thành công cho API và web. Prisma sinh Client 6.19.3, NestJS build hoàn tất và Vite build 485 module trong 1,83 giây.
+- `git status --short` sau build chỉ hiện hai file `.bak` và file `tatus --short` chưa được Git theo dõi.
+- Chưa có đầu ra `npm test`, kết quả chạy demo, kết quả CI hoặc xác nhận PR đã được duyệt và merge.
+- `npm test` lúc 09:22:55: 96/97 test pass. Test kiểm tra quyền truy cập trong `src/me/me.spec.ts` vượt giới hạn 5 giây.
+- Chạy riêng `src/me/me.spec.ts` lúc 09:24:58: 6/6 test pass.
+- Chạy lại `npm test` lúc 09:25:05: 97/97 test pass trên 16/16 file. Test từng timeout hoàn tất trong 3,220 giây.
+- Chưa có kết quả chạy demo, CI hoặc review PR.
