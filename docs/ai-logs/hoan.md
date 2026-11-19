@@ -4965,3 +4965,91 @@ Codex chạy test, lint và build API; chờ Hoàn và reviewer kiểm tra.
 - `npm test -w api -- promotions`: 10/10 test pass.
 - `npm run lint -w api` và `npm run build -w api`: pass.
 - Không có migration; chưa commit hoặc push thay đổi này.
+
+---
+
+## Phase 3 / hoan-20261120-vnpay-start-d72-01
+
+* Thời gian ghi: 2026-11-20T00:23:23+07:00
+* Thời gian thực hiện: 20/11/2026.
+* Mã phiên nhật ký: hoan-20261120-vnpay-start-d72
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-1, issue #51
+
+### Công cụ
+
+Codex, Git và tài liệu lộ trình Phase 3.
+
+### Mục đích
+
+Chuẩn bị task ký và kiểm chữ ký VNPay theo thứ tự test trước.
+
+### Prompt
+
+Hoàn cung cấp task cha #51 và yêu cầu bắt đầu task ký và kiểm chữ ký VNPay.
+
+### Kết quả đề xuất
+
+Codex kiểm tra main và tài liệu, tạo worktree nhánh prj/p3-bd1-1 từ origin/main. Chưa thấy mã payments trong main và chưa có nhánh task từ xa.
+
+### Phản biện
+
+Chi tiết các sub-issue và tên đầy đủ ca test chưa được cung cấp; chỉ có nội dung một bước sắp xếp và mã hóa tham số từ trao đổi trước. Không dùng khóa VNPay thật trong kiểm thử.
+
+### Quyết định của nhóm
+
+Làm theo yêu cầu test trước; chờ nội dung các sub-issue và QA duyệt test trước khi triển khai tính năng.
+
+### Người kiểm tra
+
+Codex kiểm tra trạng thái repo và tài liệu; chờ Hoàn cung cấp tiêu chí các bước và QA xem xét ca test.
+
+### Kiểm tra và minh chứng
+
+- `git fetch origin` thành công; nhánh mới dựa trên main b9c5cf5.
+- Chưa viết test hoặc chức năng, chưa commit hoặc push.
+
+---
+
+## Phase 3 / hoan-20261120-vnpay-test-d72-02
+
+* Thời gian ghi: 2026-11-20T00:32:02+07:00
+* Thời gian thực hiện: 20/11/2026.
+* Mã phiên nhật ký: hoan-20261120-vnpay-start-d72
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261120-vnpay-start-d72-01, PRJ-P3-BD1-1.1, issue #51
+
+### Công cụ
+
+Codex, Git, Node.js crypto và Vitest.
+
+### Mục đích
+
+Chuẩn bị test nghiệm thu trước cho ký, kiểm chữ ký và giờ VNPay bằng khóa giả.
+
+### Prompt
+
+Hoàn cung cấp nội dung các bước viết test, mã hóa và sắp xếp tham số, ký và kiểm chữ ký, cùng định dạng giờ Việt Nam.
+
+### Kết quả đề xuất
+
+Codex viết ba ca trong vnpay.spec.ts: vector mã hóa và chữ ký HMAC-SHA512, chữ ký sai định dạng hoặc tham số sai kiểu, và giờ GMT+7 qua ranh giới ngày năm. Vector HMAC được tính bằng Node.js crypto với khóa giả test-secret.
+
+### Phản biện
+
+Test chưa được QA duyệt và chưa kiểm chứng với VNPay sandbox; test đỏ do chưa có module, chưa chạy được các assertion. Hai bước 1.2 và 1.3 cùng yêu cầu ca vừa mã hóa vừa ký nên ca tổng hợp không thể xanh toàn bộ khi mới có vnpQuery.
+
+### Quyết định của nhóm
+
+Làm bước viết test trước theo yêu cầu; chưa có xác nhận QA duyệt test.
+
+### Người kiểm tra
+
+Codex chạy test; chờ Hoàn và QA kiểm tra nội dung các ca.
+
+### Kiểm tra và minh chứng
+
+- `npm test -w api -- vnpay`: 3/3 ca FAIL vì chưa có vnpay.js/vnpay.ts, phù hợp giai đoạn test trước.
+- Chưa viết code chức năng, chưa commit hoặc push.
