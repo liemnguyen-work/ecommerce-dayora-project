@@ -5247,3 +5247,93 @@ Codex chạy kiểm tra tự động; chờ Hoàn và QA xem xét.
 - `npm test -w api -- vnpay`: 3/3 ca pass.
 - Test giờ pass với TZ=UTC và TZ=America/New_York.
 - Chưa chạy VNPay Sandbox; chưa commit hoặc push bước này.
+
+---
+
+## Phase 3 / hoan-20261120-vnpay-check-d72-07
+
+* Thời gian ghi: 2026-11-20T01:22:40+07:00
+* Thời gian thực hiện: 20/11/2026.
+* Mã phiên nhật ký: hoan-20261120-vnpay-start-d72
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-1.5, hoan-20261120-vnpay-date-d72-06
+
+### Công cụ
+
+Codex, Git và Markdown.
+
+### Mục đích
+
+Chuẩn bị khung tự đánh giá kiến thức của task ký và kiểm chữ ký VNPay.
+
+### Prompt
+
+Hoàn cung cấp nội dung bước 1.5 và quy tắc tự viết câu trả lời, không nhìn lại code và không nhờ AI viết hộ.
+
+### Kết quả đề xuất
+
+Codex tạo docs/learning/BD1-Hoan/kiem-tra/PRJ-P3-BD1-1.md với các câu hỏi và ô chưa hoàn thành; không điền câu trả lời.
+
+### Phản biện
+
+Bài đánh giá yêu cầu Hoàn tự trả lời và giải thích được; chưa thể xác nhận đã đạt khi file còn trống.
+
+### Quyết định của nhóm
+
+Theo nội dung bước 1.5, Hoàn tự trả lời trước khi nhờ AI nhận xét; chưa có xác nhận reviewer.
+
+### Người kiểm tra
+
+Codex kiểm tra khung câu hỏi; chờ Hoàn tự trả lời và reviewer đánh giá.
+
+### Kiểm tra và minh chứng
+
+- Tạo file khung với năm mục và checklist chưa đánh dấu.
+- Chưa có câu trả lời, chưa commit hoặc push bước 1.5.
+
+---
+
+## Phase 3 / hoan-20261120-vnpay-review-d72-08
+
+* Thời gian ghi: 2026-11-20T01:53:45+07:00
+* Thời gian thực hiện: 20/11/2026.
+* Mã phiên nhật ký: hoan-20261120-vnpay-start-d72
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-1.5, hoan-20261120-vnpay-check-d72-07
+
+### Công cụ
+
+Codex, Git và Markdown.
+
+### Mục đích
+
+Ghi nhận câu trả lời kiểm tra kiến thức VNPay do Hoàn cung cấp và luyện giải thích các tình huống liên quan.
+
+### Prompt
+
+Hoàn trả lời các câu hỏi về ca test, chuẩn hóa tham số, ký và kiểm chữ ký, múi giờ Việt Nam và khó khăn khi tìm file trong worktree; sau đó trả lời thêm hai câu về sửa số tiền và chuyển giờ, rồi yêu cầu ghi vào file, commit và push.
+
+### Kết quả đề xuất
+
+1. Codex nhận xét các câu trả lời và làm rõ thành viên lấy code từ nhánh task; nếu lấy qua main thì cần chờ PR merge.
+2. Hoàn trả lời rằng thay đổi vnp_Amount làm vnpVerify trả false và 18:30 UTC ngày 01/01/2026 tương ứng 01:30 ngày 02/01 tại Việt Nam.
+3. Theo yêu cầu Hoàn, Codex ghi các câu trả lời đã cung cấp vào file PRJ-P3-BD1-1.md, sửa lỗi gõ ở câu 5 và đánh dấu các câu đã trả lời.
+
+### Phản biện
+
+Codex nhận xét câu 5 cần phân biệt lấy code từ nhánh task với cập nhật main sau merge; Hoàn đồng ý ghi câu trả lời vào file. Chưa có đánh giá của reviewer hoặc QA.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu cập nhật câu trả lời đã cung cấp, AI log, commit và push. Chưa có xác nhận hoàn thành checklist kiến thức bởi reviewer.
+
+### Người kiểm tra
+
+Codex nhận xét nội dung và ghi file theo yêu cầu; chờ Hoàn và reviewer xem lại.
+
+### Kiểm tra và minh chứng
+
+- Hoàn cung cấp câu trả lời cho cả năm mục và hai câu luyện tập trong cuộc trao đổi.
+- File kiểm tra kiến thức đã điền đủ năm mục; chưa xác nhận reviewer đánh giá hoặc PR được merge.
