@@ -5053,3 +5053,49 @@ Codex chạy test; chờ Hoàn và QA kiểm tra nội dung các ca.
 
 - `npm test -w api -- vnpay`: 3/3 ca FAIL vì chưa có vnpay.js/vnpay.ts, phù hợp giai đoạn test trước.
 - Chưa viết code chức năng, chưa commit hoặc push.
+
+---
+
+## Phase 3 / hoan-20261120-vnpay-query-d72-03
+
+* Thời gian ghi: 2026-11-20T00:41:28+07:00
+* Thời gian thực hiện: 20/11/2026.
+* Mã phiên nhật ký: hoan-20261120-vnpay-start-d72
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261120-vnpay-test-d72-02, PRJ-P3-BD1-1.2
+
+### Công cụ
+
+Codex, TypeScript và Vitest.
+
+### Mục đích
+
+Tạo chuỗi tham số VNPay được lọc, sắp xếp và mã hóa trước khi ký.
+
+### Prompt
+
+Hoàn yêu cầu thực hiện bước vnpQuery, kiểm tra và thảo luận trước khi commit hoặc push.
+
+### Kết quả đề xuất
+
+Tạo vnpay.ts với vnpQuery: lọc vnp_, bỏ trường chữ ký, sắp xếp và mã hóa query theo hướng dẫn; chưa viết hàm ký, kiểm chữ ký hay ngày giờ.
+
+### Phản biện
+
+Ca nghiệm thu gộp vnpQuery và vnpSign nên chưa thể xanh khi chỉ hoàn thành vnpQuery. Chưa có xác nhận QA duyệt các test. Chưa so sánh code mẫu hoặc kiểm tra với VNPay sandbox.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu xem và xử lý các vấn đề trước khi commit; chưa có xác nhận QA duyệt.
+
+### Người kiểm tra
+
+Codex kiểm tra vector query và ký tự đặc biệt; chờ Hoàn và QA xem xét.
+
+### Kiểm tra và minh chứng
+
+- Kiểm tra Vitest tạm cho chuỗi mẫu, Unicode, khoảng trắng, dấu & và +: pass; file test tạm đã được xóa sau khi chạy.
+- Test nghiệm thu chính đi qua assertion query nhưng FAIL tại vnpSign chưa tồn tại; 2 ca khác được bỏ qua khi chạy lọc tên.
+- Thử chạy tsx riêng hai lần gặp lỗi uv_os_get_passwd ENOMEM; đã dùng Vitest để kiểm tra thay thế.
+- Chưa commit hoặc push thay đổi bước này.
