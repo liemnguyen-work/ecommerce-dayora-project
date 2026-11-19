@@ -20,3 +20,10 @@ Mã seed cho hai voucher và khuyến mãi đã có trong [`apps/api/prisma/seed
 2. Chạy `npm run db:seed -w api` trên DB demo đã xác nhận để chuẩn bị sản phẩm, voucher `DAYORA10`, `PICNIC50K` và khuyến mãi mùa picnic.
 3. Chuẩn bị tài khoản demo bằng thông tin giả. Chọn SKU đủ tồn và tạo đơn mẫu qua checkout.
 4. Lập danh sách dữ liệu thử cần dọn và thống nhất phạm vi với Châu trước buổi demo.
+## Cách xác nhận dữ liệu demo
+
+- Đăng nhập bằng tài khoản khách demo. Xác nhận SKU đã chọn có thể thêm vào giỏ và đủ tồn cho đơn mẫu.
+- Kiểm tra `DAYORA10`, `PICNIC50K` và khuyến mãi mùa picnic có trong DB demo. Thử từng voucher trên giỏ đủ điều kiện và đối chiếu mức giảm với cấu hình.
+- Tạo một đơn mẫu qua checkout. Đối chiếu sản phẩm, số lượng, tiền giảm, phí giao và tổng tiền với chi tiết đơn.
+- Kiểm tra seed chạy lại trên DB thử riêng. Ghi tồn kho của một SKU sau khi chỉnh và tổng số SKU, chạy lại `npm run db:seed -w api`, rồi xác nhận cả hai số vẫn giữ nguyên.
+- Ghi môi trường, ngày kiểm tra và kết quả thực tế. Để trạng thái “Chờ kiểm tra” cho các mục chưa chạy.
