@@ -5199,3 +5199,51 @@ Codex chạy các ca test được nêu; chờ Hoàn và QA xem xét.
 - `npm test -w api -- vnpay.spec.ts -t "mã hóa sắp xếp và ký đúng vector cố định"`: 1 ca pass, 2 ca bỏ qua theo bộ lọc.
 - `npm test -w api -- vnpay.spec.ts -t "từ chối chữ ký sai định dạng"`: 1 ca pass, 2 ca bỏ qua theo bộ lọc.
 - Chưa chạy giao dịch thật; chưa commit hoặc push bước 1.3.
+
+---
+
+## Phase 3 / hoan-20261120-vnpay-date-d72-06
+
+* Thời gian ghi: 2026-11-20T01:05:54+07:00
+* Thời gian thực hiện: 20/11/2026.
+* Mã phiên nhật ký: hoan-20261120-vnpay-start-d72
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-1.4, hoan-20261120-vnpay-sign-d72-05
+
+### Công cụ
+
+Codex, TypeScript, Node.js và Vitest.
+
+### Mục đích
+
+Chuyển thời gian giao dịch sang định dạng giờ Việt Nam yyyyMMddHHmmss, độc lập múi giờ máy chủ.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp bước 1.4 và yêu cầu tiếp tục thực hiện, kiểm tra vnpDate cùng toàn bộ test VNPay.
+
+### Kết quả đề xuất
+
+1. Codex kiểm tra nhánh và phần mã VNPay đã có.
+2. Codex thêm vnpDate trong apps/api/src/payments/vnpay.ts: cộng bảy giờ vào thời điểm đầu vào, dùng chuỗi ISO UTC và loại ký tự ngăn cách để lấy 14 chữ số.
+3. Codex chạy riêng ca giờ Việt Nam, toàn bộ test VNPay, và chạy lại ca giờ với TZ=UTC và TZ=America/New_York.
+
+### Phản biện
+
+Các ca ngày và chữ ký dùng dữ liệu giả; chưa xác nhận giao dịch qua VNPay Sandbox. Chưa có xác nhận QA đã duyệt test nghiệm thu. Test chỉ kiểm tra những ví dụ đã định nghĩa, bao gồm chuyển ngày và năm.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu tiếp tục bước 1.4; theo thỏa thuận sẽ xem kết quả trước khi commit. Chưa có xác nhận QA.
+
+### Người kiểm tra
+
+Codex chạy kiểm tra tự động; chờ Hoàn và QA xem xét.
+
+### Kiểm tra và minh chứng
+
+- Test lọc tên giờ Việt Nam: 1 ca pass, 2 ca bỏ qua do bộ lọc.
+- `npm test -w api -- vnpay`: 3/3 ca pass.
+- Test giờ pass với TZ=UTC và TZ=America/New_York.
+- Chưa chạy VNPay Sandbox; chưa commit hoặc push bước này.

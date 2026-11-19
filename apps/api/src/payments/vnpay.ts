@@ -24,3 +24,8 @@ export function vnpVerify(query: Record<string, unknown>, secret: string): query
   const expected = Buffer.from(vnpSign(query as VnpParams, secret), 'hex');
   return timingSafeEqual(expected, Buffer.from(supplied, 'hex'));
 }
+
+export function vnpDate(date: Date): string {
+  const vietnamTime = new Date(date.getTime() + 7 * 3600_000);
+  return vietnamTime.toISOString().replace(/[-:T]/g, '').slice(0, 14);
+}
