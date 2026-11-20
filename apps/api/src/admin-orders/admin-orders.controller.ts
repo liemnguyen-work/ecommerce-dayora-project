@@ -5,8 +5,17 @@ import {
   Param,
   Patch,
   Query,
+  Req,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
+
+import {
+  JwtAuthGuard,
+  RolesGuard,
+  Roles,
+  type AuthRequest,
+} from '../auth/auth.guard.js';
 
 import {
   OrdersQueryDto,
@@ -15,18 +24,13 @@ import {
 
 import { AdminOrdersService } from './admin-orders.service.js';
 
-// Thêm import JwtAuthGuard, RolesGuard và Roles
-// theo đúng đường dẫn tìm được ở Bước 1.
-import {
-  JwtAuthGuard,
-  RolesGuard,
-  Roles,
-} from '../auth/auth.guard.js';
 @Controller('admin/orders')
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles('ADMIN')
 export class AdminOrdersController {
-  constructor(private readonly orders: AdminOrdersService) {}
+  constructor(
+    private readonly orders: AdminOrdersService,
+  ) {}
 
   @Get()
   list(@Query() query: OrdersQueryDto) {
@@ -42,11 +46,14 @@ export class AdminOrdersController {
   update(
     @Param('id') id: string,
     @Body() dto: UpdateStatusDto,
+    @Req() req: AuthRequest,
   ) {
-    // #266 sẽ triển khai máy trạng thái và ghi log.
-    void id;
-    void dto;
+    if (!req.user) {
+      throw new UnauthorizedException(
+        'Phiên đăng nhập không hợp lệ',
+      );
+    }
 
-    throw new Error('Chưa triển khai chuyển trạng thái D08');
+    return this.orders.update(id, dto, req.user.id);
   }
 }

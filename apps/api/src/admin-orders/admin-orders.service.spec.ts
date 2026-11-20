@@ -357,7 +357,144 @@ const { RolesGuard } =
       }),
     }),
   };
-
   expect(guard.canActivate(context as never)).toBe(false);
 });
+it('chỉ xác nhận khi đã thanh toán', async () => {
+  const service = (await getService()) as AdminOrdersContract & {
+    update: (
+      id: string,
+      dto: { field: 'status'; to: string },
+      actorId: string,
+    ) => Promise<unknown>;
+  };
+
+  const unpaidOrder = mockOrder({
+    status: 'PENDING_PAYMENT',
+    paymentStatus: 'UNPAID',
+  });
+
+  tx.order.findUnique.mockResolvedValue(unpaidOrder);
+
+  await expect(
+    service.update(
+      'order-a',
+      { field: 'status', to: 'CONFIRMED' },
+      'admin-a',
+    ),
+  ).rejects.toMatchObject({
+    status: 422,
+    response: expect.objectContaining({
+      allowed: ['CANCELLED'],
+    }),
+  });
+
+  expect(tx.order.updateMany).not.toHaveBeenCalled();
+
+  const paidOrder = mockOrder({
+    status: 'PENDING_PAYMENT',
+    paymentStatus: 'PAID',
+  });
+
+  tx.order.findUnique.mockResolvedValue(paidOrder);
+
+  const result = await service.update(
+    'order-a',
+    { field: 'status', to: 'CONFIRMED' },
+    'admin-a',
+  );
+
+  expect(result).toEqual(
+    expect.objectContaining({
+      status: 'CONFIRMED',
+    }),
+  );
+
+  expect(tx.orderStatusLog.create).toHaveBeenCalled();
+});
+it('đúng sơ đồ giao hàng và chỉ hoàn tất khi đã giao', async () => {
+  const service = (await getService()) as AdminOrdersContract & {
+    update: (
+      id: string,
+      dto: {
+        field: 'status' | 'shippingStatus';
+        to: string;
+      },
+      actorId: string,
+    ) => Promise<unknown>;
+  };
+
+  const order = mockOrder({
+    status: 'CONFIRMED',
+    paymentStatus: 'PAID',
+    shippingStatus: 'NOT_SHIPPED',
+  });
+
+  tx.order.findUnique.mockResolvedValue(order);
+
+  await expect(
+    service.update(
+      'order-a',
+      { field: 'status', to: 'COMPLETED' },
+      'admin-a',
+    ),
+  ).rejects.toMatchObject({
+    status: 422,
+  });
+
+  await expect(
+    service.update(
+      'order-a',
+      { field: 'shippingStatus', to: 'DELIVERED' },
+      'admin-a',
+    ),
+  ).rejects.toMatchObject({
+    status: 422,
+    response: expect.objectContaining({
+      allowed: ['PREPARING'],
+    }),
+  });
+
+  let current = order;
+
+  for (const next of [
+    'PREPARING',
+    'SHIPPING',
+    'DELIVERED',
+  ] as const) {
+    tx.order.findUnique.mockResolvedValue(current);
+
+    const result = await service.update(
+      'order-a',
+      { field: 'shippingStatus', to: next },
+      'admin-a',
+    );
+
+    expect(result).toEqual(
+      expect.objectContaining({
+        shippingStatus: next,
+      }),
+    );
+
+    current = {
+      ...current,
+      shippingStatus: next,
+    };
+  }
+
+  tx.order.findUnique.mockResolvedValue(current);
+
+  const completed = await service.update(
+    'order-a',
+    { field: 'status', to: 'COMPLETED' },
+    'admin-a',
+  );
+
+  expect(completed).toEqual(
+    expect.objectContaining({
+      status: 'COMPLETED',
+    }),
+  );
+
+  expect(tx.orderStatusLog.create).toHaveBeenCalledTimes(4);
+}); 
 });
