@@ -5054,3 +5054,422 @@ Codex kiểm tra code và môi trường; chờ Hoàn xác nhận nơi kiểm th
 
 - Kiểm tra trạng thái worktree, CheckoutService và tên file cấu hình môi trường; không in chuỗi kết nối hoặc bí mật.
 - Chưa chạy luồng đặt hàng với database thật, chưa commit hoặc push.
+
+---
+
+## Phase 3 / hoan-20261120-vnpay-start-d72-01
+
+* Thời gian ghi: 2026-11-20T00:23:23+07:00
+* Thời gian thực hiện: 20/11/2026.
+* Mã phiên nhật ký: hoan-20261120-vnpay-start-d72
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-1, issue #51
+
+### Công cụ
+
+Codex, Git và tài liệu lộ trình Phase 3.
+
+### Mục đích
+
+Chuẩn bị task ký và kiểm chữ ký VNPay theo thứ tự test trước.
+
+### Prompt
+
+Hoàn cung cấp task cha #51 và yêu cầu bắt đầu task ký và kiểm chữ ký VNPay.
+
+### Kết quả đề xuất
+
+Codex kiểm tra main và tài liệu, tạo worktree nhánh prj/p3-bd1-1 từ origin/main. Chưa thấy mã payments trong main và chưa có nhánh task từ xa.
+
+### Phản biện
+
+Chi tiết các sub-issue và tên đầy đủ ca test chưa được cung cấp; chỉ có nội dung một bước sắp xếp và mã hóa tham số từ trao đổi trước. Không dùng khóa VNPay thật trong kiểm thử.
+
+### Quyết định của nhóm
+
+Làm theo yêu cầu test trước; chờ nội dung các sub-issue và QA duyệt test trước khi triển khai tính năng.
+
+### Người kiểm tra
+
+Codex kiểm tra trạng thái repo và tài liệu; chờ Hoàn cung cấp tiêu chí các bước và QA xem xét ca test.
+
+### Kiểm tra và minh chứng
+
+- `git fetch origin` thành công; nhánh mới dựa trên main b9c5cf5.
+- Chưa viết test hoặc chức năng, chưa commit hoặc push.
+
+---
+
+## Phase 3 / hoan-20261120-vnpay-test-d72-02
+
+* Thời gian ghi: 2026-11-20T00:32:02+07:00
+* Thời gian thực hiện: 20/11/2026.
+* Mã phiên nhật ký: hoan-20261120-vnpay-start-d72
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261120-vnpay-start-d72-01, PRJ-P3-BD1-1.1, issue #51
+
+### Công cụ
+
+Codex, Git, Node.js crypto và Vitest.
+
+### Mục đích
+
+Chuẩn bị test nghiệm thu trước cho ký, kiểm chữ ký và giờ VNPay bằng khóa giả.
+
+### Prompt
+
+Hoàn cung cấp nội dung các bước viết test, mã hóa và sắp xếp tham số, ký và kiểm chữ ký, cùng định dạng giờ Việt Nam.
+
+### Kết quả đề xuất
+
+Codex viết ba ca trong vnpay.spec.ts: vector mã hóa và chữ ký HMAC-SHA512, chữ ký sai định dạng hoặc tham số sai kiểu, và giờ GMT+7 qua ranh giới ngày năm. Vector HMAC được tính bằng Node.js crypto với khóa giả test-secret.
+
+### Phản biện
+
+Test chưa được QA duyệt và chưa kiểm chứng với VNPay sandbox; test đỏ do chưa có module, chưa chạy được các assertion. Hai bước 1.2 và 1.3 cùng yêu cầu ca vừa mã hóa vừa ký nên ca tổng hợp không thể xanh toàn bộ khi mới có vnpQuery.
+
+### Quyết định của nhóm
+
+Làm bước viết test trước theo yêu cầu; chưa có xác nhận QA duyệt test.
+
+### Người kiểm tra
+
+Codex chạy test; chờ Hoàn và QA kiểm tra nội dung các ca.
+
+### Kiểm tra và minh chứng
+
+- `npm test -w api -- vnpay`: 3/3 ca FAIL vì chưa có vnpay.js/vnpay.ts, phù hợp giai đoạn test trước.
+- Chưa viết code chức năng, chưa commit hoặc push.
+
+---
+
+## Phase 3 / hoan-20261120-vnpay-query-d72-03
+
+* Thời gian ghi: 2026-11-20T00:41:28+07:00
+* Thời gian thực hiện: 20/11/2026.
+* Mã phiên nhật ký: hoan-20261120-vnpay-start-d72
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: hoan-20261120-vnpay-test-d72-02, PRJ-P3-BD1-1.2
+
+### Công cụ
+
+Codex, TypeScript và Vitest.
+
+### Mục đích
+
+Tạo chuỗi tham số VNPay được lọc, sắp xếp và mã hóa trước khi ký.
+
+### Prompt
+
+Hoàn yêu cầu thực hiện bước vnpQuery, kiểm tra và thảo luận trước khi commit hoặc push.
+
+### Kết quả đề xuất
+
+Tạo vnpay.ts với vnpQuery: lọc vnp_, bỏ trường chữ ký, sắp xếp và mã hóa query theo hướng dẫn; chưa viết hàm ký, kiểm chữ ký hay ngày giờ.
+
+### Phản biện
+
+Ca nghiệm thu gộp vnpQuery và vnpSign nên chưa thể xanh khi chỉ hoàn thành vnpQuery. Chưa có xác nhận QA duyệt các test. Chưa so sánh code mẫu hoặc kiểm tra với VNPay sandbox.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu xem và xử lý các vấn đề trước khi commit; chưa có xác nhận QA duyệt.
+
+### Người kiểm tra
+
+Codex kiểm tra vector query và ký tự đặc biệt; chờ Hoàn và QA xem xét.
+
+### Kiểm tra và minh chứng
+
+- Kiểm tra Vitest tạm cho chuỗi mẫu, Unicode, khoảng trắng, dấu & và +: pass; file test tạm đã được xóa sau khi chạy.
+- Test nghiệm thu chính đi qua assertion query nhưng FAIL tại vnpSign chưa tồn tại; 2 ca khác được bỏ qua khi chạy lọc tên.
+- Thử chạy tsx riêng hai lần gặp lỗi uv_os_get_passwd ENOMEM; đã dùng Vitest để kiểm tra thay thế.
+- Chưa commit hoặc push thay đổi bước này.
+
+---
+
+## Phase 3 / hoan-20261120-vnpay-query-d72-04
+
+* Th?i gian ghi: 2026-11-20T00:51:02+07:00
+* Th?i gian th?c hi?n: 20/11/2026.
+* M? phi?n nh?t k?: hoan-20261120-vnpay-start-d72
+* Ng??i prompt: Ho?n
+* Lo?i m?c: ??nh ch?nh
+* Li?n quan: hoan-20261120-vnpay-query-d72-03, PRJ-P3-BD1-1.2, commit 6a90812
+
+### C?ng c?
+
+Codex, Git, TypeScript, Node.js v? Vitest.
+
+### M?c ??ch
+
+Ghi l?i c?c b??c th?c hi?n v? ki?m tra h?m vnpQuery, gi?p t?o chu?i tham s? th?ng nh?t ?? ph?c v? k? d? li?u VNPay ? b??c ti?p theo.
+
+### Prompt
+
+T?m l??c: Ho?n cung c?p y?u c?u b??c PRJ-P3-BD1-1.2, y?u c?u th?c hi?n s?p x?p v? m? h?a tham s?; ki?m tra, trao ??i nh?ng v?n ?? c?n l?i tr??c khi commit v? push. Sau ?? Ho?n ??ng ? commit, push v? y?u c?u xem l?i n?i dung AI log.
+
+### K?t qu? ?? xu?t
+
+1. Ho?n cung c?p y?u c?u ch? gi? c?c kh?a b?t ??u b?ng vnp_, lo?i vnp_SecureHash v? vnp_SecureHashType, s?p x?p kh?a v? m? h?a tham s?.
+2. Codex ki?m tra nh?nh prj/p3-bd1-1 v? test nghi?m thu ?? vi?t tr??c. Ca ch?nh ki?m tra c? vnpQuery l?n ch? k? vnpSign.
+3. Codex t?o apps/api/src/payments/vnpay.ts v? tri?n khai vnpQuery: s?p x?p t?n kh?a, m? h?a t?ng kh?a v? gi? tr?, ??i kho?ng tr?ng th?nh +, r?i n?i c?c c?p b?ng &.
+4. Codex ch?y ki?m tra ri?ng cho chu?i m?u, k? t? ti?ng Vi?t, d?u c?ch, & v? +; k?t qu? pass. File test t?m d?ng ?? ki?m tra ???c x?a sau ??.
+5. Codex ch?y ca nghi?m thu theo t?n task. Ph?n ki?m tra chu?i query v??t qua, nh?ng test d?ng t?i vnpSign v? h?m k? thu?c b??c 1.3 ch?a ???c tri?n khai.
+6. Ho?n v? Codex trao ??i r?ng s? ch?y l?i ca nghi?m thu chung sau b??c 1.3. Theo y?u c?u c?a Ho?n, ph?n vnpQuery v? AI log ?? ???c commit, push l?n nh?nh prj/p3-bd1-1 v?i commit 6a90812.
+
+### Ph?n bi?n
+
+Codex x?c ??nh b??c 1.2 ch?a ??t ??y ?? ti?u ch? test xanh v? ca nghi?m thu g?p c? ch?c n?ng k? c?a b??c 1.3. Ki?m tra ri?ng ch?a ch?ng minh vi?c t?ch h?p v?i VNPay Sandbox. Ch?a c? x?c nh?n QA ?? duy?t test nghi?m thu.
+
+### Quy?t ??nh c?a nh?m
+
+Ho?n ??ng ? commit v? push ph?n vnpQuery, ??ng th?i th?ng nh?t ch?y l?i test nghi?m thu sau khi th?c hi?n b??c 1.3. Ch?a c? x?c nh?n QA ho?c quy?t ??nh b? sung c?a nh?m.
+
+### Ng??i ki?m tra
+
+Codex th?c hi?n c?c l?nh ki?m tra v? ghi nh?n k?t qu?. Ho?n xem l?i n?i dung AI log; ch?a ghi nh?n QA ?? duy?t test.
+
+### Ki?m tra v? minh ch?ng
+
+- Ki?m tra Vitest t?m cho vnpQuery: pass v?i chu?i m?u v? c?c k? t? ??c bi?t ?? n?u.
+- Test nghi?m thu theo t?n b??c: ch?a pass; th?t b?i t?i vnpSign ch?a ???c tri?n khai, sau khi ki?m tra query ?? qua.
+- Hai l?n ch?y tsx g?p l?i uv_os_get_passwd ENOMEM; Codex chuy?n sang d?ng Vitest ?? ki?m tra query.
+- Commit 6a90812 ?? ???c push l?n nh?nh prj/p3-bd1-1. M?c d72-03 ghi ch?a commit, push l? tr?ng th?i t?i th?i ?i?m ghi m?c ??.
+- Ch?a ki?m tra v?i VNPay Sandbox.
+
+---
+
+## Phase 3 / hoan-20261120-vnpay-sign-d72-05
+
+* Thời gian ghi: 2026-11-20T00:55:21+07:00
+* Thời gian thực hiện: 20/11/2026.
+* Mã phiên nhật ký: hoan-20261120-vnpay-start-d72
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-1.3, hoan-20261120-vnpay-query-d72-04
+
+### Công cụ
+
+Codex, TypeScript, Node.js crypto và Vitest.
+
+### Mục đích
+
+Tạo và kiểm tra chữ ký VNPay theo yêu cầu HMAC-SHA512 để phát hiện dữ liệu bị thay đổi.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp bước 1.3 về vnpSign và vnpVerify, yêu cầu tiếp tục task sau phần sắp xếp và mã hóa tham số.
+
+### Kết quả đề xuất
+
+1. Codex kiểm tra nhánh, hàm vnpQuery và các ca test đã viết trước.
+2. Codex thêm vnpSign để ký chuỗi vnpQuery bằng HMAC-SHA512 với secret được truyền vào; test chỉ dùng secret giả.
+3. Codex thêm vnpVerify: từ chối tham số vnp_ không phải chuỗi và chữ ký không đúng 128 ký tự hex; tính chữ ký kỳ vọng và so sánh buffer bằng timingSafeEqual.
+4. Codex chạy lại ca nghiệm thu chung cho bước 1.2 và 1.3; sau đó chạy ca từ chối dữ liệu và chữ ký sai định dạng.
+
+### Phản biện
+
+Hai ca ký và kiểm chữ ký đã pass với dữ liệu giả; chưa kiểm tra với VNPay Sandbox. Chưa có xác nhận QA đã duyệt test. Ca giờ Việt Nam thuộc bước 1.4 chưa được triển khai và không được chạy trong hai lệnh lọc này.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu thực hiện bước ký và kiểm chữ ký; theo thỏa thuận trước đó, xem kết quả và vấn đề còn lại trước khi commit. Chưa có xác nhận QA.
+
+### Người kiểm tra
+
+Codex chạy các ca test được nêu; chờ Hoàn và QA xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm test -w api -- vnpay.spec.ts -t "mã hóa sắp xếp và ký đúng vector cố định"`: 1 ca pass, 2 ca bỏ qua theo bộ lọc.
+- `npm test -w api -- vnpay.spec.ts -t "từ chối chữ ký sai định dạng"`: 1 ca pass, 2 ca bỏ qua theo bộ lọc.
+- Chưa chạy giao dịch thật; chưa commit hoặc push bước 1.3.
+
+---
+
+## Phase 3 / hoan-20261120-vnpay-date-d72-06
+
+* Thời gian ghi: 2026-11-20T01:05:54+07:00
+* Thời gian thực hiện: 20/11/2026.
+* Mã phiên nhật ký: hoan-20261120-vnpay-start-d72
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-1.4, hoan-20261120-vnpay-sign-d72-05
+
+### Công cụ
+
+Codex, TypeScript, Node.js và Vitest.
+
+### Mục đích
+
+Chuyển thời gian giao dịch sang định dạng giờ Việt Nam yyyyMMddHHmmss, độc lập múi giờ máy chủ.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp bước 1.4 và yêu cầu tiếp tục thực hiện, kiểm tra vnpDate cùng toàn bộ test VNPay.
+
+### Kết quả đề xuất
+
+1. Codex kiểm tra nhánh và phần mã VNPay đã có.
+2. Codex thêm vnpDate trong apps/api/src/payments/vnpay.ts: cộng bảy giờ vào thời điểm đầu vào, dùng chuỗi ISO UTC và loại ký tự ngăn cách để lấy 14 chữ số.
+3. Codex chạy riêng ca giờ Việt Nam, toàn bộ test VNPay, và chạy lại ca giờ với TZ=UTC và TZ=America/New_York.
+
+### Phản biện
+
+Các ca ngày và chữ ký dùng dữ liệu giả; chưa xác nhận giao dịch qua VNPay Sandbox. Chưa có xác nhận QA đã duyệt test nghiệm thu. Test chỉ kiểm tra những ví dụ đã định nghĩa, bao gồm chuyển ngày và năm.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu tiếp tục bước 1.4; theo thỏa thuận sẽ xem kết quả trước khi commit. Chưa có xác nhận QA.
+
+### Người kiểm tra
+
+Codex chạy kiểm tra tự động; chờ Hoàn và QA xem xét.
+
+### Kiểm tra và minh chứng
+
+- Test lọc tên giờ Việt Nam: 1 ca pass, 2 ca bỏ qua do bộ lọc.
+- `npm test -w api -- vnpay`: 3/3 ca pass.
+- Test giờ pass với TZ=UTC và TZ=America/New_York.
+- Chưa chạy VNPay Sandbox; chưa commit hoặc push bước này.
+
+---
+
+## Phase 3 / hoan-20261120-vnpay-check-d72-07
+
+* Thời gian ghi: 2026-11-20T01:22:40+07:00
+* Thời gian thực hiện: 20/11/2026.
+* Mã phiên nhật ký: hoan-20261120-vnpay-start-d72
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-1.5, hoan-20261120-vnpay-date-d72-06
+
+### Công cụ
+
+Codex, Git và Markdown.
+
+### Mục đích
+
+Chuẩn bị khung tự đánh giá kiến thức của task ký và kiểm chữ ký VNPay.
+
+### Prompt
+
+Hoàn cung cấp nội dung bước 1.5 và quy tắc tự viết câu trả lời, không nhìn lại code và không nhờ AI viết hộ.
+
+### Kết quả đề xuất
+
+Codex tạo docs/learning/BD1-Hoan/kiem-tra/PRJ-P3-BD1-1.md với các câu hỏi và ô chưa hoàn thành; không điền câu trả lời.
+
+### Phản biện
+
+Bài đánh giá yêu cầu Hoàn tự trả lời và giải thích được; chưa thể xác nhận đã đạt khi file còn trống.
+
+### Quyết định của nhóm
+
+Theo nội dung bước 1.5, Hoàn tự trả lời trước khi nhờ AI nhận xét; chưa có xác nhận reviewer.
+
+### Người kiểm tra
+
+Codex kiểm tra khung câu hỏi; chờ Hoàn tự trả lời và reviewer đánh giá.
+
+### Kiểm tra và minh chứng
+
+- Tạo file khung với năm mục và checklist chưa đánh dấu.
+- Chưa có câu trả lời, chưa commit hoặc push bước 1.5.
+
+---
+
+## Phase 3 / hoan-20261120-vnpay-review-d72-08
+
+* Thời gian ghi: 2026-11-20T01:53:45+07:00
+* Thời gian thực hiện: 20/11/2026.
+* Mã phiên nhật ký: hoan-20261120-vnpay-start-d72
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-1.5, hoan-20261120-vnpay-check-d72-07
+
+### Công cụ
+
+Codex, Git và Markdown.
+
+### Mục đích
+
+Ghi nhận câu trả lời kiểm tra kiến thức VNPay do Hoàn cung cấp và luyện giải thích các tình huống liên quan.
+
+### Prompt
+
+Hoàn trả lời các câu hỏi về ca test, chuẩn hóa tham số, ký và kiểm chữ ký, múi giờ Việt Nam và khó khăn khi tìm file trong worktree; sau đó trả lời thêm hai câu về sửa số tiền và chuyển giờ, rồi yêu cầu ghi vào file, commit và push.
+
+### Kết quả đề xuất
+
+1. Codex nhận xét các câu trả lời và làm rõ thành viên lấy code từ nhánh task; nếu lấy qua main thì cần chờ PR merge.
+2. Hoàn trả lời rằng thay đổi vnp_Amount làm vnpVerify trả false và 18:30 UTC ngày 01/01/2026 tương ứng 01:30 ngày 02/01 tại Việt Nam.
+3. Theo yêu cầu Hoàn, Codex ghi các câu trả lời đã cung cấp vào file PRJ-P3-BD1-1.md, sửa lỗi gõ ở câu 5 và đánh dấu các câu đã trả lời.
+
+### Phản biện
+
+Codex nhận xét câu 5 cần phân biệt lấy code từ nhánh task với cập nhật main sau merge; Hoàn đồng ý ghi câu trả lời vào file. Chưa có đánh giá của reviewer hoặc QA.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu cập nhật câu trả lời đã cung cấp, AI log, commit và push. Chưa có xác nhận hoàn thành checklist kiến thức bởi reviewer.
+
+### Người kiểm tra
+
+Codex nhận xét nội dung và ghi file theo yêu cầu; chờ Hoàn và reviewer xem lại.
+
+### Kiểm tra và minh chứng
+
+- Hoàn cung cấp câu trả lời cho cả năm mục và hai câu luyện tập trong cuộc trao đổi.
+- File kiểm tra kiến thức đã điền đủ năm mục; chưa xác nhận reviewer đánh giá hoặc PR được merge.
+
+---
+
+## Phase 3 / hoan-20261120-vnpay-conflict-d72-09
+
+* Thời gian ghi: 2026-11-20T15:30:20+07:00
+* Thời gian thực hiện: 20/11/2026.
+* Mã phiên nhật ký: hoan-20261120-vnpay-start-d72
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PR #705 repo nhóm, PRJ-P3-BD1-1
+
+### Công cụ
+
+Codex, Git, Node.js, Prisma, Vitest và ESLint.
+
+### Mục đích
+
+Gỡ xung đột AI log giữa nhánh VNPay và main để PR có thể tiếp tục review.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp ảnh PR #705 báo conflict tại docs/ai-logs/hoan.md và yêu cầu xử lý.
+
+### Kết quả đề xuất
+
+Codex fetch origin, merge origin/main vào prj/p3-bd1-1 và gỡ conflict bằng cách giữ nguyên các mục log đơn hàng của main và các mục VNPay của nhánh task, theo thứ tự thời gian. Kiểm tra bằng script xác nhận toàn bộ nội dung mục nhật ký của hai phía vẫn được giữ.
+
+### Phản biện
+
+Lần chạy toàn bộ test mặc định có bốn ca timeout 5 giây, không có lỗi assertion được báo. Chạy lại với tối đa hai worker thì toàn bộ 104 ca pass. CI và reviewer vẫn cần xác nhận sau khi push; chưa kiểm tra VNPay Sandbox.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu gỡ conflict; chưa có xác nhận reviewer về bản merge mới.
+
+### Người kiểm tra
+
+Codex kiểm tra các mục log, test, lint và build API; chờ Hoàn và reviewer kiểm tra PR.
+
+### Kiểm tra và minh chứng
+
+- Kiểm tra giữ nguyên 91 mục phía VNPay và 85 mục phía main: không thiếu hoặc thay đổi nội dung mục.
+- `npm test -w api`: 100 pass, 4 timeout trong lần chạy đầu.
+- `npm test -w api -- --maxWorkers=2`: 104/104 pass.
+- `npm run lint -w api` và `npm run build -w api`: pass.
+- Chưa xác nhận CI hoặc trạng thái merge trên GitHub sau lần push mới.
