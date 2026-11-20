@@ -341,4 +341,23 @@ describe('AdminOrdersService - PRJ-P3-BD2-1', () => {
     expect(tx.sku.updateMany).not.toHaveBeenCalled();
     expect(prisma.sku.updateMany).not.toHaveBeenCalled();
   });
+  it('guard không cho khách vào admin', async () => {
+  const { Reflector } = await import('@nestjs/core');
+const { RolesGuard } =
+  await import('../auth/auth.guard.js');
+  const { AdminOrdersController } =
+    await import('./admin-orders.controller.js');
+  const guard = new RolesGuard(new Reflector());
+  const context = {
+    getClass: () => AdminOrdersController,
+    getHandler: () => AdminOrdersController.prototype.list,
+    switchToHttp: () => ({
+      getRequest: () => ({
+        user: { id: 'customer-a', role: 'CUSTOMER' },
+      }),
+    }),
+  };
+
+  expect(guard.canActivate(context as never)).toBe(false);
+});
 });
