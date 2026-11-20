@@ -82,6 +82,27 @@ export class PaymentsService {
     }
   }
 
+  async returnUrl(query: Record<string, unknown>) {
+    const secret = process.env.VNP_HASH_SECRET;
+    if (!secret || !vnpVerify(query, secret)) {
+      return { valid: false, success: false, message: 'Chữ ký không hợp lệ' };
+    }
+    if (!query.vnp_TxnRef) {
+      return { valid: false, success: false, message: 'Không tìm thấy mã đơn hàng' };
+    }
+    const order = await this.prisma.order.findUnique({
+      where: { code: query.vnp_TxnRef },
+      select: { id: true, code: true, total: true },
+    });
+    if (!order) return { valid: false, success: false, message: 'Không tìm thấy đơn hàng' };
+    const success = query.vnp_Amount === String(order.total * 100) &&
+      query.vnp_ResponseCode === '00' && query.vnp_TransactionStatus === '00';
+    return {
+      valid: true, orderId: order.id, orderCode: order.code, success,
+      message: success ? 'Giao dịch thành công' : 'Giao dịch không thành công',
+    };
+  }
+
   async create(userId: string, id: string, ip: string) {
     const tmnCode = process.env.VNP_TMN_CODE;
     const secret = process.env.VNP_HASH_SECRET;

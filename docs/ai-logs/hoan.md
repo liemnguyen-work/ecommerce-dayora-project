@@ -5757,3 +5757,46 @@ Codex chạy kiểm thử, lint và build API; chờ Hoàn và reviewer kiểm t
 - Hai ca IPN muộn: 2 pass, 6 bỏ qua theo bộ lọc.
 - Các ca thanh toán liên quan: 6 pass, 2 bỏ qua theo bộ lọc.
 - Lint và build API: pass. Chưa chạy với PostgreSQL thật.
+---
+
+## Phase 3 / hoan-20261120-payments-return-f31-07
+
+* Thời gian ghi: 2026-11-20T17:10:00+07:00
+* Thời gian thực hiện: 20/11/2026.
+* Mã phiên nhật ký: hoan-20261120-payments-start-f31
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-2.6, hoan-20261120-payments-late-f31-06
+
+### Công cụ
+
+Codex, NestJS, Prisma, Vitest và Supertest.
+
+### Mục đích
+
+Đăng ký route VNPay và xử lý Return chỉ đọc dữ liệu.
+
+### Prompt
+
+Tóm lược: Hoàn yêu cầu bước thiếu cấu hình trả 503 và Return không cập nhật dữ liệu.
+
+### Kết quả đề xuất
+
+Đã dùng kiểm tra cấu hình trong create, thêm Return kiểm chữ ký và đọc đơn, đăng ký module/controller và thêm test HTTP riêng; không sửa test nghiệm thu ban đầu.
+
+### Phản biện
+
+Test HTTP dùng Prisma và guard giả lập, chưa kiểm tra VNPay Sandbox hoặc database thật. Return phản ánh dữ liệu phản hồi, trạng thái thanh toán vẫn do IPN xác nhận.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu thực hiện bước này; chưa có xác nhận QA hoặc reviewer.
+
+### Người kiểm tra
+
+Codex chạy test, lint và build API; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm test -w api -- payments`: 13/13 pass.
+- `npm run lint -w api` và `npm run build -w api`: pass.

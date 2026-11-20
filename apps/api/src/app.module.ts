@@ -1,3 +1,4 @@
+import { PaymentsModule } from './payments/payments.module.js';
 import { CartModule } from './cart/cart.module.js';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
@@ -26,6 +27,7 @@ import { AdminPromotionsModule } from './promotions/admin-promotions.module.js';
     OrdersModule,
     AdminVouchersModule,
     AdminPromotionsModule,
+    PaymentsModule,
   ],
   controllers: [AppController],
 })
