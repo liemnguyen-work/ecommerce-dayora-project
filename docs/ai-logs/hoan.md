@@ -5473,3 +5473,414 @@ Codex kiểm tra các mục log, test, lint và build API; chờ Hoàn và revie
 - `npm test -w api -- --maxWorkers=2`: 104/104 pass.
 - `npm run lint -w api` và `npm run build -w api`: pass.
 - Chưa xác nhận CI hoặc trạng thái merge trên GitHub sau lần push mới.
+
+---
+
+## Phase 3 / hoan-20261120-payments-start-f31-01
+
+* Thời gian ghi: 2026-11-20T15:47:49+07:00
+* Thời gian thực hiện: 20/11/2026.
+* Mã phiên nhật ký: hoan-20261120-payments-start-f31
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-2, issue #52, PR #705 repo nhóm
+
+### Công cụ
+
+Codex, Git và PowerShell.
+
+### Mục đích
+
+Chuẩn bị task thanh toán tạo URL, Return và IPN trong thư mục dự án Desktop theo yêu cầu của Hoàn.
+
+### Prompt
+
+Hoàn cung cấp task cha #52, yêu cầu tiếp tục task thanh toán và cập nhật repo để file VNPay xuất hiện trong thư mục đang làm việc.
+
+### Kết quả đề xuất
+
+1. Codex cập nhật thông tin GitHub, xác nhận PR #705 đã merge vào origin/main và main có vnpay.ts cùng vnpay.spec.ts và CheckoutService.
+2. Nhánh Desktop cũ có commit AI log cục bộ 6d3adef và file checkout.service.spec.ts chưa được theo dõi. Codex lưu riêng file test cũ vào Git stash với thông điệp Preserve Desktop checkout test before P3; commit cũ vẫn ở nhánh prj/p2-bd1-3.
+3. Codex tạo và chuyển thư mục Desktop sang nhánh prj/p3-bd1-2 từ origin/main tại 8d48735; xác nhận hai file VNPay xuất hiện trong apps/api/src/payments.
+4. Codex yêu cầu Hoàn cung cấp nội dung các sub-issue để chuẩn bị test nghiệm thu trước khi lập trình.
+
+### Phản biện
+
+Kiểm tra sự hiện diện của các file không thay thế xác nhận đầy đủ mọi tiêu chí nghiệp vụ của task #52. Test cũ trong stash chưa bị xóa; không tự áp stash lên nhánh mới vì main đã có file test cùng đường dẫn.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu bắt đầu task tiếp theo và cập nhật thư mục Desktop; chưa có nội dung chi tiết các sub-issue hoặc xác nhận QA về test.
+
+### Người kiểm tra
+
+Codex kiểm tra trạng thái Git và sự hiện diện của file; chờ Hoàn cung cấp các bước và QA duyệt test.
+
+### Kiểm tra và minh chứng
+
+- origin/main tại 8d48735 có merge PR #705; vnpay.ts, vnpay.spec.ts và checkout.service.ts hiện diện.
+- File test cũ được lưu tại stash với thông điệp Preserve Desktop checkout test before P3; commit 6d3adef chưa push vẫn nằm trên nhánh cũ.
+- Chưa viết test hoặc code cho task #52, chưa commit hoặc push nhánh mới.
+
+---
+
+## Phase 3 / hoan-20261120-payments-tests-f31-02
+
+* Thời gian ghi: 2026-11-20T15:54:31+07:00
+* Thời gian thực hiện: 20/11/2026.
+* Mã phiên nhật ký: hoan-20261120-payments-start-f31
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-2.1, hoan-20261120-payments-start-f31-01
+
+### Công cụ
+
+Codex, TypeScript, Node.js, Vitest và Prisma mock.
+
+### Mục đích
+
+Viết test nghiệm thu trước cho task tạo URL thanh toán, Return và IPN.
+
+### Prompt
+
+Hoàn cung cấp yêu cầu bước 1 viết test và nội dung các bước 2.2 đến 2.6 để xác định các ca cần kiểm tra trước khi viết chức năng.
+
+### Kết quả đề xuất
+
+Codex tạo payments.spec.ts với tám ca: tạo URL cho chủ đơn, từ chối chữ ký sai, IPN thành công và lặp, sai tiền, không có đơn, IPN muộn còn tồn, IPN muộn hết tồn, và thiếu cấu hình cùng return chỉ đọc. Test dùng khóa giả, thời gian giả và Prisma mock.
+
+### Phản biện
+
+QA và Hoàn cần xem lại các giả lập, đặc biệt trạng thái tồn, thanh toán muộn và tính lặp; mock chưa xác nhận khóa dòng hoặc giao dịch đồng thời trên PostgreSQL thật. Các assertion chưa được thực thi vì module payments.service chưa tồn tại. Chưa có xác nhận QA duyệt test.
+
+### Quyết định của nhóm
+
+Thực hiện viết test trước theo yêu cầu Hoàn; chưa có quyết định QA duyệt test hoặc xác nhận thiết kế mock.
+
+### Người kiểm tra
+
+Codex chạy test tự động; chờ Hoàn và QA xem nội dung test trước khi triển khai chức năng.
+
+### Kiểm tra và minh chứng
+
+- `npm test -w api -- payments`: tám ca mới FAIL do chưa có payments.service.js/ts; ba ca vnpay hiện có pass.
+- Lần chạy sandbox đầu không ghi được file tạm EPERM; chạy lại có quyền thực thi tại repo Desktop thì thu được kết quả trên.
+- Không kết nối VNPay hoặc database thật; chưa commit hoặc push bước này.
+
+---
+
+## Phase 3 / hoan-20261120-payments-create-f31-03
+
+* Thời gian ghi: 2026-11-20T16:01:47+07:00
+* Thời gian thực hiện: 20/11/2026.
+* Mã phiên nhật ký: hoan-20261120-payments-start-f31
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-2.2, hoan-20261120-payments-tests-f31-02
+
+### Công cụ
+
+Codex, NestJS, Prisma, Vitest, ESLint và Node.js.
+
+### Mục đích
+
+Tạo URL thanh toán VNPay cho chủ đơn hợp lệ khi đơn còn trong thời gian giữ hàng.
+
+### Prompt
+
+Hoàn cung cấp bước tạo URL, yêu cầu tiếp tục; khi được hỏi về QA, Hoàn cho biết QA sẽ duyệt sau khi các thành viên hoàn thành và nhóm sẽ sửa lỗi phát hiện sau.
+
+### Kết quả đề xuất
+
+1. Codex kiểm tra schema Order và Payment; nhận thấy thời hạn giữ hàng có thể null và Payment cần referenceCode duy nhất cùng provider.
+2. Codex tạo PaymentsService.create: kiểm tra cấu hình, khóa đơn theo id và userId trong transaction, kiểm tra chủ đơn, trạng thái và thời hạn, tạo tham số VNPay và ký URL.
+3. Service tạo Payment UNPAID với referenceCode UUID, provider VNPAY và số tiền VND. Service từ chối tổng tiền không dương hoặc vượt giới hạn số nguyên an toàn khi nhân 100.
+4. Codex chạy ca tạo URL và kiểm tra bổ sung chữ ký URL, số tiền, giờ hết hạn, các trạng thái và thời hạn null bằng mock.
+
+### Phản biện
+
+QA chưa duyệt test; các kiểm tra dùng mock không chứng minh khóa dòng, rollback hoặc giao dịch đồng thời PostgreSQL. Chưa gọi VNPay Sandbox; controller và IPN thuộc các bước sau. Cần xem xét việc nhiều lần tạo link cho cùng mã đơn trong giai đoạn tích hợp thanh toán.
+
+### Quyết định của nhóm
+
+Hoàn cho biết QA sẽ duyệt sau khi các thành viên hoàn thành; Codex thực hiện theo chỉ dẫn đó, chưa coi test đã được QA duyệt.
+
+### Người kiểm tra
+
+Codex chạy test và kiểm tra cục bộ; chờ Hoàn và QA xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm test -w api -- payments.spec.ts -t "tạo URL cho chủ đơn, không cho người khác hoặc đơn hết hạn"`: 1 ca pass, 7 ca bỏ qua.
+- Kiểm tra bổ sung bằng service đã build với mock: chữ ký URL hợp lệ, số tiền, thời hạn và trạng thái sai đều đạt.
+- `npm run lint -w api` và `npm run build -w api`: pass.
+- Chưa có controller, chưa test database thật hoặc Sandbox; chưa commit hoặc push bước 2.2.
+
+---
+
+## Phase 3 / hoan-20261120-payments-ipn-signature-f31-04
+
+* Thời gian ghi: 2026-11-20T16:07:56+07:00
+* Thời gian thực hiện: 20/11/2026.
+* Mã phiên nhật ký: hoan-20261120-payments-start-f31
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-2.3, hoan-20261120-payments-create-f31-03
+
+### Công cụ
+
+Codex, TypeScript, NestJS, Node.js, Vitest và ESLint.
+
+### Mục đích
+
+Kiểm tra chữ ký IPN trước khi truy cập database và từ chối dữ liệu bắt buộc còn thiếu.
+
+### Prompt
+
+Hoàn cung cấp yêu cầu bước 2.3: chữ ký sai trả 97, dữ liệu bắt buộc thiếu trả 99 và không truy vấn database trước khi kiểm tra.
+
+### Kết quả đề xuất
+
+1. Codex kiểm tra service hiện có và hàm vnpVerify từ task trước.
+2. Codex thêm ipn: secret thiếu hoặc chữ ký sai trả 97; chữ ký đúng nhưng thiếu trường bắt buộc trả 99.
+3. IPN hợp lệ tạm trả 99 Processing unavailable vì xử lý giao dịch thuộc bước sau, không báo thành công khi chưa cập nhật đơn.
+4. Codex chạy ca nghiệm thu, lint, build và kiểm tra bổ sung thiếu dữ liệu hoặc secret với khóa giả.
+
+### Phản biện
+
+Ca test sử dụng mock; chưa kết nối VNPay Sandbox hoặc kiểm tra IPN qua route thật. Nhánh xử lý giao dịch hợp lệ chưa triển khai. Không suy ra cơ chế này chặn được mọi hình thức tấn công từ chối dịch vụ. Chưa có xác nhận QA duyệt.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu tiếp tục các bước và cho biết QA duyệt sau khi thành viên hoàn thành công việc.
+
+### Người kiểm tra
+
+Codex chạy các kiểm tra cục bộ; chờ Hoàn và QA xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm test -w api -- payments.spec.ts -t "sai chữ ký trả 97 không truy cập DB"`: 1 ca pass, 7 ca bỏ qua do bộ lọc.
+- Kiểm tra bổ sung bằng khóa giả: thiếu trường hợp lệ trả 99, thiếu secret trả 97, không gọi transaction.
+- `npm run lint -w api` và `npm run build -w api`: pass.
+- Chưa commit hoặc push bước này.
+
+---
+
+## Phase 3 / hoan-20261120-payments-ipn-confirm-f31-05
+
+* Thời gian ghi: 2026-11-20T16:20:20+07:00
+* Thời gian thực hiện: 20/11/2026.
+* Mã phiên nhật ký: hoan-20261120-payments-start-f31
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-2.4, hoan-20261120-payments-ipn-signature-f31-04
+
+### Công cụ
+
+Codex, NestJS, Prisma, Vitest và ESLint.
+
+### Mục đích
+
+Xác nhận thanh toán VNPay và trừ tồn một lần, tránh xử lý trùng IPN.
+
+### Prompt
+
+Hoàn cung cấp bước 2.4: kiểm tra mã đơn, số tiền, trạng thái, xử lý IPN thành công và từ chối trừ tồn khi IPN lặp.
+
+### Kết quả đề xuất
+
+1. Codex bổ sung xử lý IPN hợp lệ trong transaction, khóa đơn theo mã trước khi đọc, trả 01 khi không thấy đơn và 04 khi sai tiền.
+2. Khi đơn đã PAID hoặc FAILED, service trả 02. Với đơn đang giữ hàng và giao dịch thành công, service khóa SKU theo thứ tự, cập nhật stock/reserved có điều kiện, payment PAID, order CONFIRMED và status log.
+3. Service chọn bản ghi Payment VNPay UNPAID mới nhất, trả lỗi 99 khi không tìm thấy payment hoặc xảy ra lỗi xử lý; các nhánh giao dịch thất bại hoặc thanh toán muộn chưa được xử lý ở bước này.
+4. Codex chạy các ca hiện có của bước này và các bước trước, sau đó chạy lint và build API.
+
+### Phản biện
+
+Test dùng Prisma mock và IPN lặp tuần tự, chưa chứng minh khóa dòng, rollback hoặc hai giao dịch thực sự chạy đồng thời. Tình huống nhiều lần tạo URL cùng mã đơn cần nhóm xem xét khi tích hợp. Chưa kiểm tra với VNPay Sandbox hoặc database thật; chưa có xác nhận QA.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu tiếp tục bước 2.4; QA sẽ duyệt sau khi các thành viên hoàn thành theo thông tin Hoàn cung cấp.
+
+### Người kiểm tra
+
+Codex chạy test, lint và build; chờ Hoàn, QA và reviewer đánh giá.
+
+### Kiểm tra và minh chứng
+
+- Test lọc ca tạo URL, chữ ký sai, IPN thành công và lặp, sai tiền, không có đơn: 5/5 pass; 3 ca khác bỏ qua do bộ lọc.
+- `npm run lint -w api` và `npm run build -w api`: pass.
+- Chạy lại ca IPN thành công và lặp: 1 pass, 7 ca bỏ qua theo bộ lọc. Chưa kiểm tra PostgreSQL thật hoặc VNPay Sandbox; thanh toán muộn và thất bại thuộc bước tiếp theo.
+
+---
+
+## Phase 3 / hoan-20261120-payments-late-f31-06
+
+* Thời gian ghi: 2026-11-20T17:06:13+07:00
+* Thời gian thực hiện: 20/11/2026.
+* Mã phiên nhật ký: hoan-20261120-payments-start-f31
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-2.5, hoan-20261120-payments-ipn-confirm-f31-05
+
+### Công cụ
+
+Codex, Prisma, Vitest và ESLint.
+
+### Mục đích
+
+Xử lý thanh toán VNPay thành công đến sau khi đơn đã nhả tồn.
+
+### Prompt
+
+Tóm lược: Hoàn yêu cầu thực hiện bước IPN muộn, sau đó cập nhật log, commit và push.
+
+### Kết quả đề xuất
+
+Đã dùng xử lý trong transaction: khóa SKU, kiểm tra tồn; còn hàng thì xác nhận đơn, hết hàng giữ CANCELLED, ghi PAID và cảnh báo hoàn tiền thủ công. Hỗ trợ payment EXPIRED khi đơn hết hạn.
+
+### Phản biện
+
+Mock chưa chứng minh giao dịch đồng thời hoặc trạng thái EXPIRED thực tế. Cần xem xét trường hợp có nhiều lần thanh toán cho cùng một đơn; chưa kiểm tra VNPay Sandbox.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu thực hiện bước này; chưa có xác nhận QA hoặc reviewer.
+
+### Người kiểm tra
+
+Codex chạy kiểm thử, lint và build API; chờ Hoàn và reviewer kiểm tra.
+
+### Kiểm tra và minh chứng
+
+- Hai ca IPN muộn: 2 pass, 6 bỏ qua theo bộ lọc.
+- Các ca thanh toán liên quan: 6 pass, 2 bỏ qua theo bộ lọc.
+- Lint và build API: pass. Chưa chạy với PostgreSQL thật.
+---
+
+## Phase 3 / hoan-20261120-payments-return-f31-07
+
+* Thời gian ghi: 2026-11-20T17:10:00+07:00
+* Thời gian thực hiện: 20/11/2026.
+* Mã phiên nhật ký: hoan-20261120-payments-start-f31
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-2.6, hoan-20261120-payments-late-f31-06
+
+### Công cụ
+
+Codex, NestJS, Prisma, Vitest và Supertest.
+
+### Mục đích
+
+Đăng ký route VNPay và xử lý Return chỉ đọc dữ liệu.
+
+### Prompt
+
+Tóm lược: Hoàn yêu cầu bước thiếu cấu hình trả 503 và Return không cập nhật dữ liệu.
+
+### Kết quả đề xuất
+
+Đã dùng kiểm tra cấu hình trong create, thêm Return kiểm chữ ký và đọc đơn, đăng ký module/controller và thêm test HTTP riêng; không sửa test nghiệm thu ban đầu.
+
+### Phản biện
+
+Test HTTP dùng Prisma và guard giả lập, chưa kiểm tra VNPay Sandbox hoặc database thật. Return phản ánh dữ liệu phản hồi, trạng thái thanh toán vẫn do IPN xác nhận.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu thực hiện bước này; chưa có xác nhận QA hoặc reviewer.
+
+### Người kiểm tra
+
+Codex chạy test, lint và build API; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm test -w api -- payments`: 13/13 pass.
+- `npm run lint -w api` và `npm run build -w api`: pass.
+---
+
+## Phase 3 / hoan-20261120-payments-check-f31-08
+
+* Thời gian ghi: 2026-11-20T17:13:28+07:00
+* Thời gian thực hiện: 20/11/2026.
+* Mã phiên nhật ký: hoan-20261120-payments-start-f31
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-2.7, hoan-20261120-payments-return-f31-07
+
+### Công cụ
+
+Codex và Git.
+
+### Mục đích
+
+Chuẩn bị phần tự kiểm tra kiến thức thanh toán.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp yêu cầu tự đánh giá và đề nghị ghi tóm tắt phiên vào AI log.
+
+### Kết quả đề xuất
+
+Tạo file câu hỏi với các ô chưa đánh dấu; Hoàn tự viết câu trả lời theo quy tắc của task.
+
+### Phản biện
+
+Chưa có câu trả lời để đánh giá; không thể coi bước tự đánh giá đã hoàn thành.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu thực hiện bước tự đánh giá; chưa có xác nhận của reviewer.
+
+### Người kiểm tra
+
+Codex kiểm tra trạng thái file; Hoàn sẽ tự trả lời.
+
+### Kiểm tra và minh chứng
+
+File câu hỏi được tạo tại `docs/learning/BD1-Hoan/kiem-tra/PRJ-P3-BD1-2.md`; chưa trả lời, commit hoặc push bước này.
+---
+
+## Phase 3 / hoan-20261120-payments-check-f31-09
+
+* Thời gian ghi: 2026-11-20T17:21:59+07:00
+* Thời gian thực hiện: 20/11/2026.
+* Mã phiên nhật ký: hoan-20261120-payments-start-f31
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-2.7, hoan-20261120-payments-check-f31-08
+
+### Công cụ
+
+Codex và Git.
+
+### Mục đích
+
+Ghi bài tự đánh giá và phản hồi kiến thức thanh toán.
+
+### Prompt
+
+Tóm lược: Hoàn tự trả lời các câu hỏi, hai câu hỏi bổ sung và yêu cầu ghi vào file, cập nhật log, commit và push.
+
+### Kết quả đề xuất
+
+Ghi câu trả lời của Hoàn vào file kiểm tra; sửa mô tả ca chữ ký thành kiểm tra định dạng theo phản biện và bổ sung trạng thái đơn bị hủy.
+
+### Phản biện
+
+Codex nhận xét các câu đúng về ý chính; test IPN lặp chưa chứng minh giao dịch đồng thời trên PostgreSQL. Hoàn cho biết không có tình huống sai và sửa cụ thể; không tự tạo tình huống.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu ghi câu trả lời và commit; chưa có xác nhận reviewer cho bài kiểm tra.
+
+### Người kiểm tra
+
+Codex đối chiếu câu trả lời với các ca test; chờ reviewer đánh giá.
+
+### Kiểm tra và minh chứng
+
+Hai câu trả lời bổ sung nêu Return không tự cập nhật PAID và tồn khả dụng bằng stock trừ reserved. Không chạy lại test vì thay đổi là tài liệu.
