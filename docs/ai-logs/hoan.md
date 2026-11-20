@@ -5712,3 +5712,48 @@ Codex chạy test, lint và build; chờ Hoàn, QA và reviewer đánh giá.
 - Test lọc ca tạo URL, chữ ký sai, IPN thành công và lặp, sai tiền, không có đơn: 5/5 pass; 3 ca khác bỏ qua do bộ lọc.
 - `npm run lint -w api` và `npm run build -w api`: pass.
 - Chạy lại ca IPN thành công và lặp: 1 pass, 7 ca bỏ qua theo bộ lọc. Chưa kiểm tra PostgreSQL thật hoặc VNPay Sandbox; thanh toán muộn và thất bại thuộc bước tiếp theo.
+
+---
+
+## Phase 3 / hoan-20261120-payments-late-f31-06
+
+* Thời gian ghi: 2026-11-20T17:06:13+07:00
+* Thời gian thực hiện: 20/11/2026.
+* Mã phiên nhật ký: hoan-20261120-payments-start-f31
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-2.5, hoan-20261120-payments-ipn-confirm-f31-05
+
+### Công cụ
+
+Codex, Prisma, Vitest và ESLint.
+
+### Mục đích
+
+Xử lý thanh toán VNPay thành công đến sau khi đơn đã nhả tồn.
+
+### Prompt
+
+Tóm lược: Hoàn yêu cầu thực hiện bước IPN muộn, sau đó cập nhật log, commit và push.
+
+### Kết quả đề xuất
+
+Đã dùng xử lý trong transaction: khóa SKU, kiểm tra tồn; còn hàng thì xác nhận đơn, hết hàng giữ CANCELLED, ghi PAID và cảnh báo hoàn tiền thủ công. Hỗ trợ payment EXPIRED khi đơn hết hạn.
+
+### Phản biện
+
+Mock chưa chứng minh giao dịch đồng thời hoặc trạng thái EXPIRED thực tế. Cần xem xét trường hợp có nhiều lần thanh toán cho cùng một đơn; chưa kiểm tra VNPay Sandbox.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu thực hiện bước này; chưa có xác nhận QA hoặc reviewer.
+
+### Người kiểm tra
+
+Codex chạy kiểm thử, lint và build API; chờ Hoàn và reviewer kiểm tra.
+
+### Kiểm tra và minh chứng
+
+- Hai ca IPN muộn: 2 pass, 6 bỏ qua theo bộ lọc.
+- Các ca thanh toán liên quan: 6 pass, 2 bỏ qua theo bộ lọc.
+- Lint và build API: pass. Chưa chạy với PostgreSQL thật.

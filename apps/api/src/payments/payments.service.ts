@@ -25,13 +25,15 @@ export class PaymentsService {
         if (order.paymentStatus === 'PAID' || order.paymentStatus === 'FAILED') {
           return { RspCode: '02', Message: 'Order already confirmed' };
         }
-        if (query.vnp_ResponseCode !== '00' || query.vnp_TransactionStatus !== '00' ||
-            order.status !== 'PENDING_PAYMENT' || order.paymentStatus !== 'UNPAID') {
+        const held = order.status === 'PENDING_PAYMENT' && order.paymentStatus === 'UNPAID';
+        const released = order.status === 'CANCELLED' &&
+          (order.paymentStatus === 'UNPAID' || order.paymentStatus === 'EXPIRED');
+        if (query.vnp_ResponseCode !== '00' || query.vnp_TransactionStatus !== '00' || (!held && !released)) {
           return { RspCode: '99', Message: 'Processing unavailable' };
         }
 
         const payment = await tx.payment.findFirst({
-          where: { orderId: order.id, provider: 'VNPAY', status: 'UNPAID' },
+          where: { orderId: order.id, provider: 'VNPAY', status: { in: released ? ['UNPAID', 'EXPIRED'] : ['UNPAID'] } },
           orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
         });
         if (!payment) return { RspCode: '99', Message: 'Payment not found' };
@@ -40,21 +42,39 @@ export class PaymentsService {
         for (const item of order.items) {
           quantities.set(item.skuId, (quantities.get(item.skuId) ?? 0) + item.quantity);
         }
-        for (const [skuId, quantity] of [...quantities].sort(([a], [b]) => a < b ? -1 : a > b ? 1 : 0)) {
+        const lines = [...quantities].sort(([a], [b]) => a < b ? -1 : a > b ? 1 : 0);
+        for (const [skuId] of lines) {
           await tx.$queryRaw`SELECT "id" FROM "Sku" WHERE "id" = ${skuId} FOR UPDATE`;
-          const updated = await tx.sku.updateMany({
-            where: { id: skuId, stock: { gte: quantity }, reserved: { gte: quantity } },
-            data: { stock: { decrement: quantity }, reserved: { decrement: quantity } },
+        }
+        let canFulfill = true;
+        if (released) {
+          const stock = await tx.sku.findMany({ where: { id: { in: lines.map(([id]) => id) } } });
+          const byId = new Map(stock.map((sku) => [sku.id, sku]));
+          canFulfill = lines.every(([id, quantity]) => {
+            const sku = byId.get(id);
+            return sku != null && sku.stock - sku.reserved >= quantity;
           });
-          if (updated.count !== 1) throw new Error('Insufficient reserved stock');
+        }
+        if (canFulfill) {
+          for (const [skuId, quantity] of lines) {
+            const updated = await tx.sku.updateMany({
+              where: held ? { id: skuId, stock: { gte: quantity }, reserved: { gte: quantity } } : { id: skuId, stock: { gte: quantity } },
+              data: held ? { stock: { decrement: quantity }, reserved: { decrement: quantity } } : { stock: { decrement: quantity } },
+            });
+            if (updated.count !== 1) throw new Error('Insufficient stock');
+          }
         }
         const updatedPayment = await tx.payment.updateMany({
-          where: { id: payment.id, status: 'UNPAID' },
+          where: { id: payment.id, status: { in: released ? ['UNPAID', 'EXPIRED'] : ['UNPAID'] } },
           data: { status: 'PAID', txnNo: query.vnp_TransactionNo, paidAt: new Date() },
         });
         if (updatedPayment.count !== 1) throw new Error('Payment update failed');
-        await tx.order.update({ where: { id: order.id }, data: { status: 'CONFIRMED', paymentStatus: 'PAID' } });
-        await tx.orderStatusLog.create({ data: { orderId: order.id, status: 'CONFIRMED', paymentStatus: 'PAID', note: 'VNPay thanh toán thành công' } });
+        const status = canFulfill ? 'CONFIRMED' : 'CANCELLED';
+        await tx.order.update({ where: { id: order.id }, data: { status, paymentStatus: 'PAID' } });
+        await tx.orderStatusLog.create({ data: {
+          orderId: order.id, status, paymentStatus: 'PAID',
+          note: canFulfill ? 'VNPay thanh toán thành công' : 'Thanh toán muộn, hết tồn: cần hoàn tiền thủ công',
+        } });
         return { RspCode: '00', Message: 'Confirm Success' };
       });
     } catch {
