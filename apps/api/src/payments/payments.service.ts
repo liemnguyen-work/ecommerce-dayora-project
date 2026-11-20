@@ -1,12 +1,24 @@
 import { ConflictException, Inject, Injectable, NotFoundException, ServiceUnavailableException } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
 import { PrismaService } from '../prisma/prisma.service.js';
-import { vnpDate, vnpQuery, vnpSign } from './vnpay.js';
+import { vnpDate, vnpQuery, vnpSign, vnpVerify } from './vnpay.js';
 import type { VnpParams } from './vnpay.js';
 
 @Injectable()
 export class PaymentsService {
   constructor(@Inject(PrismaService) private readonly prisma: PrismaService) {}
+
+  async ipn(query: Record<string, unknown>) {
+    const secret = process.env.VNP_HASH_SECRET;
+    if (!secret || !vnpVerify(query, secret)) {
+      return { RspCode: '97', Message: 'Invalid signature' };
+    }
+    if (!query.vnp_TxnRef || !query.vnp_TransactionNo || !query.vnp_ResponseCode || !query.vnp_TransactionStatus) {
+      return { RspCode: '99', Message: 'Invalid data' };
+    }
+    // X? l? giao d?ch h?p l? ???c b? sung ? b??c ti?p theo.
+    return { RspCode: '99', Message: 'Processing unavailable' };
+  }
 
   async create(userId: string, id: string, ip: string) {
     const tmnCode = process.env.VNP_TMN_CODE;

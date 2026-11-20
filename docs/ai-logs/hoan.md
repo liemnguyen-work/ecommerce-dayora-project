@@ -5615,3 +5615,52 @@ Codex chạy test và kiểm tra cục bộ; chờ Hoàn và QA xem xét.
 - Kiểm tra bổ sung bằng service đã build với mock: chữ ký URL hợp lệ, số tiền, thời hạn và trạng thái sai đều đạt.
 - `npm run lint -w api` và `npm run build -w api`: pass.
 - Chưa có controller, chưa test database thật hoặc Sandbox; chưa commit hoặc push bước 2.2.
+
+---
+
+## Phase 3 / hoan-20261120-payments-ipn-signature-f31-04
+
+* Thời gian ghi: 2026-11-20T16:07:56+07:00
+* Thời gian thực hiện: 20/11/2026.
+* Mã phiên nhật ký: hoan-20261120-payments-start-f31
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-2.3, hoan-20261120-payments-create-f31-03
+
+### Công cụ
+
+Codex, TypeScript, NestJS, Node.js, Vitest và ESLint.
+
+### Mục đích
+
+Kiểm tra chữ ký IPN trước khi truy cập database và từ chối dữ liệu bắt buộc còn thiếu.
+
+### Prompt
+
+Hoàn cung cấp yêu cầu bước 2.3: chữ ký sai trả 97, dữ liệu bắt buộc thiếu trả 99 và không truy vấn database trước khi kiểm tra.
+
+### Kết quả đề xuất
+
+1. Codex kiểm tra service hiện có và hàm vnpVerify từ task trước.
+2. Codex thêm ipn: secret thiếu hoặc chữ ký sai trả 97; chữ ký đúng nhưng thiếu trường bắt buộc trả 99.
+3. IPN hợp lệ tạm trả 99 Processing unavailable vì xử lý giao dịch thuộc bước sau, không báo thành công khi chưa cập nhật đơn.
+4. Codex chạy ca nghiệm thu, lint, build và kiểm tra bổ sung thiếu dữ liệu hoặc secret với khóa giả.
+
+### Phản biện
+
+Ca test sử dụng mock; chưa kết nối VNPay Sandbox hoặc kiểm tra IPN qua route thật. Nhánh xử lý giao dịch hợp lệ chưa triển khai. Không suy ra cơ chế này chặn được mọi hình thức tấn công từ chối dịch vụ. Chưa có xác nhận QA duyệt.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu tiếp tục các bước và cho biết QA duyệt sau khi thành viên hoàn thành công việc.
+
+### Người kiểm tra
+
+Codex chạy các kiểm tra cục bộ; chờ Hoàn và QA xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm test -w api -- payments.spec.ts -t "sai chữ ký trả 97 không truy cập DB"`: 1 ca pass, 7 ca bỏ qua do bộ lọc.
+- Kiểm tra bổ sung bằng khóa giả: thiếu trường hợp lệ trả 99, thiếu secret trả 97, không gọi transaction.
+- `npm run lint -w api` và `npm run build -w api`: pass.
+- Chưa commit hoặc push bước này.
