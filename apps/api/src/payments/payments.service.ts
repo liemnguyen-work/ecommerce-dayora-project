@@ -16,8 +16,50 @@ export class PaymentsService {
     if (!query.vnp_TxnRef || !query.vnp_TransactionNo || !query.vnp_ResponseCode || !query.vnp_TransactionStatus) {
       return { RspCode: '99', Message: 'Invalid data' };
     }
-    // X? l? giao d?ch h?p l? ???c b? sung ? b??c ti?p theo.
-    return { RspCode: '99', Message: 'Processing unavailable' };
+    try {
+      return await this.prisma.$transaction(async (tx) => {
+        await tx.$queryRaw`SELECT "id" FROM "Order" WHERE "code" = ${query.vnp_TxnRef} FOR UPDATE`;
+        const order = await tx.order.findUnique({ where: { code: query.vnp_TxnRef }, include: { items: true } });
+        if (!order) return { RspCode: '01', Message: 'Order not found' };
+        if (query.vnp_Amount !== String(order.total * 100)) return { RspCode: '04', Message: 'Invalid amount' };
+        if (order.paymentStatus === 'PAID' || order.paymentStatus === 'FAILED') {
+          return { RspCode: '02', Message: 'Order already confirmed' };
+        }
+        if (query.vnp_ResponseCode !== '00' || query.vnp_TransactionStatus !== '00' ||
+            order.status !== 'PENDING_PAYMENT' || order.paymentStatus !== 'UNPAID') {
+          return { RspCode: '99', Message: 'Processing unavailable' };
+        }
+
+        const payment = await tx.payment.findFirst({
+          where: { orderId: order.id, provider: 'VNPAY', status: 'UNPAID' },
+          orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+        });
+        if (!payment) return { RspCode: '99', Message: 'Payment not found' };
+
+        const quantities = new Map<string, number>();
+        for (const item of order.items) {
+          quantities.set(item.skuId, (quantities.get(item.skuId) ?? 0) + item.quantity);
+        }
+        for (const [skuId, quantity] of [...quantities].sort(([a], [b]) => a < b ? -1 : a > b ? 1 : 0)) {
+          await tx.$queryRaw`SELECT "id" FROM "Sku" WHERE "id" = ${skuId} FOR UPDATE`;
+          const updated = await tx.sku.updateMany({
+            where: { id: skuId, stock: { gte: quantity }, reserved: { gte: quantity } },
+            data: { stock: { decrement: quantity }, reserved: { decrement: quantity } },
+          });
+          if (updated.count !== 1) throw new Error('Insufficient reserved stock');
+        }
+        const updatedPayment = await tx.payment.updateMany({
+          where: { id: payment.id, status: 'UNPAID' },
+          data: { status: 'PAID', txnNo: query.vnp_TransactionNo, paidAt: new Date() },
+        });
+        if (updatedPayment.count !== 1) throw new Error('Payment update failed');
+        await tx.order.update({ where: { id: order.id }, data: { status: 'CONFIRMED', paymentStatus: 'PAID' } });
+        await tx.orderStatusLog.create({ data: { orderId: order.id, status: 'CONFIRMED', paymentStatus: 'PAID', note: 'VNPay thanh toán thành công' } });
+        return { RspCode: '00', Message: 'Confirm Success' };
+      });
+    } catch {
+      return { RspCode: '99', Message: 'Processing error' };
+    }
   }
 
   async create(userId: string, id: string, ip: string) {

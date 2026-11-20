@@ -5664,3 +5664,51 @@ Codex chạy các kiểm tra cục bộ; chờ Hoàn và QA xem xét.
 - Kiểm tra bổ sung bằng khóa giả: thiếu trường hợp lệ trả 99, thiếu secret trả 97, không gọi transaction.
 - `npm run lint -w api` và `npm run build -w api`: pass.
 - Chưa commit hoặc push bước này.
+
+---
+
+## Phase 3 / hoan-20261120-payments-ipn-confirm-f31-05
+
+* Thời gian ghi: 2026-11-20T16:20:20+07:00
+* Thời gian thực hiện: 20/11/2026.
+* Mã phiên nhật ký: hoan-20261120-payments-start-f31
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-2.4, hoan-20261120-payments-ipn-signature-f31-04
+
+### Công cụ
+
+Codex, NestJS, Prisma, Vitest và ESLint.
+
+### Mục đích
+
+Xác nhận thanh toán VNPay và trừ tồn một lần, tránh xử lý trùng IPN.
+
+### Prompt
+
+Hoàn cung cấp bước 2.4: kiểm tra mã đơn, số tiền, trạng thái, xử lý IPN thành công và từ chối trừ tồn khi IPN lặp.
+
+### Kết quả đề xuất
+
+1. Codex bổ sung xử lý IPN hợp lệ trong transaction, khóa đơn theo mã trước khi đọc, trả 01 khi không thấy đơn và 04 khi sai tiền.
+2. Khi đơn đã PAID hoặc FAILED, service trả 02. Với đơn đang giữ hàng và giao dịch thành công, service khóa SKU theo thứ tự, cập nhật stock/reserved có điều kiện, payment PAID, order CONFIRMED và status log.
+3. Service chọn bản ghi Payment VNPay UNPAID mới nhất, trả lỗi 99 khi không tìm thấy payment hoặc xảy ra lỗi xử lý; các nhánh giao dịch thất bại hoặc thanh toán muộn chưa được xử lý ở bước này.
+4. Codex chạy các ca hiện có của bước này và các bước trước, sau đó chạy lint và build API.
+
+### Phản biện
+
+Test dùng Prisma mock và IPN lặp tuần tự, chưa chứng minh khóa dòng, rollback hoặc hai giao dịch thực sự chạy đồng thời. Tình huống nhiều lần tạo URL cùng mã đơn cần nhóm xem xét khi tích hợp. Chưa kiểm tra với VNPay Sandbox hoặc database thật; chưa có xác nhận QA.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu tiếp tục bước 2.4; QA sẽ duyệt sau khi các thành viên hoàn thành theo thông tin Hoàn cung cấp.
+
+### Người kiểm tra
+
+Codex chạy test, lint và build; chờ Hoàn, QA và reviewer đánh giá.
+
+### Kiểm tra và minh chứng
+
+- Test lọc ca tạo URL, chữ ký sai, IPN thành công và lặp, sai tiền, không có đơn: 5/5 pass; 3 ca khác bỏ qua do bộ lọc.
+- `npm run lint -w api` và `npm run build -w api`: pass.
+- Chạy lại ca IPN thành công và lặp: 1 pass, 7 ca bỏ qua theo bộ lọc. Chưa kiểm tra PostgreSQL thật hoặc VNPay Sandbox; thanh toán muộn và thất bại thuộc bước tiếp theo.
