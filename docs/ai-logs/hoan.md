@@ -4968,6 +4968,95 @@ Codex chạy test, lint và build API; chờ Hoàn và reviewer kiểm tra.
 
 ---
 
+## Phase 2 / hoan-20261119-order-validation-c35-01
+
+* Thời gian ghi: 2026-11-19T14:59:02+07:00
+* Thời gian thực hiện: 19/11/2026.
+* Mã phiên nhật ký: hoan-20261119-order-validation-c35
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-FIX, issue #595
+
+### Công cụ
+
+Codex, Git, NestJS, class-validator, Supertest, Vitest, ESLint và Prisma.
+
+### Mục đích
+
+Kiểm tra dữ liệu đầu vào POST /api/orders để dữ liệu sai nhận lỗi 400 trước khi gọi nghiệp vụ tạo đơn.
+
+### Prompt
+
+Hoàn cung cấp nội dung issue #595 và yêu cầu tạo DTO kiểm tra người nhận, expected, expectedTotal, voucherCode cùng các ca HTTP hợp lệ và không hợp lệ.
+
+### Kết quả đề xuất
+
+Codex tạo RecipientDto kế thừa AddressDto và CreateOrderDto, cập nhật controller nhận class DTO, thêm test Supertest kiểm tra body, các trường con, giới hạn mảng và body hợp lệ. Định dạng điện thoại khớp quy tắc checkout frontend hiện có.
+
+### Phản biện
+
+Test HTTP giả lập guard và checkout service; chưa xác nhận toàn bộ luồng checkout với database thật. Định dạng số điện thoại được kiểm tra theo mẫu frontend, không xác nhận số thực sự tồn tại. Không thay đổi schema nên không cần migration.
+
+### Quyết định của nhóm
+
+Thực hiện theo nội dung issue do Hoàn cung cấp; chưa có xác nhận reviewer về kết quả.
+
+### Người kiểm tra
+
+Codex chạy test, lint và build API; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm test -w api -- orders`: 22/22 test pass.
+- `npm run lint -w api` và `npm run build -w api`: pass.
+- Chưa commit hoặc push, chưa chạy kiểm tra checkout với database thật.
+
+---
+
+## Phase 2 / hoan-20261119-order-realdb-01
+
+* Thời gian ghi: 2026-11-19T23:51:15+07:00
+* Thời gian thực hiện: 19/11/2026.
+* Mã phiên nhật ký: hoan-20261119-order-validation-c35
+* Người prompt: Hoàn
+* Loại mục: Kiểm tra
+* Liên quan: hoan-20261119-order-validation-c35-01, issue #595
+
+### Công cụ
+
+Codex, PowerShell và kiểm tra cấu hình repo.
+
+### Mục đích
+
+Chuẩn bị kiểm tra luồng tạo đơn với PostgreSQL thật mà không làm thay đổi dữ liệu dùng chung.
+
+### Prompt
+
+Hoàn đề nghị cùng kiểm tra luồng đặt hàng với database thật sau khi hoàn thành test mock.
+
+### Kết quả đề xuất
+
+Codex kiểm tra code create/release, cấu hình và công cụ môi trường; tạo đơn hợp lệ có thể ghi đơn, giữ tồn và xóa dòng giỏ. Worktree chỉ có .env.example; chưa thấy Docker, psql hoặc dịch vụ PostgreSQL cục bộ qua các lệnh kiểm tra.
+
+### Phản biện
+
+Không thể kết luận nhóm không có database test ở nơi khác. Database Supabase đã dùng trước đây là production; chưa thực hiện tạo đơn, seed hoặc xóa dữ liệu trên database này.
+
+### Quyết định của nhóm
+
+Hoàn muốn kiểm tra với database thật; đang chờ thông tin môi trường test riêng.
+
+### Người kiểm tra
+
+Codex kiểm tra code và môi trường; chờ Hoàn xác nhận nơi kiểm thử.
+
+### Kiểm tra và minh chứng
+
+- Kiểm tra trạng thái worktree, CheckoutService và tên file cấu hình môi trường; không in chuỗi kết nối hoặc bí mật.
+- Chưa chạy luồng đặt hàng với database thật, chưa commit hoặc push.
+
+---
+
 ## Phase 3 / hoan-20261120-vnpay-start-d72-01
 
 * Thời gian ghi: 2026-11-20T00:23:23+07:00
@@ -5337,3 +5426,50 @@ Codex nhận xét nội dung và ghi file theo yêu cầu; chờ Hoàn và revie
 
 - Hoàn cung cấp câu trả lời cho cả năm mục và hai câu luyện tập trong cuộc trao đổi.
 - File kiểm tra kiến thức đã điền đủ năm mục; chưa xác nhận reviewer đánh giá hoặc PR được merge.
+
+---
+
+## Phase 3 / hoan-20261120-vnpay-conflict-d72-09
+
+* Thời gian ghi: 2026-11-20T15:30:20+07:00
+* Thời gian thực hiện: 20/11/2026.
+* Mã phiên nhật ký: hoan-20261120-vnpay-start-d72
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PR #705 repo nhóm, PRJ-P3-BD1-1
+
+### Công cụ
+
+Codex, Git, Node.js, Prisma, Vitest và ESLint.
+
+### Mục đích
+
+Gỡ xung đột AI log giữa nhánh VNPay và main để PR có thể tiếp tục review.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp ảnh PR #705 báo conflict tại docs/ai-logs/hoan.md và yêu cầu xử lý.
+
+### Kết quả đề xuất
+
+Codex fetch origin, merge origin/main vào prj/p3-bd1-1 và gỡ conflict bằng cách giữ nguyên các mục log đơn hàng của main và các mục VNPay của nhánh task, theo thứ tự thời gian. Kiểm tra bằng script xác nhận toàn bộ nội dung mục nhật ký của hai phía vẫn được giữ.
+
+### Phản biện
+
+Lần chạy toàn bộ test mặc định có bốn ca timeout 5 giây, không có lỗi assertion được báo. Chạy lại với tối đa hai worker thì toàn bộ 104 ca pass. CI và reviewer vẫn cần xác nhận sau khi push; chưa kiểm tra VNPay Sandbox.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu gỡ conflict; chưa có xác nhận reviewer về bản merge mới.
+
+### Người kiểm tra
+
+Codex kiểm tra các mục log, test, lint và build API; chờ Hoàn và reviewer kiểm tra PR.
+
+### Kiểm tra và minh chứng
+
+- Kiểm tra giữ nguyên 91 mục phía VNPay và 85 mục phía main: không thiếu hoặc thay đổi nội dung mục.
+- `npm test -w api`: 100 pass, 4 timeout trong lần chạy đầu.
+- `npm test -w api -- --maxWorkers=2`: 104/104 pass.
+- `npm run lint -w api` và `npm run build -w api`: pass.
+- Chưa xác nhận CI hoặc trạng thái merge trên GitHub sau lần push mới.

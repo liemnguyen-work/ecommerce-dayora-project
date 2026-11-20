@@ -7,9 +7,9 @@ import {
 } from '@nestjs/common';
 
 import { JwtAuthGuard } from '../auth/auth.guard.js';
-import { PreviewDto } from './orders.dto.js';
+import { CreateOrderDto, PreviewDto } from './orders.dto.js';
 import { OrdersService } from './orders.service.js';
-import { CheckoutService, type CreateOrderInput } from './checkout.service.js';
+import { CheckoutService } from './checkout.service.js';
 
 type AuthRequest = {
   user: {
@@ -28,7 +28,7 @@ export class OrdersController {
   @Post()
   create(
     @Req() req: AuthRequest,
-    @Body() dto: CreateOrderInput,
+    @Body() dto: CreateOrderDto,
   ) {
     return this.checkout.create(req.user.id, dto);
   }
