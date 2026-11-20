@@ -4965,3 +4965,92 @@ Codex chạy test, lint và build API; chờ Hoàn và reviewer kiểm tra.
 - `npm test -w api -- promotions`: 10/10 test pass.
 - `npm run lint -w api` và `npm run build -w api`: pass.
 - Không có migration; chưa commit hoặc push thay đổi này.
+
+---
+
+## Phase 2 / hoan-20261119-order-validation-c35-01
+
+* Thời gian ghi: 2026-11-19T14:59:02+07:00
+* Thời gian thực hiện: 19/11/2026.
+* Mã phiên nhật ký: hoan-20261119-order-validation-c35
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-BD1-FIX, issue #595
+
+### Công cụ
+
+Codex, Git, NestJS, class-validator, Supertest, Vitest, ESLint và Prisma.
+
+### Mục đích
+
+Kiểm tra dữ liệu đầu vào POST /api/orders để dữ liệu sai nhận lỗi 400 trước khi gọi nghiệp vụ tạo đơn.
+
+### Prompt
+
+Hoàn cung cấp nội dung issue #595 và yêu cầu tạo DTO kiểm tra người nhận, expected, expectedTotal, voucherCode cùng các ca HTTP hợp lệ và không hợp lệ.
+
+### Kết quả đề xuất
+
+Codex tạo RecipientDto kế thừa AddressDto và CreateOrderDto, cập nhật controller nhận class DTO, thêm test Supertest kiểm tra body, các trường con, giới hạn mảng và body hợp lệ. Định dạng điện thoại khớp quy tắc checkout frontend hiện có.
+
+### Phản biện
+
+Test HTTP giả lập guard và checkout service; chưa xác nhận toàn bộ luồng checkout với database thật. Định dạng số điện thoại được kiểm tra theo mẫu frontend, không xác nhận số thực sự tồn tại. Không thay đổi schema nên không cần migration.
+
+### Quyết định của nhóm
+
+Thực hiện theo nội dung issue do Hoàn cung cấp; chưa có xác nhận reviewer về kết quả.
+
+### Người kiểm tra
+
+Codex chạy test, lint và build API; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm test -w api -- orders`: 22/22 test pass.
+- `npm run lint -w api` và `npm run build -w api`: pass.
+- Chưa commit hoặc push, chưa chạy kiểm tra checkout với database thật.
+
+---
+
+## Phase 2 / hoan-20261119-order-realdb-01
+
+* Thời gian ghi: 2026-11-19T23:51:15+07:00
+* Thời gian thực hiện: 19/11/2026.
+* Mã phiên nhật ký: hoan-20261119-order-validation-c35
+* Người prompt: Hoàn
+* Loại mục: Kiểm tra
+* Liên quan: hoan-20261119-order-validation-c35-01, issue #595
+
+### Công cụ
+
+Codex, PowerShell và kiểm tra cấu hình repo.
+
+### Mục đích
+
+Chuẩn bị kiểm tra luồng tạo đơn với PostgreSQL thật mà không làm thay đổi dữ liệu dùng chung.
+
+### Prompt
+
+Hoàn đề nghị cùng kiểm tra luồng đặt hàng với database thật sau khi hoàn thành test mock.
+
+### Kết quả đề xuất
+
+Codex kiểm tra code create/release, cấu hình và công cụ môi trường; tạo đơn hợp lệ có thể ghi đơn, giữ tồn và xóa dòng giỏ. Worktree chỉ có .env.example; chưa thấy Docker, psql hoặc dịch vụ PostgreSQL cục bộ qua các lệnh kiểm tra.
+
+### Phản biện
+
+Không thể kết luận nhóm không có database test ở nơi khác. Database Supabase đã dùng trước đây là production; chưa thực hiện tạo đơn, seed hoặc xóa dữ liệu trên database này.
+
+### Quyết định của nhóm
+
+Hoàn muốn kiểm tra với database thật; đang chờ thông tin môi trường test riêng.
+
+### Người kiểm tra
+
+Codex kiểm tra code và môi trường; chờ Hoàn xác nhận nơi kiểm thử.
+
+### Kiểm tra và minh chứng
+
+- Kiểm tra trạng thái worktree, CheckoutService và tên file cấu hình môi trường; không in chuỗi kết nối hoặc bí mật.
+- Chưa chạy luồng đặt hàng với database thật, chưa commit hoặc push.
