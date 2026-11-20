@@ -13,6 +13,7 @@ import { MeModule } from './me/me.module.js';
 import { OrdersModule } from './orders/orders.module.js';
 import { AdminVouchersModule } from './admin-vouchers/admin-vouchers.module.js';
 import { AdminPromotionsModule } from './promotions/admin-promotions.module.js';
+import { AdminOrdersModule } from './admin-orders/admin-orders.module.js';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { AdminPromotionsModule } from './promotions/admin-promotions.module.js';
     OrdersModule,
     AdminVouchersModule,
     AdminPromotionsModule,
+    AdminOrdersModule,
     PaymentsModule,
   ],
   controllers: [AppController],
