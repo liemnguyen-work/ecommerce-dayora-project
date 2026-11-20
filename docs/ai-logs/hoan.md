@@ -5566,3 +5566,52 @@ Codex chạy test tự động; chờ Hoàn và QA xem nội dung test trước 
 - `npm test -w api -- payments`: tám ca mới FAIL do chưa có payments.service.js/ts; ba ca vnpay hiện có pass.
 - Lần chạy sandbox đầu không ghi được file tạm EPERM; chạy lại có quyền thực thi tại repo Desktop thì thu được kết quả trên.
 - Không kết nối VNPay hoặc database thật; chưa commit hoặc push bước này.
+
+---
+
+## Phase 3 / hoan-20261120-payments-create-f31-03
+
+* Thời gian ghi: 2026-11-20T16:01:47+07:00
+* Thời gian thực hiện: 20/11/2026.
+* Mã phiên nhật ký: hoan-20261120-payments-start-f31
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-2.2, hoan-20261120-payments-tests-f31-02
+
+### Công cụ
+
+Codex, NestJS, Prisma, Vitest, ESLint và Node.js.
+
+### Mục đích
+
+Tạo URL thanh toán VNPay cho chủ đơn hợp lệ khi đơn còn trong thời gian giữ hàng.
+
+### Prompt
+
+Hoàn cung cấp bước tạo URL, yêu cầu tiếp tục; khi được hỏi về QA, Hoàn cho biết QA sẽ duyệt sau khi các thành viên hoàn thành và nhóm sẽ sửa lỗi phát hiện sau.
+
+### Kết quả đề xuất
+
+1. Codex kiểm tra schema Order và Payment; nhận thấy thời hạn giữ hàng có thể null và Payment cần referenceCode duy nhất cùng provider.
+2. Codex tạo PaymentsService.create: kiểm tra cấu hình, khóa đơn theo id và userId trong transaction, kiểm tra chủ đơn, trạng thái và thời hạn, tạo tham số VNPay và ký URL.
+3. Service tạo Payment UNPAID với referenceCode UUID, provider VNPAY và số tiền VND. Service từ chối tổng tiền không dương hoặc vượt giới hạn số nguyên an toàn khi nhân 100.
+4. Codex chạy ca tạo URL và kiểm tra bổ sung chữ ký URL, số tiền, giờ hết hạn, các trạng thái và thời hạn null bằng mock.
+
+### Phản biện
+
+QA chưa duyệt test; các kiểm tra dùng mock không chứng minh khóa dòng, rollback hoặc giao dịch đồng thời PostgreSQL. Chưa gọi VNPay Sandbox; controller và IPN thuộc các bước sau. Cần xem xét việc nhiều lần tạo link cho cùng mã đơn trong giai đoạn tích hợp thanh toán.
+
+### Quyết định của nhóm
+
+Hoàn cho biết QA sẽ duyệt sau khi các thành viên hoàn thành; Codex thực hiện theo chỉ dẫn đó, chưa coi test đã được QA duyệt.
+
+### Người kiểm tra
+
+Codex chạy test và kiểm tra cục bộ; chờ Hoàn và QA xem xét.
+
+### Kiểm tra và minh chứng
+
+- `npm test -w api -- payments.spec.ts -t "tạo URL cho chủ đơn, không cho người khác hoặc đơn hết hạn"`: 1 ca pass, 7 ca bỏ qua.
+- Kiểm tra bổ sung bằng service đã build với mock: chữ ký URL hợp lệ, số tiền, thời hạn và trạng thái sai đều đạt.
+- `npm run lint -w api` và `npm run build -w api`: pass.
+- Chưa có controller, chưa test database thật hoặc Sandbox; chưa commit hoặc push bước 2.2.
