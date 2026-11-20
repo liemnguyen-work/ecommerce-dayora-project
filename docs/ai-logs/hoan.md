@@ -5800,3 +5800,87 @@ Codex chạy test, lint và build API; chờ Hoàn và reviewer xem xét.
 
 - `npm test -w api -- payments`: 13/13 pass.
 - `npm run lint -w api` và `npm run build -w api`: pass.
+---
+
+## Phase 3 / hoan-20261120-payments-check-f31-08
+
+* Thời gian ghi: 2026-11-20T17:13:28+07:00
+* Thời gian thực hiện: 20/11/2026.
+* Mã phiên nhật ký: hoan-20261120-payments-start-f31
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-2.7, hoan-20261120-payments-return-f31-07
+
+### Công cụ
+
+Codex và Git.
+
+### Mục đích
+
+Chuẩn bị phần tự kiểm tra kiến thức thanh toán.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp yêu cầu tự đánh giá và đề nghị ghi tóm tắt phiên vào AI log.
+
+### Kết quả đề xuất
+
+Tạo file câu hỏi với các ô chưa đánh dấu; Hoàn tự viết câu trả lời theo quy tắc của task.
+
+### Phản biện
+
+Chưa có câu trả lời để đánh giá; không thể coi bước tự đánh giá đã hoàn thành.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu thực hiện bước tự đánh giá; chưa có xác nhận của reviewer.
+
+### Người kiểm tra
+
+Codex kiểm tra trạng thái file; Hoàn sẽ tự trả lời.
+
+### Kiểm tra và minh chứng
+
+File câu hỏi được tạo tại `docs/learning/BD1-Hoan/kiem-tra/PRJ-P3-BD1-2.md`; chưa trả lời, commit hoặc push bước này.
+---
+
+## Phase 3 / hoan-20261120-payments-check-f31-09
+
+* Thời gian ghi: 2026-11-20T17:21:59+07:00
+* Thời gian thực hiện: 20/11/2026.
+* Mã phiên nhật ký: hoan-20261120-payments-start-f31
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-2.7, hoan-20261120-payments-check-f31-08
+
+### Công cụ
+
+Codex và Git.
+
+### Mục đích
+
+Ghi bài tự đánh giá và phản hồi kiến thức thanh toán.
+
+### Prompt
+
+Tóm lược: Hoàn tự trả lời các câu hỏi, hai câu hỏi bổ sung và yêu cầu ghi vào file, cập nhật log, commit và push.
+
+### Kết quả đề xuất
+
+Ghi câu trả lời của Hoàn vào file kiểm tra; sửa mô tả ca chữ ký thành kiểm tra định dạng theo phản biện và bổ sung trạng thái đơn bị hủy.
+
+### Phản biện
+
+Codex nhận xét các câu đúng về ý chính; test IPN lặp chưa chứng minh giao dịch đồng thời trên PostgreSQL. Hoàn cho biết không có tình huống sai và sửa cụ thể; không tự tạo tình huống.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu ghi câu trả lời và commit; chưa có xác nhận reviewer cho bài kiểm tra.
+
+### Người kiểm tra
+
+Codex đối chiếu câu trả lời với các ca test; chờ reviewer đánh giá.
+
+### Kiểm tra và minh chứng
+
+Hai câu trả lời bổ sung nêu Return không tự cập nhật PAID và tồn khả dụng bằng stock trừ reserved. Không chạy lại test vì thay đổi là tài liệu.
