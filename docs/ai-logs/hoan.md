@@ -5473,3 +5473,96 @@ Codex kiểm tra các mục log, test, lint và build API; chờ Hoàn và revie
 - `npm test -w api -- --maxWorkers=2`: 104/104 pass.
 - `npm run lint -w api` và `npm run build -w api`: pass.
 - Chưa xác nhận CI hoặc trạng thái merge trên GitHub sau lần push mới.
+
+---
+
+## Phase 3 / hoan-20261120-payments-start-f31-01
+
+* Thời gian ghi: 2026-11-20T15:47:49+07:00
+* Thời gian thực hiện: 20/11/2026.
+* Mã phiên nhật ký: hoan-20261120-payments-start-f31
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-2, issue #52, PR #705 repo nhóm
+
+### Công cụ
+
+Codex, Git và PowerShell.
+
+### Mục đích
+
+Chuẩn bị task thanh toán tạo URL, Return và IPN trong thư mục dự án Desktop theo yêu cầu của Hoàn.
+
+### Prompt
+
+Hoàn cung cấp task cha #52, yêu cầu tiếp tục task thanh toán và cập nhật repo để file VNPay xuất hiện trong thư mục đang làm việc.
+
+### Kết quả đề xuất
+
+1. Codex cập nhật thông tin GitHub, xác nhận PR #705 đã merge vào origin/main và main có vnpay.ts cùng vnpay.spec.ts và CheckoutService.
+2. Nhánh Desktop cũ có commit AI log cục bộ 6d3adef và file checkout.service.spec.ts chưa được theo dõi. Codex lưu riêng file test cũ vào Git stash với thông điệp Preserve Desktop checkout test before P3; commit cũ vẫn ở nhánh prj/p2-bd1-3.
+3. Codex tạo và chuyển thư mục Desktop sang nhánh prj/p3-bd1-2 từ origin/main tại 8d48735; xác nhận hai file VNPay xuất hiện trong apps/api/src/payments.
+4. Codex yêu cầu Hoàn cung cấp nội dung các sub-issue để chuẩn bị test nghiệm thu trước khi lập trình.
+
+### Phản biện
+
+Kiểm tra sự hiện diện của các file không thay thế xác nhận đầy đủ mọi tiêu chí nghiệp vụ của task #52. Test cũ trong stash chưa bị xóa; không tự áp stash lên nhánh mới vì main đã có file test cùng đường dẫn.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu bắt đầu task tiếp theo và cập nhật thư mục Desktop; chưa có nội dung chi tiết các sub-issue hoặc xác nhận QA về test.
+
+### Người kiểm tra
+
+Codex kiểm tra trạng thái Git và sự hiện diện của file; chờ Hoàn cung cấp các bước và QA duyệt test.
+
+### Kiểm tra và minh chứng
+
+- origin/main tại 8d48735 có merge PR #705; vnpay.ts, vnpay.spec.ts và checkout.service.ts hiện diện.
+- File test cũ được lưu tại stash với thông điệp Preserve Desktop checkout test before P3; commit 6d3adef chưa push vẫn nằm trên nhánh cũ.
+- Chưa viết test hoặc code cho task #52, chưa commit hoặc push nhánh mới.
+
+---
+
+## Phase 3 / hoan-20261120-payments-tests-f31-02
+
+* Thời gian ghi: 2026-11-20T15:54:31+07:00
+* Thời gian thực hiện: 20/11/2026.
+* Mã phiên nhật ký: hoan-20261120-payments-start-f31
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-2.1, hoan-20261120-payments-start-f31-01
+
+### Công cụ
+
+Codex, TypeScript, Node.js, Vitest và Prisma mock.
+
+### Mục đích
+
+Viết test nghiệm thu trước cho task tạo URL thanh toán, Return và IPN.
+
+### Prompt
+
+Hoàn cung cấp yêu cầu bước 1 viết test và nội dung các bước 2.2 đến 2.6 để xác định các ca cần kiểm tra trước khi viết chức năng.
+
+### Kết quả đề xuất
+
+Codex tạo payments.spec.ts với tám ca: tạo URL cho chủ đơn, từ chối chữ ký sai, IPN thành công và lặp, sai tiền, không có đơn, IPN muộn còn tồn, IPN muộn hết tồn, và thiếu cấu hình cùng return chỉ đọc. Test dùng khóa giả, thời gian giả và Prisma mock.
+
+### Phản biện
+
+QA và Hoàn cần xem lại các giả lập, đặc biệt trạng thái tồn, thanh toán muộn và tính lặp; mock chưa xác nhận khóa dòng hoặc giao dịch đồng thời trên PostgreSQL thật. Các assertion chưa được thực thi vì module payments.service chưa tồn tại. Chưa có xác nhận QA duyệt test.
+
+### Quyết định của nhóm
+
+Thực hiện viết test trước theo yêu cầu Hoàn; chưa có quyết định QA duyệt test hoặc xác nhận thiết kế mock.
+
+### Người kiểm tra
+
+Codex chạy test tự động; chờ Hoàn và QA xem nội dung test trước khi triển khai chức năng.
+
+### Kiểm tra và minh chứng
+
+- `npm test -w api -- payments`: tám ca mới FAIL do chưa có payments.service.js/ts; ba ca vnpay hiện có pass.
+- Lần chạy sandbox đầu không ghi được file tạm EPERM; chạy lại có quyền thực thi tại repo Desktop thì thu được kết quả trên.
+- Không kết nối VNPay hoặc database thật; chưa commit hoặc push bước này.
