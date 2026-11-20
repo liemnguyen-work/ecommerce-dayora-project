@@ -32,9 +32,10 @@ const tx = {
     update: vi.fn(),
     updateMany: vi.fn(),
   },
-  sku: {
-    updateMany: vi.fn(),
-  },
+ sku: {
+  update: vi.fn(),
+  updateMany: vi.fn(),
+},
   orderStatusLog: {
     create: vi.fn(),
   },
@@ -135,8 +136,15 @@ describe('AdminOrdersService - PRJ-P3-BD2-1', () => {
         return callback(tx);
       },
     );
-  });
+  tx.sku.update.mockResolvedValue({
+  id: 'sku-a',
+  stock: 12,
+});
 
+tx.sku.updateMany.mockResolvedValue({
+  count: 1,
+});
+});
   it('admin xem được danh sách đơn hàng', async () => {
     const order = mockOrder();
 
@@ -497,4 +505,148 @@ it('đúng sơ đồ giao hàng và chỉ hoàn tất khi đã giao', async () =
 
   expect(tx.orderStatusLog.create).toHaveBeenCalledTimes(4);
 }); 
+it('hủy pending trả reserved', async () => {
+  const order = mockOrder({
+    status: 'PENDING_PAYMENT',
+    paymentStatus: 'UNPAID',
+    shippingStatus: 'NOT_SHIPPED',
+  });
+
+  tx.order.findUnique.mockResolvedValue(order);
+
+  const service = (await getService()) as AdminOrdersContract & {
+    update: (
+      id: string,
+      dto: {
+        field: 'status';
+        to: string;
+        note?: string;
+      },
+      actorId: string,
+    ) => Promise<unknown>;
+  };
+
+  const result = await service.update(
+    'order-a',
+    {
+      field: 'status',
+      to: 'CANCELLED',
+      note: 'Khách yêu cầu hủy',
+    },
+    'admin-a',
+  );
+
+  expect(result).toEqual(
+    expect.objectContaining({
+      status: 'CANCELLED',
+    }),
+  );
+
+  expect(tx.order.updateMany).toHaveBeenCalledWith(
+    expect.objectContaining({
+      where: expect.objectContaining({
+        id: 'order-a',
+        status: 'PENDING_PAYMENT',
+        paymentStatus: 'UNPAID',
+      }),
+      data: {
+        status: 'CANCELLED',
+      },
+    }),
+  );
+
+  expect(tx.sku.updateMany).toHaveBeenCalledWith({
+    where: {
+      id: 'sku-a',
+      reserved: {
+        gte: 2,
+      },
+    },
+    data: {
+      reserved: {
+        decrement: 2,
+      },
+    },
+  });
+
+  expect(tx.sku.update).not.toHaveBeenCalled();
+
+  expect(tx.orderStatusLog.create).toHaveBeenCalledWith(
+    expect.objectContaining({
+      data: expect.objectContaining({
+        orderId: 'order-a',
+        status: 'CANCELLED',
+      }),
+    }),
+  );
+});
+it('hủy đơn PAID cộng stock và ghi cần hoàn tiền', async () => {
+  const order = mockOrder({
+    status: 'CONFIRMED',
+    paymentStatus: 'PAID',
+    shippingStatus: 'NOT_SHIPPED',
+  });
+
+  tx.order.findUnique.mockResolvedValue(order);
+
+  const service = (await getService()) as AdminOrdersContract & {
+    update: (
+      id: string,
+      dto: {
+        field: 'status';
+        to: string;
+        note?: string;
+      },
+      actorId: string,
+    ) => Promise<unknown>;
+  };
+
+  const result = await service.update(
+    'order-a',
+    {
+      field: 'status',
+      to: 'CANCELLED',
+    },
+    'admin-a',
+  );
+
+  expect(result).toEqual(
+    expect.objectContaining({
+      status: 'CANCELLED',
+    }),
+  );
+
+  expect(tx.sku.update).toHaveBeenCalledWith({
+    where: {
+      id: 'sku-a',
+    },
+    data: {
+      stock: {
+        increment: 2,
+      },
+    },
+  });
+
+  expect(tx.sku.updateMany).not.toHaveBeenCalled();
+
+  expect(tx.orderStatusLog.create).toHaveBeenCalledWith(
+    expect.objectContaining({
+      data: expect.objectContaining({
+        orderId: 'order-a',
+        status: 'CANCELLED',
+        note: expect.stringContaining(
+          'Cần hoàn tiền thủ công',
+        ),
+      }),
+    }),
+  );
+
+  expect(tx.order.updateMany).toHaveBeenCalledWith(
+    expect.objectContaining({
+      data: {
+        status: 'CANCELLED',
+      },
+    }),
+  );
+});
 });

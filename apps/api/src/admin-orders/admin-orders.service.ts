@@ -134,11 +134,11 @@ async detail(id: string) {
 
   return order;
 }
-  async update(
-    id: string,
-    dto: UpdateStatusDto,
-    actorId: string,
-  ) {
+async update(
+  id: string,
+  dto: UpdateStatusDto,
+  actorId: string,
+) {
   return this.prisma.$transaction(async (tx) => {
     const order = await tx.order.findUnique({
       where: { id },
@@ -158,12 +158,14 @@ async detail(id: string) {
       });
     }
 
-    // Việc hủy phải đi qua quy trình hoàn tồn của #270.
-    // Không đổi CANCELLED trực tiếp, vì sẽ bỏ qua xử lý tồn kho.
-    if (dto.field === 'status' && dto.to === 'CANCELLED') {
-      throw new ConflictException(
-        'Hủy đơn phải thực hiện qua quy trình hoàn tồn kho',
-      );
+    const isCancel =
+      dto.field === 'status' && dto.to === 'CANCELLED';
+
+    if (isCancel && !['UNPAID', 'PAID'].includes(order.paymentStatus)) {
+      throw new UnprocessableEntityException({
+        message: 'Trạng thái thanh toán không hỗ trợ hủy đơn',
+        allowed: allowed.filter((value) => value !== 'CANCELLED'),
+      });
     }
 
     const currentValue = order[dto.field];
@@ -191,6 +193,60 @@ async detail(id: string) {
       );
     }
 
+    if (isCancel) {
+      for (const item of order.items) {
+        if (order.paymentStatus === 'PAID') {
+          await tx.sku.update({
+            where: { id: item.skuId },
+            data: {
+              stock: {
+                increment: item.quantity,
+              },
+            },
+          });
+        } else if (
+          order.paymentStatus === 'UNPAID' &&
+          order.status === 'PENDING_PAYMENT'
+        ) {
+          const released = await tx.sku.updateMany({
+            where: {
+              id: item.skuId,
+              reserved: {
+                gte: item.quantity,
+              },
+            },
+            data: {
+              reserved: {
+                decrement: item.quantity,
+              },
+            },
+          });
+
+          if (released.count !== 1) {
+            throw new ConflictException(
+              'Không thể giải phóng tồn giữ chỗ',
+            );
+          }
+        } else {
+          throw new UnprocessableEntityException({
+            message: 'Không thể hủy đơn ở trạng thái hiện tại',
+            allowed: [],
+          });
+        }
+      }
+    }
+
+    const note = [
+      `${dto.field}: ${currentValue} -> ${dto.to}`,
+      `actorId: ${actorId}`,
+      dto.note,
+      isCancel && order.paymentStatus === 'PAID'
+        ? 'Cần hoàn tiền thủ công'
+        : null,
+    ]
+      .filter(Boolean)
+      .join(' | ');
+
     await tx.orderStatusLog.create({
       data: {
         orderId: id,
@@ -203,14 +259,7 @@ async detail(id: string) {
           dto.field === 'shippingStatus'
             ? (dto.to as typeof order.shippingStatus)
             : order.shippingStatus,
-        note: [
-          `${dto.field}: ${currentValue} -> ${dto.to}`,
-          `actorId: ${actorId}`,
-          dto.note,
-        ]
-          .filter(Boolean)
-          .join(' | ')
-          .slice(0, 1000),
+        note,
       },
     });
 
@@ -219,4 +268,5 @@ async detail(id: string) {
       [dto.field]: dto.to,
     };
   });
-}}
+}
+}
