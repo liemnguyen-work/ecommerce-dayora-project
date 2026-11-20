@@ -13,29 +13,34 @@ type OrderRecord = {
     quantity: number;
   }>;
 };
-
 type AdminOrdersContract = {
-  listOrders: (filter?: Record<string, unknown>) => Promise<unknown>;
-  updateShippingStatus: (
-    orderId: string,
-    nextStatus: string,
-  ) => Promise<unknown>;
-  cancelOrder: (
-    orderId: string,
-    note?: string,
+  list: (query?: Record<string, unknown>) => Promise<{
+    items: Array<{ id: string }>;
+    total: number;
+    page: number;
+    pageSize: number;
+    totalPages: number;
+  }>;
+  update: (
+    id: string,
+    dto: {
+      field: 'status' | 'shippingStatus';
+      to: string;
+      note?: string;
+    },
+    actorId: string,
   ) => Promise<unknown>;
 };
-
 const tx = {
   order: {
     findUnique: vi.fn(),
     update: vi.fn(),
     updateMany: vi.fn(),
   },
- sku: {
-  update: vi.fn(),
-  updateMany: vi.fn(),
-},
+  sku: {
+    update: vi.fn(),
+    updateMany: vi.fn(),
+  },
   orderStatusLog: {
     create: vi.fn(),
   },
@@ -44,6 +49,7 @@ const tx = {
 const prisma = {
   order: {
     findMany: vi.fn(),
+    count: vi.fn(),
     findUnique: vi.fn(),
     update: vi.fn(),
     updateMany: vi.fn(),
@@ -77,44 +83,18 @@ function mockOrder(
 }
 
 async function getService(): Promise<AdminOrdersContract> {
-  // Không import tĩnh để Vitest vẫn thu thập test
-  // khi service chưa được viết ở giai đoạn TDD RED.
-  const modulePath = './admin-orders.service.js';
-
-  let module: Record<string, unknown>;
-
-  try {
-    module = await vi.importActual<Record<string, unknown>>(
-      modulePath,
-    );
-  } catch {
-    throw new Error(
-      'AdminOrdersService chưa được triển khai - TDD RED',
-    );
-  }
-
-  const ServiceClass = module.AdminOrdersService as
-    | (new (prismaClient: unknown) => AdminOrdersContract)
-    | undefined;
-
-  if (!ServiceClass) {
-    throw new Error(
-      'Chưa export AdminOrdersService - TDD RED',
-    );
-  }
-
-  return new ServiceClass(prisma);
+  const { AdminOrdersService } = await import('./admin-orders.service.js');
+  return new AdminOrdersService(prisma as never) as unknown as AdminOrdersContract;
 }
 
 describe('AdminOrdersService - PRJ-P3-BD2-1', () => {
   beforeEach(() => {
     vi.resetAllMocks();
-
+    prisma.order.count.mockResolvedValue(1);
     prisma.order.findMany.mockResolvedValue([]);
     prisma.order.findUnique.mockResolvedValue(mockOrder());
     prisma.order.update.mockResolvedValue(mockOrder());
     prisma.order.updateMany.mockResolvedValue({ count: 1 });
-
     prisma.orderStatusLog.create.mockResolvedValue({
       id: 'log-a',
       orderId: 'order-a',
@@ -136,27 +116,29 @@ describe('AdminOrdersService - PRJ-P3-BD2-1', () => {
         return callback(tx);
       },
     );
-  tx.sku.update.mockResolvedValue({
-  id: 'sku-a',
-  stock: 12,
-});
-
-tx.sku.updateMany.mockResolvedValue({
-  count: 1,
-});
-});
+    tx.sku.update.mockResolvedValue({
+      id: 'sku-a',
+      stock: 12,
+    });
+    tx.sku.updateMany.mockResolvedValue({ count: 1 });
+  });
   it('admin xem được danh sách đơn hàng', async () => {
     const order = mockOrder();
 
     prisma.order.findMany.mockResolvedValue([order]);
 
     const service = await getService();
-    const result = await service.listOrders();
+    const result = await service.list();
 
     expect(prisma.order.findMany).toHaveBeenCalled();
-    expect(result).toEqual(expect.arrayContaining([
-      expect.objectContaining({ id: 'order-a' }),
-    ]));
+    expect(result.items).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ id: 'order-a' }),
+      ]),
+    );
+    expect(result.total).toBe(1);
+    expect(result.page).toBe(1);
+    expect(result.pageSize).toBe(10);
   });
 
   it('cho phép chuyển PREPARING sang SHIPPING', async () => {
@@ -169,9 +151,10 @@ tx.sku.updateMany.mockResolvedValue({
 
     const service = await getService();
 
-    const result = await service.updateShippingStatus(
+    const result = await service.update(
       'order-a',
-      'SHIPPING',
+      { field: 'shippingStatus', to: 'SHIPPING' },
+      'admin-a',
     );
 
     expect(result).toEqual(
@@ -191,9 +174,10 @@ tx.sku.updateMany.mockResolvedValue({
 
     const service = await getService();
 
-    const result = await service.updateShippingStatus(
+    const result = await service.update(
       'order-a',
-      'DELIVERED',
+      { field: 'shippingStatus', to: 'DELIVERED' },
+      'admin-a',
     );
 
     expect(result).toEqual(
@@ -214,7 +198,11 @@ tx.sku.updateMany.mockResolvedValue({
     const service = await getService();
 
     await expect(
-      service.updateShippingStatus('order-a', 'DELIVERED'),
+      service.update(
+        'order-a',
+        { field: 'shippingStatus', to: 'DELIVERED' },
+        'admin-a',
+      ),
     ).rejects.toMatchObject({
       status: 422,
       response: expect.objectContaining({
@@ -233,9 +221,10 @@ tx.sku.updateMany.mockResolvedValue({
 
     const service = await getService();
 
-    await service.updateShippingStatus(
+    await service.update(
       'order-a',
-      'SHIPPING',
+      { field: 'shippingStatus', to: 'SHIPPING' },
+      'admin-a',
     );
 
     const calls = [
@@ -269,7 +258,11 @@ tx.sku.updateMany.mockResolvedValue({
 
     const service = await getService();
 
-    await service.cancelOrder('order-a', 'Khách yêu cầu hủy');
+    await service.update(
+      'order-a',
+      { field: 'status', to: 'CANCELLED', note: 'Khách yêu cầu hủy' },
+      'admin-a',
+    );
 
     expect(tx.sku.updateMany).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -306,9 +299,13 @@ tx.sku.updateMany.mockResolvedValue({
 
     const service = await getService();
 
-    await service.cancelOrder('order-a', 'Hủy đơn đã thanh toán');
+    await service.update(
+      'order-a',
+      { field: 'status', to: 'CANCELLED', note: 'Hủy đơn đã thanh toán' },
+      'admin-a',
+    );
 
-    expect(tx.sku.updateMany).toHaveBeenCalledWith(
+    expect(tx.sku.update).toHaveBeenCalledWith(
       expect.objectContaining({
         where: expect.objectContaining({
           id: 'sku-a',
@@ -321,11 +318,14 @@ tx.sku.updateMany.mockResolvedValue({
       }),
     );
 
+    expect(tx.sku.updateMany).not.toHaveBeenCalled();
+
     expect(tx.orderStatusLog.create).toHaveBeenCalledWith(
       expect.objectContaining({
         data: expect.objectContaining({
           orderId: 'order-a',
           status: 'CANCELLED',
+          note: expect.stringContaining('Cần hoàn tiền thủ công'),
         }),
       }),
     );
@@ -343,10 +343,17 @@ tx.sku.updateMany.mockResolvedValue({
     const service = await getService();
 
     await expect(
-      service.cancelOrder('order-a'),
+      service.update(
+        'order-a',
+        { field: 'status', to: 'CANCELLED' },
+        'admin-a',
+      ),
     ).rejects.toThrow();
 
+    expect(tx.order.updateMany).not.toHaveBeenCalled();
+    expect(tx.sku.update).not.toHaveBeenCalled();
     expect(tx.sku.updateMany).not.toHaveBeenCalled();
+    expect(tx.orderStatusLog.create).not.toHaveBeenCalled();
     expect(prisma.sku.updateMany).not.toHaveBeenCalled();
   });
   it('guard không cho khách vào admin', async () => {
