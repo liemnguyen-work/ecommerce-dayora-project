@@ -6220,3 +6220,87 @@ Codex chạy test, lint và build API; chờ Hoàn và reviewer xem xét.
 ### Kiểm tra và minh chứng
 
 `npm test -w api -- reviews`: 7/7 pass; lint và build API pass. Không thay schema.
+---
+
+## Phase 3 / hoan-20261121-reviews-check-a61-09
+
+* Thời gian ghi: 2026-11-21T10:05:56+07:00
+* Thời gian thực hiện: 21/11/2026.
+* Mã phiên nhật ký: hoan-20261121-reviews-test-a61
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-3.6, hoan-20261121-reviews-delete-a61-08
+
+### Công cụ
+
+Codex và Git.
+
+### Mục đích
+
+Chuẩn bị bài tự kiểm tra kiến thức đánh giá sau mua.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp yêu cầu tự đánh giá và yêu cầu ghi tóm tắt phiên vào AI log.
+
+### Kết quả đề xuất
+
+Tạo khung câu hỏi chưa trả lời để Hoàn tự viết theo quy tắc của task.
+
+### Phản biện
+
+Chưa có câu trả lời để đánh giá; không coi bước tự đánh giá đã hoàn thành.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu chuẩn bị bài; chưa có xác nhận reviewer.
+
+### Người kiểm tra
+
+Codex kiểm tra trạng thái file; Hoàn sẽ tự trả lời.
+
+### Kiểm tra và minh chứng
+
+Tạo file `docs/learning/BD1-Hoan/kiem-tra/PRJ-P3-BD1-3.md`; chưa trả lời, commit hoặc push.
+---
+
+## Phase 3 / hoan-20261121-reviews-check-a61-10
+
+* Thời gian ghi: 2026-11-21T10:12:59+07:00
+* Thời gian thực hiện: 21/11/2026.
+* Mã phiên nhật ký: hoan-20261121-reviews-test-a61
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-3.6, hoan-20261121-reviews-check-a61-09
+
+### Công cụ
+
+Codex và Git.
+
+### Mục đích
+
+Ghi câu trả lời tự đánh giá về đánh giá sau mua.
+
+### Prompt
+
+Tóm lược: Hoàn tự trả lời các câu hỏi và hai câu bổ sung, yêu cầu ghi file, cập nhật log, commit và push.
+
+### Kết quả đề xuất
+
+Ghi câu trả lời của Hoàn vào file; bổ sung mô tả ca HTTP, làm rõ test dùng mock và chỉnh cách ghi lựa chọn duyệt, xóa cho đúng phạm vi xác nhận.
+
+### Phản biện
+
+Codex đánh giá câu trả lời đúng về ý chính; test điều kiện truy vấn dùng mock, chưa kiểm tra từng tình huống với database thật.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu ghi câu trả lời; chưa có xác nhận reviewer về bài tự đánh giá.
+
+### Người kiểm tra
+
+Codex đối chiếu câu trả lời với test và nhận xét hai câu bổ sung; chờ reviewer đánh giá.
+
+### Kiểm tra và minh chứng
+
+Không chạy lại test vì thay đổi chỉ gồm tài liệu và AI log.
