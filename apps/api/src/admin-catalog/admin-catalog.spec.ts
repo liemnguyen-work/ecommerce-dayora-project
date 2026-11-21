@@ -309,4 +309,129 @@ describe('admin catalog HTTP', () => {
       .send({ slug: 'item' })
       .expect(409);
   });
+  it('creates product with scenarios', async () => {
+  prisma.product.create.mockResolvedValueOnce({
+    id: 'p-new',
+    ...product,
+    scenarios: ['PICNIC', 'DATE', 'BEACH'],
+  });
+
+  const response = await request(app.getHttpServer())
+    .post('/api/admin/products')
+    .set('Cookie', cookie())
+    .send({
+      ...product,
+      scenarios: ['PICNIC', 'DATE', 'BEACH'],
+    })
+    .expect(201);
+
+  expect(response.body.scenarios).toEqual([
+    'PICNIC',
+    'DATE',
+    'BEACH',
+  ]);
+
+  expect(prisma.product.create).toHaveBeenCalledWith(
+    expect.objectContaining({
+      data: expect.objectContaining({
+        scenarios: ['PICNIC', 'DATE', 'BEACH'],
+      }),
+    }),
+  );
+});
+it('updates scenarios and preserves omitted field', async () => {
+  prisma.product.update.mockResolvedValueOnce({
+    id: 'p1',
+    scenarios: ['BEACH'],
+  });
+
+  await request(app.getHttpServer())
+    .patch('/api/admin/products/p1')
+    .set('Cookie', cookie())
+    .send({ scenarios: ['BEACH'] })
+    .expect(200);
+
+  expect(prisma.product.update).toHaveBeenLastCalledWith(
+    expect.objectContaining({
+      where: { id: 'p1' },
+      data: expect.objectContaining({
+        scenarios: { set: ['BEACH'] },
+      }),
+    }),
+  );
+
+  prisma.product.update.mockResolvedValueOnce({
+    id: 'p1',
+    name: 'Tên mới',
+    scenarios: ['BEACH'],
+  });
+
+  await request(app.getHttpServer())
+    .patch('/api/admin/products/p1')
+    .set('Cookie', cookie())
+    .send({ name: 'Tên mới' })
+    .expect(200);
+
+  const preserveCall =
+    prisma.product.update.mock.lastCall?.[0];
+
+  expect(preserveCall?.data).not.toHaveProperty('scenarios');
+
+  prisma.product.update.mockResolvedValueOnce({
+    id: 'p1',
+    scenarios: [],
+  });
+
+  await request(app.getHttpServer())
+    .patch('/api/admin/products/p1')
+    .set('Cookie', cookie())
+    .send({ scenarios: [] })
+    .expect(200);
+
+  expect(prisma.product.update).toHaveBeenLastCalledWith(
+    expect.objectContaining({
+      data: expect.objectContaining({
+        scenarios: { set: [] },
+      }),
+    }),
+  );
+});
+it('rejects invalid scenarios before Prisma', async () => {
+  await request(app.getHttpServer())
+    .post('/api/admin/products')
+    .set('Cookie', cookie())
+    .send({
+      ...product,
+      scenarios: ['INVALID'],
+    })
+    .expect(400);
+
+  await request(app.getHttpServer())
+    .patch('/api/admin/products/p1')
+    .set('Cookie', cookie())
+    .send({
+      scenarios: ['BEACH', 'INVALID'],
+    })
+    .expect(400);
+
+  expect(prisma.product.create).not.toHaveBeenCalled();
+  expect(prisma.product.update).not.toHaveBeenCalled();
+});
+it('returns 404 when hiding a missing product', async () => {
+  prisma.product.update.mockRejectedValueOnce({
+    code: 'P2025',
+  });
+
+  const response = await request(app.getHttpServer())
+    .patch('/api/admin/products/missing/hide')
+    .set('Cookie', cookie())
+    .expect(404);
+
+  expect(response.body.statusCode).toBe(404);
+
+  expect(prisma.product.update).toHaveBeenCalledWith({
+    where: { id: 'missing' },
+    data: { status: 'INACTIVE' },
+  });
+});
 });
