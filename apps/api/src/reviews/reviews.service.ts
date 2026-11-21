@@ -61,6 +61,19 @@ export class ReviewsService {
     return { items, average: aggregate._avg.rating ?? 0, count: aggregate._count._all, page };
   }
 
+  async deleteReview(id: string) {
+    const result = await this.prisma.review.deleteMany({ where: { id } });
+    if (result.count !== 1) throw new NotFoundException('Không tìm thấy đánh giá');
+    return { deleted: true };
+  }
+
+  async adminList() {
+    return this.prisma.review.findMany({
+      orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+      select: { id: true, productId: true, orderId: true, rating: true, comment: true, createdAt: true },
+    });
+  }
+
   async reviewable(userId: string) {
     const [orders, reviews] = await Promise.all([
       this.prisma.order.findMany({

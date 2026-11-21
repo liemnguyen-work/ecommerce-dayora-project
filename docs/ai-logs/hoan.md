@@ -6136,3 +6136,87 @@ Codex chạy test, lint và build API; chờ Hoàn và reviewer xem xét.
 ### Kiểm tra và minh chứng
 
 Bốn ca service liên quan pass, một ca bỏ qua theo bộ lọc; lint và build API pass.
+---
+
+## Phase 3 / hoan-20261121-reviews-routes-a61-07
+
+* Thời gian ghi: 2026-11-21T09:50:39+07:00
+* Thời gian thực hiện: 21/11/2026.
+* Mã phiên nhật ký: hoan-20261121-reviews-test-a61
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-3.5, hoan-20261121-reviews-list-a61-06
+
+### Công cụ
+
+Codex, NestJS, Prisma, Vitest, Supertest và ESLint.
+
+### Mục đích
+
+Kiểm tra dữ liệu đánh giá, bảo vệ route quản trị và đăng ký module.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp bước rating ngoài khoảng trả 400 và khách gọi admin trả 403.
+
+### Kết quả đề xuất
+
+Thêm DTO, controller và module; đăng ký route công khai, tạo đánh giá, danh sách reviewable và GET admin/reviews theo lựa chọn Hoàn. Không thay test nghiệm thu.
+
+### Phản biện
+
+HTTP test giả lập guard đăng nhập và service; chưa kiểm tra luồng đăng nhập thật hoặc database thật. Tài liệu chưa quy định hợp đồng duyệt/xóa nên chưa triển khai các thao tác này; reviewer cần xác nhận phạm vi.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu thực hiện bước 3.5 và trước đó chọn GET /api/admin/reviews; chưa ghi nhận QA hoặc reviewer duyệt test.
+
+### Người kiểm tra
+
+Codex chạy test, lint và build API; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+`npm test -w api -- reviews.service reviews.http`: 6/6 pass; lint và build API pass.
+---
+
+## Phase 3 / hoan-20261121-reviews-delete-a61-08
+
+* Thời gian ghi: 2026-11-21T10:01:11+07:00
+* Thời gian thực hiện: 21/11/2026.
+* Mã phiên nhật ký: hoan-20261121-reviews-test-a61
+* Người prompt: Hoàn
+* Loại mục: Quyết định
+* Liên quan: PRJ-P3-BD1-3.5, hoan-20261121-reviews-routes-a61-07
+
+### Công cụ
+
+Codex, NestJS, Prisma, Vitest và Supertest.
+
+### Mục đích
+
+Làm rõ hiển thị và xóa đánh giá theo lựa chọn của Hoàn.
+
+### Prompt
+
+Tóm lược: Hoàn chọn đánh giá hiển thị ngay, admin xóa hẳn thay vì ẩn.
+
+### Kết quả đề xuất
+
+Giữ hiển thị ngay; bổ sung DELETE /api/admin/reviews/:id có guard ADMIN, xóa bản ghi và trả 404 nếu không có. Bổ sung test riêng; không sửa test nghiệm thu.
+
+### Phản biện
+
+Xóa hẳn làm mất bản ghi và có thể cho phép khách đánh giá lại; test giả lập đăng nhập và Prisma, chưa kiểm tra database thật. Cần reviewer và frontend xác nhận hợp đồng.
+
+### Quyết định của nhóm
+
+Hoàn chọn hiển thị ngay và xóa hẳn; chưa có xác nhận reviewer hoặc QA.
+
+### Người kiểm tra
+
+Codex chạy test, lint và build API; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+`npm test -w api -- reviews`: 7/7 pass; lint và build API pass. Không thay schema.
