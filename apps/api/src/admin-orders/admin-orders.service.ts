@@ -36,9 +36,14 @@ function getAllowedTransitions(
     }
 
     if (order.status === 'CONFIRMED') {
-      return order.shippingStatus === 'DELIVERED'
-        ? ['COMPLETED', 'CANCELLED']
-        : ['CANCELLED'];
+      if (
+        order.shippingStatus === 'NOT_SHIPPED' ||
+        order.shippingStatus === 'PREPARING'
+      ) {
+        return ['CANCELLED'];
+      }
+
+      return [];
     }
 
     return [];
@@ -170,6 +175,10 @@ async update(
 
     const currentValue = order[dto.field];
 
+    const isDelivered =
+      dto.field === 'shippingStatus' &&
+      dto.to === 'DELIVERED';
+
     const updated = await tx.order.updateMany({
       where: {
         id,
@@ -184,9 +193,11 @@ async update(
             }
           : {
               shippingStatus: dto.to as typeof order.shippingStatus,
+              ...(isDelivered
+                ? { status: 'COMPLETED' as const }
+                : {}),
             },
     });
-
     if (updated.count !== 1) {
       throw new ConflictException(
         'Đơn hàng đã được cập nhật bởi yêu cầu khác',
@@ -234,6 +245,9 @@ async update(
           });
         }
       }
+      await tx.voucherUsage.deleteMany({
+        where: { orderId: id },
+      });
     }
 
     const note = [
@@ -250,8 +264,9 @@ async update(
     await tx.orderStatusLog.create({
       data: {
         orderId: id,
-        status:
-          dto.field === 'status'
+        status: isDelivered
+          ? 'COMPLETED'
+          : dto.field === 'status'
             ? (dto.to as typeof order.status)
             : order.status,
         paymentStatus: order.paymentStatus,
@@ -266,7 +281,9 @@ async update(
     return {
       ...order,
       [dto.field]: dto.to,
+      ...(isDelivered ? { status: 'COMPLETED' } : {}),
     };
   });
 }
 }
+
