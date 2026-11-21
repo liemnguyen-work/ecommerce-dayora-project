@@ -43,6 +43,14 @@ export class OrdersController {
     return this.checkout.detail(req.user.id, id);
   }
 
+  @Post(':id/cancel')
+  cancel(
+    @Req() req: AuthRequest,
+    @Param('id') id: string,
+  ) {
+    return this.checkout.cancel(req.user.id, id);
+  }
+
   @Post('preview')
   preview(
     @Req() req: AuthRequest,

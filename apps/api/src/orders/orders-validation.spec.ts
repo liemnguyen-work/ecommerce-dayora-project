@@ -12,6 +12,7 @@ import { OrdersService } from './orders.service.js';
 describe('POST /api/orders validates body', () => {
   let app: INestApplication;
   const create = vi.fn().mockResolvedValue({ id: 'order-1' });
+  const cancel = vi.fn().mockResolvedValue({ id: 'order-1', status: 'CANCELLED' });
   const valid = {
     recipient: { name: 'Hoàn', phone: '0901234567', address: '123 Đường A', province: 'Hồ Chí Minh', district: 'Quận 1', isInnerHcm: true },
     expected: [{ skuId: 'sku-1', unitPrice: 100000 }],
@@ -23,7 +24,7 @@ describe('POST /api/orders validates body', () => {
     const moduleRef = await Test.createTestingModule({
       controllers: [OrdersController],
       providers: [
-        { provide: CheckoutService, useValue: { create } },
+        { provide: CheckoutService, useValue: { create, cancel } },
         { provide: OrdersService, useValue: { preview: vi.fn() } },
       ],
     }).overrideGuard(JwtAuthGuard).useValue({ canActivate: (ctx: { switchToHttp: () => { getRequest: () => { user: { id: string } } } }) => {
@@ -35,7 +36,10 @@ describe('POST /api/orders validates body', () => {
     app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true, forbidNonWhitelisted: true }));
     await app.init();
   });
-  beforeEach(() => create.mockClear());
+  beforeEach(() => {
+    create.mockClear();
+    cancel.mockClear();
+  });
   afterAll(async () => { await app.close(); });
 
   it('rejects missing required fields and expected array', async () => {
@@ -73,5 +77,13 @@ describe('POST /api/orders validates body', () => {
     await request(app.getHttpServer()).post('/api/orders').send(valid).expect(201).expect({ id: 'order-1' });
     expect(create).toHaveBeenCalledOnce();
     expect(create).toHaveBeenCalledWith('user-1', expect.objectContaining({ ...valid }));
+  });
+
+  it('cancels an owned order through the authenticated route', async () => {
+    await request(app.getHttpServer())
+      .post('/api/orders/order-1/cancel')
+      .expect(201)
+      .expect({ id: 'order-1', status: 'CANCELLED' });
+    expect(cancel).toHaveBeenCalledWith('user-1', 'order-1');
   });
 });

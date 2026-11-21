@@ -3849,3 +3849,249 @@ Thành kiểm tra trực quan trang đơn có dữ liệu thật trên localhost
 ### Kiểm tra và minh chứng
 
 Ảnh Thành cung cấp thể hiện mã đơn, nhãn trạng thái tiếng Việt, timeline, sản phẩm, người nhận và tổng tiền. `git diff --check`, 11 test CheckoutService, `npm.cmd run lint` và `npm.cmd run build` toàn repo đều pass.
+
+## P3 / thanh-20261121-p3-orders-09
+
+* Thời gian ghi: 2026-11-21T13:41:28+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: thanh-20261121-p3-orders-08; PRJ-P3-FD1-1.2 #375.
+
+### Công cụ
+
+Codex; NestJS; React; TypeScript; Vitest; ESLint; Vite; PowerShell.
+
+### Mục đích
+
+Nối thao tác thanh toán VNPay và hủy đơn trên trang chi tiết, chỉ cho phép thao tác khi đơn còn chờ thanh toán và giữ phản hồi lỗi ngay trên giao diện.
+
+### Prompt
+
+Thành gửi sub-issue PRJ-P3-FD1-1.2 và yêu cầu tiếp tục theo quy trình: làm code, đưa localhost để Thành kiểm tra, chỉ commit/push sau khi Thành xác nhận.
+
+### Kết quả đề xuất
+
+Codex bổ sung route khách `POST /api/orders/:id/cancel` dùng nghiệp vụ hủy có kiểm tra quyền sở hữu sẵn có; thêm nút thanh toán VNPay, nút hủy có xác nhận, trạng thái bận, phản hồi lỗi và giao diện responsive trong `OrderPage.tsx`/`catalog.css`; thêm kiểm thử route hủy đã xác thực.
+
+### Phản biện
+
+Hai nút chỉ hiển thị khi cả trạng thái đơn là `PENDING_PAYMENT` và thanh toán là `UNPAID`, tránh hiện cho đơn đã trả tiền, đã hủy hoặc hoàn tất. URL thanh toán phải do backend trả về; frontend không tự tạo URL. Lỗi thao tác được giữ trong trang chi tiết thay vì làm mất toàn bộ dữ liệu đơn.
+
+### Quyết định của nhóm
+
+Phạm vi theo sub-issue #375 đã được Thành giao thực hiện. Chưa có xác nhận duyệt giao diện hay cho phép commit bước này.
+
+### Người kiểm tra
+
+Codex đã chạy kiểm tra tự động; chờ Thành kiểm tra thao tác thanh toán và hủy đơn trên localhost. Reviewer chưa kiểm tra độc lập.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd test -w api -- orders-validation checkout.service payments`: 5 file, 29 test pass. `npm.cmd run lint -w api` và `npm.cmd run lint -w web` pass. `npm.cmd run build -w web` pass. Chưa commit và chưa push.
+
+## P3 / thanh-20261121-p3-orders-10
+
+* Thời gian ghi: 2026-11-21T13:49:59+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Phản biện
+* Liên quan: thanh-20261121-p3-orders-09; PRJ-P3-FD1-1.2 #375.
+
+### Công cụ
+
+Codex; React; CSS; TypeScript; ESLint; Vite.
+
+### Mục đích
+
+Sửa trải nghiệm xác nhận hủy đơn sau khi Thành kiểm tra giao diện và phản hồi hộp thoại hệ thống không phù hợp với website.
+
+### Prompt
+
+Thành báo hai nút chưa đạt yêu cầu kiểm tra, nút thanh toán báo thiếu cấu hình VNPay và nút hủy mở hộp thoại mặc định có tiêu đề `Code` khi đang dùng web.
+
+### Kết quả đề xuất
+
+Codex thay `window.confirm` bằng modal xác nhận theo giao diện DAYORA, có mô tả hậu quả, nút giữ lại đơn, nút xác nhận hủy, trạng thái đang xử lý và chỉ gọi API sau xác nhận. Lỗi VNPay được xác định do bốn biến cấu hình VNPay chưa có trong `.env`, không phải do nút frontend.
+
+### Phản biện
+
+Modal tùy biến vẫn giữ bước xác nhận bắt buộc trước thao tác hủy nhưng không còn giao diện hệ thống lệch thiết kế. Không tự tạo hoặc ghi khóa VNPay giả vì cần thông tin Sandbox hợp lệ của nhóm và không được đưa bí mật vào mã nguồn/log.
+
+### Quyết định của nhóm
+
+Thành yêu cầu làm hộp xác nhận phù hợp giao diện web. Chưa có cấu hình VNPay do nhóm cung cấp và chưa có xác nhận cho phép commit.
+
+### Người kiểm tra
+
+Codex kiểm tra lint/build và trạng thái hai server; chờ Thành tải lại trang, kiểm tra modal và xác nhận hủy. Reviewer chưa kiểm tra độc lập.
+
+### Kiểm tra và minh chứng
+
+`git diff --check`, `npm.cmd run lint -w web` và `npm.cmd run build -w web` pass. Web localhost và API health đều trả HTTP 200. `.env` không có giá trị cho `VNP_TMN_CODE`, `VNP_HASH_SECRET`, `VNP_URL`, `VNP_RETURN_URL`; chưa thể xác minh chuyển hướng VNPay Sandbox thật. Chưa commit và chưa push.
+
+## P3 / thanh-20261121-p3-orders-11
+
+* Thời gian ghi: 2026-11-21T13:53:43+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: thanh-20261121-p3-orders-10; PRJ-P3-FD1-1.2 #375.
+
+### Công cụ
+
+Codex; tài liệu nội bộ DAYORA; tài liệu chính thức VNPay Sandbox.
+
+### Mục đích
+
+Xác định nguồn hướng dẫn và cách lấy bốn biến cấu hình VNPay để Thành có thể kiểm tra chuyển hướng Sandbox mà không làm lộ bí mật.
+
+### Prompt
+
+Thành hỏi dự án hoặc VNPay có trang hướng dẫn lấy `VNP_TMN_CODE`, `VNP_HASH_SECRET`, `VNP_URL` và `VNP_RETURN_URL` hay không.
+
+### Kết quả đề xuất
+
+Codex xác nhận repo có `apps/api/.env.example` và `docs/RUNBOOK.md`; tài liệu VNPay chính thức hướng dẫn đăng ký tại cổng Sandbox, sau đó hệ thống gửi TmnCode và HashSecret qua email. Đề xuất ưu tiên hỏi người giữ cấu hình chung của nhóm trước khi đăng ký merchant mới.
+
+### Phản biện
+
+`VNP_URL` và `VNP_RETURN_URL` là URL cấu hình có thể điền theo mẫu repo; `VNP_TMN_CODE` và `VNP_HASH_SECRET` là thông tin do VNPay cấp, không tự đặt và không đưa vào chat, log hoặc commit.
+
+### Quyết định của nhóm
+
+Chưa có quyết định đăng ký merchant mới; chờ Thành kiểm tra cấu hình nhóm hoặc thực hiện đăng ký Sandbox.
+
+### Người kiểm tra
+
+Codex đối chiếu tài liệu repo và trang VNPay chính thức; Thành chưa xác nhận đã nhận cấu hình.
+
+### Kiểm tra và minh chứng
+
+Nguồn nội bộ: `apps/api/.env.example`, `docs/RUNBOOK.md`. Nguồn chính thức: trang đăng ký `https://sandbox.vnpayment.vn/devreg/` và tài liệu PAY `https://sandbox.vnpayment.vn/apis/docs/thanh-toan-pay/pay.html`. Không đọc hoặc ghi giá trị bí mật.
+
+## P3 / thanh-20261121-p3-orders-12
+
+* Thời gian ghi: 2026-11-21T14:38:33+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261121-p3-orders-11; PRJ-P3-FD1-1.2 #375.
+
+### Công cụ
+
+Codex; NestJS; PowerShell.
+
+### Mục đích
+
+Khởi động lại API và xác nhận ứng dụng đã nhận đủ tên biến cấu hình VNPay sau khi Thành cập nhật `.env`.
+
+### Prompt
+
+Thành cho biết đã cấu hình VNPay trong `.env`, gửi ảnh và yêu cầu thử lại.
+
+### Kết quả đề xuất
+
+Codex khởi động lại API, xác nhận NestJS biên dịch không lỗi, ứng dụng khởi động thành công và bốn biến VNPay đều có giá trị. Không đọc lại hoặc in giá trị bí mật.
+
+### Phản biện
+
+Ảnh Thành cung cấp chứa nhiều bí mật cấu hình. Codex cảnh báo không chia sẻ lại ảnh, không ghi các giá trị vào log và đề nghị phối hợp Liêm/Kiệt xoay vòng khóa đã lộ. Việc endpoint tạo URL thanh toán thành công còn cần Thành bấm bằng phiên đăng nhập và đơn còn hạn.
+
+### Quyết định của nhóm
+
+Thành đã tự thêm cấu hình local để kiểm tra. Chưa có xác nhận xoay vòng khóa và chưa cho phép commit bước này.
+
+### Người kiểm tra
+
+Codex xác nhận API hoạt động và tên biến cấu hình hiện diện; chờ Thành kiểm tra chuyển hướng VNPay trên trình duyệt.
+
+### Kiểm tra và minh chứng
+
+NestJS báo 0 lỗi và `Nest application successfully started`; `GET /api/health` trả HTTP 200. Bốn biến `VNP_TMN_CODE`, `VNP_HASH_SECRET`, `VNP_URL`, `VNP_RETURN_URL` đều được cấu hình. Không ghi giá trị bí mật. Trang kết quả `/thanh-toan/ket-qua` thuộc bước 1.3 nên hiện chưa được triển khai.
+
+## P3 / thanh-20261121-p3-orders-13
+
+* Thời gian ghi: 2026-11-21T14:41:15+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261121-p3-orders-12; PRJ-P3-FD1-1.2 #375.
+
+### Công cụ
+
+Codex; VNPay Sandbox; Node.js; PowerShell.
+
+### Mục đích
+
+Đánh giá kết quả chuyển hướng Sandbox thực tế và phân biệt lỗi frontend với lỗi cấu hình hoặc chữ ký backend.
+
+### Prompt
+
+Thành gửi ảnh sau khi bấm thanh toán: trình duyệt đã sang miền VNPay Sandbox nhưng trang báo `Sai chữ ký`, đồng thời hỏi như vậy đã đạt yêu cầu kiểm tra chưa.
+
+### Kết quả đề xuất
+
+Codex kết luận frontend và endpoint tạo URL đã chạy, nhưng ca Sandbox chưa đạt vì VNPay từ chối chữ ký. Kiểm tra cấu hình tại máy cho thấy TmnCode dài 8 ký tự, HashSecret dài 32 ký tự, không có khoảng trắng thừa hoặc dấu nháy; không ghi giá trị thật.
+
+### Phản biện
+
+Chuyển tới trang lỗi của VNPay không tương đương mở được trang chọn phương thức thanh toán. Nguyên nhân ưu tiên cần kiểm tra là TmnCode và HashSecret có phải đúng một cặp do VNPay cấp hay không; nếu đúng thì BD1 Hoàn cần đối chiếu thuật toán ký với Sandbox. Không tự sửa backend ngoài phạm vi khi chưa xác định nguyên nhân.
+
+### Quyết định của nhóm
+
+Chưa xác nhận bước thanh toán đạt. Chờ Thành xác minh nguồn của cặp cấu hình với Kiệt/Liêm hoặc Hoàn.
+
+### Người kiểm tra
+
+Thành kiểm tra trên trình duyệt và cung cấp ảnh lỗi VNPay. Codex kiểm tra hình thức cấu hình local; reviewer/backend chưa đối chiếu độc lập.
+
+### Kiểm tra và minh chứng
+
+VNPay Sandbox trả trang lỗi mã 70 với thông báo `Sai chữ ký`. Các biến có định dạng cơ bản hợp lệ và API đã nạp cấu hình. Chưa xác minh cặp merchant/secret là thông tin do VNPay cấp; chưa commit và chưa push.
+
+## P3 / thanh-20261121-p3-orders-14
+
+* Thời gian ghi: 2026-11-21T15:20:42+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261121-p3-orders-13; PRJ-P3-FD1-1.2 #375.
+
+### Công cụ
+
+Codex; VNPay Sandbox; Vitest; ESLint; TypeScript; Vite; Git.
+
+### Mục đích
+
+Ghi nhận kết quả Sandbox sau khi Thành thay cấu hình và kiểm tra toàn bộ thay đổi trước khi commit bước thanh toán và hủy đơn.
+
+### Prompt
+
+Thành gửi ảnh VNPay Sandbox đã hiện trang `Chọn phương thức thanh toán (Test)`, hỏi kết quả đã chuẩn chưa và yêu cầu commit nếu đạt.
+
+### Kết quả đề xuất
+
+Codex xác nhận luồng thanh toán đã tạo chữ ký được VNPay chấp nhận và chuyển tới trang chọn phương thức thanh toán. Giữ modal hủy theo thiết kế DAYORA, route hủy có xác thực và điều kiện chỉ hiện thao tác cho đơn chờ thanh toán.
+
+### Phản biện
+
+Ảnh mới chứng minh ca chuyển hướng VNPay đạt, thay thế kết quả lỗi chữ ký ở mục `thanh-20261121-p3-orders-13`. Ca hủy được kiểm tra tự động ở service và HTTP controller; chưa có ảnh trạng thái `Đã hủy` sau thao tác trình duyệt.
+
+### Quyết định của nhóm
+
+Thành xác nhận kết quả VNPay và yêu cầu commit bước PRJ-P3-FD1-1.2. Việc push chưa được yêu cầu trong lượt này.
+
+### Người kiểm tra
+
+Thành kiểm tra chuyển hướng VNPay Sandbox trên trình duyệt. Codex chạy kiểm tra tự động; reviewer chưa kiểm tra độc lập.
+
+### Kiểm tra và minh chứng
+
+Ảnh Thành cung cấp hiển thị trang `Chọn phương thức thanh toán (Test)` trên miền VNPay Sandbox. `git diff --check` pass; `npm.cmd test -w api -- orders-validation checkout.service payments`: 5 file, 29 test pass; lint API/web và build web pass. `.env` không được Git theo dõi và không đưa vào commit.
