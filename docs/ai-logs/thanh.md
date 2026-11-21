@@ -3644,3 +3644,84 @@ Thành kiểm tra giao diện trạng thái rỗng trên trình duyệt; Codex k
 ### Kiểm tra và minh chứng
 
 Ảnh Thành cung cấp hiển thị câu `Chưa có đánh giá. Bạn có thể đánh giá sau khi nhận hàng.` ở cuối trang sản phẩm. Kiểm tra tự động đã pass theo mục `thanh-20261122-p3-reviews-02`; chuẩn bị commit nhưng chưa push tại thời điểm ghi mục này.
+## P3 / thanh-20261122-p3-reviews-04
+
+* Thời gian ghi: 2026-11-22T00:57:58+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261122-p3-reviews
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: thanh-20261122-p3-reviews-03; PRJ-P3-FD1-2.2 #401.
+
+### Công cụ
+
+Codex; PowerShell; npm; ESLint; TypeScript; Vite.
+
+### Mục đích
+
+Bổ sung điểm trung bình, số sao, tên người đánh giá, ngày và nội dung nhận xét vào danh sách đánh giá công khai trên trang chi tiết sản phẩm.
+
+### Prompt
+
+Thành cung cấp sub-issue PRJ-P3-FD1-2.2 và yêu cầu tiếp tục thực hiện theo quy trình kiểm tra trước khi commit.
+
+### Kết quả đề xuất
+
+Codex cập nhật `apps/web/src/pages/ProductPage.tsx`: hiển thị điểm trung bình một chữ số thập phân, số lượt đánh giá, sao có nhãn trợ năng, tên người đánh giá in đậm, ngày theo `vi-VN` và chỉ render bình luận khi có nội dung. Không thêm form gửi đánh giá và không thay đổi API vì thuộc bước sau.
+
+### Phản biện
+
+Màu sao cần đủ tương phản trên nền trắng; điểm trung bình có thể là số thực nên chỉ làm tròn khi lặp ký tự sao, còn số điểm hiển thị giữ một chữ số thập phân. Cơ sở dữ liệu local hiện chưa có đánh giá công khai nên chưa thể quan sát trạng thái có dữ liệu trên trình duyệt.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới. Phạm vi giữ đúng sub-issue 2.2; Thành sẽ kiểm tra giao diện thủ công trước khi cho phép commit.
+
+### Người kiểm tra
+
+Codex kiểm tra tĩnh và build; chờ Thành kiểm tra giao diện có dữ liệu đánh giá trên localhost.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web` thành công. `npm.cmd run build -w web` thành công sau khi cho phép ghi cache TypeScript trong worktree. `git diff --check` không báo lỗi. API local trả danh mục sản phẩm nhưng chưa tìm thấy sản phẩm có `reviews.count > 0`; trạng thái danh sách có dữ liệu và responsive chưa được Thành xác nhận. Chưa commit hoặc push tại thời điểm ghi mục này.
+
+## P3 / thanh-20261122-p3-reviews-05
+
+* Thời gian ghi: 2026-11-22T01:06:01+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261122-p3-reviews
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261122-p3-reviews-04; PRJ-P3-FD1-2.2 #401.
+
+### Công cụ
+
+Codex; trình duyệt local do Thành kiểm tra; npm; Git.
+
+### Mục đích
+
+Xác minh trực quan trạng thái có dữ liệu của danh sách đánh giá ở kích thước mobile trước khi commit bước 2.2.
+
+### Prompt
+
+Thành cung cấp ảnh giao diện 390px, xác nhận nếu đạt thì xóa dữ liệu demo và commit.
+
+### Kết quả đề xuất
+
+Ảnh cho thấy điểm trung bình, số lượt đánh giá, sao, tên, ngày và nội dung nhận xét hiển thị rõ; các thẻ xếp dọc và không tràn ngang. Đánh giá không có bình luận không tạo dòng nội dung trống. Codex đã xóa hoàn toàn nhánh dữ liệu demo khỏi mã nguồn trước khi chuẩn bị commit.
+
+### Phản biện
+
+Dữ liệu trong ảnh là fixture tạm dùng để kiểm tra giao diện, không phải review đã ghi vào Supabase. Vì vậy kết quả này xác minh phần render và responsive, không chứng minh luồng tạo review thật; luồng gửi đánh giá thuộc sub-issue sau.
+
+### Quyết định của nhóm
+
+Thành xác nhận giao diện đạt và yêu cầu xóa dữ liệu demo, commit rồi push bước PRJ-P3-FD1-2.2. Chưa có reviewer duyệt.
+
+### Người kiểm tra
+
+Thành kiểm tra giao diện mobile 390px qua ảnh đã cung cấp; Codex kiểm tra dữ liệu demo đã được loại bỏ và chạy kiểm tra tự động trước commit.
+
+### Kiểm tra và minh chứng
+
+Ảnh Thành cung cấp hiển thị hai thẻ đánh giá tại 390px, gồm trường hợp có và không có bình luận. Chuỗi `review-demo`, `demoData` và `displayData` không còn trong `ProductPage.tsx`. Commit và push chưa được tạo tại thời điểm ghi mục này.

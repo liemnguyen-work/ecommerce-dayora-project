@@ -63,6 +63,7 @@ function ProductReviews({ slug }: { slug: string }) {
   const { data, loading, error } = useCatalogApi<Reviews>(
     `/products/${encodeURIComponent(slug)}/reviews`,
   );
+  const roundedAverage = data ? Math.round(data.average) : 0;
 
   return (
     <section aria-labelledby="product-reviews" className="mt-16">
@@ -71,7 +72,18 @@ function ProductReviews({ slug }: { slug: string }) {
           <p className="font-semibold uppercase tracking-widest text-berry">Trải nghiệm thực tế</p>
           <h2 id="product-reviews" className="text-2xl font-bold">Đánh giá sản phẩm</h2>
         </div>
-        {data && data.count > 0 && <p className="text-sm text-ink/70">{data.count} đánh giá</p>}
+        {data && data.count > 0 && (
+          <p className="flex flex-wrap items-center gap-2 text-sm text-ink/70">
+            <span
+              className="text-lg font-extrabold tracking-widest text-[#a85d00]"
+              role="img"
+              aria-label={`${data.average.toFixed(1)} trên 5 sao`}
+            >
+              {'★'.repeat(roundedAverage)}
+            </span>
+            <span>{data.average.toFixed(1)}/5 · {data.count} đánh giá</span>
+          </p>
+        )}
       </div>
 
       {loading && <p role="status" aria-busy="true" className="rounded-2xl border border-leaf bg-white p-6 text-ink/70">Đang tải đánh giá…</p>}
@@ -85,12 +97,20 @@ function ProductReviews({ slug }: { slug: string }) {
         <ul className="grid gap-4" aria-label="Danh sách đánh giá sản phẩm">
           {data.items.map((review) => (
             <li key={review.id} className="rounded-2xl border border-leaf bg-white p-5">
-              <p className="font-semibold">
-                {review.user?.fullName ?? review.author ?? review.userName ?? 'Khách hàng DAYORA'}
-              </p>
-              <time className="text-sm text-ink/60" dateTime={review.createdAt}>
-                {new Intl.DateTimeFormat('vi-VN').format(new Date(review.createdAt))}
-              </time>
+              <div className="flex flex-wrap items-start justify-between gap-2">
+                <div>
+                  <p className="font-bold">
+                    {review.user?.fullName ?? review.author ?? review.userName ?? 'Khách hàng DAYORA'}
+                  </p>
+                  <span className="font-extrabold tracking-widest text-[#a85d00]" aria-label={`${review.rating} sao`}>
+                    {'★'.repeat(review.rating)}
+                  </span>
+                </div>
+                <time className="text-sm text-ink/60" dateTime={review.createdAt}>
+                  {new Date(review.createdAt).toLocaleDateString('vi-VN')}
+                </time>
+              </div>
+              {review.comment && <p className="mt-4 whitespace-pre-wrap break-words text-ink/80">{review.comment}</p>}
             </li>
           ))}
         </ul>
