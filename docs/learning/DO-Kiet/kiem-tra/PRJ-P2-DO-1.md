@@ -10,4 +10,4 @@ Bước này để làm gì? Bỏ đi thì test hoặc chức năng nào bị �
 Ghi cách xác nhận. Bước này giúp kiểm tra dữ liệu đã dùng được, chẳng hạn voucher áp đúng mức giảm và đơn mẫu lưu đúng tổng tiền. Nếu bỏ qua, nhóm có thể thấy voucher xuất hiện trong DB nhưng không phát hiện nó không áp được khi checkout.
 ## 4. Chỗ khó nhất
 Lúc đầu tôi sai ở đâu? Tôi đã sửa thế nào?
-Chỗ khó nhất. Bạn có thể kể lỗi thực tế ở bước .1: Git báo trailing whitespace ở cuối dòng 16, nhưng bạn vẫn chạy lệnh commit riêng nên commit được tạo. Nếu bạn đã xóa dấu cách trong lần sửa sau, hãy kể đúng cách bạn sửa và giải thích vì sao nối kiểm tra với commit bằng && giúp dừng khi kiểm tra lỗi.
+Lúc đầu tôi để thừa dấu cách ở cuối dòng 16 nên Git báo trailing whitespace. Tôi vẫn chạy lệnh commit riêng nên thay đổi có lỗi vẫn được commit. Sau đó tôi xóa dấu cách thừa, kiểm tra lại và nối các lệnh bằng && để khi kiểm tra báo lỗi thì lệnh commit phía sau dừng lại.

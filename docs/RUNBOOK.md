@@ -14,12 +14,14 @@ Checklist này dùng cho môi trường demo của nhóm. Chỉ đánh dấu m�
 | Danh sách dữ liệu thử cần dọn | Tránh đơn thử và tài khoản thử gây nhầm lẫn khi trình diễn | BD2 Châu, QA Ngọc | Chờ xác nhận phạm vi dọn; giữ nguyên dữ liệu dùng chung |
 
 Mã seed cho hai voucher và khuyến mãi đã có trong [`apps/api/prisma/seed.ts`](../apps/api/prisma/seed.ts) trên `main` (`5e3453d`, `01ef888`, `cdb8e89`; task `PRJ-P2-BD2-3.1` đến `.3`).
+
 ## Cách chuẩn bị dữ liệu demo
 
 1. Xác nhận với Châu DB nào dùng cho demo và kiểm tra cấu hình kết nối.
 2. Chạy `npm run db:seed -w api` trên DB demo đã xác nhận để chuẩn bị sản phẩm, voucher `DAYORA10`, `PICNIC50K` và khuyến mãi mùa picnic.
 3. Chuẩn bị tài khoản demo bằng thông tin giả. Chọn SKU đủ tồn và tạo đơn mẫu qua checkout.
 4. Lập danh sách dữ liệu thử cần dọn và thống nhất phạm vi với Châu trước buổi demo.
+
 ## Cách xác nhận dữ liệu demo
 
 - Đăng nhập bằng tài khoản khách demo. Xác nhận SKU đã chọn có thể thêm vào giỏ và đủ tồn cho đơn mẫu.
