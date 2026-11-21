@@ -6010,3 +6010,87 @@ Codex chạy test và lint API; chờ Hoàn, QA và reviewer xem xét.
 ### Kiểm tra và minh chứng
 
 Ca nghiệm thu được lọc: 1 pass, 4 bỏ qua; lint API pass. Chưa chạy toàn bộ test vì chức năng các bước sau chưa có.
+---
+
+## Phase 3 / hoan-20261121-reviews-duplicate-a61-04
+
+* Thời gian ghi: 2026-11-21T09:38:24+07:00
+* Thời gian thực hiện: 21/11/2026.
+* Mã phiên nhật ký: hoan-20261121-reviews-test-a61
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-3.3, hoan-20261121-reviews-eligibility-a61-03
+
+### Công cụ
+
+Codex, Prisma, Vitest và ESLint.
+
+### Mục đích
+
+Báo đánh giá trùng và liệt kê sản phẩm chưa đánh giá trong đơn đủ điều kiện.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp yêu cầu bước 3.3, gồm lỗi trùng và danh sách reviewable.
+
+### Kết quả đề xuất
+
+Bắt lỗi P2002 trả 409; truy vấn đơn đã thanh toán, đã giao và loại cặp đơn–sản phẩm đã đánh giá hoặc lặp SKU. Giữ schema hiện tại.
+
+### Phản biện
+
+Ràng buộc schema gồm userId, productId và orderId; test dùng mock, chưa xác minh dữ liệu thật hoặc xử lý đồng thời. Hình dạng phản hồi reviewable cần frontend và reviewer xem xét.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu thực hiện bước 3.3; chưa ghi nhận QA hoặc reviewer duyệt test.
+
+### Người kiểm tra
+
+Codex chạy test, lint và build API; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+Ba ca liên quan pass, hai ca bỏ qua theo bộ lọc; lint và build API pass. Chưa chạy toàn bộ test vì các bước sau chưa hoàn thành.
+---
+
+## Phase 3 / hoan-20261121-reviews-schema-a61-05
+
+* Thời gian ghi: 2026-11-21T09:40:53+07:00
+* Thời gian thực hiện: 21/11/2026.
+* Mã phiên nhật ký: hoan-20261121-reviews-test-a61
+* Người prompt: Hoàn
+* Loại mục: Phản biện
+* Liên quan: PRJ-P3-BD1-3.3, hoan-20261121-reviews-duplicate-a61-04
+
+### Công cụ
+
+Codex, Git và Prisma.
+
+### Mục đích
+
+Làm rõ ràng buộc đánh giá trùng trong schema hiện tại.
+
+### Prompt
+
+Tóm lược: Hoàn hỏi vì sao giữ schema, sau đó yêu cầu commit và push.
+
+### Kết quả đề xuất
+
+Giữ ràng buộc hiện có gồm userId, productId và orderId; service kiểm tra quyền sở hữu đơn trước khi tạo đánh giá. Không tạo migration cho bước này.
+
+### Phản biện
+
+Task mô tả ràng buộc theo cặp orderId–productId; schema dùng ba trường. Test mock chưa xác minh ràng buộc trên database thật.
+
+### Quyết định của nhóm
+
+Hoàn đồng ý tiếp tục theo schema hiện tại; chưa có xác nhận QA hoặc reviewer.
+
+### Người kiểm tra
+
+Codex đối chiếu schema và service; chờ reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+Kết quả test, lint và build đã ghi tại mục a61-04; không chạy lại cho phần giải thích này.
