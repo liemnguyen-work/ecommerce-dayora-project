@@ -3522,6 +3522,902 @@ Thành tự viết và sửa câu trả lời; Codex đối chiếu với code. 
 
 File `docs/learning/FD1-Thanh/kiem-tra/PRJ-P2-FD1-3.md` có đủ bốn bước, trải nghiệm thực tế và hai câu hỏi vặn. Kiểm tra toàn repo được chạy trước commit; kết quả được báo theo output thực tế.
 
+## P3 / thanh-20261121-p3-orders-01
+
+* Thời gian ghi: 2026-11-21T12:37:31+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-FD1-1 #54.
+
+### Công cụ
+
+Codex; Git; PowerShell; tài liệu Markdown của DAYORA.
+
+### Mục đích
+
+Chuẩn bị môi trường riêng và xác minh điều kiện trước khi thực hiện task chi tiết đơn và kết quả thanh toán theo từng sub-issue.
+
+### Prompt
+
+Thành cung cấp issue cha PRJ-P3-FD1-1 và yêu cầu giữ quy trình: Codex làm code, Thành kiểm tra trên localhost, chỉ commit và push sau khi Thành xác nhận.
+
+### Kết quả đề xuất
+
+Codex fetch `origin`, xác nhận các commit backend VNPay thuộc PRJ-P3-BD1-2 đã có trên `main`, tạo worktree riêng `dayora-prj-p3-fd1-1` với nhánh `prj/p3-fd1-1`, rồi đọc AGENTS.md, quy tắc log, lộ trình cá nhân và hướng dẫn phase P3. Chưa sửa code chức năng vì Thành chưa cung cấp sub-issue đầu tiên.
+
+### Phản biện
+
+Repo làm việc cũ có thay đổi chưa commit ở Buổi 3 nên không được dùng để chuyển nhánh. Worktree riêng tránh ghi đè hoặc trộn các thay đổi đó.
+
+### Quyết định của nhóm
+
+Thành xác nhận quy trình kiểm thử trước commit/push. Chưa có quyết định triển khai chi tiết ngoài phạm vi issue cha.
+
+### Người kiểm tra
+
+Codex kiểm tra trạng thái Git và lịch sử `origin/main`; Thành chưa kiểm tra code vì chưa có thay đổi chức năng.
+
+### Kiểm tra và minh chứng
+
+`origin/main` ở commit `3b223b2`; lịch sử có chuỗi commit PRJ-P3-BD1-2 từ `ff5be01` đến `5b06031`. Nhánh mới sạch và đang theo dõi nền `origin/main`. Migration, lint, build và kiểm thử giao diện chưa chạy; sẽ thực hiện theo sub-issue và không tuyên bố đạt trước khi có kết quả.
+
+## P3 / thanh-20261121-p3-orders-02
+
+* Thời gian ghi: 2026-11-21T12:44:41+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261121-p3-orders-01; PRJ-P3-FD1-1.1 #371.
+
+### Công cụ
+
+Codex; Git; npm; Prisma CLI; PowerShell.
+
+### Mục đích
+
+Đọc sub-issue bước 1, kiểm tra contract API chi tiết đơn và chạy migration bắt buộc trước khi sửa code.
+
+### Prompt
+
+Thành cung cấp PRJ-P3-FD1-1.1 và yêu cầu tiếp tục theo quy trình kiểm thử trước commit/push.
+
+### Kết quả đề xuất
+
+Dependencies được cài theo lockfile. Codex xác định `OrdersController` trên `main` chưa có `GET /orders/:id` dành cho khách và migration chưa thể chạy vì cấu hình cục bộ thiếu biến `DIRECT_URL`. Chưa sửa code chức năng.
+
+### Phản biện
+
+Không được tự dùng endpoint admin thay cho endpoint khách vì khác quyền truy cập và có thể phá cơ chế chống IDOR. Không được đoán hoặc dò giá trị kết nối database từ các file môi trường khác.
+
+### Quyết định của nhóm
+
+Chưa có quyết định mở rộng phạm vi sang backend. Cần Thành bổ sung cấu hình `DIRECT_URL` cục bộ hoặc chỉ rõ file môi trường hợp lệ trước khi tiếp tục migration.
+
+### Người kiểm tra
+
+Codex kiểm tra source và output Prisma; Thành chưa kiểm tra giao diện vì chưa có thay đổi code.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd ci` thành công. `npm.cmd run db:migrate -w api` dừng với Prisma `P1012: Environment variable not found: DIRECT_URL`; không có drift/reset và chưa áp migration. `apps/api/src/orders/orders.controller.ts` hiện chỉ có `POST /orders` và `POST /orders/preview`.
+
+## P3 / thanh-20261121-p3-orders-03
+
+* Thời gian ghi: 2026-11-21T12:48:13+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: thanh-20261121-p3-orders-02; PRJ-P3-FD1-1.1 #371.
+
+### Công cụ
+
+Codex; tài liệu cấu hình Prisma và `.env.example` của DAYORA.
+
+### Mục đích
+
+Giải thích sự khác nhau giữa kết nối Supabase khi chạy ứng dụng, kết nối trực tiếp khi migration và endpoint REST chi tiết đơn.
+
+### Prompt
+
+Thành hỏi liệu bước bổ sung `.env` có phải kết nối lại Supabase để lấy dữ liệu hay không và yêu cầu hướng dẫn chi tiết.
+
+### Kết quả đề xuất
+
+Codex giải thích `DATABASE_URL` dùng pooler cổng 6543 cho ứng dụng, `DIRECT_URL` dùng cổng 5432 cho Prisma migration; hướng dẫn lấy chuỗi kết nối đúng dự án, lưu trong `apps/api/.env`, không commit hoặc gửi secret qua chat. Đồng thời giải thích kết nối database không tự tạo route `GET /orders/:id` cho frontend.
+
+### Phản biện
+
+Không dùng Supabase anon key/service key thay cho mật khẩu kết nối PostgreSQL và không đoán `DIRECT_URL` từ URL cũ. Endpoint khách phải kiểm tra `userId` để chống IDOR, không dùng endpoint admin thay thế.
+
+### Quyết định của nhóm
+
+Chưa có quyết định mở rộng backend. Thành sẽ bổ sung cấu hình cục bộ hoặc lấy file `.env` cập nhật từ Liêm trước khi Codex chạy lại migration.
+
+### Người kiểm tra
+
+Chờ Thành xác nhận file `.env` đã có đủ hai biến; chưa chạy lại migration.
+
+### Kiểm tra và minh chứng
+
+Đối chiếu `apps/api/.env.example`, `apps/api/prisma.config.ts` và `apps/api/prisma/schema.prisma`; các file đều yêu cầu `DATABASE_URL` và `DIRECT_URL` với mục đích khác nhau.
+
+## P3 / thanh-20261121-p3-orders-04
+
+* Thời gian ghi: 2026-11-21T13:00:06+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261121-p3-orders-03; PRJ-P3-FD1-1.1 #371.
+
+### Công cụ
+
+Codex; Prisma CLI; PowerShell `Resolve-DnsName` và `Test-NetConnection`.
+
+### Mục đích
+
+Kiểm tra lại cấu hình Supabase và xác định nguyên nhân migration vẫn không kết nối được sau khi có đủ biến môi trường.
+
+### Prompt
+
+Thành yêu cầu kiểm tra lại sau khi cập nhật file `.env`.
+
+### Kết quả đề xuất
+
+Hai biến `DATABASE_URL` và `DIRECT_URL` đều đã tồn tại. Prisma nhận host direct của Supabase nhưng máy chỉ phân giải được địa chỉ IPv6 và không mở được TCP 5432; cần dùng chuỗi Session pooler cổng 5432 thay cho Direct connection.
+
+### Phản biện
+
+Không chạy seed, không sửa schema và không bỏ qua migration. Lỗi này không phải drift/reset và chưa có migration nào được áp dụng.
+
+### Quyết định của nhóm
+
+Chờ Thành thay `DIRECT_URL` bằng Session pooler IPv4-compatible của đúng project Supabase, không gửi secret qua chat.
+
+### Người kiểm tra
+
+Codex kiểm tra output Prisma, DNS và TCP; Thành chưa xác nhận migration thành công.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run db:migrate -w api` nhận đủ biến nhưng dừng bằng `Schema engine error`. DNS của Direct connection chỉ trả bản ghi AAAA và `Test-NetConnection` tới cổng 5432 thất bại.
+
+## P3 / thanh-20261121-p3-orders-05
+
+* Thời gian ghi: 2026-11-21T13:12:14+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: thanh-20261121-p3-orders-04; PRJ-P3-FD1-1.1 #371.
+
+### Công cụ
+
+Codex; React; TypeScript; CSS; Prisma CLI; ESLint; Vite; NestJS; Git.
+
+### Mục đích
+
+Xây dựng trang chi tiết đơn theo bước 1, có trạng thái tải/lỗi, nhãn tiếng Việt, sản phẩm, người nhận, chi phí và tiến trình giao hàng responsive.
+
+### Prompt
+
+Thành cập nhật cấu hình Supabase và yêu cầu tiếp tục PRJ-P3-FD1-1.1 theo quy trình kiểm thử trước commit/push.
+
+### Kết quả đề xuất
+
+Migration kết nối Session pooler thành công và database đã đồng bộ. Codex tạo `OrderPage.tsx`, nối route `/don-hang/:id` và bổ sung CSS desktop/mobile. Các thao tác thanh toán và hủy chưa được làm trước bước 1.2.
+
+### Phản biện
+
+Backend trên `main` chưa đăng ký `GET /api/orders/:id` cho khách; chỉ có endpoint admin. Không dùng endpoint admin thay thế vì sai quyền và không bảo vệ quyền sở hữu đơn. Do đó hiện chỉ kiểm tra đầy đủ build và trạng thái lỗi của frontend, chưa nghiệm thu được dữ liệu đơn thật.
+
+### Quyết định của nhóm
+
+Thành yêu cầu làm code rồi tự kiểm tra trên localhost trước khi cho phép commit/push. Chưa có xác nhận giao diện hoặc mở rộng phạm vi backend.
+
+### Người kiểm tra
+
+Codex chạy kiểm tra tự động; chờ Thành kiểm tra localhost. Reviewer chưa kiểm tra độc lập.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run db:migrate -w api` pass với “Already in sync”; `git diff --check`, `npm.cmd run lint -w web` và `npm.cmd run build -w web` pass. API health trả 200, web trả 200; `GET /api/orders/test-id` trả 404 vì route khách chưa tồn tại. Chưa commit và chưa push.
+
+## P3 / thanh-20261121-p3-orders-06
+
+* Thời gian ghi: 2026-11-21T13:24:40+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: thanh-20261121-p3-orders-05; PRJ-P3-FD1-1.1 #371.
+
+### Công cụ
+
+Codex; NestJS; Prisma; Vitest; ESLint; PowerShell.
+
+### Mục đích
+
+Bổ sung phần nối backend còn thiếu để OrderPage có thể tải dữ liệu thật, đồng thời giữ kiểm tra quyền sở hữu đơn.
+
+### Prompt
+
+Sau khi được giải thích dependency thiếu, Thành đồng ý làm luôn endpoint backend để tiếp tục kiểm thử task.
+
+### Kết quả đề xuất
+
+Codex nối `GET /api/orders/:id` vào `CheckoutService.detail`, mở rộng kết quả với `address` và `voucherCode`, giữ truy vấn theo `id + userId`, và thêm test contract frontend. API watcher xác nhận route đã được đăng ký.
+
+### Phản biện
+
+Nghiệp vụ detail và kiểm tra IDOR đã tồn tại trong CheckoutService nên không viết lại service mới hoặc dùng endpoint admin. Route không đăng nhập trả 401; đơn không thuộc người dùng vẫn trả 404.
+
+### Quyết định của nhóm
+
+Thành đồng ý bổ sung endpoint backend cần thiết. Thành vẫn yêu cầu tự kiểm tra localhost trước khi cho phép commit/push.
+
+### Người kiểm tra
+
+Codex chạy test/lint và kiểm tra route; chờ Thành kiểm tra luồng tạo đơn và trang chi tiết trên localhost. Reviewer chưa kiểm tra độc lập.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd test -w api -- checkout.service`: 1 file, 11 test pass. `npm.cmd run lint -w api`, `npm.cmd run lint -w web` và `git diff --check` pass. Nest đăng ký `GET /api/orders/:id`; request không cookie trả 401. Chưa commit và chưa push.
+
+## P3 / thanh-20261121-p3-orders-07
+
+* Thời gian ghi: 2026-11-21T13:27:45+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261121-p3-orders-06; PRJ-P3-FD1-1.1 #371.
+
+### Công cụ
+
+Codex; Vite; NestJS CORS; PowerShell.
+
+### Mục đích
+
+Chẩn đoán lỗi đăng nhập `Failed to fetch` khi Thành kiểm tra localhost.
+
+### Prompt
+
+Thành báo nhập đúng thông tin đăng nhập nhưng giao diện luôn hiện `Failed to fetch`.
+
+### Kết quả đề xuất
+
+Codex xác định web được mở bằng origin `http://127.0.0.1:5173` trong khi API chỉ cho phép `http://localhost:5173`, sau đó khởi động lại Vite bằng đúng hostname `localhost`.
+
+### Phản biện
+
+Đây là lỗi CORS trước khi request đăng nhập được xử lý, không phải sai email hoặc mật khẩu; không thay đổi cơ chế xác thực để né lỗi.
+
+### Quyết định của nhóm
+
+Giữ cấu hình CORS hiện tại và dùng URL localhost thống nhất trong phiên kiểm thử.
+
+### Người kiểm tra
+
+Codex kiểm tra preflight và web; chờ Thành đăng nhập lại trên URL đúng.
+
+### Kiểm tra và minh chứng
+
+Preflight từ origin 127.0.0.1 nhận `Access-Control-Allow-Origin: http://localhost:5173`, xác nhận lệch origin. Sau khi khởi động lại Vite, `http://localhost:5173/` trả 200.
+
+## P3 / thanh-20261121-p3-orders-08
+
+* Thời gian ghi: 2026-11-21T13:32:30+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261121-p3-orders-07; PRJ-P3-FD1-1.1 #371.
+
+### Công cụ
+
+Codex; Git; Vitest; ESLint; TypeScript; NestJS; Vite; Prisma.
+
+### Mục đích
+
+Ghi nhận kiểm thử giao diện của Thành và kiểm tra toàn bộ thay đổi trước khi commit bước hiển thị chi tiết đơn.
+
+### Prompt
+
+Thành gửi ảnh trang chi tiết đơn có dữ liệu thật, xác nhận giao diện ổn và yêu cầu commit rồi gửi link.
+
+### Kết quả đề xuất
+
+Giữ nguyên giao diện đã được Thành duyệt; dừng server dev và chạy lại test endpoint, lint và build toàn repo trước commit.
+
+### Phản biện
+
+Endpoint backend được bổ sung vì dependency trên main thiếu route khách, nhưng tái sử dụng nghiệp vụ detail và kiểm tra quyền sở hữu đã có; không mở rộng sang thao tác thanh toán hoặc hủy của bước sau.
+
+### Quyết định của nhóm
+
+Thành xác nhận giao diện trang chi tiết đơn ổn và cho phép commit/push bước PRJ-P3-FD1-1.1.
+
+### Người kiểm tra
+
+Thành kiểm tra trực quan trang đơn có dữ liệu thật trên localhost. Codex chạy kiểm tra tự động; reviewer chưa kiểm tra độc lập.
+
+### Kiểm tra và minh chứng
+
+Ảnh Thành cung cấp thể hiện mã đơn, nhãn trạng thái tiếng Việt, timeline, sản phẩm, người nhận và tổng tiền. `git diff --check`, 11 test CheckoutService, `npm.cmd run lint` và `npm.cmd run build` toàn repo đều pass.
+
+## P3 / thanh-20261121-p3-orders-09
+
+* Thời gian ghi: 2026-11-21T13:41:28+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: thanh-20261121-p3-orders-08; PRJ-P3-FD1-1.2 #375.
+
+### Công cụ
+
+Codex; NestJS; React; TypeScript; Vitest; ESLint; Vite; PowerShell.
+
+### Mục đích
+
+Nối thao tác thanh toán VNPay và hủy đơn trên trang chi tiết, chỉ cho phép thao tác khi đơn còn chờ thanh toán và giữ phản hồi lỗi ngay trên giao diện.
+
+### Prompt
+
+Thành gửi sub-issue PRJ-P3-FD1-1.2 và yêu cầu tiếp tục theo quy trình: làm code, đưa localhost để Thành kiểm tra, chỉ commit/push sau khi Thành xác nhận.
+
+### Kết quả đề xuất
+
+Codex bổ sung route khách `POST /api/orders/:id/cancel` dùng nghiệp vụ hủy có kiểm tra quyền sở hữu sẵn có; thêm nút thanh toán VNPay, nút hủy có xác nhận, trạng thái bận, phản hồi lỗi và giao diện responsive trong `OrderPage.tsx`/`catalog.css`; thêm kiểm thử route hủy đã xác thực.
+
+### Phản biện
+
+Hai nút chỉ hiển thị khi cả trạng thái đơn là `PENDING_PAYMENT` và thanh toán là `UNPAID`, tránh hiện cho đơn đã trả tiền, đã hủy hoặc hoàn tất. URL thanh toán phải do backend trả về; frontend không tự tạo URL. Lỗi thao tác được giữ trong trang chi tiết thay vì làm mất toàn bộ dữ liệu đơn.
+
+### Quyết định của nhóm
+
+Phạm vi theo sub-issue #375 đã được Thành giao thực hiện. Chưa có xác nhận duyệt giao diện hay cho phép commit bước này.
+
+### Người kiểm tra
+
+Codex đã chạy kiểm tra tự động; chờ Thành kiểm tra thao tác thanh toán và hủy đơn trên localhost. Reviewer chưa kiểm tra độc lập.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd test -w api -- orders-validation checkout.service payments`: 5 file, 29 test pass. `npm.cmd run lint -w api` và `npm.cmd run lint -w web` pass. `npm.cmd run build -w web` pass. Chưa commit và chưa push.
+
+## P3 / thanh-20261121-p3-orders-10
+
+* Thời gian ghi: 2026-11-21T13:49:59+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Phản biện
+* Liên quan: thanh-20261121-p3-orders-09; PRJ-P3-FD1-1.2 #375.
+
+### Công cụ
+
+Codex; React; CSS; TypeScript; ESLint; Vite.
+
+### Mục đích
+
+Sửa trải nghiệm xác nhận hủy đơn sau khi Thành kiểm tra giao diện và phản hồi hộp thoại hệ thống không phù hợp với website.
+
+### Prompt
+
+Thành báo hai nút chưa đạt yêu cầu kiểm tra, nút thanh toán báo thiếu cấu hình VNPay và nút hủy mở hộp thoại mặc định có tiêu đề `Code` khi đang dùng web.
+
+### Kết quả đề xuất
+
+Codex thay `window.confirm` bằng modal xác nhận theo giao diện DAYORA, có mô tả hậu quả, nút giữ lại đơn, nút xác nhận hủy, trạng thái đang xử lý và chỉ gọi API sau xác nhận. Lỗi VNPay được xác định do bốn biến cấu hình VNPay chưa có trong `.env`, không phải do nút frontend.
+
+### Phản biện
+
+Modal tùy biến vẫn giữ bước xác nhận bắt buộc trước thao tác hủy nhưng không còn giao diện hệ thống lệch thiết kế. Không tự tạo hoặc ghi khóa VNPay giả vì cần thông tin Sandbox hợp lệ của nhóm và không được đưa bí mật vào mã nguồn/log.
+
+### Quyết định của nhóm
+
+Thành yêu cầu làm hộp xác nhận phù hợp giao diện web. Chưa có cấu hình VNPay do nhóm cung cấp và chưa có xác nhận cho phép commit.
+
+### Người kiểm tra
+
+Codex kiểm tra lint/build và trạng thái hai server; chờ Thành tải lại trang, kiểm tra modal và xác nhận hủy. Reviewer chưa kiểm tra độc lập.
+
+### Kiểm tra và minh chứng
+
+`git diff --check`, `npm.cmd run lint -w web` và `npm.cmd run build -w web` pass. Web localhost và API health đều trả HTTP 200. `.env` không có giá trị cho `VNP_TMN_CODE`, `VNP_HASH_SECRET`, `VNP_URL`, `VNP_RETURN_URL`; chưa thể xác minh chuyển hướng VNPay Sandbox thật. Chưa commit và chưa push.
+
+## P3 / thanh-20261121-p3-orders-11
+
+* Thời gian ghi: 2026-11-21T13:53:43+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: thanh-20261121-p3-orders-10; PRJ-P3-FD1-1.2 #375.
+
+### Công cụ
+
+Codex; tài liệu nội bộ DAYORA; tài liệu chính thức VNPay Sandbox.
+
+### Mục đích
+
+Xác định nguồn hướng dẫn và cách lấy bốn biến cấu hình VNPay để Thành có thể kiểm tra chuyển hướng Sandbox mà không làm lộ bí mật.
+
+### Prompt
+
+Thành hỏi dự án hoặc VNPay có trang hướng dẫn lấy `VNP_TMN_CODE`, `VNP_HASH_SECRET`, `VNP_URL` và `VNP_RETURN_URL` hay không.
+
+### Kết quả đề xuất
+
+Codex xác nhận repo có `apps/api/.env.example` và `docs/RUNBOOK.md`; tài liệu VNPay chính thức hướng dẫn đăng ký tại cổng Sandbox, sau đó hệ thống gửi TmnCode và HashSecret qua email. Đề xuất ưu tiên hỏi người giữ cấu hình chung của nhóm trước khi đăng ký merchant mới.
+
+### Phản biện
+
+`VNP_URL` và `VNP_RETURN_URL` là URL cấu hình có thể điền theo mẫu repo; `VNP_TMN_CODE` và `VNP_HASH_SECRET` là thông tin do VNPay cấp, không tự đặt và không đưa vào chat, log hoặc commit.
+
+### Quyết định của nhóm
+
+Chưa có quyết định đăng ký merchant mới; chờ Thành kiểm tra cấu hình nhóm hoặc thực hiện đăng ký Sandbox.
+
+### Người kiểm tra
+
+Codex đối chiếu tài liệu repo và trang VNPay chính thức; Thành chưa xác nhận đã nhận cấu hình.
+
+### Kiểm tra và minh chứng
+
+Nguồn nội bộ: `apps/api/.env.example`, `docs/RUNBOOK.md`. Nguồn chính thức: trang đăng ký `https://sandbox.vnpayment.vn/devreg/` và tài liệu PAY `https://sandbox.vnpayment.vn/apis/docs/thanh-toan-pay/pay.html`. Không đọc hoặc ghi giá trị bí mật.
+
+## P3 / thanh-20261121-p3-orders-12
+
+* Thời gian ghi: 2026-11-21T14:38:33+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261121-p3-orders-11; PRJ-P3-FD1-1.2 #375.
+
+### Công cụ
+
+Codex; NestJS; PowerShell.
+
+### Mục đích
+
+Khởi động lại API và xác nhận ứng dụng đã nhận đủ tên biến cấu hình VNPay sau khi Thành cập nhật `.env`.
+
+### Prompt
+
+Thành cho biết đã cấu hình VNPay trong `.env`, gửi ảnh và yêu cầu thử lại.
+
+### Kết quả đề xuất
+
+Codex khởi động lại API, xác nhận NestJS biên dịch không lỗi, ứng dụng khởi động thành công và bốn biến VNPay đều có giá trị. Không đọc lại hoặc in giá trị bí mật.
+
+### Phản biện
+
+Ảnh Thành cung cấp chứa nhiều bí mật cấu hình. Codex cảnh báo không chia sẻ lại ảnh, không ghi các giá trị vào log và đề nghị phối hợp Liêm/Kiệt xoay vòng khóa đã lộ. Việc endpoint tạo URL thanh toán thành công còn cần Thành bấm bằng phiên đăng nhập và đơn còn hạn.
+
+### Quyết định của nhóm
+
+Thành đã tự thêm cấu hình local để kiểm tra. Chưa có xác nhận xoay vòng khóa và chưa cho phép commit bước này.
+
+### Người kiểm tra
+
+Codex xác nhận API hoạt động và tên biến cấu hình hiện diện; chờ Thành kiểm tra chuyển hướng VNPay trên trình duyệt.
+
+### Kiểm tra và minh chứng
+
+NestJS báo 0 lỗi và `Nest application successfully started`; `GET /api/health` trả HTTP 200. Bốn biến `VNP_TMN_CODE`, `VNP_HASH_SECRET`, `VNP_URL`, `VNP_RETURN_URL` đều được cấu hình. Không ghi giá trị bí mật. Trang kết quả `/thanh-toan/ket-qua` thuộc bước 1.3 nên hiện chưa được triển khai.
+
+## P3 / thanh-20261121-p3-orders-13
+
+* Thời gian ghi: 2026-11-21T14:41:15+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261121-p3-orders-12; PRJ-P3-FD1-1.2 #375.
+
+### Công cụ
+
+Codex; VNPay Sandbox; Node.js; PowerShell.
+
+### Mục đích
+
+Đánh giá kết quả chuyển hướng Sandbox thực tế và phân biệt lỗi frontend với lỗi cấu hình hoặc chữ ký backend.
+
+### Prompt
+
+Thành gửi ảnh sau khi bấm thanh toán: trình duyệt đã sang miền VNPay Sandbox nhưng trang báo `Sai chữ ký`, đồng thời hỏi như vậy đã đạt yêu cầu kiểm tra chưa.
+
+### Kết quả đề xuất
+
+Codex kết luận frontend và endpoint tạo URL đã chạy, nhưng ca Sandbox chưa đạt vì VNPay từ chối chữ ký. Kiểm tra cấu hình tại máy cho thấy TmnCode dài 8 ký tự, HashSecret dài 32 ký tự, không có khoảng trắng thừa hoặc dấu nháy; không ghi giá trị thật.
+
+### Phản biện
+
+Chuyển tới trang lỗi của VNPay không tương đương mở được trang chọn phương thức thanh toán. Nguyên nhân ưu tiên cần kiểm tra là TmnCode và HashSecret có phải đúng một cặp do VNPay cấp hay không; nếu đúng thì BD1 Hoàn cần đối chiếu thuật toán ký với Sandbox. Không tự sửa backend ngoài phạm vi khi chưa xác định nguyên nhân.
+
+### Quyết định của nhóm
+
+Chưa xác nhận bước thanh toán đạt. Chờ Thành xác minh nguồn của cặp cấu hình với Kiệt/Liêm hoặc Hoàn.
+
+### Người kiểm tra
+
+Thành kiểm tra trên trình duyệt và cung cấp ảnh lỗi VNPay. Codex kiểm tra hình thức cấu hình local; reviewer/backend chưa đối chiếu độc lập.
+
+### Kiểm tra và minh chứng
+
+VNPay Sandbox trả trang lỗi mã 70 với thông báo `Sai chữ ký`. Các biến có định dạng cơ bản hợp lệ và API đã nạp cấu hình. Chưa xác minh cặp merchant/secret là thông tin do VNPay cấp; chưa commit và chưa push.
+
+## P3 / thanh-20261121-p3-orders-14
+
+* Thời gian ghi: 2026-11-21T15:20:42+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261121-p3-orders-13; PRJ-P3-FD1-1.2 #375.
+
+### Công cụ
+
+Codex; VNPay Sandbox; Vitest; ESLint; TypeScript; Vite; Git.
+
+### Mục đích
+
+Ghi nhận kết quả Sandbox sau khi Thành thay cấu hình và kiểm tra toàn bộ thay đổi trước khi commit bước thanh toán và hủy đơn.
+
+### Prompt
+
+Thành gửi ảnh VNPay Sandbox đã hiện trang `Chọn phương thức thanh toán (Test)`, hỏi kết quả đã chuẩn chưa và yêu cầu commit nếu đạt.
+
+### Kết quả đề xuất
+
+Codex xác nhận luồng thanh toán đã tạo chữ ký được VNPay chấp nhận và chuyển tới trang chọn phương thức thanh toán. Giữ modal hủy theo thiết kế DAYORA, route hủy có xác thực và điều kiện chỉ hiện thao tác cho đơn chờ thanh toán.
+
+### Phản biện
+
+Ảnh mới chứng minh ca chuyển hướng VNPay đạt, thay thế kết quả lỗi chữ ký ở mục `thanh-20261121-p3-orders-13`. Ca hủy được kiểm tra tự động ở service và HTTP controller; chưa có ảnh trạng thái `Đã hủy` sau thao tác trình duyệt.
+
+### Quyết định của nhóm
+
+Thành xác nhận kết quả VNPay và yêu cầu commit bước PRJ-P3-FD1-1.2. Việc push chưa được yêu cầu trong lượt này.
+
+### Người kiểm tra
+
+Thành kiểm tra chuyển hướng VNPay Sandbox trên trình duyệt. Codex chạy kiểm tra tự động; reviewer chưa kiểm tra độc lập.
+
+### Kiểm tra và minh chứng
+
+Ảnh Thành cung cấp hiển thị trang `Chọn phương thức thanh toán (Test)` trên miền VNPay Sandbox. `git diff --check` pass; `npm.cmd test -w api -- orders-validation checkout.service payments`: 5 file, 29 test pass; lint API/web và build web pass. `.env` không được Git theo dõi và không đưa vào commit.
+## P3 / thanh-20261121-p3-orders-15
+
+* Thời gian ghi: 2026-11-21T22:01:46+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: thanh-20261121-p3-orders-14; PRJ-P3-FD1-1.3 #381.
+
+### Công cụ
+
+Codex; React; React Router; TypeScript; ESLint; Vite.
+
+### Mục đích
+
+Triển khai trang hiển thị kết quả thanh toán VNPay, chuyển toàn bộ query Return về backend để xác thực chữ ký và trình bày các trạng thái kết quả rõ ràng, responsive.
+
+### Prompt
+
+Thành cung cấp nội dung sub-issue PRJ-P3-FD1-1.3 và yêu cầu viết code; sau khi xong cần hướng dẫn các thao tác thủ công để Thành kiểm tra trước khi cho phép commit.
+
+### Kết quả đề xuất
+
+Codex tạo `PaymentResultPage.tsx`, thêm route `/thanh-toan/ket-qua` trong `App.tsx` và bổ sung CSS responsive. Trang có trạng thái đang đối chiếu, thành công, chưa thành công, kết quả không hợp lệ và lỗi kết nối; chỉ hiển thị dữ liệu sau khi backend `/payments/vnpay/return` xác thực query.
+
+### Phản biện
+
+Không dùng trực tiếp các tham số query để kết luận thanh toán thành công. Nút thử lại thanh toán đưa khách về chi tiết đơn để tạo một URL thanh toán mới; trang Return chỉ hiển thị kết quả, không thay vai trò IPN trong cập nhật trạng thái chính thức.
+
+### Quyết định của nhóm
+
+Phạm vi bám theo sub-issue #381. Thành yêu cầu kiểm tra thủ công trước rồi mới quyết định commit và push; hiện chưa có cho phép commit.
+
+### Người kiểm tra
+
+Codex đã kiểm tra tĩnh và build; chờ Thành kiểm tra luồng VNPay Sandbox và giao diện desktop/mobile trên localhost.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web` pass. `npm.cmd run build -w web` pass sau khi chạy ngoài sandbox để TypeScript được ghi cache vào `node_modules/.tmp`. Chưa có ảnh 1366px/390px và chưa xác minh giao dịch demo quay về trang kết quả. Chưa commit, chưa push.
+## P3 / thanh-20261121-p3-orders-16
+
+* Thời gian ghi: 2026-11-21T22:08:41+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Phản biện
+* Liên quan: thanh-20261121-p3-orders-15; PRJ-P3-FD1-1.3 #381.
+
+### Công cụ
+
+Codex; tài liệu chính thức VNPay Sandbox.
+
+### Mục đích
+
+Phân tích lỗi tại màn hình ngân hàng Sandbox và xác định cách dùng dữ liệu thẻ thử phù hợp để kiểm tra trang kết quả thanh toán.
+
+### Prompt
+
+Thành cung cấp ảnh giao dịch Sandbox qua Sacombank báo lỗi xử lý và cho biết đang dùng mã cấu hình thử do quy trình đăng ký Sandbox gặp lỗi.
+
+### Kết quả đề xuất
+
+Ảnh cho thấy VNPay đã nhận URL thanh toán và chữ ký, nhưng ngân hàng Sacombank không xử lý được ca thử. Tài liệu chính thức hướng dẫn dùng ngân hàng NCB và bộ thẻ test tương ứng; một số kết nối ngân hàng khác trên môi trường thử đã tạm đóng.
+
+### Phản biện
+
+Không kết luận lỗi ở frontend hoặc trang Return chỉ từ thông báo của Sacombank. Cấu hình test có thể dùng để kiểm tra local nhưng không được commit, deploy hoặc xem như cấu hình production; Return trên localhost có thể hoạt động qua chuyển hướng trình duyệt nhưng IPN cần API công khai.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới. Thành tiếp tục kiểm tra local bằng dữ liệu thử chính thức trước khi cho phép commit.
+
+### Người kiểm tra
+
+Codex đối chiếu tài liệu VNPay; chờ Thành thực hiện giao dịch NCB trên trình duyệt.
+
+### Kiểm tra và minh chứng
+
+Nguồn đối chiếu: trang giới thiệu và trang demo Cổng thanh toán VNPay Sandbox, trong đó công bố thẻ NCB thành công và lưu ý chỉ dùng các thẻ trong danh sách test. Chưa có kết quả giao dịch NCB của DAYORA.
+## P3 / thanh-20261121-p3-orders-17
+
+* Thời gian ghi: 2026-11-21T22:23:35+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261121-p3-orders-16; PRJ-P3-FD1-1.3 #381.
+
+### Công cụ
+
+Codex; trình duyệt; VNPay Sandbox; NestJS API local.
+
+### Mục đích
+
+Xác minh giao dịch Sandbox và mô phỏng callback IPN có chữ ký trên môi trường local để kiểm tra backend cập nhật thanh toán.
+
+### Prompt
+
+Thành cung cấp ảnh endpoint IPN local trả `RspCode: 00` và `Message: Confirm Success` sau khi dán query giao dịch VNPay đã ký.
+
+### Kết quả đề xuất
+
+Callback IPN đã được backend xác thực và chấp nhận. Bước còn lại là tải lại trang chi tiết đơn để xác nhận giao diện đọc trạng thái `PAID` mới từ database và ẩn thao tác thanh toán lại.
+
+### Phản biện
+
+Thao tác dán query vào endpoint IPN chỉ mô phỏng việc VNPay gọi máy chủ vì `localhost` không thể nhận callback từ Internet; không dùng làm quy trình production.
+
+### Quyết định của nhóm
+
+Chưa có quyết định commit. Thành đang hoàn tất kiểm tra thủ công trước khi xác nhận.
+
+### Người kiểm tra
+
+Thành thực hiện giao dịch và cung cấp ảnh phản hồi IPN; Codex đối chiếu mã phản hồi. Chưa có ảnh trang chi tiết đơn sau khi tải lại.
+
+### Kiểm tra và minh chứng
+
+Endpoint `GET /api/payments/vnpay/ipn` trả JSON `{"RspCode":"00","Message":"Confirm Success"}`. Đây là bằng chứng backend đã nhận callback hợp lệ; trạng thái giao diện sau refresh còn chờ xác nhận.
+## P3 / thanh-20261121-p3-orders-18
+
+* Thời gian ghi: 2026-11-21T22:30:40+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261121-p3-orders-17; PRJ-P3-FD1-1.3 #381.
+
+### Công cụ
+
+Codex; Chrome DevTools responsive mode; Git.
+
+### Mục đích
+
+Ghi nhận kết quả kiểm tra giao diện cuối cùng của trang kết quả thanh toán trước khi tạo commit sub-issue.
+
+### Prompt
+
+Thành cung cấp ảnh trang thanh toán thành công ở kích thước responsive `390 × 844` sau khi đã xác nhận đơn chuyển sang đã thanh toán.
+
+### Kết quả đề xuất
+
+Trang kết quả hiển thị vừa màn hình mobile, mã đơn tự xuống dòng, nội dung dễ đọc và hai nút hành động xếp dọc đủ chiều rộng. Luồng Return, IPN mô phỏng local và điều hướng xem đơn đã được kiểm tra.
+
+### Phản biện
+
+IPN local là mô phỏng có chữ ký, không thay thế kiểm tra IPN qua URL API công khai khi triển khai. Ảnh desktop và mobile chỉ xác nhận các kích thước được cung cấp, không đại diện mọi thiết bị.
+
+### Quyết định của nhóm
+
+Thành đã thực hiện các bước kiểm tra thủ công được yêu cầu trước commit. Theo yêu cầu ban đầu, Codex tạo commit riêng cho PRJ-P3-FD1-1.3; chưa có yêu cầu push trong lượt này.
+
+### Người kiểm tra
+
+Thành kiểm tra luồng Sandbox, IPN local, trang chi tiết đơn và giao diện mobile; Codex kiểm tra lint, build và diff.
+
+### Kiểm tra và minh chứng
+
+Ảnh DevTools ở `390 × 844` cho thấy trang `Thanh toán thành công` không tràn ngang. Desktop đã được kiểm tra trước đó. Lint web, build web và `git diff --check` pass; chuẩn bị commit nhưng chưa push.
+## P3 / thanh-20261121-p3-orders-19
+
+* Thời gian ghi: 2026-11-21T22:34:22+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: thanh-20261121-p3-orders-18; PRJ-P3-FD1-1 #54; PRJ-P2-FD1-FIX #600.
+
+### Công cụ
+
+Codex; Gmail connector; GitHub notification email.
+
+### Mục đích
+
+Đọc feedback mới nhất của Tiến Minh và xác định thứ tự công việc tiếp theo sau PRJ-P3-FD1-1.3.
+
+### Prompt
+
+Thành hỏi sau task hiện tại nên làm task nào tiếp theo theo mức ưu tiên trong Gmail.
+
+### Kết quả đề xuất
+
+Ưu tiên được xác định: hoàn thiện minh chứng và mô tả PR #710 trước; tiếp theo xử lý issue #600 về hộp xác nhận khi giảm số lượng giỏ từ 1 xuống 0; sau đó quay lại PRJ-P3-FD1-1.4 và 1.5.
+
+### Phản biện
+
+Issue #600 có hạn 24/11/2026 và là lỗi QA từ TC-P2-07 nên được ưu tiên trước các bước P3 còn lại. Các issue #601, #602 và #603 thuộc backend/DevOps của thành viên khác, Thành không tự sửa.
+
+### Quyết định của nhóm
+
+Email của Tiến Minh giao #600 cho Thành và yêu cầu sửa trên nhánh riêng, reviewer Đạt. Chưa có quyết định bắt đầu code #600 trong lượt này.
+
+### Người kiểm tra
+
+Codex đọc email review issue #54 và nội dung issue #600; Thành chưa xác nhận bắt đầu task tiếp theo.
+
+### Kiểm tra và minh chứng
+
+Feedback issue #54 yêu cầu trang kết quả, ảnh 1366/390 và điền mô tả PR. Issue #600 yêu cầu modal xác nhận xóa, hỗ trợ bàn phím, ảnh 1366/390, lint/build và ghi ca TC-P2-07 trong PR.
+
+## P3 / thanh-20261121-p3-orders-20
+
+* Thời gian ghi: 2026-11-21T23:23:33+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: thanh-20261121-p3-orders-19; PRJ-P3-FD1-1.4 #386.
+
+### Công cụ
+
+Codex; TypeScript; React; CSS; ESLint; Vite build.
+
+### Mục đích
+
+Bổ sung trạng thái lỗi rõ ràng và gia cố bố cục responsive cho trang chi tiết đơn hàng và trang kết quả thanh toán theo PRJ-P3-FD1-1.4.
+
+### Prompt
+
+Thành cung cấp nội dung sub-issue #386 và yêu cầu tiếp tục thực hiện bước 1.4; quy trình hiện tại yêu cầu viết mã, hướng dẫn Thành kiểm tra thủ công rồi mới commit và push.
+
+### Kết quả đề xuất
+
+Đã phân biệt phản hồi `403/404` của trang đơn hàng để hiện thông báo không tìm thấy hoặc không có quyền mà không tiết lộ dữ liệu đơn khác; lỗi gọi API Return hiện thông báo hướng người dùng sang Đơn hàng của tôi. CSS được bổ sung giới hạn chiều rộng, ngắt chuỗi dài và xếp từng dòng sản phẩm theo một cột ở màn hình nhỏ. Các tệp thay đổi: `apps/web/src/pages/OrderPage.tsx`, `apps/web/src/pages/PaymentResultPage.tsx`, `apps/web/src/catalog.css`.
+
+### Phản biện
+
+Không sửa helper API dùng chung vì phản hồi NestJS hiện đã chứa `body.statusCode`; thay đổi được giữ cục bộ trong trang đơn hàng để giảm phạm vi ảnh hưởng. Chưa có phản hồi kiểm tra giao diện thủ công từ Thành cho bước này.
+
+### Quyết định của nhóm
+
+Phạm vi thực hiện theo sub-issue #386 do Thành cung cấp. Chưa có quyết định commit hoặc push; chờ Thành kiểm tra các URL lỗi và bố cục 1366/390.
+
+### Người kiểm tra
+
+Codex đã chạy kiểm tra tự động. Thành là người dự kiến kiểm tra thủ công trên trình duyệt; hiện chưa xác nhận.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web` pass. `npm.cmd run build -w web` pass sau khi cho phép TypeScript ghi cache build vào `node_modules/.tmp`; lần chạy trong sandbox trước đó bị `EPERM`, không phải lỗi mã nguồn. Chưa có ảnh 1366 px và 390 px; chưa tạo commit.
+
+## P3 / thanh-20261121-p3-orders-21
+
+* Thời gian ghi: 2026-11-21T23:30:49+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261121-p3-orders-20; PRJ-P3-FD1-1.4 #386.
+
+### Công cụ
+
+Codex; Chrome DevTools responsive mode do Thành sử dụng; ESLint; Vite build; Git.
+
+### Mục đích
+
+Ghi nhận kết quả kiểm tra thủ công trạng thái lỗi và responsive, đồng thời sửa độ tương phản của nút điều hướng trước khi commit bước 1.4.
+
+### Prompt
+
+Thành cung cấp ảnh trang kết quả thanh toán không hợp lệ ở desktop và 390 px, cùng ảnh trang không tìm thấy đơn hàng ở 390 px, rồi hỏi đã ổn để commit chưa.
+
+### Kết quả đề xuất
+
+Các trang lỗi hiển thị đúng nội dung, bố cục không tràn ngang ở ảnh được cung cấp. Codex phát hiện nút `Về tài khoản` quá nhạt nên bổ sung viền, chữ xanh đậm và nền hover/focus rõ hơn trong `apps/web/src/catalog.css`.
+
+### Phản biện
+
+Ảnh ban đầu xác nhận bố cục nhưng độ tương phản nút về tài khoản chưa đạt mức dễ đọc, vì vậy chưa commit ngay và sửa trước. Ảnh mới sau sửa màu chưa được Thành cung cấp, nhưng thay đổi CSS đã được kiểm tra tự động.
+
+### Quyết định của nhóm
+
+Thành xác nhận luồng và bố cục đã ổn để chuẩn bị commit; phạm vi vẫn giới hạn trong PRJ-P3-FD1-1.4.
+
+### Người kiểm tra
+
+Thành kiểm tra thủ công các trạng thái lỗi ở desktop và 390 px qua ảnh cung cấp. Codex rà giao diện, diff và chạy lại kiểm tra tự động.
+
+### Kiểm tra và minh chứng
+
+Ảnh của Thành cho thấy `/thanh-toan/ket-qua` không tham số hiển thị `Kết quả không hợp lệ`, và `/don-hang/id-tam-bay` hiển thị thông báo không tìm thấy/không có quyền ở 390 px. Sau sửa tương phản, `npm.cmd run lint -w web`, `npm.cmd run build -w web` và `git diff --check` đều pass. Chưa push tại thời điểm ghi mục này.
+
+## P3 / thanh-20261121-p3-orders-22
+
+* Thời gian ghi: 2026-11-21T23:48:37+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261121-p3-orders-21; PRJ-P3-FD1-1.5 #390.
+
+### Công cụ
+
+Codex; tài liệu Markdown; trao đổi kiểm tra kiến thức.
+
+### Mục đích
+
+Ghi nhận phần tự đánh giá của Thành cho task chi tiết đơn và kết quả thanh toán, chỉ ra điểm chưa khớp luồng hiện tại và lưu câu trả lời sau khi Thành tự sửa.
+
+### Prompt
+
+Thành tự trả lời năm câu của sub-issue #390, sau đó trả lời hai câu hỏi vặn về quan hệ giữa trạng thái đơn và thanh toán, cùng cơ chế xử lý IPN lặp.
+
+### Kết quả đề xuất
+
+Năm câu chính đạt yêu cầu. Câu vặn đầu ban đầu dùng ví dụ `CONFIRMED + UNPAID` và COD chưa khớp phạm vi/code hiện tại; Codex yêu cầu sửa lại. Thành xác nhận đúng rằng nút VNPay chỉ hiện với `PENDING_PAYMENT + UNPAID`, còn `CONFIRMED + PAID` là tiền đã xác nhận và đơn bắt đầu xử lý. Câu về IPN lặp nêu được kiểm tra `PAID`, transaction/khóa dòng và unique mã giao dịch. Nội dung được ghi vào `docs/learning/FD1-Thanh/kiem-tra/PRJ-P3-FD1-1.md`.
+
+### Phản biện
+
+Codex không viết đáp án cá nhân thay Thành; chỉ gợi ý ý chính, chấm phần Thành tự viết và yêu cầu sửa điểm chưa khớp. Nội dung file giữ nguyên ý trả lời của Thành, chỉ chuẩn hóa dấu câu và tên trạng thái.
+
+### Quyết định của nhóm
+
+Thành đồng ý sửa câu trả lời theo đúng luồng VNPay hiện tại. Chưa có xác nhận của reviewer về việc hỏi ngẫu nhiên hai câu và chưa có quyết định đóng sub-issue.
+
+### Người kiểm tra
+
+Thành tự trả lời và sửa câu chưa đúng. Codex đối chiếu với code và nội dung task; reviewer vẫn chưa kiểm tra trực tiếp.
+
+### Kiểm tra và minh chứng
+
+File kiểm tra có đủ năm mục chính được đánh dấu `[x]` và hai câu hỏi vặn. Đây là thay đổi tài liệu, không cần chạy migration. Chưa tạo commit tại thời điểm ghi mục này.
 ## P2 / thanh-20261121-p2-cart-fix-01
 
 * Thời gian ghi: 2026-11-21T22:46:04+07:00
