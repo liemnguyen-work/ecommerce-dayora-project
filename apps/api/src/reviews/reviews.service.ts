@@ -1,4 +1,4 @@
-import { ConflictException, ForbiddenException, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, ConflictException, ForbiddenException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 
 type CreateReviewInput = {
@@ -34,6 +34,31 @@ export class ReviewsService {
       }
       throw error;
     }
+  }
+
+  async list(slug: string, page: number) {
+    if (!Number.isSafeInteger(page) || page < 1) throw new BadRequestException('Trang không hợp lệ');
+    const product = await this.prisma.product.findUnique({ where: { slug }, select: { id: true } });
+    if (!product) throw new NotFoundException('Không tìm thấy sản phẩm');
+    const where = { productId: product.id };
+    const [rows, aggregate] = await Promise.all([
+      this.prisma.review.findMany({
+        where,
+        orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+        skip: (page - 1) * 10,
+        take: 10,
+        select: { id: true, rating: true, comment: true, createdAt: true, user: { select: { fullName: true } } },
+      }),
+      this.prisma.review.aggregate({ where, _avg: { rating: true }, _count: { _all: true } }),
+    ]);
+    const items = rows.map(({ user, ...review }) => {
+      const names = user.fullName.trim().split(/\s+/).filter(Boolean);
+      const last = names.pop() ?? '';
+      const initial = Array.from(last)[0] ?? '';
+      const fullName = [...names, initial ? `${initial}.` : ''].filter(Boolean).join(' ');
+      return { ...review, user: { fullName } };
+    });
+    return { items, average: aggregate._avg.rating ?? 0, count: aggregate._count._all, page };
   }
 
   async reviewable(userId: string) {

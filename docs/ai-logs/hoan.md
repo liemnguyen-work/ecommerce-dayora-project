@@ -6094,3 +6094,45 @@ Codex đối chiếu schema và service; chờ reviewer xem xét.
 ### Kiểm tra và minh chứng
 
 Kết quả test, lint và build đã ghi tại mục a61-04; không chạy lại cho phần giải thích này.
+---
+
+## Phase 3 / hoan-20261121-reviews-list-a61-06
+
+* Thời gian ghi: 2026-11-21T09:46:15+07:00
+* Thời gian thực hiện: 21/11/2026.
+* Mã phiên nhật ký: hoan-20261121-reviews-test-a61
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-3.4, hoan-20261121-reviews-duplicate-a61-04
+
+### Công cụ
+
+Codex, Prisma, Vitest và ESLint.
+
+### Mục đích
+
+Trả danh sách đánh giá với thống kê và tên được rút gọn.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp yêu cầu bước trả trung bình, số lượng và tên rút gọn.
+
+### Kết quả đề xuất
+
+Thêm service list kiểm tra trang và sản phẩm, phân trang 10 dòng, thống kê trung bình và số lượng; chỉ chọn trường cần thiết và rút gọn tên khách.
+
+### Phản biện
+
+Test hiện dùng Prisma mock; chưa kiểm tra với database thật. Ca nghiệm thu chưa bao phủ riêng mọi trường hợp trang không hợp lệ và sản phẩm không tồn tại.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu thực hiện bước 3.4; chưa ghi nhận QA hoặc reviewer duyệt test.
+
+### Người kiểm tra
+
+Codex chạy test, lint và build API; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+Bốn ca service liên quan pass, một ca bỏ qua theo bộ lọc; lint và build API pass.
