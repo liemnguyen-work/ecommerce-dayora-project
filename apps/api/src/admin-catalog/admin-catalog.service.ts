@@ -98,6 +98,7 @@ export class AdminCatalogService {
           material: dto.material,
           status: dto.status,
           isFeatured: dto.isFeatured,
+          scenarios: dto.scenarios ?? [],
         },
       });
     } catch (error: unknown) {
@@ -105,28 +106,37 @@ export class AdminCatalogService {
     }
   }
 
-  async updateProduct(
-    id: string,
-    dto: UpdateProductDto,
-  ) {
-    try {
-      return await this.prisma.product.update({
-        where: { id },
-        data: {
-          slug: dto.slug,
-          name: dto.name,
-          categoryId: dto.categoryId,
-          description: dto.description,
-          guide: dto.guide,
-          material: dto.material,
-          status: dto.status,
-          isFeatured: dto.isFeatured,
-        },
-      });
-    } catch (error: unknown) {
-      this.handlePrismaError(error);
-    }
+async updateProduct(
+  id: string,
+  dto: UpdateProductDto,
+) {
+  try {
+    return await this.prisma.product.update({
+      where: { id },
+      data: {
+        slug: dto.slug,
+        name: dto.name,
+        ...(dto.categoryId !== undefined
+          ? {
+              category: {
+                connect: { id: dto.categoryId },
+              },
+            }
+          : {}),
+        description: dto.description,
+        guide: dto.guide,
+        material: dto.material,
+        status: dto.status,
+        isFeatured: dto.isFeatured,
+       ...(dto.scenarios !== undefined
+  ? { scenarios: { set: dto.scenarios } }
+  : {}),
+      },
+    });
+  } catch (error: unknown) {
+    this.handlePrismaError(error);
   }
+}
   // SKU
 
   async listSkus() {
@@ -216,13 +226,16 @@ const result = await this.prisma.sku.updateMany({
     });
   }
   // Chuyển sản phẩm sang INACTIVE, không xóa dữ liệu.
-  async hideProduct(id: string) {
-    return this.prisma.product.update({
+ async hideProduct(id: string) {
+  try {
+    return await this.prisma.product.update({
       where: { id },
       data: { status: 'INACTIVE' },
     });
+  } catch (error: unknown) {
+    this.handlePrismaError(error);
   }
-
+}
   // Chuyển SKU sang INACTIVE bằng optimistic locking.
   async hideSku(id: string) {
     const current = await this.prisma.sku.findUnique({
