@@ -3521,3 +3521,331 @@ Thành tự viết và sửa câu trả lời; Codex đối chiếu với code. 
 ### Kiểm tra và minh chứng
 
 File `docs/learning/FD1-Thanh/kiem-tra/PRJ-P2-FD1-3.md` có đủ bốn bước, trải nghiệm thực tế và hai câu hỏi vặn. Kiểm tra toàn repo được chạy trước commit; kết quả được báo theo output thực tế.
+
+## P3 / thanh-20261121-p3-orders-01
+
+* Thời gian ghi: 2026-11-21T12:37:31+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-FD1-1 #54.
+
+### Công cụ
+
+Codex; Git; PowerShell; tài liệu Markdown của DAYORA.
+
+### Mục đích
+
+Chuẩn bị môi trường riêng và xác minh điều kiện trước khi thực hiện task chi tiết đơn và kết quả thanh toán theo từng sub-issue.
+
+### Prompt
+
+Thành cung cấp issue cha PRJ-P3-FD1-1 và yêu cầu giữ quy trình: Codex làm code, Thành kiểm tra trên localhost, chỉ commit và push sau khi Thành xác nhận.
+
+### Kết quả đề xuất
+
+Codex fetch `origin`, xác nhận các commit backend VNPay thuộc PRJ-P3-BD1-2 đã có trên `main`, tạo worktree riêng `dayora-prj-p3-fd1-1` với nhánh `prj/p3-fd1-1`, rồi đọc AGENTS.md, quy tắc log, lộ trình cá nhân và hướng dẫn phase P3. Chưa sửa code chức năng vì Thành chưa cung cấp sub-issue đầu tiên.
+
+### Phản biện
+
+Repo làm việc cũ có thay đổi chưa commit ở Buổi 3 nên không được dùng để chuyển nhánh. Worktree riêng tránh ghi đè hoặc trộn các thay đổi đó.
+
+### Quyết định của nhóm
+
+Thành xác nhận quy trình kiểm thử trước commit/push. Chưa có quyết định triển khai chi tiết ngoài phạm vi issue cha.
+
+### Người kiểm tra
+
+Codex kiểm tra trạng thái Git và lịch sử `origin/main`; Thành chưa kiểm tra code vì chưa có thay đổi chức năng.
+
+### Kiểm tra và minh chứng
+
+`origin/main` ở commit `3b223b2`; lịch sử có chuỗi commit PRJ-P3-BD1-2 từ `ff5be01` đến `5b06031`. Nhánh mới sạch và đang theo dõi nền `origin/main`. Migration, lint, build và kiểm thử giao diện chưa chạy; sẽ thực hiện theo sub-issue và không tuyên bố đạt trước khi có kết quả.
+
+## P3 / thanh-20261121-p3-orders-02
+
+* Thời gian ghi: 2026-11-21T12:44:41+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261121-p3-orders-01; PRJ-P3-FD1-1.1 #371.
+
+### Công cụ
+
+Codex; Git; npm; Prisma CLI; PowerShell.
+
+### Mục đích
+
+Đọc sub-issue bước 1, kiểm tra contract API chi tiết đơn và chạy migration bắt buộc trước khi sửa code.
+
+### Prompt
+
+Thành cung cấp PRJ-P3-FD1-1.1 và yêu cầu tiếp tục theo quy trình kiểm thử trước commit/push.
+
+### Kết quả đề xuất
+
+Dependencies được cài theo lockfile. Codex xác định `OrdersController` trên `main` chưa có `GET /orders/:id` dành cho khách và migration chưa thể chạy vì cấu hình cục bộ thiếu biến `DIRECT_URL`. Chưa sửa code chức năng.
+
+### Phản biện
+
+Không được tự dùng endpoint admin thay cho endpoint khách vì khác quyền truy cập và có thể phá cơ chế chống IDOR. Không được đoán hoặc dò giá trị kết nối database từ các file môi trường khác.
+
+### Quyết định của nhóm
+
+Chưa có quyết định mở rộng phạm vi sang backend. Cần Thành bổ sung cấu hình `DIRECT_URL` cục bộ hoặc chỉ rõ file môi trường hợp lệ trước khi tiếp tục migration.
+
+### Người kiểm tra
+
+Codex kiểm tra source và output Prisma; Thành chưa kiểm tra giao diện vì chưa có thay đổi code.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd ci` thành công. `npm.cmd run db:migrate -w api` dừng với Prisma `P1012: Environment variable not found: DIRECT_URL`; không có drift/reset và chưa áp migration. `apps/api/src/orders/orders.controller.ts` hiện chỉ có `POST /orders` và `POST /orders/preview`.
+
+## P3 / thanh-20261121-p3-orders-03
+
+* Thời gian ghi: 2026-11-21T12:48:13+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: thanh-20261121-p3-orders-02; PRJ-P3-FD1-1.1 #371.
+
+### Công cụ
+
+Codex; tài liệu cấu hình Prisma và `.env.example` của DAYORA.
+
+### Mục đích
+
+Giải thích sự khác nhau giữa kết nối Supabase khi chạy ứng dụng, kết nối trực tiếp khi migration và endpoint REST chi tiết đơn.
+
+### Prompt
+
+Thành hỏi liệu bước bổ sung `.env` có phải kết nối lại Supabase để lấy dữ liệu hay không và yêu cầu hướng dẫn chi tiết.
+
+### Kết quả đề xuất
+
+Codex giải thích `DATABASE_URL` dùng pooler cổng 6543 cho ứng dụng, `DIRECT_URL` dùng cổng 5432 cho Prisma migration; hướng dẫn lấy chuỗi kết nối đúng dự án, lưu trong `apps/api/.env`, không commit hoặc gửi secret qua chat. Đồng thời giải thích kết nối database không tự tạo route `GET /orders/:id` cho frontend.
+
+### Phản biện
+
+Không dùng Supabase anon key/service key thay cho mật khẩu kết nối PostgreSQL và không đoán `DIRECT_URL` từ URL cũ. Endpoint khách phải kiểm tra `userId` để chống IDOR, không dùng endpoint admin thay thế.
+
+### Quyết định của nhóm
+
+Chưa có quyết định mở rộng backend. Thành sẽ bổ sung cấu hình cục bộ hoặc lấy file `.env` cập nhật từ Liêm trước khi Codex chạy lại migration.
+
+### Người kiểm tra
+
+Chờ Thành xác nhận file `.env` đã có đủ hai biến; chưa chạy lại migration.
+
+### Kiểm tra và minh chứng
+
+Đối chiếu `apps/api/.env.example`, `apps/api/prisma.config.ts` và `apps/api/prisma/schema.prisma`; các file đều yêu cầu `DATABASE_URL` và `DIRECT_URL` với mục đích khác nhau.
+
+## P3 / thanh-20261121-p3-orders-04
+
+* Thời gian ghi: 2026-11-21T13:00:06+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261121-p3-orders-03; PRJ-P3-FD1-1.1 #371.
+
+### Công cụ
+
+Codex; Prisma CLI; PowerShell `Resolve-DnsName` và `Test-NetConnection`.
+
+### Mục đích
+
+Kiểm tra lại cấu hình Supabase và xác định nguyên nhân migration vẫn không kết nối được sau khi có đủ biến môi trường.
+
+### Prompt
+
+Thành yêu cầu kiểm tra lại sau khi cập nhật file `.env`.
+
+### Kết quả đề xuất
+
+Hai biến `DATABASE_URL` và `DIRECT_URL` đều đã tồn tại. Prisma nhận host direct của Supabase nhưng máy chỉ phân giải được địa chỉ IPv6 và không mở được TCP 5432; cần dùng chuỗi Session pooler cổng 5432 thay cho Direct connection.
+
+### Phản biện
+
+Không chạy seed, không sửa schema và không bỏ qua migration. Lỗi này không phải drift/reset và chưa có migration nào được áp dụng.
+
+### Quyết định của nhóm
+
+Chờ Thành thay `DIRECT_URL` bằng Session pooler IPv4-compatible của đúng project Supabase, không gửi secret qua chat.
+
+### Người kiểm tra
+
+Codex kiểm tra output Prisma, DNS và TCP; Thành chưa xác nhận migration thành công.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run db:migrate -w api` nhận đủ biến nhưng dừng bằng `Schema engine error`. DNS của Direct connection chỉ trả bản ghi AAAA và `Test-NetConnection` tới cổng 5432 thất bại.
+
+## P3 / thanh-20261121-p3-orders-05
+
+* Thời gian ghi: 2026-11-21T13:12:14+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: thanh-20261121-p3-orders-04; PRJ-P3-FD1-1.1 #371.
+
+### Công cụ
+
+Codex; React; TypeScript; CSS; Prisma CLI; ESLint; Vite; NestJS; Git.
+
+### Mục đích
+
+Xây dựng trang chi tiết đơn theo bước 1, có trạng thái tải/lỗi, nhãn tiếng Việt, sản phẩm, người nhận, chi phí và tiến trình giao hàng responsive.
+
+### Prompt
+
+Thành cập nhật cấu hình Supabase và yêu cầu tiếp tục PRJ-P3-FD1-1.1 theo quy trình kiểm thử trước commit/push.
+
+### Kết quả đề xuất
+
+Migration kết nối Session pooler thành công và database đã đồng bộ. Codex tạo `OrderPage.tsx`, nối route `/don-hang/:id` và bổ sung CSS desktop/mobile. Các thao tác thanh toán và hủy chưa được làm trước bước 1.2.
+
+### Phản biện
+
+Backend trên `main` chưa đăng ký `GET /api/orders/:id` cho khách; chỉ có endpoint admin. Không dùng endpoint admin thay thế vì sai quyền và không bảo vệ quyền sở hữu đơn. Do đó hiện chỉ kiểm tra đầy đủ build và trạng thái lỗi của frontend, chưa nghiệm thu được dữ liệu đơn thật.
+
+### Quyết định của nhóm
+
+Thành yêu cầu làm code rồi tự kiểm tra trên localhost trước khi cho phép commit/push. Chưa có xác nhận giao diện hoặc mở rộng phạm vi backend.
+
+### Người kiểm tra
+
+Codex chạy kiểm tra tự động; chờ Thành kiểm tra localhost. Reviewer chưa kiểm tra độc lập.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run db:migrate -w api` pass với “Already in sync”; `git diff --check`, `npm.cmd run lint -w web` và `npm.cmd run build -w web` pass. API health trả 200, web trả 200; `GET /api/orders/test-id` trả 404 vì route khách chưa tồn tại. Chưa commit và chưa push.
+
+## P3 / thanh-20261121-p3-orders-06
+
+* Thời gian ghi: 2026-11-21T13:24:40+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: thanh-20261121-p3-orders-05; PRJ-P3-FD1-1.1 #371.
+
+### Công cụ
+
+Codex; NestJS; Prisma; Vitest; ESLint; PowerShell.
+
+### Mục đích
+
+Bổ sung phần nối backend còn thiếu để OrderPage có thể tải dữ liệu thật, đồng thời giữ kiểm tra quyền sở hữu đơn.
+
+### Prompt
+
+Sau khi được giải thích dependency thiếu, Thành đồng ý làm luôn endpoint backend để tiếp tục kiểm thử task.
+
+### Kết quả đề xuất
+
+Codex nối `GET /api/orders/:id` vào `CheckoutService.detail`, mở rộng kết quả với `address` và `voucherCode`, giữ truy vấn theo `id + userId`, và thêm test contract frontend. API watcher xác nhận route đã được đăng ký.
+
+### Phản biện
+
+Nghiệp vụ detail và kiểm tra IDOR đã tồn tại trong CheckoutService nên không viết lại service mới hoặc dùng endpoint admin. Route không đăng nhập trả 401; đơn không thuộc người dùng vẫn trả 404.
+
+### Quyết định của nhóm
+
+Thành đồng ý bổ sung endpoint backend cần thiết. Thành vẫn yêu cầu tự kiểm tra localhost trước khi cho phép commit/push.
+
+### Người kiểm tra
+
+Codex chạy test/lint và kiểm tra route; chờ Thành kiểm tra luồng tạo đơn và trang chi tiết trên localhost. Reviewer chưa kiểm tra độc lập.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd test -w api -- checkout.service`: 1 file, 11 test pass. `npm.cmd run lint -w api`, `npm.cmd run lint -w web` và `git diff --check` pass. Nest đăng ký `GET /api/orders/:id`; request không cookie trả 401. Chưa commit và chưa push.
+
+## P3 / thanh-20261121-p3-orders-07
+
+* Thời gian ghi: 2026-11-21T13:27:45+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261121-p3-orders-06; PRJ-P3-FD1-1.1 #371.
+
+### Công cụ
+
+Codex; Vite; NestJS CORS; PowerShell.
+
+### Mục đích
+
+Chẩn đoán lỗi đăng nhập `Failed to fetch` khi Thành kiểm tra localhost.
+
+### Prompt
+
+Thành báo nhập đúng thông tin đăng nhập nhưng giao diện luôn hiện `Failed to fetch`.
+
+### Kết quả đề xuất
+
+Codex xác định web được mở bằng origin `http://127.0.0.1:5173` trong khi API chỉ cho phép `http://localhost:5173`, sau đó khởi động lại Vite bằng đúng hostname `localhost`.
+
+### Phản biện
+
+Đây là lỗi CORS trước khi request đăng nhập được xử lý, không phải sai email hoặc mật khẩu; không thay đổi cơ chế xác thực để né lỗi.
+
+### Quyết định của nhóm
+
+Giữ cấu hình CORS hiện tại và dùng URL localhost thống nhất trong phiên kiểm thử.
+
+### Người kiểm tra
+
+Codex kiểm tra preflight và web; chờ Thành đăng nhập lại trên URL đúng.
+
+### Kiểm tra và minh chứng
+
+Preflight từ origin 127.0.0.1 nhận `Access-Control-Allow-Origin: http://localhost:5173`, xác nhận lệch origin. Sau khi khởi động lại Vite, `http://localhost:5173/` trả 200.
+
+## P3 / thanh-20261121-p3-orders-08
+
+* Thời gian ghi: 2026-11-21T13:32:30+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261121-p3-orders-07; PRJ-P3-FD1-1.1 #371.
+
+### Công cụ
+
+Codex; Git; Vitest; ESLint; TypeScript; NestJS; Vite; Prisma.
+
+### Mục đích
+
+Ghi nhận kiểm thử giao diện của Thành và kiểm tra toàn bộ thay đổi trước khi commit bước hiển thị chi tiết đơn.
+
+### Prompt
+
+Thành gửi ảnh trang chi tiết đơn có dữ liệu thật, xác nhận giao diện ổn và yêu cầu commit rồi gửi link.
+
+### Kết quả đề xuất
+
+Giữ nguyên giao diện đã được Thành duyệt; dừng server dev và chạy lại test endpoint, lint và build toàn repo trước commit.
+
+### Phản biện
+
+Endpoint backend được bổ sung vì dependency trên main thiếu route khách, nhưng tái sử dụng nghiệp vụ detail và kiểm tra quyền sở hữu đã có; không mở rộng sang thao tác thanh toán hoặc hủy của bước sau.
+
+### Quyết định của nhóm
+
+Thành xác nhận giao diện trang chi tiết đơn ổn và cho phép commit/push bước PRJ-P3-FD1-1.1.
+
+### Người kiểm tra
+
+Thành kiểm tra trực quan trang đơn có dữ liệu thật trên localhost. Codex chạy kiểm tra tự động; reviewer chưa kiểm tra độc lập.
+
+### Kiểm tra và minh chứng
+
+Ảnh Thành cung cấp thể hiện mã đơn, nhãn trạng thái tiếng Việt, timeline, sản phẩm, người nhận và tổng tiền. `git diff --check`, 11 test CheckoutService, `npm.cmd run lint` và `npm.cmd run build` toàn repo đều pass.

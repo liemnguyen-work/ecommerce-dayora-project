@@ -35,10 +35,23 @@ export class CheckoutService implements OnModuleInit, OnModuleDestroy {
     }
     const order = await this.prisma.order.findFirst({
       where: { id, userId },
-      include: { items: true },
+      include: {
+        items: true,
+        voucherUsage: {
+          include: {
+            voucher: {
+              select: { code: true },
+            },
+          },
+        },
+      },
     });
     if (!order) throw new NotFoundException('Không tìm thấy đơn hàng');
-    return order;
+    return {
+      ...order,
+      address: order.recipientAddress,
+      voucherCode: order.voucherUsage?.voucher.code ?? null,
+    };
   }
 
   private async release(tx: Prisma.TransactionClient, id: string, userId?: string, expired = false) {
