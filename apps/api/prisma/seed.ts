@@ -490,13 +490,6 @@ const scenariosByProductName: Record<string, SeedScenario[]> = {
 function validateScenarioAssignments(): void {
   const productNames = new Set(items.map(getProductName));
   const assignedNames = Object.keys(scenariosByProductName);
-
-  if (productNames.size !== 26 || assignedNames.length !== 26) {
-    throw new Error(
-      'Scenario mapping must contain exactly 26 products',
-    );
-  }
-
   for (const productName of productNames) {
     const scenarios = scenariosByProductName[productName];
 
@@ -1008,34 +1001,35 @@ async function main(): Promise<void> {
     const productName = getProductName(item);
     const slug = makeSlug(productName);
 
-    // Chỉ các trường cần đồng bộ khi chạy seed lại
-const productData = {
-  name: productName,
-  categoryId,
-  material: item.material,
-};
+    // Chỉ đồng bộ thông tin cơ bản khi chạy lại seed
+    const productData = {
+      name: productName,
+      categoryId,
+      material: item.material,
+    };
 
-const scenarios = scenariosByProductName[productName];
+    const scenarios = scenariosByProductName[productName];
 
-if (!scenarios || scenarios.length === 0) {
-  throw new Error(
-    `Missing scenarios for product: ${productName}`,
-  );
-}
-const product = await prisma.product.upsert({
-  where: { slug },
-  update: {
-    ...productData,
-    scenarios: {
-      set: scenarios,
-    },
-  },
-  create: {
-    slug,
-    ...productData,
-    scenarios,
-  },
-});
+    if (!scenarios || scenarios.length === 0) {
+      throw new Error(
+        `Missing scenarios for product: ${productName}`,
+      );
+    }
+
+    const product = await prisma.product.upsert({
+      where: { slug },
+      // Giữ nguyên scenarios do admin chỉnh sửa
+      update: {
+        ...productData,
+      },
+      // Chỉ gán scenarios khi tạo sản phẩm mới
+      create: {
+        slug,
+        ...productData,
+        scenarios,
+      },
+    });
+
     const code = `DAY-${item.code}`;
 
     // Không đưa stock và reserved vào skuData
