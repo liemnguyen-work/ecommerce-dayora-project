@@ -134,8 +134,21 @@ describe('AdminOrdersService - PRJ-P3-BD2-1', () => {
 
     const service = await getService();
     const result = await service.list();
+    expect(prisma.order.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+    include: {
+      user: {
+        select: {
+          email: true,
+        },
+      },
+    },
+    take: 10,
+    skip: 0,
+    orderBy: { createdAt: 'desc' },
+  }),
+);
 
-    expect(prisma.order.findMany).toHaveBeenCalled();
     expect(result.items).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ id: 'order-a' }),

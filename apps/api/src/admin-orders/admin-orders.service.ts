@@ -100,16 +100,22 @@ async list(query: OrdersQueryDto = {}) {
       : {}),
   };
 
-  const [items, total] = await Promise.all([
-    this.prisma.order.findMany({
-      where,
-      skip,
-      take: 10,
-      orderBy: { createdAt: 'desc' },
-    }),
-    this.prisma.order.count({ where }),
-  ]);
-
+const [items, total] = await Promise.all([
+  this.prisma.order.findMany({
+    where,
+    skip,
+    take: 10,
+    orderBy: { createdAt: 'desc' },
+    include: {
+      user: {
+        select: {
+          email: true,
+        },
+      },
+    },
+  }),
+  this.prisma.order.count({ where }),
+]);
   return {
     items,
     total,
