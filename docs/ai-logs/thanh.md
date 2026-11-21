@@ -3725,3 +3725,126 @@ Thành kiểm tra giao diện mobile 390px qua ảnh đã cung cấp; Codex ki�
 ### Kiểm tra và minh chứng
 
 Ảnh Thành cung cấp hiển thị hai thẻ đánh giá tại 390px, gồm trường hợp có và không có bình luận. Chuỗi `review-demo`, `demoData` và `displayData` không còn trong `ProductPage.tsx`. Commit và push chưa được tạo tại thời điểm ghi mục này.
+
+## P3 / thanh-20261122-p3-reviews-06
+
+* Thời gian ghi: 2026-11-22T01:10:22+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261122-p3-reviews
+* Người prompt: Thành
+* Loại mục: Phản biện
+* Liên quan: thanh-20261122-p3-reviews-05; PRJ-P3-FD1-2.3 #405.
+
+### Công cụ
+
+Codex; Git; ripgrep; PowerShell.
+
+### Mục đích
+
+Đối chiếu điều kiện và phụ thuộc thực tế trước khi triển khai luồng tải đánh giá công khai từ trang tài khoản sang trang sản phẩm.
+
+### Prompt
+
+Thành cung cấp sub-issue PRJ-P3-FD1-2.3 và yêu cầu tiếp tục task.
+
+### Kết quả đề xuất
+
+Codex xác nhận `ProductReviews` đã gọi `GET /products/:slug/reviews` theo `slug` từ bước 2.1 và backend public đã có trên `main`. Tuy nhiên `AccountPage.tsx` hiện chỉ có tab hồ sơ và sản phẩm đã xem; chưa có tab “Chờ đánh giá”, chưa gọi `GET /reviews/reviewable` hay `POST /reviews`.
+
+### Phản biện
+
+Tiêu chí nghiệm thu yêu cầu gửi đánh giá tại `/tai-khoan`, nhưng danh sách file của issue chỉ nêu `ProductPage.tsx`. Tự thêm form vào `AccountPage.tsx` khi chưa xác nhận sẽ mở rộng phạm vi và có nguy cơ trùng công việc khác. Không nên tạo một commit rỗng hoặc ghi nhận luồng end-to-end đạt khi chưa thể thực hiện.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung về việc mở rộng phạm vi sang `AccountPage.tsx`. Chờ Thành xác nhận với người giao task/reviewer hoặc cung cấp issue phụ trách giao diện “Chờ đánh giá”.
+
+### Người kiểm tra
+
+Codex kiểm tra `origin/main` mới nhất và các remote branch đã fetch; chưa có thành viên/reviewer xác nhận hướng xử lý.
+
+### Kiểm tra và minh chứng
+
+`origin/main` tại `8f8549b`; tìm kiếm `reviews/reviewable` và “Chờ đánh giá” trong `AccountPage.tsx` của main và các remote branch không có kết quả. Nhánh hiện tại vẫn có endpoint public trong `ProductPage.tsx`. Chưa sửa code, chưa chạy nghiệm thu end-to-end và chưa commit bước 2.3.
+
+## P3 / thanh-20261122-p3-reviews-07
+
+* Thời gian ghi: 2026-11-22T01:18:54+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261122-p3-reviews
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261122-p3-reviews-06; PRJ-P3-FD1-2.5 #415.
+
+### Công cụ
+
+Codex; trao đổi kiểm tra kiến thức.
+
+### Mục đích
+
+Luyện giải thích các bước của task đánh giá sản phẩm và kiểm tra Thành có phân biệt được dữ liệu API, cách vẽ sao, tải lại theo sản phẩm và yêu cầu responsive hay không.
+
+### Prompt
+
+Thành tự trả lời năm câu kiểm tra kiến thức, sửa lại câu về tải đánh giá công khai và trả lời hai câu hỏi vặn về `String.repeat` với điểm lẻ và việc tải lại khi đổi sản phẩm.
+
+### Kết quả đề xuất
+
+Codex chấm các câu 1, 2 và 5 đúng; câu 3 được Thành sửa để nói rõ dữ liệu mới xuất hiện khi tải lại, mở lại hoặc đổi sản phẩm; câu 4 thể hiện đúng kiến thức nhưng chưa được triển khai. Thành giải thích đúng việc dùng `Math.round(data.average)` để vẽ sao và giữ giá trị gốc để hiển thị điểm.
+
+### Phản biện
+
+Trong code hiện tại, dependency trực tiếp của `useEffect` là `path`, không phải `slug`; `path` được tạo từ `slug`, nên đổi `slug` làm `path` đổi và request chạy lại. Không được đánh dấu hoàn thành hoặc commit kiểm tra kiến thức trước khi bước 2.3 và 2.4 thực sự đạt.
+
+### Quyết định của nhóm
+
+Thành chọn luyện kiến thức trước; chưa yêu cầu bỏ qua tiêu chí hoàn thành của các bước còn thiếu. File kiểm tra kiến thức chưa được tạo và sub-issue 2.5 chưa được commit.
+
+### Người kiểm tra
+
+Codex chấm nội dung trả lời; chưa có reviewer hoặc trưởng nhóm hỏi kiểm tra ngẫu nhiên.
+
+### Kiểm tra và minh chứng
+
+Trao đổi hiện tại chứa năm câu trả lời, câu 3 đã sửa và hai câu hỏi vặn đã được Thành trả lời. Không có thay đổi code ứng dụng trong lượt này; chỉ nối thêm log trung thực về hoạt động luyện tập.
+
+## P3 / thanh-20261122-p3-reviews-08
+
+* Thời gian ghi: 2026-11-22T01:20:59+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261122-p3-reviews
+* Người prompt: Thành
+* Loại mục: Quyết định
+* Liên quan: thanh-20261122-p3-reviews-07; PRJ-P3-FD1-2.5 #415.
+
+### Công cụ
+
+Codex; Markdown; Git.
+
+### Mục đích
+
+Ghi lại câu trả lời kiểm tra kiến thức do Thành tự viết và chuẩn bị commit tài liệu theo yêu cầu của Thành dù bước 2.3 và 2.4 chưa hoàn tất.
+
+### Prompt
+
+Sau khi được cảnh báo về thứ tự sub-issue, Thành vẫn yêu cầu commit phần kiểm tra kiến thức trước và làm các bước còn lại sau.
+
+### Kết quả đề xuất
+
+Codex tạo `docs/learning/FD1-Thanh/kiem-tra/PRJ-P3-FD1-2.md`, định dạng lại chính các câu trả lời của Thành, bổ sung hai câu hỏi vặn đã trả lời và ghi chú rõ đây là phần kiến thức được chuẩn bị trước khi hoàn tất triển khai 2.3/2.4.
+
+### Phản biện
+
+Commit trước thứ tự có thể bị reviewer yêu cầu sửa vì issue quy định bước 2.5 thực hiện sau bước 2.4. Việc có file kiểm tra kiến thức không chứng minh hai bước chức năng còn thiếu đã đạt nghiệm thu và không được dùng để đóng task cha.
+
+### Quyết định của nhóm
+
+Thành quyết định commit bước kiểm tra kiến thức trước. Chưa có quyết định chung hoặc xác nhận của reviewer cho việc thay đổi thứ tự; bước 2.3/2.4 vẫn phải tiếp tục sau.
+
+### Người kiểm tra
+
+Thành là người tự trả lời; Codex chỉ chấm, chỉ ra điểm cần sửa và định dạng Markdown. Chưa có reviewer/trưởng nhóm kiểm tra ngẫu nhiên.
+
+### Kiểm tra và minh chứng
+
+File có năm mục trả lời và hai câu hỏi bổ sung. Nội dung ghi rõ trạng thái chưa hoàn tất của bước 2.3 và 2.4; chưa có kiểm thử ứng dụng mới vì lượt này chỉ thay đổi tài liệu.
