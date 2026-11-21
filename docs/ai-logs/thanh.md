@@ -3644,3 +3644,44 @@ Thành kiểm tra thủ công trên trình duyệt; Codex chạy kiểm tra tự
 ### Kiểm tra và minh chứng
 
 `git diff --check`, `npm.cmd run lint -w web` và `npm.cmd run build -w web` đều pass. Vite build 485 modules thành công. Chưa push, chưa mở PR và chưa đính ảnh.
+
+## P2 / thanh-20261121-p2-cart-fix-04
+
+* Thời gian ghi: 2026-11-21T23:11:28+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p2-cart-fix
+* Người prompt: Thành
+* Loại mục: Phản biện
+* Liên quan: thanh-20261121-p2-cart-fix-03; PRJ-P2-FD1-FIX #600.
+
+### Công cụ
+
+Codex; CSS; ESLint; TypeScript; Vite.
+
+### Mục đích
+
+Cải thiện độ tương phản của nút “Giữ lại” trong hộp xác nhận xoá sản phẩm sau phản hồi kiểm tra giao diện.
+
+### Prompt
+
+Thành phản hồi nút “Giữ lại” hiển thị quá nhạt và yêu cầu chỉnh lại.
+
+### Kết quả đề xuất
+
+Codex thêm class riêng `cart-button-keep`, dùng viền xanh đậm, nền xanh nhạt và chữ xanh đậm; bổ sung trạng thái hover/focus rõ hơn mà không ảnh hưởng các nút phụ khác.
+
+### Phản biện
+
+Không đổi hành vi dialog hoặc API. Thay đổi chỉ giới hạn ở nút “Giữ lại”; cần Thành quan sát lại trên giao diện thực trước khi tạo commit bổ sung.
+
+### Quyết định của nhóm
+
+Thành yêu cầu tăng tương phản. Chưa xác nhận giao diện mới và chưa cho phép push commit bổ sung.
+
+### Người kiểm tra
+
+Codex chạy kiểm tra tự động; chờ Thành kiểm tra trực quan.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web` và `npm.cmd run build -w web` pass; Vite build 485 modules. Thay đổi hiện chưa commit.

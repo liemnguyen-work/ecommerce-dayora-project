@@ -1020,6 +1020,19 @@
   color: #fff;
 }
 
+.cart-button-keep {
+  border-color: #244c35;
+  background: #f1f6ea;
+  color: #173c29;
+}
+
+.cart-button-keep:hover,
+.cart-button-keep:focus-visible {
+  border-color: #173c29;
+  background: #dfeccd;
+  color: #102c1e;
+}
+
 .cart-button-danger:hover,
 .cart-button-danger:focus-visible {
   border-color: #aa3129;

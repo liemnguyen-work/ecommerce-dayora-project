@@ -296,7 +296,7 @@ export default function CartPage() {
             Bạn có chắc muốn xoá món này không?
           </p>
           <div className="cart-remove-dialog-actions">
-            <button className="cart-button" type="button" autoFocus onClick={closeRemoveDialog}>Giữ lại</button>
+            <button className="cart-button cart-button-keep" type="button" autoFocus onClick={closeRemoveDialog}>Giữ lại</button>
             <button className="cart-button cart-button-danger" type="button" onClick={() => void confirmRemoval()}>Xoá</button>
           </div>
         </div>
