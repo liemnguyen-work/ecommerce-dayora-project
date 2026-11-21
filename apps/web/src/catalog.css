@@ -1057,6 +1057,76 @@
   color: #fff;
 }
 
+.cart-remove-dialog {
+  width: min(520px, calc(100% - 32px));
+  max-height: calc(100dvh - 32px);
+  margin: auto;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  border-radius: 26px;
+  background: transparent;
+  color: #244c35;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.26);
+}
+
+.cart-remove-dialog::backdrop {
+  background: rgba(15, 35, 23, 0.72);
+  backdrop-filter: blur(2px);
+}
+
+.cart-remove-dialog-content {
+  box-sizing: border-box;
+  padding: clamp(26px, 6vw, 40px);
+  border: 1px solid rgba(36, 68, 48, 0.14);
+  border-radius: inherit;
+  background: #fff;
+}
+
+.cart-remove-dialog h2 {
+  margin: 0 0 12px;
+  font-size: clamp(1.65rem, 5vw, 2.25rem);
+  line-height: 1.15;
+}
+
+.cart-remove-dialog-content > p:not(.cart-eyebrow) {
+  margin: 0;
+  color: #52685a;
+  line-height: 1.65;
+}
+
+.cart-remove-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.cart-button-danger {
+  border-color: #c93f35;
+  background: #c93f35;
+  color: #fff;
+}
+
+.cart-button-keep {
+  border-color: #244c35;
+  background: #f1f6ea;
+  color: #173c29;
+}
+
+.cart-button-keep:hover,
+.cart-button-keep:focus-visible {
+  border-color: #173c29;
+  background: #dfeccd;
+  color: #102c1e;
+}
+
+.cart-button-danger:hover,
+.cart-button-danger:focus-visible {
+  border-color: #aa3129;
+  background: #aa3129;
+}
+
 .confirm-actions .cart-button-primary {
   border-color: var(--color-berry);
   background: var(--color-berry);
@@ -1082,6 +1152,20 @@
 
   .confirm-actions {
     display: grid;
+  }
+
+  .cart-remove-dialog {
+    width: calc(100% - 24px);
+    max-height: calc(100dvh - 24px);
+    border-radius: 22px;
+  }
+
+  .cart-remove-dialog-actions {
+    display: grid;
+  }
+
+  .cart-remove-dialog-actions .cart-button {
+    width: 100%;
   }
 }
 

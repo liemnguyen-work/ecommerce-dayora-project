@@ -4418,3 +4418,166 @@ Thành tự trả lời và sửa câu chưa đúng. Codex đối chiếu với 
 ### Kiểm tra và minh chứng
 
 File kiểm tra có đủ năm mục chính được đánh dấu `[x]` và hai câu hỏi vặn. Đây là thay đổi tài liệu, không cần chạy migration. Chưa tạo commit tại thời điểm ghi mục này.
+## P2 / thanh-20261121-p2-cart-fix-01
+
+* Thời gian ghi: 2026-11-21T22:46:04+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p2-cart-fix
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P2-FD1-FIX #600; ca TC-P2-07.
+
+### Công cụ
+
+Codex; React; TypeScript; HTML dialog; ESLint; Vite; Git.
+
+### Mục đích
+
+Ngăn thao tác giảm số lượng từ 1 xuống 0 xoá sản phẩm ngay; yêu cầu khách xác nhận bằng hộp thoại dễ sử dụng trên desktop, mobile và bàn phím.
+
+### Prompt
+
+Thành cung cấp đầy đủ issue #600 và yêu cầu thực hiện task, với quy trình kiểm tra thủ công trước khi commit.
+
+### Kết quả đề xuất
+
+Codex tạo nhánh riêng `fix/prj-p2-fd1-cart-confirm` từ `origin/main`, tách thao tác cập nhật số lượng khỏi thao tác xoá, và thêm native dialog “Xoá sản phẩm khỏi giỏ?” với hai lựa chọn “Giữ lại” và “Xoá”. Nút Xoá riêng của dòng vẫn giữ hành vi cũ; API không thay đổi.
+
+### Phản biện
+
+Native dialog được chọn để trình duyệt quản lý focus, phím Esc và lớp nền modal. Nút “Giữ lại” nhận focus đầu tiên để giảm nguy cơ xoá nhầm. Chưa thêm test tự động vì issue cho phép ca kiểm bằng tay có ảnh; vẫn phải kiểm đủ ba nhánh thao tác trước commit.
+
+### Quyết định của nhóm
+
+Phạm vi bám đúng issue #600. Thành chưa xác nhận kết quả giao diện và chưa cho phép commit/push trong worktree mới.
+
+### Người kiểm tra
+
+Codex đã kiểm tra lint/build; chờ Thành kiểm tra TC-P2-07 ở 1366 px và 390 px.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web` pass; `npm.cmd run build -w web` pass; `git diff --check` pass. `npm ci` báo 17 lỗ hổng dependency có sẵn (11 moderate, 6 high), không chạy `npm audit fix` vì ngoài phạm vi. Chưa có ảnh hoặc kết quả thao tác thủ công.
+
+## P2 / thanh-20261121-p2-cart-fix-02
+
+* Thời gian ghi: 2026-11-21T22:57:12+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p2-cart-fix
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261121-p2-cart-fix-01; PRJ-P2-FD1-FIX #600.
+
+### Công cụ
+
+Codex; Prisma CLI; NestJS; PowerShell.
+
+### Mục đích
+
+Chẩn đoán lỗi API không khởi động trong worktree mới và chuẩn bị môi trường để Thành kiểm tra giao diện.
+
+### Prompt
+
+Thành báo API chạy lỗi sau khi nhận hướng dẫn kiểm tra localhost.
+
+### Kết quả đề xuất
+
+Codex xác định Prisma Client chưa được sinh sau `npm ci`, chạy `npm.cmd run prisma:generate -w api`, sau đó TypeScript biên dịch với 0 lỗi. API mới không chiếm được cổng vì đã có một tiến trình Node cũ lắng nghe cổng 3000.
+
+### Phản biện
+
+Không sửa source và không migrate database vì lỗi chỉ thuộc artifact sinh tự động. Không tự dừng tiến trình Node cũ vì có thể là API Thành đang sử dụng ở worktree trước; backend của #600 không thay đổi nên có thể dùng tiến trình đó để kiểm tra frontend mới.
+
+### Quyết định của nhóm
+
+Chưa có quyết định commit. Thành có thể giữ API cũ đang chạy và chỉ khởi động web trong worktree #600, hoặc tự dừng terminal API cũ trước khi chạy API mới.
+
+### Người kiểm tra
+
+Codex chạy Prisma generate và quan sát NestJS compile 0 lỗi; kiểm tra cổng 3000 đang do tiến trình Node PID 8328 giữ.
+
+### Kiểm tra và minh chứng
+
+Prisma Client 6.19.3 được sinh tại `apps/api/src/generated/prisma`; NestJS báo `Found 0 errors`. Lần listen thất bại với `EADDRINUSE :::3000`, `netstat` xác nhận PID 8328 đang LISTENING. Chưa kiểm tra giao diện.
+
+## P2 / thanh-20261121-p2-cart-fix-03
+
+* Thời gian ghi: 2026-11-21T23:03:58+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p2-cart-fix
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261121-p2-cart-fix-02; PRJ-P2-FD1-FIX #600; TC-P2-07.
+
+### Công cụ
+
+Codex; Chrome; ESLint; TypeScript; Vite; Git.
+
+### Mục đích
+
+Ghi nhận kiểm tra thủ công của Thành và chạy lại kiểm tra tự động trước khi commit bản sửa xác nhận xoá giỏ hàng.
+
+### Prompt
+
+Thành ban đầu báo thao tác Esc chưa đóng hộp, sau đó gửi lại rằng đã kiểm tra đủ và hỏi bước tiếp theo.
+
+### Kết quả đề xuất
+
+Codex giữ nguyên implementation native dialog vì không nhận thêm lỗi tái hiện sau xác nhận cuối của Thành, chạy lại lint/build và chuẩn bị commit riêng cho issue #600.
+
+### Phản biện
+
+Phản hồi ban đầu về Esc và xác nhận sau đó không kèm ảnh minh chứng trong lượt này; kết quả Esc được ghi theo xác nhận cuối của Thành, không coi là kiểm tra độc lập của Codex. Ảnh 1366 px và 390 px vẫn cần đính vào mô tả PR.
+
+### Quyết định của nhóm
+
+Thành xác nhận đã kiểm tra đủ, cho phép chuyển sang bước commit theo quy trình đã thống nhất. Chưa có yêu cầu đóng issue.
+
+### Người kiểm tra
+
+Thành kiểm tra thủ công trên trình duyệt; Codex chạy kiểm tra tự động. Reviewer Đạt chưa kiểm tra độc lập.
+
+### Kiểm tra và minh chứng
+
+`git diff --check`, `npm.cmd run lint -w web` và `npm.cmd run build -w web` đều pass. Vite build 485 modules thành công. Chưa push, chưa mở PR và chưa đính ảnh.
+
+## P2 / thanh-20261121-p2-cart-fix-04
+
+* Thời gian ghi: 2026-11-21T23:11:28+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p2-cart-fix
+* Người prompt: Thành
+* Loại mục: Phản biện
+* Liên quan: thanh-20261121-p2-cart-fix-03; PRJ-P2-FD1-FIX #600.
+
+### Công cụ
+
+Codex; CSS; ESLint; TypeScript; Vite.
+
+### Mục đích
+
+Cải thiện độ tương phản của nút “Giữ lại” trong hộp xác nhận xoá sản phẩm sau phản hồi kiểm tra giao diện.
+
+### Prompt
+
+Thành phản hồi nút “Giữ lại” hiển thị quá nhạt và yêu cầu chỉnh lại.
+
+### Kết quả đề xuất
+
+Codex thêm class riêng `cart-button-keep`, dùng viền xanh đậm, nền xanh nhạt và chữ xanh đậm; bổ sung trạng thái hover/focus rõ hơn mà không ảnh hưởng các nút phụ khác.
+
+### Phản biện
+
+Không đổi hành vi dialog hoặc API. Thay đổi chỉ giới hạn ở nút “Giữ lại”; cần Thành quan sát lại trên giao diện thực trước khi tạo commit bổ sung.
+
+### Quyết định của nhóm
+
+Thành yêu cầu tăng tương phản. Chưa xác nhận giao diện mới và chưa cho phép push commit bổ sung.
+
+### Người kiểm tra
+
+Codex chạy kiểm tra tự động; chờ Thành kiểm tra trực quan.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web` và `npm.cmd run build -w web` pass; Vite build 485 modules. Thay đổi hiện chưa commit.

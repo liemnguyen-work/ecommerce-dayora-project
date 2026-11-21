@@ -1,7 +1,8 @@
-
+import { Scenario } from '../generated/prisma/enums.js';
 import {
   IsArray,
   IsBoolean,
+  IsEnum,
   IsIn,
   IsInt,
   IsNotEmpty,
@@ -99,11 +100,6 @@ export class UpdateCategoryDto {
   @Max(MAX_INT)
   sortOrder?: number;
 }
-
-// =====================================================
-// 3. CREATE PRODUCT
-// =====================================================
-
 export class CreateProductDto {
   @IsString()
   @IsNotEmpty()
@@ -129,10 +125,10 @@ export class CreateProductDto {
   @IsString()
   material?: string | null;
 
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  scenarios?: string[];
+@IsOptional()
+@IsArray()
+@IsEnum(Scenario, { each: true })
+scenarios?: Scenario[];
 
   @IsOptional()
   @IsBoolean()
@@ -175,10 +171,10 @@ export class UpdateProductDto {
   @IsString()
   material?: string | null;
 
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  scenarios?: string[];
+@IsOptional()
+@IsArray()
+@IsEnum(Scenario, { each: true })
+scenarios?: Scenario[];
 
   @IsOptional()
   @IsBoolean()

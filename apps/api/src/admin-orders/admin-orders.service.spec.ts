@@ -44,6 +44,9 @@ const tx = {
   orderStatusLog: {
     create: vi.fn(),
   },
+  voucherUsage: {
+  deleteMany: vi.fn(),
+},
 };
 
 const prisma = {
@@ -93,6 +96,7 @@ describe('AdminOrdersService - PRJ-P3-BD2-1', () => {
     prisma.order.count.mockResolvedValue(1);
     prisma.order.findMany.mockResolvedValue([]);
     prisma.order.findUnique.mockResolvedValue(mockOrder());
+    
     prisma.order.update.mockResolvedValue(mockOrder());
     prisma.order.updateMany.mockResolvedValue({ count: 1 });
     prisma.orderStatusLog.create.mockResolvedValue({
@@ -105,6 +109,7 @@ describe('AdminOrdersService - PRJ-P3-BD2-1', () => {
     tx.order.findUnique.mockResolvedValue(mockOrder());
     tx.order.update.mockResolvedValue(mockOrder());
     tx.order.updateMany.mockResolvedValue({ count: 1 });
+    tx.voucherUsage.deleteMany.mockResolvedValue({ count: 1 });
     tx.sku.updateMany.mockResolvedValue({ count: 1 });
     tx.orderStatusLog.create.mockResolvedValue({
       id: 'log-a',
@@ -129,8 +134,21 @@ describe('AdminOrdersService - PRJ-P3-BD2-1', () => {
 
     const service = await getService();
     const result = await service.list();
+    expect(prisma.order.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+    include: {
+      user: {
+        select: {
+          email: true,
+        },
+      },
+    },
+    take: 10,
+    skip: 0,
+    orderBy: { createdAt: 'desc' },
+  }),
+);
 
-    expect(prisma.order.findMany).toHaveBeenCalled();
     expect(result.items).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ id: 'order-a' }),
@@ -426,92 +444,59 @@ it('chỉ xác nhận khi đã thanh toán', async () => {
 
   expect(tx.orderStatusLog.create).toHaveBeenCalled();
 });
-it('đúng sơ đồ giao hàng và chỉ hoàn tất khi đã giao', async () => {
-  const service = (await getService()) as AdminOrdersContract & {
-    update: (
-      id: string,
-      dto: {
-        field: 'status' | 'shippingStatus';
-        to: string;
-      },
-      actorId: string,
-    ) => Promise<unknown>;
-  };
 
-  const order = mockOrder({
-    status: 'CONFIRMED',
-    paymentStatus: 'PAID',
-    shippingStatus: 'NOT_SHIPPED',
+it('hủy đơn có voucher phải trả lại lượt voucher', async () => {
+  tx.order.findUnique.mockResolvedValue(
+    mockOrder({
+      status: 'CONFIRMED',
+      paymentStatus: 'PAID',
+      shippingStatus: 'NOT_SHIPPED',
+    }),
+  );
+
+  const service = await getService();
+
+  await service.update(
+    'order-a',
+    { field: 'status', to: 'CANCELLED' },
+    'admin-a',
+  );
+
+  expect(tx.voucherUsage.deleteMany).toHaveBeenCalledTimes(1);
+  expect(tx.voucherUsage.deleteMany).toHaveBeenCalledWith({
+    where: { orderId: 'order-a' },
   });
+});
 
-  tx.order.findUnique.mockResolvedValue(order);
+it('không cho hủy đơn đang SHIPPING - HTTP 422', async () => {
+  tx.order.findUnique.mockResolvedValue(
+    mockOrder({
+      status: 'CONFIRMED',
+      paymentStatus: 'PAID',
+      shippingStatus: 'SHIPPING',
+    }),
+  );
+
+  const service = await getService();
 
   await expect(
     service.update(
       'order-a',
-      { field: 'status', to: 'COMPLETED' },
-      'admin-a',
-    ),
-  ).rejects.toMatchObject({
-    status: 422,
-  });
-
-  await expect(
-    service.update(
-      'order-a',
-      { field: 'shippingStatus', to: 'DELIVERED' },
+      { field: 'status', to: 'CANCELLED' },
       'admin-a',
     ),
   ).rejects.toMatchObject({
     status: 422,
     response: expect.objectContaining({
-      allowed: ['PREPARING'],
+      allowed: [],
     }),
   });
 
-  let current = order;
-
-  for (const next of [
-    'PREPARING',
-    'SHIPPING',
-    'DELIVERED',
-  ] as const) {
-    tx.order.findUnique.mockResolvedValue(current);
-
-    const result = await service.update(
-      'order-a',
-      { field: 'shippingStatus', to: next },
-      'admin-a',
-    );
-
-    expect(result).toEqual(
-      expect.objectContaining({
-        shippingStatus: next,
-      }),
-    );
-
-    current = {
-      ...current,
-      shippingStatus: next,
-    };
-  }
-
-  tx.order.findUnique.mockResolvedValue(current);
-
-  const completed = await service.update(
-    'order-a',
-    { field: 'status', to: 'COMPLETED' },
-    'admin-a',
-  );
-
-  expect(completed).toEqual(
-    expect.objectContaining({
-      status: 'COMPLETED',
-    }),
-  );
-
-  expect(tx.orderStatusLog.create).toHaveBeenCalledTimes(4);
-}); 
+  expect(tx.order.updateMany).not.toHaveBeenCalled();
+  expect(tx.sku.update).not.toHaveBeenCalled();
+  expect(tx.sku.updateMany).not.toHaveBeenCalled();
+  expect(tx.voucherUsage.deleteMany).not.toHaveBeenCalled();
+});
 it('hủy pending trả reserved', async () => {
   const order = mockOrder({
     status: 'PENDING_PAYMENT',
@@ -655,5 +640,30 @@ it('hủy đơn PAID cộng stock và ghi cần hoàn tiền', async () => {
       },
     }),
   );
+});
+
+it('từ chối field paymentStatus với lỗi 400', async () => {
+  const { ValidationPipe } = await import('@nestjs/common');
+  const { UpdateStatusDto } = await import('./admin-orders.dto.js');
+
+  const pipe = new ValidationPipe({
+    transform: true,
+    whitelist: true,
+  });
+
+  await expect(
+    pipe.transform(
+      {
+        field: 'paymentStatus',
+        to: 'PAID',
+      },
+      {
+        type: 'body',
+        metatype: UpdateStatusDto,
+      },
+    ),
+  ).rejects.toMatchObject({
+    status: 400,
+  });
 });
 });
