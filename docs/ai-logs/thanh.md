@@ -3521,3 +3521,126 @@ Thành tự viết và sửa câu trả lời; Codex đối chiếu với code. 
 ### Kiểm tra và minh chứng
 
 File `docs/learning/FD1-Thanh/kiem-tra/PRJ-P2-FD1-3.md` có đủ bốn bước, trải nghiệm thực tế và hai câu hỏi vặn. Kiểm tra toàn repo được chạy trước commit; kết quả được báo theo output thực tế.
+
+## P3 / thanh-20261122-p3-reviews-01
+
+* Thời gian ghi: 2026-11-22T00:16:34+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261122-p3-reviews
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-FD1-2 #55; PRJ-P3-BD1-3; PR #709.
+
+### Công cụ
+
+Codex; Git; GitHub connector; Git worktree.
+
+### Mục đích
+
+Chuẩn bị nhánh và thư mục độc lập cho task đánh giá sản phẩm từ `main` mới nhất, không trộn thay đổi của PRJ-P3-FD1-1 đang chờ review.
+
+### Prompt
+
+Thành yêu cầu kiểm tra có cần pull `main` hay đổi folder cho PRJ-P3-FD1-2, sau đó yêu cầu Codex tạo folder/nhánh mới để Thành tự chuyển sang làm tiếp.
+
+### Kết quả đề xuất
+
+Đã fetch remote, xác nhận backend PRJ-P3-BD1-3 đã được merge qua PR #709 và có module reviews trên `origin/main`. Đã tạo worktree `C:\Users\Admin\Desktop\Dayora_PTUD\dayora-prj-p3-fd1-2` với nhánh `prj/p3-fd1-2` theo dõi `origin/main`, tại commit `1049a24`.
+
+### Phản biện
+
+Không tạo nhánh mới từ `prj/p3-fd1-1` vì PR #710 chưa merge và task mới không phụ thuộc code frontend của task đó. Không tự sao chép `.env` để tránh thao tác với bí mật ngoài yêu cầu.
+
+### Quyết định của nhóm
+
+Thành chọn làm task trong folder mới từ `main` và sẽ tự chuyển VS Code sang folder này trước khi gửi sub-issue đầu tiên.
+
+### Người kiểm tra
+
+Codex kiểm tra branch, HEAD, remote tracking và danh sách worktree. Thành chưa bắt đầu kiểm tra chức năng của task mới.
+
+### Kiểm tra và minh chứng
+
+`git status -sb` tại worktree mới cho thấy `prj/p3-fd1-2...origin/main`; `git log -1` là `1049a24 Merge pull request #709 from liemnguyen-work/prj/p3-bd1-3`. Chưa cài dependency, chưa chạy migration và chưa commit mục log này.
+
+## P3 / thanh-20261122-p3-reviews-02
+
+* Thời gian ghi: 2026-11-22T00:23:27+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261122-p3-reviews
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: thanh-20261122-p3-reviews-01; PRJ-P3-FD1-2.1 #396.
+
+### Công cụ
+
+Codex; React; TypeScript; Tailwind CSS; ESLint; Vite build.
+
+### Mục đích
+
+Nối danh sách đánh giá công khai vào cuối trang chi tiết sản phẩm, xử lý trạng thái tải, lỗi và chưa có đánh giá mà không làm trước phần hiển thị sao/nội dung của bước 2.2.
+
+### Prompt
+
+Thành cung cấp đầy đủ sub-issue #396 và yêu cầu tiếp tục bước đầu tiên của task đánh giá trên trang sản phẩm.
+
+### Kết quả đề xuất
+
+Đã bổ sung `Reviews`, hook tải API cục bộ và component `ProductReviews` trong `apps/web/src/pages/ProductPage.tsx`. Component gọi endpoint với slug đã mã hóa, hiểu đúng contract backend `user.fullName`, hiển thị trạng thái tải/lỗi/rỗng và danh sách cơ bản gồm tên rút gọn cùng ngày đánh giá. Chưa hiển thị số sao và bình luận để giữ đúng phạm vi bước 2.1.
+
+### Phản biện
+
+Issue gợi ý dùng `useCatalogApi` nhưng code hiện tại chưa có hook này; Codex tạo hook nhỏ ngay trong file thay vì mở rộng kiến trúc. Lần lint đầu phát hiện `setState` đồng bộ trong effect; dòng reset thừa được bỏ vì `ProductDetails` remount theo sản phẩm.
+
+### Quyết định của nhóm
+
+Phạm vi thực hiện theo sub-issue #396 do Thành cung cấp. Chưa commit hoặc push; chờ Thành kiểm tra giao diện với sản phẩm có và chưa có đánh giá.
+
+### Người kiểm tra
+
+Codex kiểm tra code và lệnh tự động. Thành chưa kiểm tra thủ công trên trình duyệt.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web`, `npm.cmd run build -w web` và `git diff --check` đều pass sau khi sửa lỗi hook. `npm.cmd install` đã cài dependency; npm báo 17 lỗ hổng phụ thuộc hiện có nhưng không tự chạy audit fix. Worktree chưa có `apps/api/.env`, nên chưa chạy migration hoặc kiểm tra API/database thật.
+
+## P3 / thanh-20261122-p3-reviews-03
+
+* Thời gian ghi: 2026-11-22T00:38:58+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261122-p3-reviews
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261122-p3-reviews-02; PRJ-P3-FD1-2.1 #396.
+
+### Công cụ
+
+Codex; trình duyệt do Thành sử dụng; Git.
+
+### Mục đích
+
+Ghi nhận kiểm tra thủ công trạng thái chưa có đánh giá và quyết định tạo commit bước 2.1.
+
+### Prompt
+
+Thành cung cấp ảnh cuối trang sản phẩm có mục `Đánh giá sản phẩm` và thông báo chưa có đánh giá, xác nhận đạt rồi yêu cầu commit và push để tự mở pull request.
+
+### Kết quả đề xuất
+
+Ảnh cho thấy khu vực đánh giá hiển thị đúng, thông báo rỗng rõ ràng và bố cục không vỡ ở kích thước được cung cấp. Việc chưa có ô nhập là đúng vì bước 2.1 chỉ đọc danh sách; form tạo đánh giá thuộc bước sau.
+
+### Phản biện
+
+Seed hiện không tạo bản ghi Review nên chưa kiểm tra được nhánh danh sách có dữ liệu. Không dùng thao tác API thủ công phức tạp làm điều kiện chặn commit; giới hạn này cần tiếp tục kiểm tra khi có dữ liệu đánh giá thật.
+
+### Quyết định của nhóm
+
+Thành xác nhận trạng thái rỗng đạt và yêu cầu commit, push bước PRJ-P3-FD1-2.1. Chưa đóng sub-issue và chưa có reviewer duyệt.
+
+### Người kiểm tra
+
+Thành kiểm tra giao diện trạng thái rỗng trên trình duyệt; Codex kiểm tra lint, build và diff. Nhánh có dữ liệu đánh giá chưa được kiểm tra thủ công.
+
+### Kiểm tra và minh chứng
+
+Ảnh Thành cung cấp hiển thị câu `Chưa có đánh giá. Bạn có thể đánh giá sau khi nhận hàng.` ở cuối trang sản phẩm. Kiểm tra tự động đã pass theo mục `thanh-20261122-p3-reviews-02`; chuẩn bị commit nhưng chưa push tại thời điểm ghi mục này.

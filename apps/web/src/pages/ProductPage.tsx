@@ -9,6 +9,7 @@ import '../catalog.css';
 
 type ProductDetail = {
   id: string;
+  slug: string;
   name: string;
   description: string | null;
   material: string | null;
@@ -21,6 +22,82 @@ type CartNotice = {
   ok: boolean;
   text: string;
 };
+
+interface Reviews {
+  items: {
+    id: string;
+    rating: number;
+    comment: string | null;
+    author?: string;
+    userName?: string;
+    user?: { fullName: string };
+    createdAt: string;
+  }[];
+  average: number;
+  count: number;
+}
+
+function useCatalogApi<T>(path: string) {
+  const [state, setState] = useState<{ data: T | null; loading: boolean; error: boolean }>({
+    data: null,
+    loading: true,
+    error: false,
+  });
+
+  useEffect(() => {
+    let active = true;
+    api<T>(path)
+      .then((data) => {
+        if (active) setState({ data, loading: false, error: false });
+      })
+      .catch(() => {
+        if (active) setState({ data: null, loading: false, error: true });
+      });
+    return () => { active = false; };
+  }, [path]);
+
+  return state;
+}
+
+function ProductReviews({ slug }: { slug: string }) {
+  const { data, loading, error } = useCatalogApi<Reviews>(
+    `/products/${encodeURIComponent(slug)}/reviews`,
+  );
+
+  return (
+    <section aria-labelledby="product-reviews" className="mt-16">
+      <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <p className="font-semibold uppercase tracking-widest text-berry">Trải nghiệm thực tế</p>
+          <h2 id="product-reviews" className="text-2xl font-bold">Đánh giá sản phẩm</h2>
+        </div>
+        {data && data.count > 0 && <p className="text-sm text-ink/70">{data.count} đánh giá</p>}
+      </div>
+
+      {loading && <p role="status" aria-busy="true" className="rounded-2xl border border-leaf bg-white p-6 text-ink/70">Đang tải đánh giá…</p>}
+      {error && <p role="alert" className="rounded-2xl border border-red-200 bg-red-50 p-6 text-red-800">Chưa tải được đánh giá. Vui lòng thử lại sau.</p>}
+      {data?.count === 0 && (
+        <p className="rounded-2xl border border-leaf bg-white p-6 text-ink/65">
+          Chưa có đánh giá. Bạn có thể đánh giá sau khi nhận hàng.
+        </p>
+      )}
+      {data && data.count > 0 && (
+        <ul className="grid gap-4" aria-label="Danh sách đánh giá sản phẩm">
+          {data.items.map((review) => (
+            <li key={review.id} className="rounded-2xl border border-leaf bg-white p-5">
+              <p className="font-semibold">
+                {review.user?.fullName ?? review.author ?? review.userName ?? 'Khách hàng DAYORA'}
+              </p>
+              <time className="text-sm text-ink/60" dateTime={review.createdAt}>
+                {new Intl.DateTimeFormat('vi-VN').format(new Date(review.createdAt))}
+              </time>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  );
+}
 
 function ProductDetails({ product }: { product: ProductDetail }) {
   const location = useLocation();
@@ -118,6 +195,7 @@ function ProductDetails({ product }: { product: ProductDetail }) {
       </dl>
     </section>
     {product.related?.length > 0 && <section aria-labelledby="related-products" className="mt-16"><h2 id="related-products" className="mb-6 text-2xl font-bold">Cùng bạn ra ngoài</h2><div className="catalog-grid">{product.related.map((item) => <ProductCard key={item.id} product={item} search={search} />)}</div></section>}
+    <ProductReviews slug={product.slug} />
     </>
   );
 }
