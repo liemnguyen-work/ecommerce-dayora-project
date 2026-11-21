@@ -561,6 +561,110 @@ function Promotions() {
   );
 }
 
+type AdminOrder = {
+  id: string;
+  code: string;
+  createdAt: string;
+  recipientName: string;
+  recipientPhone: string;
+  recipientAddress: string;
+  user: { email: string };
+  total: number;
+  status: string;
+  paymentStatus: string;
+  shippingStatus: string;
+};
+
+const orderFilters: [string, string][] = [
+  ['', 'Tất cả'],
+  ['status=PENDING_PAYMENT', 'Chờ thanh toán'],
+  ['status=CONFIRMED', 'Đã xác nhận'],
+  ['shippingStatus=PREPARING', 'Đang chuẩn bị'],
+  ['shippingStatus=SHIPPING', 'Đang giao'],
+  ['status=COMPLETED', 'Hoàn tất'],
+  ['status=CANCELLED', 'Đã hủy'],
+];
+
+const orderStatusLabel: Record<string, string> = {
+  PENDING_PAYMENT: 'Chờ thanh toán', CONFIRMED: 'Đã xác nhận',
+  COMPLETED: 'Hoàn tất', CANCELLED: 'Đã hủy',
+};
+const paymentLabel: Record<string, string> = {
+  UNPAID: 'Chưa thanh toán', PAID: 'Đã thanh toán',
+  FAILED: 'Thanh toán thất bại', EXPIRED: 'Hết hạn thanh toán',
+};
+const shippingLabel: Record<string, string> = {
+  NOT_SHIPPED: 'Chưa giao', PREPARING: 'Đang chuẩn bị', SHIPPING: 'Đang giao',
+  DELIVERED: 'Đã giao', RETURNED: 'Đã hoàn hàng',
+};
+
+function Orders() {
+  const [filter, setFilter] = useState('');
+  const [q, setQ] = useState('');
+  const [page, setPage] = useState(1);
+  const [openedId, setOpenedId] = useState<string | null>(null);
+  const query = new URLSearchParams(filter);
+  if (q.trim()) query.set('q', q.trim());
+  if (page > 1) query.set('page', String(page));
+  const { data, loading, error, reload } = useLoad<{
+    items: AdminOrder[]; total: number; page: number; pageSize: number; totalPages: number;
+  }>(`/admin/orders?${query}`);
+
+  return (
+    <div className="mt-6 space-y-4" aria-busy={loading}>
+      <div className="chips admin-chips flex flex-wrap gap-2" aria-label="Lọc đơn hàng">
+        {orderFilters.map(([value, label]) => (
+          <button key={value} type="button" aria-pressed={filter === value}
+            className="admin-button"
+            style={filter === value ? { background: 'var(--color-ink)', color: 'var(--color-paper)' } : undefined}
+            onClick={() => { setFilter(value); setPage(1); setOpenedId(null); }}>
+            {label}
+          </button>
+        ))}
+      </div>
+      <label className="block">
+        <span className="mb-2 block font-semibold">Tìm theo mã đơn, tên người nhận hoặc email</span>
+        <input type="search" value={q} className="admin-input" style={{ width: '100%' }} maxLength={200}
+          onChange={event => { setQ(event.target.value); setPage(1); setOpenedId(null); }} />
+      </label>
+      {loading && <p role="status">Đang tải đơn hàng…</p>}
+      {error && <p role="alert" className="text-red-700">{error}</p>}
+      {!loading && !error && data && (
+        <>
+          <p role="status">Tổng số: {data.total} đơn hàng. Trang {data.page}{data.totalPages > 0 ? ` / ${data.totalPages}` : ''}.</p>
+          {data.items.length === 0 ? <p>Không có đơn hàng phù hợp.</p> : (
+            <div className="admin-table-wrap">
+              <table className="admin-table admin-cards min-w-[900px]">
+                <caption className="sr-only">Danh sách đơn hàng</caption>
+                <thead><tr>{['Mã đơn', 'Khách hàng', 'Tổng tiền', 'Trạng thái đơn', 'Thanh toán', 'Giao hàng', 'Thao tác'].map(label => <th key={label} scope="col">{label}</th>)}</tr></thead>
+                <tbody>{data.items.map(order => (
+                  <Fragment key={order.id}>
+                    <tr>
+                      <th scope="row" data-label="Mã đơn"><span className="block" title={order.code}>#{order.code.slice(0, 8)}</span><time className="block text-sm font-normal" dateTime={order.createdAt}>{new Date(order.createdAt).toLocaleString('vi-VN')}</time></th>
+                      <td data-label="Khách hàng"><span className="block">{order.recipientName}</span><span className="block break-all">{order.user.email}</span></td>
+                      <td data-label="Tổng tiền">{formatPrice(order.total)}</td>
+                      <td data-label="Trạng thái đơn">{orderStatusLabel[order.status] ?? 'Chưa xác định'}</td>
+                      <td data-label="Thanh toán">{paymentLabel[order.paymentStatus] ?? 'Chưa xác định'}</td>
+                      <td data-label="Giao hàng">{shippingLabel[order.shippingStatus] ?? 'Chưa xác định'}</td>
+                      <td data-label="Thao tác"><button type="button" className="admin-button" aria-expanded={openedId === order.id} aria-controls={`order-${order.id}`} aria-label={`${openedId === order.id ? 'Đóng' : 'Xử lý'} đơn ${order.code}`} onClick={() => setOpenedId(openedId === order.id ? null : order.id)}>{openedId === order.id ? 'Đóng' : 'Xử lý'}</button></td>
+                    </tr>
+                    {openedId === order.id && <tr id={`order-${order.id}`}><td colSpan={7}><p className="font-semibold">Thông tin nhận hàng</p><p>{order.recipientName} — {order.recipientPhone}</p><p>{order.recipientAddress}</p></td></tr>}
+                  </Fragment>
+                ))}</tbody>
+              </table>
+            </div>
+          )}
+          <nav className="flex flex-wrap items-center gap-3" aria-label="Phân trang đơn hàng">
+            <button type="button" className="admin-button" disabled={data.page <= 1} onClick={() => { setPage(data.page - 1); setOpenedId(null); }}>Trang trước</button>
+            <button type="button" className="admin-button" disabled={data.page >= data.totalPages} onClick={() => { setPage(data.page + 1); setOpenedId(null); }}>Trang sau</button>
+          </nav>
+        </>
+      )}
+      <button type="button" className="admin-button" disabled={loading} onClick={() => { void reload(); }}>{loading ? 'Đang tải…' : error ? 'Thử lại' : 'Tải lại'}</button>
+    </div>
+  );
+}
+
 export default function AdminPage() {
   const { user, loading } = useAuth();
   const [params, setParams] = useSearchParams();
@@ -606,7 +710,9 @@ export default function AdminPage() {
         </nav>
         <section className="admin-main" aria-labelledby="admin-section-title">
           <h1 id="admin-section-title" className="text-3xl font-extrabold">{title}</h1>
-          {section === 'san-pham'
+          {section === 'don-hang'
+            ? <Orders />
+            : section === 'san-pham'
             ? <Products />
             : section === 'tai-khoan'
               ? <Users />
