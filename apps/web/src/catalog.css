@@ -100,6 +100,7 @@
 .order-timeline .is-reached { color: var(--color-ink); }
 .order-timeline .is-reached span { border-color: var(--color-ink); background: var(--color-ink); color: #fff; }
 .order-layout { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(300px, .75fr); gap: 24px; align-items: start; }
+.order-layout > *, .order-sidebar, .order-item > div { min-width: 0; }
 .order-items, .order-recipient, .order-summary { padding: clamp(22px, 4vw, 34px); }
 .order-sidebar, .order-item-list { display: grid; }
 .order-sidebar { gap: 24px; }
@@ -109,6 +110,7 @@
 .order-item h3 { font-size: 1.08rem; }
 .order-item p, .order-item small { display: block; color: var(--ink-soft); }
 .order-item > strong { flex: none; }
+.order-item h3, .order-item p, .order-item small, .order-recipient dd, .order-summary dd { overflow-wrap: anywhere; }
 .order-recipient dl, .order-summary dl { display: grid; gap: 14px; margin: 0; }
 .order-recipient dl div, .order-summary dl div { display: flex; justify-content: space-between; gap: 20px; }
 .order-recipient dl div { display: grid; gap: 2px; }
@@ -120,6 +122,8 @@
 .order-state h1 { margin: 6px 0; }
 .order-state-error { border-color: rgba(200, 72, 60, .3); background: #fff8f6; }
 .order-state-actions { display: flex; justify-content: center; gap: 12px; margin-top: 24px; }
+.order-state-actions .cart-button { border-color: #244c35; background: #fff; color: #244c35; }
+.order-state-actions .cart-button:hover, .order-state-actions .cart-button:focus-visible { background: #e9f4df; }
 
 @media (max-width: 760px) {
   .order-page { padding: 34px 18px 56px; }
@@ -132,7 +136,8 @@
   .order-timeline { grid-template-columns: 1fr; gap: 15px; }
   .order-timeline li { grid-template-columns: 36px 1fr; justify-items: start; align-items: center; text-align: left; }
   .order-timeline li:not(:last-child)::after { top: 39px; left: 17px; width: 3px; height: 15px; }
-  .order-item { align-items: start; }
+  .order-item { display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 10px; }
+  .order-item > strong { justify-self: start; }
   .order-state-actions { display: grid; }
 }
 

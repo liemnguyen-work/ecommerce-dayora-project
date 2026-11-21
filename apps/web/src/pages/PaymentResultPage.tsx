@@ -11,6 +11,9 @@ interface ReturnResult {
   message: string;
 }
 
+const paymentResultError =
+  'Không đọc được kết quả thanh toán. Vui lòng kiểm tra lại trạng thái trong Đơn hàng của tôi.';
+
 export default function PaymentResultPage() {
   const { search } = useLocation();
   const [result, setResult] = useState<ReturnResult | null>(null);
@@ -25,9 +28,9 @@ export default function PaymentResultPage() {
       .then((data) => {
         if (active) setResult(data);
       })
-      .catch((requestError: unknown) => {
+      .catch(() => {
         if (!active) return;
-        setError(requestError instanceof Error ? requestError.message : 'Không thể kiểm tra kết quả thanh toán.');
+        setError(paymentResultError);
       })
       .finally(() => {
         if (active) setLoading(false);
@@ -68,7 +71,7 @@ export default function PaymentResultPage() {
           <p className="payment-result-message">{error}</p>
           <div className="payment-result-actions">
             <button type="button" className="payment-result-primary" onClick={retryCheck}>Thử lại</button>
-            <Link className="payment-result-secondary" to="/">Về trang chủ</Link>
+            <Link className="payment-result-secondary" to="/tai-khoan">Đơn hàng của tôi</Link>
           </div>
         </section>
       </main>

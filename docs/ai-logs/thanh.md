@@ -4255,3 +4255,125 @@ Thành kiểm tra luồng Sandbox, IPN local, trang chi tiết đơn và giao di
 ### Kiểm tra và minh chứng
 
 Ảnh DevTools ở `390 × 844` cho thấy trang `Thanh toán thành công` không tràn ngang. Desktop đã được kiểm tra trước đó. Lint web, build web và `git diff --check` pass; chuẩn bị commit nhưng chưa push.
+## P3 / thanh-20261121-p3-orders-19
+
+* Thời gian ghi: 2026-11-21T22:34:22+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: thanh-20261121-p3-orders-18; PRJ-P3-FD1-1 #54; PRJ-P2-FD1-FIX #600.
+
+### Công cụ
+
+Codex; Gmail connector; GitHub notification email.
+
+### Mục đích
+
+Đọc feedback mới nhất của Tiến Minh và xác định thứ tự công việc tiếp theo sau PRJ-P3-FD1-1.3.
+
+### Prompt
+
+Thành hỏi sau task hiện tại nên làm task nào tiếp theo theo mức ưu tiên trong Gmail.
+
+### Kết quả đề xuất
+
+Ưu tiên được xác định: hoàn thiện minh chứng và mô tả PR #710 trước; tiếp theo xử lý issue #600 về hộp xác nhận khi giảm số lượng giỏ từ 1 xuống 0; sau đó quay lại PRJ-P3-FD1-1.4 và 1.5.
+
+### Phản biện
+
+Issue #600 có hạn 24/11/2026 và là lỗi QA từ TC-P2-07 nên được ưu tiên trước các bước P3 còn lại. Các issue #601, #602 và #603 thuộc backend/DevOps của thành viên khác, Thành không tự sửa.
+
+### Quyết định của nhóm
+
+Email của Tiến Minh giao #600 cho Thành và yêu cầu sửa trên nhánh riêng, reviewer Đạt. Chưa có quyết định bắt đầu code #600 trong lượt này.
+
+### Người kiểm tra
+
+Codex đọc email review issue #54 và nội dung issue #600; Thành chưa xác nhận bắt đầu task tiếp theo.
+
+### Kiểm tra và minh chứng
+
+Feedback issue #54 yêu cầu trang kết quả, ảnh 1366/390 và điền mô tả PR. Issue #600 yêu cầu modal xác nhận xóa, hỗ trợ bàn phím, ảnh 1366/390, lint/build và ghi ca TC-P2-07 trong PR.
+
+## P3 / thanh-20261121-p3-orders-20
+
+* Thời gian ghi: 2026-11-21T23:23:33+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: thanh-20261121-p3-orders-19; PRJ-P3-FD1-1.4 #386.
+
+### Công cụ
+
+Codex; TypeScript; React; CSS; ESLint; Vite build.
+
+### Mục đích
+
+Bổ sung trạng thái lỗi rõ ràng và gia cố bố cục responsive cho trang chi tiết đơn hàng và trang kết quả thanh toán theo PRJ-P3-FD1-1.4.
+
+### Prompt
+
+Thành cung cấp nội dung sub-issue #386 và yêu cầu tiếp tục thực hiện bước 1.4; quy trình hiện tại yêu cầu viết mã, hướng dẫn Thành kiểm tra thủ công rồi mới commit và push.
+
+### Kết quả đề xuất
+
+Đã phân biệt phản hồi `403/404` của trang đơn hàng để hiện thông báo không tìm thấy hoặc không có quyền mà không tiết lộ dữ liệu đơn khác; lỗi gọi API Return hiện thông báo hướng người dùng sang Đơn hàng của tôi. CSS được bổ sung giới hạn chiều rộng, ngắt chuỗi dài và xếp từng dòng sản phẩm theo một cột ở màn hình nhỏ. Các tệp thay đổi: `apps/web/src/pages/OrderPage.tsx`, `apps/web/src/pages/PaymentResultPage.tsx`, `apps/web/src/catalog.css`.
+
+### Phản biện
+
+Không sửa helper API dùng chung vì phản hồi NestJS hiện đã chứa `body.statusCode`; thay đổi được giữ cục bộ trong trang đơn hàng để giảm phạm vi ảnh hưởng. Chưa có phản hồi kiểm tra giao diện thủ công từ Thành cho bước này.
+
+### Quyết định của nhóm
+
+Phạm vi thực hiện theo sub-issue #386 do Thành cung cấp. Chưa có quyết định commit hoặc push; chờ Thành kiểm tra các URL lỗi và bố cục 1366/390.
+
+### Người kiểm tra
+
+Codex đã chạy kiểm tra tự động. Thành là người dự kiến kiểm tra thủ công trên trình duyệt; hiện chưa xác nhận.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web` pass. `npm.cmd run build -w web` pass sau khi cho phép TypeScript ghi cache build vào `node_modules/.tmp`; lần chạy trong sandbox trước đó bị `EPERM`, không phải lỗi mã nguồn. Chưa có ảnh 1366 px và 390 px; chưa tạo commit.
+
+## P3 / thanh-20261121-p3-orders-21
+
+* Thời gian ghi: 2026-11-21T23:30:49+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261121-p3-orders-20; PRJ-P3-FD1-1.4 #386.
+
+### Công cụ
+
+Codex; Chrome DevTools responsive mode do Thành sử dụng; ESLint; Vite build; Git.
+
+### Mục đích
+
+Ghi nhận kết quả kiểm tra thủ công trạng thái lỗi và responsive, đồng thời sửa độ tương phản của nút điều hướng trước khi commit bước 1.4.
+
+### Prompt
+
+Thành cung cấp ảnh trang kết quả thanh toán không hợp lệ ở desktop và 390 px, cùng ảnh trang không tìm thấy đơn hàng ở 390 px, rồi hỏi đã ổn để commit chưa.
+
+### Kết quả đề xuất
+
+Các trang lỗi hiển thị đúng nội dung, bố cục không tràn ngang ở ảnh được cung cấp. Codex phát hiện nút `Về tài khoản` quá nhạt nên bổ sung viền, chữ xanh đậm và nền hover/focus rõ hơn trong `apps/web/src/catalog.css`.
+
+### Phản biện
+
+Ảnh ban đầu xác nhận bố cục nhưng độ tương phản nút về tài khoản chưa đạt mức dễ đọc, vì vậy chưa commit ngay và sửa trước. Ảnh mới sau sửa màu chưa được Thành cung cấp, nhưng thay đổi CSS đã được kiểm tra tự động.
+
+### Quyết định của nhóm
+
+Thành xác nhận luồng và bố cục đã ổn để chuẩn bị commit; phạm vi vẫn giới hạn trong PRJ-P3-FD1-1.4.
+
+### Người kiểm tra
+
+Thành kiểm tra thủ công các trạng thái lỗi ở desktop và 390 px qua ảnh cung cấp. Codex rà giao diện, diff và chạy lại kiểm tra tự động.
+
+### Kiểm tra và minh chứng
+
+Ảnh của Thành cho thấy `/thanh-toan/ket-qua` không tham số hiển thị `Kết quả không hợp lệ`, và `/don-hang/id-tam-bay` hiển thị thông báo không tìm thấy/không có quyền ở 390 px. Sau sửa tương phản, `npm.cmd run lint -w web`, `npm.cmd run build -w web` và `git diff --check` đều pass. Chưa push tại thời điểm ghi mục này.

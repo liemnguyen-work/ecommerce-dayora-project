@@ -59,6 +59,16 @@ const shippingSteps: [Order['shippingStatus'], string][] = [
   ['DELIVERED', 'Đã giao'],
 ];
 
+const orderNotFoundMessage =
+  'Không tìm thấy đơn hàng. Đơn có thể không tồn tại hoặc bạn không có quyền xem đơn này.';
+
+function getResponseStatus(error: unknown) {
+  if (!error || typeof error !== 'object' || !('body' in error)) return undefined;
+  const body = error.body;
+  if (!body || typeof body !== 'object' || !('statusCode' in body)) return undefined;
+  return typeof body.statusCode === 'number' ? body.statusCode : undefined;
+}
+
 function OrderDetails({ id }: { id: string }) {
   const [searchParams] = useSearchParams();
   const [order, setOrder] = useState<Order | null>(null);
@@ -66,6 +76,7 @@ function OrderDetails({ id }: { id: string }) {
   const [busy, setBusy] = useState(false);
   const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
   const [error, setError] = useState('');
+  const [missingOrder, setMissingOrder] = useState(false);
 
   const load = useCallback(async () => {
     if (!id) {
@@ -75,11 +86,18 @@ function OrderDetails({ id }: { id: string }) {
     }
     setLoading(true);
     setError('');
+    setMissingOrder(false);
     try {
       setOrder(await api<Order>(`/orders/${encodeURIComponent(id)}`));
     } catch (requestError) {
       setOrder(null);
-      setError(requestError instanceof Error ? requestError.message : 'Chưa tải được đơn hàng.');
+      const status = getResponseStatus(requestError);
+      if (status === 403 || status === 404) {
+        setMissingOrder(true);
+        setError(orderNotFoundMessage);
+      } else {
+        setError(requestError instanceof Error ? requestError.message : 'Chưa tải được đơn hàng.');
+      }
     } finally {
       setLoading(false);
     }
@@ -123,7 +141,13 @@ function OrderDetails({ id }: { id: string }) {
       .catch((requestError: unknown) => {
         if (!active) return;
         setOrder(null);
-        setError(requestError instanceof Error ? requestError.message : 'Chưa tải được đơn hàng.');
+        const status = getResponseStatus(requestError);
+        if (status === 403 || status === 404) {
+          setMissingOrder(true);
+          setError(orderNotFoundMessage);
+        } else {
+          setError(requestError instanceof Error ? requestError.message : 'Chưa tải được đơn hàng.');
+        }
       })
       .finally(() => {
         if (active) setLoading(false);
@@ -138,10 +162,10 @@ function OrderDetails({ id }: { id: string }) {
       <main className="order-page">
         <section className="order-state order-state-error" role="alert">
           <p className="order-eyebrow">DAYORA · ĐƠN HÀNG</p>
-          <h1>Chưa thể hiển thị đơn hàng</h1>
+          <h1>{missingOrder ? 'Không tìm thấy đơn hàng' : 'Chưa thể hiển thị đơn hàng'}</h1>
           <p>{error || 'Không tìm thấy đơn hàng.'}</p>
           <div className="order-state-actions">
-            <button className="cart-button cart-button-primary" type="button" onClick={() => void load()}>Thử lại</button>
+            {!missingOrder && <button className="cart-button cart-button-primary" type="button" onClick={() => void load()}>Thử lại</button>}
             <Link className="cart-button" to="/tai-khoan">Về tài khoản</Link>
           </div>
         </section>
