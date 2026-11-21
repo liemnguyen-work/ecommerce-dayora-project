@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   getCart,
@@ -48,6 +48,8 @@ export default function CartPage() {
   const [error, setError] = useState('');
   const [voucher, setVoucher] = useState(savedVoucher);
   const [preview, setPreview] = useState<Preview | null>(null);
+  const [pendingRemoval, setPendingRemoval] = useState<{ id: string; productName: string } | null>(null);
+  const removeDialogRef = useRef<HTMLDialogElement>(null);
 
   const refresh = useCallback(async (code = voucher) => {
     try {
@@ -89,17 +91,46 @@ export default function CartPage() {
   }, [user]);
 
   async function change(id: string, quantity: number) {
+    if (quantity < 1) return;
     setBusy(true);
     setError('');
     try {
-      if (quantity > 0) await updateCartItem(id, quantity);
-      else await removeCartItem(id);
+      await updateCartItem(id, quantity);
       await refresh(voucher);
     } catch (requestError) {
       setError(errorMessage(requestError));
     } finally {
       setBusy(false);
     }
+  }
+
+  async function remove(id: string) {
+    setBusy(true);
+    setError('');
+    try {
+      await removeCartItem(id);
+      await refresh(voucher);
+    } catch (requestError) {
+      setError(errorMessage(requestError));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  function askBeforeRemoving(id: string, productName: string) {
+    setPendingRemoval({ id, productName });
+    removeDialogRef.current?.showModal();
+  }
+
+  function closeRemoveDialog() {
+    removeDialogRef.current?.close();
+  }
+
+  async function confirmRemoval() {
+    if (!pendingRemoval) return;
+    const id = pendingRemoval.id;
+    closeRemoveDialog();
+    await remove(id);
   }
 
   async function applyVoucher() {
@@ -200,11 +231,18 @@ export default function CartPage() {
                 </div>
                 <div className="cart-line-actions">
                   <div className="product-qty" aria-label={`Số lượng ${productName}`}>
-                    <button type="button" disabled={busy} onClick={() => void change(item.id, item.quantity - 1)} aria-label={`Giảm số lượng ${productName}`}>−</button>
+                    <button
+                      type="button"
+                      disabled={busy}
+                      onClick={() => item.quantity === 1
+                        ? askBeforeRemoving(item.id, productName)
+                        : void change(item.id, item.quantity - 1)}
+                      aria-label={`Giảm số lượng ${productName}`}
+                    >−</button>
                     <span aria-live="polite">{item.quantity}</span>
                     <button type="button" disabled={busy || !item.sku.inStock} onClick={() => void change(item.id, item.quantity + 1)} aria-label={`Tăng số lượng ${productName}`}>+</button>
                   </div>
-                  <button className="cart-remove" type="button" disabled={busy} onClick={() => void change(item.id, 0)}>Xóa</button>
+                  <button className="cart-remove" type="button" disabled={busy} onClick={() => void remove(item.id)}>Xóa</button>
                 </div>
                 <strong className="cart-line-total">{formatPrice(item.lineTotal)}</strong>
               </li>
@@ -244,6 +282,25 @@ export default function CartPage() {
           </button>
         </aside>
       </div>
+      <dialog
+        ref={removeDialogRef}
+        className="cart-remove-dialog"
+        aria-label="Xoá sản phẩm khỏi giỏ?"
+        onClose={() => setPendingRemoval(null)}
+      >
+        <div className="cart-remove-dialog-content">
+          <p className="cart-eyebrow">DAYORA · GIỎ HÀNG</p>
+          <h2>Xoá sản phẩm khỏi giỏ?</h2>
+          <p>
+            Bạn đang giảm số lượng <strong>{pendingRemoval?.productName ?? 'sản phẩm'}</strong> về 0.
+            Bạn có chắc muốn xoá món này không?
+          </p>
+          <div className="cart-remove-dialog-actions">
+            <button className="cart-button" type="button" autoFocus onClick={closeRemoveDialog}>Giữ lại</button>
+            <button className="cart-button cart-button-danger" type="button" onClick={() => void confirmRemoval()}>Xoá</button>
+          </div>
+        </div>
+      </dialog>
     </main>
   );
 }
