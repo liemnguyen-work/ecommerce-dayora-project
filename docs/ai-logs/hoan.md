@@ -5884,3 +5884,423 @@ Codex đối chiếu câu trả lời với các ca test; chờ reviewer đánh 
 ### Kiểm tra và minh chứng
 
 Hai câu trả lời bổ sung nêu Return không tự cập nhật PAID và tồn khả dụng bằng stock trừ reserved. Không chạy lại test vì thay đổi là tài liệu.
+---
+
+## Phase 3 / hoan-20261121-reviews-test-a61-01
+
+* Thời gian ghi: 2026-11-21T09:15:05+07:00
+* Thời gian thực hiện: 21/11/2026.
+* Mã phiên nhật ký: hoan-20261121-reviews-test-a61
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-3.1
+
+### Công cụ
+
+Codex, Git, Vitest và Supertest.
+
+### Mục đích
+
+Chuẩn bị test nghiệm thu trước cho chức năng đánh giá sau mua.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp các bước và yêu cầu kiểm tra task phụ thuộc đã merge.
+
+### Kết quả đề xuất
+
+Xác nhận PR #707 đã merge vào main; tạo nhánh prj/p3-bd1-3 và hai file test service, HTTP trước khi viết chức năng.
+
+### Phản biện
+
+Test HTTP tạm dùng GET /api/admin/reviews vì tài liệu chưa xác định đường dẫn admin cụ thể; cần QA xác nhận. Test dùng dữ liệu mock và lỗi hiện tại là thiếu module, chưa thực thi assertion.
+
+### Quyết định của nhóm
+
+Hoàn cung cấp yêu cầu; chưa có xác nhận QA cho bộ test hoặc hợp đồng route.
+
+### Người kiểm tra
+
+Codex chạy test; chờ Hoàn và QA xem xét.
+
+### Kiểm tra và minh chứng
+
+`npm test -w api -- reviews.service reviews.http`: 6 ca FAIL do service, DTO và controller chưa tồn tại. Chưa viết chức năng.
+---
+
+## Phase 3 / hoan-20261121-reviews-test-a61-02
+
+* Thời gian ghi: 2026-11-21T09:30:58+07:00
+* Thời gian thực hiện: 21/11/2026.
+* Mã phiên nhật ký: hoan-20261121-reviews-test-a61
+* Người prompt: Hoàn
+* Loại mục: Quyết định
+* Liên quan: PRJ-P3-BD1-3.1, hoan-20261121-reviews-test-a61-01
+
+### Công cụ
+
+Codex và Git.
+
+### Mục đích
+
+Ghi nhận lựa chọn đường dẫn admin cho bộ test đánh giá.
+
+### Prompt
+
+Tóm lược: Hoàn đồng ý dùng GET /api/admin/reviews và yêu cầu commit, push bộ test cùng AI log.
+
+### Kết quả đề xuất
+
+Giữ route trong test HTTP theo lựa chọn của Hoàn; tiếp tục bảo vệ route bằng quyền ADMIN ở bước chức năng.
+
+### Phản biện
+
+Đây là lựa chọn của Hoàn; chưa có xác nhận của QA hoặc frontend về hợp đồng API. Bộ test hiện đỏ do thiếu module, chưa thực thi assertion.
+
+### Quyết định của nhóm
+
+Hoàn đồng ý chọn GET /api/admin/reviews; chưa xác nhận quyết định của các thành viên khác.
+
+### Người kiểm tra
+
+Codex ghi nhận lựa chọn và kết quả test trước đó; chờ QA duyệt test.
+
+### Kiểm tra và minh chứng
+
+Kết quả đã chạy: 6 ca FAIL do thiếu các file chức năng, theo mục a61-01. Không sửa test sau khi Hoàn chọn route.
+---
+
+## Phase 3 / hoan-20261121-reviews-eligibility-a61-03
+
+* Thời gian ghi: 2026-11-21T09:34:37+07:00
+* Thời gian thực hiện: 21/11/2026.
+* Mã phiên nhật ký: hoan-20261121-reviews-test-a61
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-3.2, hoan-20261121-reviews-test-a61-02
+
+### Công cụ
+
+Codex, Prisma, Vitest và ESLint.
+
+### Mục đích
+
+Kiểm tra điều kiện đơn hàng trước khi lưu đánh giá.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp bước từ chối đơn không đủ điều kiện đánh giá.
+
+### Kết quả đề xuất
+
+Thêm service tìm đơn đúng chủ, đã thanh toán, đã giao và chứa sản phẩm; không tìm thấy trả 403, đủ điều kiện thì tạo đánh giá.
+
+### Phản biện
+
+Test dùng Prisma mock, kiểm tra điều kiện truy vấn và trường hợp không tìm thấy; chưa xác minh từng tình huống với database thật. Chưa xử lý lỗi đánh giá trùng ở bước này.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu thực hiện bước 3.2; chưa ghi nhận QA duyệt bộ test này.
+
+### Người kiểm tra
+
+Codex chạy test và lint API; chờ Hoàn, QA và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+Ca nghiệm thu được lọc: 1 pass, 4 bỏ qua; lint API pass. Chưa chạy toàn bộ test vì chức năng các bước sau chưa có.
+---
+
+## Phase 3 / hoan-20261121-reviews-duplicate-a61-04
+
+* Thời gian ghi: 2026-11-21T09:38:24+07:00
+* Thời gian thực hiện: 21/11/2026.
+* Mã phiên nhật ký: hoan-20261121-reviews-test-a61
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-3.3, hoan-20261121-reviews-eligibility-a61-03
+
+### Công cụ
+
+Codex, Prisma, Vitest và ESLint.
+
+### Mục đích
+
+Báo đánh giá trùng và liệt kê sản phẩm chưa đánh giá trong đơn đủ điều kiện.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp yêu cầu bước 3.3, gồm lỗi trùng và danh sách reviewable.
+
+### Kết quả đề xuất
+
+Bắt lỗi P2002 trả 409; truy vấn đơn đã thanh toán, đã giao và loại cặp đơn–sản phẩm đã đánh giá hoặc lặp SKU. Giữ schema hiện tại.
+
+### Phản biện
+
+Ràng buộc schema gồm userId, productId và orderId; test dùng mock, chưa xác minh dữ liệu thật hoặc xử lý đồng thời. Hình dạng phản hồi reviewable cần frontend và reviewer xem xét.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu thực hiện bước 3.3; chưa ghi nhận QA hoặc reviewer duyệt test.
+
+### Người kiểm tra
+
+Codex chạy test, lint và build API; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+Ba ca liên quan pass, hai ca bỏ qua theo bộ lọc; lint và build API pass. Chưa chạy toàn bộ test vì các bước sau chưa hoàn thành.
+---
+
+## Phase 3 / hoan-20261121-reviews-schema-a61-05
+
+* Thời gian ghi: 2026-11-21T09:40:53+07:00
+* Thời gian thực hiện: 21/11/2026.
+* Mã phiên nhật ký: hoan-20261121-reviews-test-a61
+* Người prompt: Hoàn
+* Loại mục: Phản biện
+* Liên quan: PRJ-P3-BD1-3.3, hoan-20261121-reviews-duplicate-a61-04
+
+### Công cụ
+
+Codex, Git và Prisma.
+
+### Mục đích
+
+Làm rõ ràng buộc đánh giá trùng trong schema hiện tại.
+
+### Prompt
+
+Tóm lược: Hoàn hỏi vì sao giữ schema, sau đó yêu cầu commit và push.
+
+### Kết quả đề xuất
+
+Giữ ràng buộc hiện có gồm userId, productId và orderId; service kiểm tra quyền sở hữu đơn trước khi tạo đánh giá. Không tạo migration cho bước này.
+
+### Phản biện
+
+Task mô tả ràng buộc theo cặp orderId–productId; schema dùng ba trường. Test mock chưa xác minh ràng buộc trên database thật.
+
+### Quyết định của nhóm
+
+Hoàn đồng ý tiếp tục theo schema hiện tại; chưa có xác nhận QA hoặc reviewer.
+
+### Người kiểm tra
+
+Codex đối chiếu schema và service; chờ reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+Kết quả test, lint và build đã ghi tại mục a61-04; không chạy lại cho phần giải thích này.
+---
+
+## Phase 3 / hoan-20261121-reviews-list-a61-06
+
+* Thời gian ghi: 2026-11-21T09:46:15+07:00
+* Thời gian thực hiện: 21/11/2026.
+* Mã phiên nhật ký: hoan-20261121-reviews-test-a61
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-3.4, hoan-20261121-reviews-duplicate-a61-04
+
+### Công cụ
+
+Codex, Prisma, Vitest và ESLint.
+
+### Mục đích
+
+Trả danh sách đánh giá với thống kê và tên được rút gọn.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp yêu cầu bước trả trung bình, số lượng và tên rút gọn.
+
+### Kết quả đề xuất
+
+Thêm service list kiểm tra trang và sản phẩm, phân trang 10 dòng, thống kê trung bình và số lượng; chỉ chọn trường cần thiết và rút gọn tên khách.
+
+### Phản biện
+
+Test hiện dùng Prisma mock; chưa kiểm tra với database thật. Ca nghiệm thu chưa bao phủ riêng mọi trường hợp trang không hợp lệ và sản phẩm không tồn tại.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu thực hiện bước 3.4; chưa ghi nhận QA hoặc reviewer duyệt test.
+
+### Người kiểm tra
+
+Codex chạy test, lint và build API; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+Bốn ca service liên quan pass, một ca bỏ qua theo bộ lọc; lint và build API pass.
+---
+
+## Phase 3 / hoan-20261121-reviews-routes-a61-07
+
+* Thời gian ghi: 2026-11-21T09:50:39+07:00
+* Thời gian thực hiện: 21/11/2026.
+* Mã phiên nhật ký: hoan-20261121-reviews-test-a61
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-3.5, hoan-20261121-reviews-list-a61-06
+
+### Công cụ
+
+Codex, NestJS, Prisma, Vitest, Supertest và ESLint.
+
+### Mục đích
+
+Kiểm tra dữ liệu đánh giá, bảo vệ route quản trị và đăng ký module.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp bước rating ngoài khoảng trả 400 và khách gọi admin trả 403.
+
+### Kết quả đề xuất
+
+Thêm DTO, controller và module; đăng ký route công khai, tạo đánh giá, danh sách reviewable và GET admin/reviews theo lựa chọn Hoàn. Không thay test nghiệm thu.
+
+### Phản biện
+
+HTTP test giả lập guard đăng nhập và service; chưa kiểm tra luồng đăng nhập thật hoặc database thật. Tài liệu chưa quy định hợp đồng duyệt/xóa nên chưa triển khai các thao tác này; reviewer cần xác nhận phạm vi.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu thực hiện bước 3.5 và trước đó chọn GET /api/admin/reviews; chưa ghi nhận QA hoặc reviewer duyệt test.
+
+### Người kiểm tra
+
+Codex chạy test, lint và build API; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+`npm test -w api -- reviews.service reviews.http`: 6/6 pass; lint và build API pass.
+---
+
+## Phase 3 / hoan-20261121-reviews-delete-a61-08
+
+* Thời gian ghi: 2026-11-21T10:01:11+07:00
+* Thời gian thực hiện: 21/11/2026.
+* Mã phiên nhật ký: hoan-20261121-reviews-test-a61
+* Người prompt: Hoàn
+* Loại mục: Quyết định
+* Liên quan: PRJ-P3-BD1-3.5, hoan-20261121-reviews-routes-a61-07
+
+### Công cụ
+
+Codex, NestJS, Prisma, Vitest và Supertest.
+
+### Mục đích
+
+Làm rõ hiển thị và xóa đánh giá theo lựa chọn của Hoàn.
+
+### Prompt
+
+Tóm lược: Hoàn chọn đánh giá hiển thị ngay, admin xóa hẳn thay vì ẩn.
+
+### Kết quả đề xuất
+
+Giữ hiển thị ngay; bổ sung DELETE /api/admin/reviews/:id có guard ADMIN, xóa bản ghi và trả 404 nếu không có. Bổ sung test riêng; không sửa test nghiệm thu.
+
+### Phản biện
+
+Xóa hẳn làm mất bản ghi và có thể cho phép khách đánh giá lại; test giả lập đăng nhập và Prisma, chưa kiểm tra database thật. Cần reviewer và frontend xác nhận hợp đồng.
+
+### Quyết định của nhóm
+
+Hoàn chọn hiển thị ngay và xóa hẳn; chưa có xác nhận reviewer hoặc QA.
+
+### Người kiểm tra
+
+Codex chạy test, lint và build API; chờ Hoàn và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+`npm test -w api -- reviews`: 7/7 pass; lint và build API pass. Không thay schema.
+---
+
+## Phase 3 / hoan-20261121-reviews-check-a61-09
+
+* Thời gian ghi: 2026-11-21T10:05:56+07:00
+* Thời gian thực hiện: 21/11/2026.
+* Mã phiên nhật ký: hoan-20261121-reviews-test-a61
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-3.6, hoan-20261121-reviews-delete-a61-08
+
+### Công cụ
+
+Codex và Git.
+
+### Mục đích
+
+Chuẩn bị bài tự kiểm tra kiến thức đánh giá sau mua.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp yêu cầu tự đánh giá và yêu cầu ghi tóm tắt phiên vào AI log.
+
+### Kết quả đề xuất
+
+Tạo khung câu hỏi chưa trả lời để Hoàn tự viết theo quy tắc của task.
+
+### Phản biện
+
+Chưa có câu trả lời để đánh giá; không coi bước tự đánh giá đã hoàn thành.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu chuẩn bị bài; chưa có xác nhận reviewer.
+
+### Người kiểm tra
+
+Codex kiểm tra trạng thái file; Hoàn sẽ tự trả lời.
+
+### Kiểm tra và minh chứng
+
+Tạo file `docs/learning/BD1-Hoan/kiem-tra/PRJ-P3-BD1-3.md`; chưa trả lời, commit hoặc push.
+---
+
+## Phase 3 / hoan-20261121-reviews-check-a61-10
+
+* Thời gian ghi: 2026-11-21T10:12:59+07:00
+* Thời gian thực hiện: 21/11/2026.
+* Mã phiên nhật ký: hoan-20261121-reviews-test-a61
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-3.6, hoan-20261121-reviews-check-a61-09
+
+### Công cụ
+
+Codex và Git.
+
+### Mục đích
+
+Ghi câu trả lời tự đánh giá về đánh giá sau mua.
+
+### Prompt
+
+Tóm lược: Hoàn tự trả lời các câu hỏi và hai câu bổ sung, yêu cầu ghi file, cập nhật log, commit và push.
+
+### Kết quả đề xuất
+
+Ghi câu trả lời của Hoàn vào file; bổ sung mô tả ca HTTP, làm rõ test dùng mock và chỉnh cách ghi lựa chọn duyệt, xóa cho đúng phạm vi xác nhận.
+
+### Phản biện
+
+Codex đánh giá câu trả lời đúng về ý chính; test điều kiện truy vấn dùng mock, chưa kiểm tra từng tình huống với database thật.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu ghi câu trả lời; chưa có xác nhận reviewer về bài tự đánh giá.
+
+### Người kiểm tra
+
+Codex đối chiếu câu trả lời với test và nhận xét hai câu bổ sung; chờ reviewer đánh giá.
+
+### Kiểm tra và minh chứng
+
+Không chạy lại test vì thay đổi chỉ gồm tài liệu và AI log.
