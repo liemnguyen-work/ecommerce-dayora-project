@@ -5884,3 +5884,87 @@ Codex đối chiếu câu trả lời với các ca test; chờ reviewer đánh 
 ### Kiểm tra và minh chứng
 
 Hai câu trả lời bổ sung nêu Return không tự cập nhật PAID và tồn khả dụng bằng stock trừ reserved. Không chạy lại test vì thay đổi là tài liệu.
+---
+
+## Phase 3 / hoan-20261121-reviews-test-a61-01
+
+* Thời gian ghi: 2026-11-21T09:15:05+07:00
+* Thời gian thực hiện: 21/11/2026.
+* Mã phiên nhật ký: hoan-20261121-reviews-test-a61
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-3.1
+
+### Công cụ
+
+Codex, Git, Vitest và Supertest.
+
+### Mục đích
+
+Chuẩn bị test nghiệm thu trước cho chức năng đánh giá sau mua.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp các bước và yêu cầu kiểm tra task phụ thuộc đã merge.
+
+### Kết quả đề xuất
+
+Xác nhận PR #707 đã merge vào main; tạo nhánh prj/p3-bd1-3 và hai file test service, HTTP trước khi viết chức năng.
+
+### Phản biện
+
+Test HTTP tạm dùng GET /api/admin/reviews vì tài liệu chưa xác định đường dẫn admin cụ thể; cần QA xác nhận. Test dùng dữ liệu mock và lỗi hiện tại là thiếu module, chưa thực thi assertion.
+
+### Quyết định của nhóm
+
+Hoàn cung cấp yêu cầu; chưa có xác nhận QA cho bộ test hoặc hợp đồng route.
+
+### Người kiểm tra
+
+Codex chạy test; chờ Hoàn và QA xem xét.
+
+### Kiểm tra và minh chứng
+
+`npm test -w api -- reviews.service reviews.http`: 6 ca FAIL do service, DTO và controller chưa tồn tại. Chưa viết chức năng.
+---
+
+## Phase 3 / hoan-20261121-reviews-test-a61-02
+
+* Thời gian ghi: 2026-11-21T09:30:58+07:00
+* Thời gian thực hiện: 21/11/2026.
+* Mã phiên nhật ký: hoan-20261121-reviews-test-a61
+* Người prompt: Hoàn
+* Loại mục: Quyết định
+* Liên quan: PRJ-P3-BD1-3.1, hoan-20261121-reviews-test-a61-01
+
+### Công cụ
+
+Codex và Git.
+
+### Mục đích
+
+Ghi nhận lựa chọn đường dẫn admin cho bộ test đánh giá.
+
+### Prompt
+
+Tóm lược: Hoàn đồng ý dùng GET /api/admin/reviews và yêu cầu commit, push bộ test cùng AI log.
+
+### Kết quả đề xuất
+
+Giữ route trong test HTTP theo lựa chọn của Hoàn; tiếp tục bảo vệ route bằng quyền ADMIN ở bước chức năng.
+
+### Phản biện
+
+Đây là lựa chọn của Hoàn; chưa có xác nhận của QA hoặc frontend về hợp đồng API. Bộ test hiện đỏ do thiếu module, chưa thực thi assertion.
+
+### Quyết định của nhóm
+
+Hoàn đồng ý chọn GET /api/admin/reviews; chưa xác nhận quyết định của các thành viên khác.
+
+### Người kiểm tra
+
+Codex ghi nhận lựa chọn và kết quả test trước đó; chờ QA duyệt test.
+
+### Kiểm tra và minh chứng
+
+Kết quả đã chạy: 6 ca FAIL do thiếu các file chức năng, theo mục a61-01. Không sửa test sau khi Hoàn chọn route.
