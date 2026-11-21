@@ -4095,3 +4095,163 @@ Thành kiểm tra chuyển hướng VNPay Sandbox trên trình duyệt. Codex ch
 ### Kiểm tra và minh chứng
 
 Ảnh Thành cung cấp hiển thị trang `Chọn phương thức thanh toán (Test)` trên miền VNPay Sandbox. `git diff --check` pass; `npm.cmd test -w api -- orders-validation checkout.service payments`: 5 file, 29 test pass; lint API/web và build web pass. `.env` không được Git theo dõi và không đưa vào commit.
+## P3 / thanh-20261121-p3-orders-15
+
+* Thời gian ghi: 2026-11-21T22:01:46+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: thanh-20261121-p3-orders-14; PRJ-P3-FD1-1.3 #381.
+
+### Công cụ
+
+Codex; React; React Router; TypeScript; ESLint; Vite.
+
+### Mục đích
+
+Triển khai trang hiển thị kết quả thanh toán VNPay, chuyển toàn bộ query Return về backend để xác thực chữ ký và trình bày các trạng thái kết quả rõ ràng, responsive.
+
+### Prompt
+
+Thành cung cấp nội dung sub-issue PRJ-P3-FD1-1.3 và yêu cầu viết code; sau khi xong cần hướng dẫn các thao tác thủ công để Thành kiểm tra trước khi cho phép commit.
+
+### Kết quả đề xuất
+
+Codex tạo `PaymentResultPage.tsx`, thêm route `/thanh-toan/ket-qua` trong `App.tsx` và bổ sung CSS responsive. Trang có trạng thái đang đối chiếu, thành công, chưa thành công, kết quả không hợp lệ và lỗi kết nối; chỉ hiển thị dữ liệu sau khi backend `/payments/vnpay/return` xác thực query.
+
+### Phản biện
+
+Không dùng trực tiếp các tham số query để kết luận thanh toán thành công. Nút thử lại thanh toán đưa khách về chi tiết đơn để tạo một URL thanh toán mới; trang Return chỉ hiển thị kết quả, không thay vai trò IPN trong cập nhật trạng thái chính thức.
+
+### Quyết định của nhóm
+
+Phạm vi bám theo sub-issue #381. Thành yêu cầu kiểm tra thủ công trước rồi mới quyết định commit và push; hiện chưa có cho phép commit.
+
+### Người kiểm tra
+
+Codex đã kiểm tra tĩnh và build; chờ Thành kiểm tra luồng VNPay Sandbox và giao diện desktop/mobile trên localhost.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web` pass. `npm.cmd run build -w web` pass sau khi chạy ngoài sandbox để TypeScript được ghi cache vào `node_modules/.tmp`. Chưa có ảnh 1366px/390px và chưa xác minh giao dịch demo quay về trang kết quả. Chưa commit, chưa push.
+## P3 / thanh-20261121-p3-orders-16
+
+* Thời gian ghi: 2026-11-21T22:08:41+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Phản biện
+* Liên quan: thanh-20261121-p3-orders-15; PRJ-P3-FD1-1.3 #381.
+
+### Công cụ
+
+Codex; tài liệu chính thức VNPay Sandbox.
+
+### Mục đích
+
+Phân tích lỗi tại màn hình ngân hàng Sandbox và xác định cách dùng dữ liệu thẻ thử phù hợp để kiểm tra trang kết quả thanh toán.
+
+### Prompt
+
+Thành cung cấp ảnh giao dịch Sandbox qua Sacombank báo lỗi xử lý và cho biết đang dùng mã cấu hình thử do quy trình đăng ký Sandbox gặp lỗi.
+
+### Kết quả đề xuất
+
+Ảnh cho thấy VNPay đã nhận URL thanh toán và chữ ký, nhưng ngân hàng Sacombank không xử lý được ca thử. Tài liệu chính thức hướng dẫn dùng ngân hàng NCB và bộ thẻ test tương ứng; một số kết nối ngân hàng khác trên môi trường thử đã tạm đóng.
+
+### Phản biện
+
+Không kết luận lỗi ở frontend hoặc trang Return chỉ từ thông báo của Sacombank. Cấu hình test có thể dùng để kiểm tra local nhưng không được commit, deploy hoặc xem như cấu hình production; Return trên localhost có thể hoạt động qua chuyển hướng trình duyệt nhưng IPN cần API công khai.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới. Thành tiếp tục kiểm tra local bằng dữ liệu thử chính thức trước khi cho phép commit.
+
+### Người kiểm tra
+
+Codex đối chiếu tài liệu VNPay; chờ Thành thực hiện giao dịch NCB trên trình duyệt.
+
+### Kiểm tra và minh chứng
+
+Nguồn đối chiếu: trang giới thiệu và trang demo Cổng thanh toán VNPay Sandbox, trong đó công bố thẻ NCB thành công và lưu ý chỉ dùng các thẻ trong danh sách test. Chưa có kết quả giao dịch NCB của DAYORA.
+## P3 / thanh-20261121-p3-orders-17
+
+* Thời gian ghi: 2026-11-21T22:23:35+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261121-p3-orders-16; PRJ-P3-FD1-1.3 #381.
+
+### Công cụ
+
+Codex; trình duyệt; VNPay Sandbox; NestJS API local.
+
+### Mục đích
+
+Xác minh giao dịch Sandbox và mô phỏng callback IPN có chữ ký trên môi trường local để kiểm tra backend cập nhật thanh toán.
+
+### Prompt
+
+Thành cung cấp ảnh endpoint IPN local trả `RspCode: 00` và `Message: Confirm Success` sau khi dán query giao dịch VNPay đã ký.
+
+### Kết quả đề xuất
+
+Callback IPN đã được backend xác thực và chấp nhận. Bước còn lại là tải lại trang chi tiết đơn để xác nhận giao diện đọc trạng thái `PAID` mới từ database và ẩn thao tác thanh toán lại.
+
+### Phản biện
+
+Thao tác dán query vào endpoint IPN chỉ mô phỏng việc VNPay gọi máy chủ vì `localhost` không thể nhận callback từ Internet; không dùng làm quy trình production.
+
+### Quyết định của nhóm
+
+Chưa có quyết định commit. Thành đang hoàn tất kiểm tra thủ công trước khi xác nhận.
+
+### Người kiểm tra
+
+Thành thực hiện giao dịch và cung cấp ảnh phản hồi IPN; Codex đối chiếu mã phản hồi. Chưa có ảnh trang chi tiết đơn sau khi tải lại.
+
+### Kiểm tra và minh chứng
+
+Endpoint `GET /api/payments/vnpay/ipn` trả JSON `{"RspCode":"00","Message":"Confirm Success"}`. Đây là bằng chứng backend đã nhận callback hợp lệ; trạng thái giao diện sau refresh còn chờ xác nhận.
+## P3 / thanh-20261121-p3-orders-18
+
+* Thời gian ghi: 2026-11-21T22:30:40+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261121-p3-orders-17; PRJ-P3-FD1-1.3 #381.
+
+### Công cụ
+
+Codex; Chrome DevTools responsive mode; Git.
+
+### Mục đích
+
+Ghi nhận kết quả kiểm tra giao diện cuối cùng của trang kết quả thanh toán trước khi tạo commit sub-issue.
+
+### Prompt
+
+Thành cung cấp ảnh trang thanh toán thành công ở kích thước responsive `390 × 844` sau khi đã xác nhận đơn chuyển sang đã thanh toán.
+
+### Kết quả đề xuất
+
+Trang kết quả hiển thị vừa màn hình mobile, mã đơn tự xuống dòng, nội dung dễ đọc và hai nút hành động xếp dọc đủ chiều rộng. Luồng Return, IPN mô phỏng local và điều hướng xem đơn đã được kiểm tra.
+
+### Phản biện
+
+IPN local là mô phỏng có chữ ký, không thay thế kiểm tra IPN qua URL API công khai khi triển khai. Ảnh desktop và mobile chỉ xác nhận các kích thước được cung cấp, không đại diện mọi thiết bị.
+
+### Quyết định của nhóm
+
+Thành đã thực hiện các bước kiểm tra thủ công được yêu cầu trước commit. Theo yêu cầu ban đầu, Codex tạo commit riêng cho PRJ-P3-FD1-1.3; chưa có yêu cầu push trong lượt này.
+
+### Người kiểm tra
+
+Thành kiểm tra luồng Sandbox, IPN local, trang chi tiết đơn và giao diện mobile; Codex kiểm tra lint, build và diff.
+
+### Kiểm tra và minh chứng
+
+Ảnh DevTools ở `390 × 844` cho thấy trang `Thanh toán thành công` không tràn ngang. Desktop đã được kiểm tra trước đó. Lint web, build web và `git diff --check` pass; chuẩn bị commit nhưng chưa push.

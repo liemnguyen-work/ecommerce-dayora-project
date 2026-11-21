@@ -1427,6 +1427,177 @@
   .admin-table th, .admin-table td { padding: 12px 10px; }
 }
 
+/* Payment result */
+.payment-result-page {
+  min-height: calc(100vh - 150px);
+  display: grid;
+  place-items: center;
+  padding: clamp(36px, 7vw, 90px) 20px;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(218, 232, 190, 0.52), transparent 30%),
+    radial-gradient(circle at 88% 78%, rgba(210, 72, 61, 0.09), transparent 28%),
+    #fbfaf3;
+}
+
+.payment-result-card {
+  width: min(680px, 100%);
+  padding: clamp(32px, 6vw, 64px);
+  border: 1px solid rgba(31, 73, 49, 0.14);
+  border-radius: 32px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 24px 60px rgba(31, 73, 49, 0.12);
+  color: #214b34;
+  text-align: center;
+}
+
+.payment-result-icon {
+  display: inline-grid;
+  width: 72px;
+  height: 72px;
+  place-items: center;
+  margin-bottom: 22px;
+  border-radius: 50%;
+  background: #214b34;
+  color: #fff;
+  font-size: 2.2rem;
+  font-weight: 800;
+}
+
+.payment-result-card.is-failed .payment-result-icon,
+.payment-result-card.is-invalid .payment-result-icon {
+  background: #d2483d;
+}
+
+.payment-result-eyebrow {
+  margin: 0 0 12px;
+  color: #d2483d;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+}
+
+.payment-result-card h1 {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3.35rem);
+  line-height: 1.08;
+}
+
+.payment-result-message {
+  margin: 20px auto 0;
+  max-width: 520px;
+  color: #486353;
+  font-size: 1.08rem;
+  line-height: 1.65;
+}
+
+.payment-result-order {
+  display: grid;
+  gap: 6px;
+  margin-top: 28px;
+  padding: 18px 22px;
+  border-radius: 18px;
+  background: #eef5e7;
+  text-align: left;
+}
+
+.payment-result-order span {
+  color: #5d7465;
+  font-size: 0.88rem;
+}
+
+.payment-result-order strong {
+  overflow-wrap: anywhere;
+  font-size: 1.1rem;
+}
+
+.payment-result-note {
+  margin: 22px auto 0;
+  color: #64776a;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.payment-result-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.payment-result-primary,
+.payment-result-secondary {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border: 1px solid #214b34;
+  border-radius: 999px;
+  font: inherit;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.payment-result-primary {
+  background: #d2483d;
+  border-color: #d2483d;
+  color: #fff;
+  box-shadow: 0 12px 28px rgba(210, 72, 61, 0.22);
+}
+
+.payment-result-secondary {
+  background: #fff;
+  color: #214b34;
+}
+
+.payment-result-primary:hover,
+.payment-result-primary:focus-visible {
+  background: #b83d34;
+}
+
+.payment-result-secondary:hover,
+.payment-result-secondary:focus-visible {
+  background: #eef5e7;
+}
+
+.payment-result-loading > p:last-child {
+  color: #64776a;
+}
+
+.payment-result-spinner {
+  display: inline-block;
+  width: 58px;
+  height: 58px;
+  margin-bottom: 24px;
+  border: 6px solid #dce8ce;
+  border-top-color: #214b34;
+  border-radius: 50%;
+  animation: payment-result-spin 0.8s linear infinite;
+}
+
+@keyframes payment-result-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 520px) {
+  .payment-result-page {
+    padding: 24px 14px;
+  }
+
+  .payment-result-card {
+    padding: 30px 20px;
+    border-radius: 24px;
+  }
+
+  .payment-result-actions,
+  .payment-result-primary,
+  .payment-result-secondary {
+    width: 100%;
+  }
+}
+
 
 /* DAYORA ABOUT — Base styles */
 /* Task: PRJ-P1-PD-1.3 */
