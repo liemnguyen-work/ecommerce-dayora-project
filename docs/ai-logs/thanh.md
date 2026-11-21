@@ -4377,3 +4377,44 @@ Thành kiểm tra thủ công các trạng thái lỗi ở desktop và 390 px qu
 ### Kiểm tra và minh chứng
 
 Ảnh của Thành cho thấy `/thanh-toan/ket-qua` không tham số hiển thị `Kết quả không hợp lệ`, và `/don-hang/id-tam-bay` hiển thị thông báo không tìm thấy/không có quyền ở 390 px. Sau sửa tương phản, `npm.cmd run lint -w web`, `npm.cmd run build -w web` và `git diff --check` đều pass. Chưa push tại thời điểm ghi mục này.
+
+## P3 / thanh-20261121-p3-orders-22
+
+* Thời gian ghi: 2026-11-21T23:48:37+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261121-p3-orders
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261121-p3-orders-21; PRJ-P3-FD1-1.5 #390.
+
+### Công cụ
+
+Codex; tài liệu Markdown; trao đổi kiểm tra kiến thức.
+
+### Mục đích
+
+Ghi nhận phần tự đánh giá của Thành cho task chi tiết đơn và kết quả thanh toán, chỉ ra điểm chưa khớp luồng hiện tại và lưu câu trả lời sau khi Thành tự sửa.
+
+### Prompt
+
+Thành tự trả lời năm câu của sub-issue #390, sau đó trả lời hai câu hỏi vặn về quan hệ giữa trạng thái đơn và thanh toán, cùng cơ chế xử lý IPN lặp.
+
+### Kết quả đề xuất
+
+Năm câu chính đạt yêu cầu. Câu vặn đầu ban đầu dùng ví dụ `CONFIRMED + UNPAID` và COD chưa khớp phạm vi/code hiện tại; Codex yêu cầu sửa lại. Thành xác nhận đúng rằng nút VNPay chỉ hiện với `PENDING_PAYMENT + UNPAID`, còn `CONFIRMED + PAID` là tiền đã xác nhận và đơn bắt đầu xử lý. Câu về IPN lặp nêu được kiểm tra `PAID`, transaction/khóa dòng và unique mã giao dịch. Nội dung được ghi vào `docs/learning/FD1-Thanh/kiem-tra/PRJ-P3-FD1-1.md`.
+
+### Phản biện
+
+Codex không viết đáp án cá nhân thay Thành; chỉ gợi ý ý chính, chấm phần Thành tự viết và yêu cầu sửa điểm chưa khớp. Nội dung file giữ nguyên ý trả lời của Thành, chỉ chuẩn hóa dấu câu và tên trạng thái.
+
+### Quyết định của nhóm
+
+Thành đồng ý sửa câu trả lời theo đúng luồng VNPay hiện tại. Chưa có xác nhận của reviewer về việc hỏi ngẫu nhiên hai câu và chưa có quyết định đóng sub-issue.
+
+### Người kiểm tra
+
+Thành tự trả lời và sửa câu chưa đúng. Codex đối chiếu với code và nội dung task; reviewer vẫn chưa kiểm tra trực tiếp.
+
+### Kiểm tra và minh chứng
+
+File kiểm tra có đủ năm mục chính được đánh dấu `[x]` và hai câu hỏi vặn. Đây là thay đổi tài liệu, không cần chạy migration. Chưa tạo commit tại thời điểm ghi mục này.
