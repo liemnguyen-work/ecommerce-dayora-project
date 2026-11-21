@@ -5968,3 +5968,45 @@ Codex ghi nhận lựa chọn và kết quả test trước đó; chờ QA duy�
 ### Kiểm tra và minh chứng
 
 Kết quả đã chạy: 6 ca FAIL do thiếu các file chức năng, theo mục a61-01. Không sửa test sau khi Hoàn chọn route.
+---
+
+## Phase 3 / hoan-20261121-reviews-eligibility-a61-03
+
+* Thời gian ghi: 2026-11-21T09:34:37+07:00
+* Thời gian thực hiện: 21/11/2026.
+* Mã phiên nhật ký: hoan-20261121-reviews-test-a61
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-BD1-3.2, hoan-20261121-reviews-test-a61-02
+
+### Công cụ
+
+Codex, Prisma, Vitest và ESLint.
+
+### Mục đích
+
+Kiểm tra điều kiện đơn hàng trước khi lưu đánh giá.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp bước từ chối đơn không đủ điều kiện đánh giá.
+
+### Kết quả đề xuất
+
+Thêm service tìm đơn đúng chủ, đã thanh toán, đã giao và chứa sản phẩm; không tìm thấy trả 403, đủ điều kiện thì tạo đánh giá.
+
+### Phản biện
+
+Test dùng Prisma mock, kiểm tra điều kiện truy vấn và trường hợp không tìm thấy; chưa xác minh từng tình huống với database thật. Chưa xử lý lỗi đánh giá trùng ở bước này.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu thực hiện bước 3.2; chưa ghi nhận QA duyệt bộ test này.
+
+### Người kiểm tra
+
+Codex chạy test và lint API; chờ Hoàn, QA và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+Ca nghiệm thu được lọc: 1 pass, 4 bỏ qua; lint API pass. Chưa chạy toàn bộ test vì chức năng các bước sau chưa có.
