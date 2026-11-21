@@ -965,3 +965,88 @@ Chưa xác nhận người review hoặc kết quả Approve.
 - Theo xác nhận của Kiệt, hai thành viên khác đã chạy thử thành công.
 - Tên hai người, các lệnh họ đã chạy và ảnh/log minh chứng: bổ sung vào phần mô tả PR khi có thông tin đối chiếu.
 - AI hỗ trợ soạn hướng dẫn thử trên máy mới; Kiệt gửi thông tin và nhận kết quả trực tiếp. Không đưa mật khẩu hoặc URL kết nối vào Git.
+
+## P3 — Cấu hình VNPay Sandbox / KIET-20261121-VNPAY-001
+
+- Thời gian ghi bản đầu: 2026-11-21T00:44:30+07:00
+- Thời gian thực hiện: Tối 20/11 đến rạng sáng 21/11/2026.
+- Mã phiên nhật ký: KIET-20261121-VNPAY
+- Người prompt: Mã Tuấn Kiệt
+- Loại mục: Hoạt động, phản biện và kiểm tra
+- Liên quan: PRJ-P3-DO-1.1 đến PRJ-P3-DO-1.4.
+- Nhánh: `prj/p3-do-1`
+
+### Công cụ
+
+ChatGPT/Codex, GitHub plugin, VS Code, Git Bash và Git.
+
+### Mục đích
+
+Kiệt cấu hình các biến mẫu VNPay Sandbox, bổ sung hướng dẫn callback và cách kiểm tra thanh toán vào runbook. Đồng thời chuẩn bị phần giải thích kiến thức để reviewer kiểm tra.
+
+### Prompt
+
+1. Kiệt cung cấp yêu cầu task và nhắc cập nhật code trước khi làm. Kiệt chạy lệnh kiểm tra nhánh rồi gửi đầu ra để AI nhận xét.
+2. Kiệt chỉnh `.env.example` và gửi `git diff` nhờ AI kiểm tra. AI phát hiện `DIRECT_URL` bị cắt, phần đuôi dính vào `VNP_RETURN_URL`, rồi cung cấp đoạn sửa tham khảo.
+3. Kiệt sửa file trên máy, kiểm tra lại và gửi diff lần nữa. AI xác nhận các biến đã tách đúng và nhắc thêm newline cuối file.
+4. Kiệt hỏi cách tiếp tục khi nhánh P3 chưa có `RUNBOOK.md`. AI giải thích cách tạo file trên P3 và ghép nội dung với phần P2 khi tích hợp.
+5. Kiệt gửi yêu cầu ghi địa chỉ callback. AI đối chiếu controller của Hoàn, giải thích Return và IPN, đồng thời cung cấp nội dung tham khảo để bổ sung runbook.
+6. Kiệt gửi yêu cầu ghi cách kiểm tra. AI đối chiếu service thanh toán và cung cấp các bước thử Sandbox, chữ ký sai và IPN lặp cùng kết quả mong đợi.
+
+### Kết quả đề xuất
+
+- Bổ sung bốn biến mẫu `VNP_TMN_CODE`, `VNP_HASH_SECRET`, `VNP_URL` và `VNP_RETURN_URL` vào `apps/api/.env.example`.
+- Giữ thông tin merchant và secret ở dạng placeholder trong file mẫu.
+- Ghi trong `docs/RUNBOOK.md` sự khác nhau giữa Return URL của web và IPN URL public của API.
+- Bổ sung cách thử giao dịch Sandbox, chữ ký sai và gửi lại IPN hợp lệ.
+- Chuẩn bị file kiểm tra kiến thức tại `docs/learning/DO-Kiet/kiem-tra/PRJ-P3-DO-1.md`.
+
+Kiệt trực tiếp chỉnh file và chạy lệnh trên máy. AI hỗ trợ hướng dẫn, nhận xét diff, đối chiếu code và cung cấp bản nháp nội dung. Phần trả lời kiến thức cần được Kiệt đọc lại, chỉnh theo cách hiểu và tự giải thích khi review.
+
+### Phản biện
+
+- Kiệt gửi diff trước khi commit để kiểm tra thay đổi. Khi AI chỉ ra nhóm biến VNPay bị chèn giữa `DIRECT_URL`, Kiệt sửa lại từng dòng và gửi diff tiếp theo.
+- Kiệt hỏi có phải đợi Liêm merge P2 mới tạo được runbook không. Sau trao đổi, Kiệt tiếp tục tài liệu P3 trên nhánh hiện tại, đồng thời lưu ý giữ cả nội dung P2 khi tích hợp.
+- Kiệt chạy các lệnh pull, fetch và merge code phụ thuộc rồi gửi terminal. Kết quả báo `Already up to date`.
+- AI lưu ý mã IPN `97` cũng xuất hiện khi thiếu secret. Khi thực hiện ca thử chữ ký sai, Kiệt cần đối chiếu cấu hình để hiểu đúng kết quả.
+- Quy trình kiểm tra IPN lặp yêu cầu giữ nguyên query string đã ký và so sánh trạng thái, tồn kho trước và sau lần gửi lại.
+- Kiệt xác nhận đã hoàn tất bước ghi cách kiểm tra. Kết quả giao dịch Sandbox và đối chiếu DB thực tế cần được bổ sung sau khi chạy.
+
+### Quyết định thực hiện
+
+Kiệt tiếp tục trên nhánh `prj/p3-do-1`. Phần sửa P2 được lưu tạm để quay lại xử lý review.
+
+Mỗi bước P3 có commit kèm mã task tương ứng. Miền deploy trong tài liệu dùng placeholder cho đến khi nhóm xác nhận địa chỉ thực tế.
+
+Theo phân công, Châu review. Trước khi nghiệm thu cả task, cần xác nhận phần thanh toán phụ thuộc của Hoàn đã merge.
+
+### Người kiểm tra
+
+Kiệt trực tiếp sửa file, chạy lệnh Git và gửi kết quả terminal.
+
+ChatGPT/Codex đối chiếu diff, file môi trường, controller và service thanh toán trên GitHub.
+
+Chưa có kết quả review P3 của Châu trong phiên này.
+
+### Kiểm tra và minh chứng
+
+- Diff ban đầu của `.env.example` cho thấy `DIRECT_URL` bị cắt và phần đuôi dính vào `VNP_RETURN_URL`.
+- Diff sau sửa có đủ bốn biến VNPay mẫu và `DIRECT_URL` đầy đủ. AI tiếp tục nhắc bổ sung newline cuối file.
+- Kiệt xác nhận đã hoàn tất bước 1.1.
+- Terminal khi cập nhật nhánh và merge `origin/prj/p3-bd1-2` báo `Already up to date`.
+- Controller đã đối chiếu có `GET /api/payments/vnpay/ipn` và `GET /api/payments/vnpay/return`.
+- Service đã đối chiếu trả `97` khi thiếu secret hoặc chữ ký không hợp lệ, `02` khi giao dịch đã xử lý và `00` khi xác nhận thành công.
+- Kiệt xác nhận đã hoàn tất bước 1.3.
+- SHA commit các bước P3 cần được bổ sung để đối chiếu.
+- Chưa có đầu ra lint, build hoặc test trên nhánh P3 trong phiên này.
+- Chưa có kết quả giao dịch Sandbox, nhận IPN public hoặc đối chiếu tồn kho thực tế.
+
+### Bổ sung kết quả kiểm tra ngày 21/11/2026
+
+- `npm run lint`: API và web pass.
+- `npm run build`: API và web pass.
+- `npm test` lúc 01:03:11: 112/114 pass, hai test trong `me.spec.ts` và `promotions.spec.ts` timeout ở giới hạn 5 giây.
+- Chạy riêng hai file với `--maxWorkers=1` lúc 01:07:19: 9/9 pass.
+- Chạy toàn bộ với `npm run test -w api -- --maxWorkers=1` lúc 01:07:33: 114/114 pass trên 20 file, tổng thời gian 77,31 giây.
+- Kết quả gợi ý tải khi chạy song song có thể ảnh hưởng thời gian test. Nguyên nhân timeout cần BD tiếp tục điều tra.
+- Giao dịch VNPay Sandbox và IPN public vẫn chờ kiểm tra thực tế.
