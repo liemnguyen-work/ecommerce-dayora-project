@@ -1,11 +1,14 @@
 # Cài đặt DAYORA trên máy mới
 
-Hướng dẫn này dành cho thành viên chạy ứng dụng web và API trên Windows bằng Git Bash. Thực hiện lệnh ở **thư mục gốc repo** `ecommerce-dayora-project`, trừ khi có ghi khác. Cần có quyền truy cập repo và hai chuỗi kết nối database do người phụ trách gửi qua kênh riêng.
+Hướng dẫn dành cho thành viên chạy web và API trên Windows bằng Git Bash. Thực hiện các lệnh tại thư mục gốc repo `ecommerce-dayora-project`, trừ khi có ghi khác.
+
+Chuẩn bị quyền truy cập repo và hai chuỗi kết nối tới DB thử riêng. Người phụ trách gửi thông tin kết nối qua kênh riêng.
 
 ## 1. Chuẩn bị
 
-- Cài Git và Node.js **24**, kèm npm. Đóng rồi mở lại Git Bash sau khi cài.
-- Kiểm tra:
+Cài Git và Node.js 24 kèm npm. Đóng rồi mở lại Git Bash sau khi cài.
+
+Kiểm tra phiên bản:
 
 ```bash
 git --version
@@ -13,44 +16,113 @@ node --version
 npm --version
 ```
 
-`node --version` cần bắt đầu bằng `v24.`. Nếu máy đã có Node khác, chuyển sang Node 24 trước khi cài thư viện.
+`node --version` cần bắt đầu bằng `v24.`. Nếu đang dùng phiên bản khác, chuyển sang Node 24 trước khi cài thư viện.
 
 ## 2. Lấy mã nguồn và cài thư viện
 
-Máy chưa có repo:
+### Máy chưa có repo
 
 ```bash
 git clone https://github.com/liemnguyen-work/ecommerce-dayora-project.git
 cd ecommerce-dayora-project
 ```
 
-Máy đã có repo: mở Git Bash trong thư mục gốc, kiểm tra thay đổi cá nhân trước khi cập nhật. Nếu đang làm việc trên nhánh riêng, đừng chuyển nhánh khi còn thay đổi chưa lưu.
+### Máy đã có repo
+
+Kiểm tra thay đổi cá nhân trước khi chuyển nhánh và cập nhật:
 
 ```bash
-git switch main
+git status --short
+```
+
+Lưu hoặc commit phần việc đang làm trước khi tiếp tục:
+
+```bash
+git switch main &&
 git pull --ff-only origin main
+```
+
+Nếu Git báo nhánh phân kỳ hoặc có xung đột, dừng và trao đổi với người phụ trách trước khi xử lý.
+
+### Cài thư viện
+
+```bash
 npm ci
 ```
 
-`npm ci` dùng `package-lock.json` của repo để cài các workspace `apps/api` và `apps/web`. Không cần cài npm riêng trong từng thư mục.
+Lệnh dùng `package-lock.json` để cài các workspace API và web.
+
+Khi kiểm tra một PR, checkout đúng nhánh hoặc SHA cần nghiệm thu rồi chạy `npm ci`. Ghi SHA đang kiểm tra bằng:
+
+```bash
+git rev-parse HEAD
+```
 
 ## 3. Tạo file môi trường cục bộ
 
+Chạy tại thư mục gốc:
+
 ```bash
-cp apps/api/.env.example apps/api/.env
-cp apps/web/.env.example apps/web/.env
+cp -n apps/api/.env.example apps/api/.env
+cp -n apps/web/.env.example apps/web/.env
 ```
+
+Tùy chọn `-n` giữ file `.env` nếu đã tồn tại. Với file cũ, đối chiếu `.env.example` và bổ sung các biến còn thiếu.
+
+### Cấu hình API
 
 Mở `apps/api/.env` trong VS Code và điền:
 
 ```dotenv
 PORT=3000
 WEB_ORIGIN=http://localhost:5173
+JWT_SECRET=<generate-locally>
 DATABASE_URL="postgresql://postgres.<project-ref>:<password>@<pooler-host>:6543/postgres?pgbouncer=true"
 DIRECT_URL="postgresql://postgres.<project-ref>:<password>@<pooler-host>:5432/postgres"
 ```
 
-**Sao chép chuỗi thật từ Supabase hoặc tin nhắn riêng của người phụ trách**, không tự đoán host, project ref hay mật khẩu. `DATABASE_URL` là **Transaction pooler, cổng 6543** cho ứng dụng; `DIRECT_URL` là **Session pooler, cổng 5432** cho Prisma Migrate. Nếu chuỗi Transaction đã có tham số sau dấu `?`, thêm `&pgbouncer=true` thay vì dấu `?` thứ hai. Ký tự đặc biệt trong mật khẩu phải được percent-encode trong URL; không để nguyên ký tự như `@`, `#`, `/`, `?`.
+Các giá trị trong dấu `<...>` là placeholder cần thay trước khi chạy.
+
+Sao chép hai chuỗi kết nối thật từ Supabase hoặc kênh riêng của người phụ trách:
+
+- `DATABASE_URL` dùng Transaction pooler, cổng 6543 cho ứng dụng và seed.
+- `DIRECT_URL` dùng Session pooler, cổng 5432 cho migration.
+- Cả hai phải trỏ tới cùng DB thử riêng khi kiểm tra hướng dẫn này.
+- Nếu Transaction URL đã có tham số sau dấu `?`, thêm `&pgbouncer=true`.
+- Ký tự đặc biệt trong mật khẩu phải được percent-encode trong URL.
+
+### Sinh JWT secret trên máy cá nhân
+
+`AuthService` bắt buộc có `JWT_SECRET`. Mỗi môi trường tự sinh một giá trị riêng.
+
+Trên Windows Git Bash, chạy:
+
+```bash
+node -e "process.stdout.write(require('node:crypto').randomBytes(32).toString('hex'))" | clip.exe
+```
+
+Lệnh sinh 32 byte ngẫu nhiên, biểu diễn thành 64 ký tự hex và sao chép vào clipboard.
+
+Mở `apps/api/.env`, thay `<generate-locally>` bằng giá trị vừa sao chép, lưu file rồi xóa nội dung clipboard bằng cách sao chép một đoạn văn bản thông thường.
+
+Giữ JWT secret trong `.env` cục bộ hoặc cấu hình bí mật của môi trường triển khai. Khởi động lại API sau khi thay đổi biến môi trường.
+
+### Biến cho seed admin
+
+Nếu cần tạo admin và RuleSet trên DB thử riêng, điền thêm trong `apps/api/.env`:
+
+```dotenv
+SEED_ADMIN_EMAIL=<local-admin-email>
+SEED_ADMIN_PASSWORD=<local-admin-password>
+```
+
+Dùng email thử và mật khẩu riêng có ít nhất 8 ký tự. Thay cả hai placeholder trước khi chạy seed.
+
+Nếu thiếu một trong hai biến, seed bỏ qua admin và RuleSet. Nếu chưa cần tạo chúng, có thể bỏ hai dòng hoặc để giá trị rỗng trong `.env` cục bộ.
+
+Seed hiện tại tạo mật khẩu khi tạo mới admin. Với email đã tồn tại, seed cập nhật quyền ADMIN và giữ mật khẩu hiện có.
+
+### Cấu hình web
 
 Trong `apps/web/.env`, đặt:
 
@@ -58,72 +130,182 @@ Trong `apps/web/.env`, đặt:
 VITE_API_URL=http://localhost:3000/api
 ```
 
-Biến bắt đầu bằng `VITE_` có thể xuất hiện trong trình duyệt; tuyệt đối không đặt mật khẩu hoặc chuỗi kết nối database ở đây. Không đưa file `.env` vào Git, issue, PR, ảnh chụp hay AI. Kiểm tra Git đang bỏ qua chúng:
+Các biến bắt đầu bằng `VITE_` có thể xuất hiện trong trình duyệt. Chỉ đặt cấu hình công khai ở đây.
+
+### Kiểm tra file môi trường được Git bỏ qua
 
 ```bash
 git check-ignore -v apps/api/.env apps/web/.env
 ```
 
-## 4. Kiểm tra schema, áp dụng migration
+Cần thấy quy tắc `.gitignore` áp dụng cho cả hai file.
+
+Giữ mật khẩu, JWT secret, khóa VNPay và chuỗi kết nối trong cấu hình cục bộ hoặc kênh riêng. Che các giá trị này khi gửi ảnh, log hoặc nhờ hỗ trợ.
+
+## 4. Kiểm tra schema, migration và seed
+
+### Chọn đúng DB thử
+
+Trước khi chạy các lệnh ghi dữ liệu, xác nhận `DATABASE_URL` và `DIRECT_URL` đều trỏ tới DB phát triển riêng.
+
+Việc nghiệm thu hướng dẫn máy mới thực hiện trên DB thử riêng. Dừng và báo Liêm nếu chưa có DB phù hợp.
+
+### Kiểm tra schema và migration
+
+Trên DB phát triển riêng, chạy:
 
 ```bash
-npm run prisma:validate -w api
-npm run db:migrate -w api
+npm run prisma:validate -w api &&
+npm run db:migrate -w api &&
+npm run prisma:generate -w api
 ```
 
-`prisma:validate` cần báo schema hợp lệ. `db:migrate` dùng `DIRECT_URL`, áp dụng migration còn thiếu và sinh Prisma Client. Khi đã đồng bộ, lệnh báo database khớp schema. Nếu Prisma đề nghị **reset database**, phát hiện **drift**, hoặc hỏi tạo migration mới mà bạn không chủ định thay đổi schema, hãy dừng và báo người phụ trách; không xác nhận reset trên database chung.
+Kết quả cần có:
 
-**Seed:** Cấu hình Prisma trong repo có khai báo `tsx prisma/seed.ts`, nhưng tại thời điểm soạn hướng dẫn, repo **chưa có** `apps/api/prisma/seed.ts` hoặc script `db:seed` trong `apps/api/package.json`. Vì vậy chưa chạy `npm run db:seed -w api`; chờ nhóm bổ sung seed và xác nhận lệnh trước khi thực hiện. Không tự thêm dữ liệu mẫu vào database chung.
+- Schema hợp lệ.
+- Migration hiện có được áp dụng thành công hoặc DB đã đồng bộ.
+- Prisma Client được sinh thành công.
+
+Sau mỗi `git pull`, chạy `npm run db:migrate -w api` trên DB phát triển riêng để áp dụng migration còn thiếu. Người thực hiện PR có migration cần nhắc nhóm cập nhật.
+
+Nếu Prisma đề nghị reset database, phát hiện drift hoặc yêu cầu tạo migration mới ngoài dự kiến, dừng và báo Liêm.
+
+### Supabase dùng chung và production
+
+Trước demo hoặc deploy, đối chiếu thư mục `apps/api/prisma/migrations` với bảng `_prisma_migrations` trên Supabase. Báo Liêm nếu có migration chưa áp hoặc migration lỗi.
+
+Mỗi lần deploy API, áp dụng migration bằng `prisma migrate deploy` trước khi khởi động phiên bản mới theo quy trình deploy của nhóm. Lệnh `db:migrate` dành cho DB phát triển riêng.
+
+### Seed dữ liệu thử
+
+Repo đã có:
+
+- File `apps/api/prisma/seed.ts`.
+- Script `db:seed` trong `apps/api/package.json`, chạy `prisma db seed`.
+- Cấu hình seed `tsx prisma/seed.ts` trong `apps/api/prisma.config.ts`.
+
+Sau khi xác nhận đúng DB thử riêng, đã áp dụng migration và sinh Prisma Client, chạy:
+
+```bash
+npm run db:seed -w api
+```
+
+Nếu cần admin và RuleSet, chuẩn bị hai biến seed trong `.env` theo mục 3 trước khi chạy.
+
+Đọc kết quả terminal và đối chiếu dữ liệu trên DB thử. Nếu có lỗi, ghi lại lệnh và thông báo đã che thông tin nhạy cảm. Dừng nếu công cụ đề nghị reset dữ liệu.
 
 ## 5. Chạy API và web
 
-Mở **hai cửa sổ Git Bash** tại thư mục gốc repo. Cửa sổ thứ nhất:
+Mở hai cửa sổ Git Bash tại thư mục gốc repo.
+
+### Cửa sổ thứ nhất — API
 
 ```bash
 npm run dev:api
 ```
 
-Đợi API khởi động, rồi truy cập <http://localhost:3000/api/health>. Phản hồi mong đợi:
+Đợi API khởi động thành công và qua bước khởi tạo AuthService.
+
+Dùng trình duyệt mở:
+
+```text
+http://localhost:3000/api/health
+```
+
+Hoặc kiểm tra từ một cửa sổ Git Bash khác:
+
+```bash
+curl -i http://localhost:3000/api/health
+```
+
+Kết quả mong đợi là HTTP `200` và:
 
 ```json
 {"status":"ok","service":"dayora-api"}
 ```
 
-Cửa sổ thứ hai:
+Ghi riêng kết quả khởi động API, phản hồi health và kết quả migration/seed đã thực hiện.
+
+### Cửa sổ thứ hai — Web
 
 ```bash
 npm run dev:web
 ```
 
-Mở <http://localhost:5173>. Giữ cả hai cửa sổ chạy khi thử ứng dụng; nhấn `Ctrl+C` trong mỗi cửa sổ để dừng. API kết nối Prisma khi khởi động; trang health cho biết API phản hồi, còn kết quả migration xác nhận truy cập database.
+Mở:
 
-## 6. Kết quả thử trên máy mới và kiểm tra trước PR
+```text
+http://localhost:5173
+```
 
-Kiệt đã chạy `prisma:validate` và `db:migrate` thành công trên máy cá nhân: migration `20261108183740_init` được áp dụng và Prisma Client được sinh ra. Theo xác nhận của Kiệt, **hai thành viên khác cũng đã chạy thử thành công**. Tên người thử, ngày giờ, lệnh đã chạy và minh chứng riêng của từng người cần được ghi vào nhật ký hoặc phần mô tả PR trước khi nghiệm thu; tài liệu này không chứa ảnh hay chuỗi kết nối của họ.
+Kiểm tra web hiển thị, gọi API được và Console/Network của các thao tác đã thử.
 
-Trên máy của bạn, vẫn tự chạy các lệnh dưới đây trước khi gửi PR:
+Giữ hai tiến trình chạy khi dùng ứng dụng. Nhấn `Ctrl+C` trong từng cửa sổ để dừng. Khởi động lại tiến trình tương ứng sau khi sửa `.env`.
+
+## 6. Kiểm tra trên máy hoặc checkout sạch
+
+Lần thử Supabase trước đây có xác nhận hai thành viên chạy thành công. Đợt sửa JWT và hướng dẫn seed cần được kiểm tra lại tại đúng SHA đưa lên PR.
+
+Nhờ hai thành viên thực hiện trên máy hoặc checkout sạch, mỗi người dùng cấu hình cục bộ và DB thử riêng. Ghi kết quả sau khi chạy:
+
+| Người kiểm tra | Ngày kiểm tra | SHA | Máy hoặc checkout sạch | Lệnh đã chạy | Kết quả và minh chứng |
+| --- | --- | --- | --- | --- | --- |
+| Chưa ghi nhận người thứ nhất | — | — | Chưa kiểm tra | — | Chưa kiểm tra |
+| Chưa ghi nhận người thứ hai | — | — | Chưa kiểm tra | — | Chưa kiểm tra |
+
+Mỗi lượt kiểm tra cần ghi:
+
+1. Phiên bản Node và npm.
+2. SHA bằng `git rev-parse HEAD`.
+3. Kết quả `npm ci`.
+4. Việc đã tạo JWT secret riêng và cấu hình file môi trường.
+5. Kết quả migration và seed trên DB thử riêng nếu có thực hiện.
+6. Kết quả `npm run dev:api`, API qua khởi tạo AuthService và `/api/health`.
+7. Kết quả `npm run dev:web` và thao tác web đã thử.
+8. Lỗi gặp phải, cách xử lý và minh chứng đã che thông tin nhạy cảm.
+
+Các bước chưa chạy giữ trạng thái “Chưa kiểm tra”.
+
+## 7. Kiểm tra trước PR
+
+Tại thư mục gốc repo, chạy:
 
 ```bash
-npm run lint
-npm test
+npm run lint &&
+npm test &&
 npm run build
+```
+
+Sau đó kiểm tra:
+
+```bash
 git status --short
 ```
 
-Chỉ báo hoàn thành khi các lệnh thực sự chạy thành công trên máy bạn. `git status --short` không được liệt kê `apps/api/.env`, `apps/web/.env` hay `apps/api/src/generated/`. Nếu có file khác xuất hiện, đọc kỹ trước khi `git add`; không dùng `git add .` khi còn file cục bộ hoặc file sao lưu không liên quan.
+Ghi lệnh và kết quả thực tế vào PR. Nếu có test timeout hoặc lỗi, ghi cả lần lỗi và kết quả điều tra/chạy lại.
 
-## 7. Lỗi thường gặp
+Kiểm tra `.env` và mã Prisma tự sinh được Git bỏ qua. Đọc kỹ các file xuất hiện trước khi stage, chỉ thêm file thuộc phạm vi task.
+
+Kết quả lint, test và build cần đi kèm bằng chứng thử hướng dẫn trên hai máy hoặc checkout sạch ở mục 6.
+
+## 8. Lỗi thường gặp
 
 | Dấu hiệu | Cách kiểm tra và xử lý |
-|---|---|
-| `node` hoặc `npm` không được nhận diện | Mở lại Git Bash sau khi cài Node 24; kiểm tra PATH và `node --version`. |
-| PowerShell chặn `npm.ps1` | Mở **Git Bash** để chạy các lệnh trong hướng dẫn; không cần đổi chính sách thực thi của PowerShell. |
-| `npm ci` báo lockfile không khớp | Cập nhật đúng nhánh và kiểm tra thay đổi cục bộ; không tự sửa `package-lock.json` để bỏ qua lỗi. |
-| `P1000` hoặc authentication failed | Kiểm tra mật khẩu đã điền, ký tự đặc biệt đã percent-encode, và username trong **từng** chuỗi lấy từ Supabase. Không gửi nguyên URL khi báo lỗi. |
-| `P1001`, timeout hoặc kết nối không tới database | Kiểm tra mạng, trạng thái project Supabase và đúng host/cổng. Cổng 5432 của **Session pooler** khác host kết nối trực tiếp; lấy lại nguyên chuỗi ở mục Connect. |
-| Lỗi prepared statement trên cổng 6543 | Kiểm tra `DATABASE_URL` có tham số `pgbouncer=true`; `DIRECT_URL` dùng Session pooler cổng 5432. |
-| Cổng 3000 hoặc 5173 đang được sử dụng | Dừng tiến trình cũ rồi chạy lại. Nếu đổi cổng API, cập nhật `VITE_API_URL`; nếu đổi cổng web, cập nhật `WEB_ORIGIN` tương ứng. |
-| Trình duyệt báo CORS | Kiểm tra địa chỉ web thực tế có khớp `WEB_ORIGIN` của API, gồm cả giao thức và cổng; khởi động lại API sau khi sửa `.env`. |
-| Web không gọi được API | Xem Network trong DevTools, kiểm tra API đang chạy và `VITE_API_URL=http://localhost:3000/api`; khởi động lại Vite sau khi sửa `.env`. |
+| --- | --- |
+| `node` hoặc `npm` không được nhận diện | Mở lại Git Bash sau khi cài Node 24, kiểm tra PATH và `node --version`. |
+| PowerShell chặn `npm.ps1` | Dùng Git Bash để chạy các lệnh trong hướng dẫn. |
+| `npm ci` báo lockfile không khớp | Kiểm tra đúng nhánh, SHA và thay đổi cục bộ rồi trao đổi với người phụ trách. |
+| `JWT_SECRET is required` | Kiểm tra `JWT_SECRET` trong `apps/api/.env`, sinh giá trị riêng theo mục 3 rồi khởi động lại API. |
+| `clip.exe` không được nhận diện | Kiểm tra đang chạy trên Windows và Windows System32 có trong PATH. Báo người hỗ trợ để dùng cách sinh và lưu secret phù hợp. |
+| Seed báo thiếu biến admin | Điền `SEED_ADMIN_EMAIL` và `SEED_ADMIN_PASSWORD` trong `.env` cục bộ nếu cần admin và RuleSet. |
+| Seed báo mật khẩu quá ngắn | Dùng mật khẩu riêng có ít nhất 8 ký tự rồi chạy lại trên DB thử. |
+| Admin đã tồn tại nhưng mật khẩu seed mới không đăng nhập được | Seed giữ mật khẩu của tài khoản đã tồn tại. Dùng thông tin thử đúng hoặc phối hợp BD xử lý tài khoản trên DB thử. |
+| `P1000` hoặc authentication failed | Kiểm tra username, mật khẩu và percent-encoding trong từng chuỗi kết nối. |
+| `P1001`, timeout hoặc không tới DB | Kiểm tra mạng, trạng thái project, host và cổng theo thông tin Supabase cung cấp. |
+| Lỗi prepared statement trên cổng 6543 | Kiểm tra `DATABASE_URL` có `pgbouncer=true`, `DIRECT_URL` dùng Session pooler cổng 5432. |
+| Prisma báo drift hoặc đề nghị reset | Dừng và báo Liêm, giữ lại thông báo đã che thông tin kết nối. |
+| Cổng 3000 hoặc 5173 đang được sử dụng | Dừng tiến trình cũ. Nếu đổi cổng API, cập nhật `VITE_API_URL`; đổi cổng web thì cập nhật `WEB_ORIGIN`. |
+| Trình duyệt báo CORS | Đối chiếu địa chỉ web thực tế với `WEB_ORIGIN`, gồm giao thức và cổng, rồi khởi động lại API. |
+| Web gọi API lỗi | Kiểm tra API đang chạy, xem Network và đối chiếu `VITE_API_URL=http://localhost:3000/api`. Khởi động lại Vite sau khi sửa `.env`. |
 
-Khi nhờ hỗ trợ, gửi **lệnh gây lỗi và thông báo đã che thông tin kết nối**. Không gửi file `.env` hoặc ảnh chứa mật khẩu.
+Khi nhờ hỗ trợ, gửi lệnh gây lỗi và thông báo đã che thông tin nhạy cảm. Minh chứng cần thể hiện đúng SHA, thao tác và kết quả thực tế.

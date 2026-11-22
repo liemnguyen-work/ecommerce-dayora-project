@@ -124,3 +124,50 @@ describe('Me', () => {
     expect(db.viewedProduct.findMany).toHaveBeenCalledWith(expect.objectContaining({ where: expect.objectContaining({ userId: 'u1', product: { status: 'ACTIVE', skus: { some: { status: 'ACTIVE' } } } }), orderBy: [{ viewedAt: 'desc' }, { productId: 'asc' }], take: 12 }));
   });
 });
+
+
+describe('Giới hạn mật khẩu giữa đổi mật khẩu và đăng nhập', () => {
+  it('đổi từ mật khẩu cũ dài sang mật khẩu 128 ký tự và đăng nhập lại; từ chối 129 trước khi ghi', async () => {
+    const { Test } = await import('@nestjs/testing');
+    const { ValidationPipe } = await import('@nestjs/common');
+    const { ConfigService } = await import('@nestjs/config');
+    const { default: request } = await import('supertest');
+    const { AuthService } = await import('../auth/auth.service.js');
+    const { PrismaService: Prisma } = await import('../prisma/prisma.service.js');
+    const { MeModule } = await import('./me.module.js');
+    const user = { id: 'user-1', email: 'user@example.com', fullName: 'Hoan', phone: null, role: 'CUSTOMER', isActive: true, createdAt: new Date(), passwordHash: await hashPassword('c'.repeat(129)) };
+    const db = fakeDatabase();
+    db.user.findUnique.mockImplementation(async () => ({ ...user }));
+    db.user.updateMany.mockImplementation(async ({ where, data }: { where: { passwordHash: string }; data: { passwordHash: string } }) => {
+      if (where.passwordHash !== user.passwordHash) return { count: 0 };
+      user.passwordHash = data.passwordHash;
+      return { count: 1 };
+    });
+    const module = await Test.createTestingModule({ imports: [MeModule] })
+      .overrideProvider(Prisma).useValue(db)
+      .overrideProvider(ConfigService).useValue({ get: () => 'test-secret' })
+      .compile();
+    const app = module.createNestApplication();
+    app.setGlobalPrefix('api');
+    app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true, forbidNonWhitelisted: true }));
+    await app.init();
+    try {
+      const token = module.get(AuthService).signToken(user.id);
+      const cookie = `access_token=${token}`;
+      const newPassword = 'a'.repeat(128);
+      await request(app.getHttpServer()).post('/api/me/password').set('Cookie', cookie)
+        .send({ currentPassword: 'c'.repeat(129), newPassword }).expect(201);
+      expect(await verifyPassword(newPassword, user.passwordHash)).toBe(true);
+      await request(app.getHttpServer()).post('/api/auth/login')
+        .send({ email: user.email, password: newPassword }).expect(201);
+      const hashBefore = user.passwordHash;
+      const writesBefore = db.user.updateMany.mock.calls.length;
+      await request(app.getHttpServer()).post('/api/me/password').set('Cookie', cookie)
+        .send({ currentPassword: newPassword, newPassword: 'b'.repeat(129) }).expect(400);
+      expect(db.user.updateMany).toHaveBeenCalledTimes(writesBefore);
+      expect(user.passwordHash).toBe(hashBefore);
+    } finally {
+      await app.close();
+    }
+  }, 20000);
+});

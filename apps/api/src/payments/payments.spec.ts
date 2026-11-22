@@ -82,14 +82,52 @@ describe('Payments VNPay — PRJ-P3-BD1-2', () => {
     expect(prisma.order.findUnique).not.toHaveBeenCalled();
   });
 
-  it('thành công xác nhận và trừ tồn một lần, IPN lặp trả 02', async () => {
-    const { service, order, sku } = await makeService();
-    await expect(service.ipn(signed())).resolves.toMatchObject({ RspCode: '00' });
-    expect(order).toMatchObject({ status: 'CONFIRMED', paymentStatus: 'PAID' });
-    expect(sku).toMatchObject({ stock: 3, reserved: 0 });
-    await expect(service.ipn(signed())).resolves.toMatchObject({ RspCode: '02' });
-    expect(sku).toMatchObject({ stock: 3, reserved: 0 });
+it('thành công xác nhận và trừ tồn một lần, IPN lặp trả 02', async () => {
+  const { service, order, sku, tx } = await makeService();
+
+  await expect(service.ipn(signed())).resolves.toMatchObject({ RspCode: '00' });
+
+  expect(order).toMatchObject({
+    status: 'CONFIRMED',
+    paymentStatus: 'PAID',
   });
+  expect(sku).toMatchObject({ stock: 3, reserved: 0 });
+
+  // #605: IPN thành công thay đổi hai trục, mỗi trục một dòng log.
+  expect(tx.orderStatusLog.create).toHaveBeenCalledTimes(2);
+
+  expect(tx.orderStatusLog.create).toHaveBeenNthCalledWith(
+    1,
+    expect.objectContaining({
+      data: expect.objectContaining({
+        orderId: order.id,
+        field: 'paymentStatus',
+        fromValue: 'UNPAID',
+        toValue: 'PAID',
+        actorId: null,
+      }),
+    }),
+  );
+
+  expect(tx.orderStatusLog.create).toHaveBeenNthCalledWith(
+    2,
+    expect.objectContaining({
+      data: expect.objectContaining({
+        orderId: order.id,
+        field: 'status',
+        fromValue: 'PENDING_PAYMENT',
+        toValue: 'CONFIRMED',
+        actorId: null,
+      }),
+    }),
+  );
+
+  // IPN lặp không được trừ tồn hoặc ghi thêm log.
+  await expect(service.ipn(signed())).resolves.toMatchObject({ RspCode: '02' });
+
+  expect(sku).toMatchObject({ stock: 3, reserved: 0 });
+  expect(tx.orderStatusLog.create).toHaveBeenCalledTimes(2);
+});
 
   it('sai tiền trả 04 không cập nhật', async () => {
     const { service, order, sku, tx } = await makeService();
@@ -112,15 +150,37 @@ describe('Payments VNPay — PRJ-P3-BD1-2', () => {
     expect(sku.stock).toBe(3);
   });
 
-  it('IPN muộn hết tồn giữ PAID và log hoàn tiền thủ công', async () => {
-    const { service, order, sku, tx } = await makeService();
-    order.status = 'CANCELLED'; sku.stock = 1; sku.reserved = 0;
-    await expect(service.ipn(signed())).resolves.toMatchObject({ RspCode: '00' });
-    expect(order).toMatchObject({ status: 'CANCELLED', paymentStatus: 'PAID' });
-    expect(sku.stock).toBe(1);
-    expect(tx.orderStatusLog.create).toHaveBeenCalledWith(expect.objectContaining({ data: expect.objectContaining({ note: 'Thanh toán muộn, hết tồn: cần hoàn tiền thủ công' }) }));
-  });
+it('IPN muộn hết tồn giữ PAID và log hoàn tiền thủ công', async () => {
+  const { service, order, sku, tx } = await makeService();
 
+  order.status = 'CANCELLED';
+  sku.stock = 1;
+  sku.reserved = 0;
+
+  await expect(service.ipn(signed())).resolves.toMatchObject({ RspCode: '00' });
+
+  expect(order).toMatchObject({
+    status: 'CANCELLED',
+    paymentStatus: 'PAID',
+  });
+  expect(sku.stock).toBe(1);
+
+  // #605: Chỉ paymentStatus thay đổi, status vẫn CANCELLED.
+  expect(tx.orderStatusLog.create).toHaveBeenCalledTimes(1);
+
+  expect(tx.orderStatusLog.create).toHaveBeenCalledWith(
+    expect.objectContaining({
+      data: expect.objectContaining({
+        orderId: order.id,
+        field: 'paymentStatus',
+        fromValue: 'UNPAID',
+        toValue: 'PAID',
+        actorId: null,
+        note: 'Thanh toán muộn, hết tồn: cần hoàn tiền thủ công',
+      }),
+    }),
+  );
+});
   it('thiếu cấu hình trả 503 và return không cập nhật', async () => {
     const { service, prisma, tx } = await makeService();
     vi.stubEnv('VNP_TMN_CODE', '');

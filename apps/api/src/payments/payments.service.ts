@@ -69,12 +69,43 @@ export class PaymentsService {
           data: { status: 'PAID', txnNo: query.vnp_TransactionNo, paidAt: new Date() },
         });
         if (updatedPayment.count !== 1) throw new Error('Payment update failed');
-        const status = canFulfill ? 'CONFIRMED' : 'CANCELLED';
-        await tx.order.update({ where: { id: order.id }, data: { status, paymentStatus: 'PAID' } });
-        await tx.orderStatusLog.create({ data: {
-          orderId: order.id, status, paymentStatus: 'PAID',
-          note: canFulfill ? 'VNPay thanh toán thành công' : 'Thanh toán muộn, hết tồn: cần hoàn tiền thủ công',
-        } });
+const previousStatus = order.status;
+const previousPaymentStatus = order.paymentStatus;
+
+const status = canFulfill ? 'CONFIRMED' : 'CANCELLED';
+
+await tx.order.update({
+  where: { id: order.id },
+  data: { status, paymentStatus: 'PAID' },
+});
+
+const paymentNote = canFulfill
+  ? 'VNPay thanh toán thành công'
+  : 'Thanh toán muộn, hết tồn: cần hoàn tiền thủ công';
+
+await tx.orderStatusLog.create({
+  data: {
+    orderId: order.id,
+    field: 'paymentStatus',
+    fromValue: previousPaymentStatus,
+    toValue: 'PAID',
+    actorId: null,
+    note: paymentNote,
+  },
+});
+
+if (previousStatus !== status) {
+  await tx.orderStatusLog.create({
+    data: {
+      orderId: order.id,
+      field: 'status',
+      fromValue: previousStatus,
+      toValue: status,
+      actorId: null,
+      note: paymentNote,
+    },
+  });
+}
         return { RspCode: '00', Message: 'Confirm Success' };
       });
     } catch {

@@ -1,6 +1,5 @@
-import { ConflictException, Injectable, Logger, NotFoundException, type OnModuleDestroy, type OnModuleInit } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, Logger, NotFoundException, type OnModuleDestroy, type OnModuleInit } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
-
 import type { Prisma } from '../generated/prisma/client.js';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { calculatePricing, PricingError } from '../pricing/pricing.js';
@@ -49,11 +48,9 @@ export class CheckoutService implements OnModuleInit, OnModuleDestroy {
     if (!order) throw new NotFoundException('Không tìm thấy đơn hàng');
     return {
       ...order,
-      address: order.recipientAddress,
-      voucherCode: order.voucherUsage?.voucher.code ?? null,
+      voucherCode: order.voucherCode,
     };
   }
-
   private async release(tx: Prisma.TransactionClient, id: string, userId?: string, expired = false) {
     const order = await tx.order.findFirst({
       where: { id, userId },
@@ -87,13 +84,26 @@ export class CheckoutService implements OnModuleInit, OnModuleDestroy {
     await tx.orderStatusLog.create({
       data: {
         orderId: id,
-        status: 'CANCELLED',
-        ...(expired ? { paymentStatus: 'EXPIRED' } : {}),
+        field: 'status',
+        fromValue: order.status,
+        toValue: 'CANCELLED',
+        actorId: expired ? null : (userId ?? null),
         note: expired ? 'EXPIRED: quá 15 phút chưa thanh toán' : 'Khách hủy',
       },
     });
-  }
 
+    if (expired) {
+      await tx.orderStatusLog.create({
+        data: {
+          orderId: id,
+          field: 'paymentStatus',
+          fromValue: order.paymentStatus,
+          toValue: 'EXPIRED',
+          actorId: null,
+          note: 'EXPIRED: quá 15 phút chưa thanh toán',
+        },
+      });
+    }}
   onModuleInit() {
     if (process.env.DISABLE_ORDER_EXPIRY !== '1') {
       this.timer = setInterval(() => {
@@ -136,8 +146,14 @@ export class CheckoutService implements OnModuleInit, OnModuleDestroy {
       address: dto.recipient,
       expected: dto.expected,
     });
+    const shippingZone = preview.zone;
+
+if (shippingZone === null) {
+  throw new BadRequestException('Thiếu thông tin vùng giao hàng');
+}
     const expectedPrices = new Map(dto.expected.map((entry) => [entry.skuId, entry.unitPrice]));
     if (
+      preview.zone == null ||
       preview.warnings.length > 0 ||
       preview.total !== dto.expectedTotal ||
       (voucherCode != null && !preview.voucher?.valid) ||
@@ -229,7 +245,9 @@ export class CheckoutService implements OnModuleInit, OnModuleDestroy {
           status: 'PENDING_PAYMENT',
           recipientName: dto.recipient.name,
           recipientPhone: dto.recipient.phone,
-          recipientAddress: dto.recipient.address,
+          address: dto.recipient.address,
+          shippingZone,
+          voucherCode: voucherId ? voucherCode : null,
           subtotal: preview.subtotal,
           discount,
           shippingFee: preview.shippingFee,
@@ -240,7 +258,7 @@ export class CheckoutService implements OnModuleInit, OnModuleDestroy {
               skuId: line.skuId,
               productName: line.sku.product.name,
               skuCode: line.sku.code,
-              colorSnapshot: line.sku.color,
+              color: line.sku.color,
               unitSnapshot: line.sku.unit,
               unitPrice: line.sku.effectivePrice,
               quantity: line.quantity,
@@ -257,8 +275,16 @@ export class CheckoutService implements OnModuleInit, OnModuleDestroy {
         });
       }
       await tx.orderStatusLog.create({
-        data: { orderId: order.id, status: 'PENDING_PAYMENT', note: 'Tạo đơn' },
+        data: {
+          orderId: order.id,
+          field: 'status',
+          fromValue: '',
+          toValue: 'PENDING_PAYMENT',
+          actorId: userId,
+          note: 'Tạo đơn',
+        },
       });
+
       for (const item of cartItems) {
         const deleted = await tx.cartItem.deleteMany({
           where: { id: item.id, cart: { userId }, quantity: item.quantity },
