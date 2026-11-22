@@ -1,6 +1,4 @@
-# PRJ-P1-BD2-1 — Kiểm tra kiến thức Seed Catalog
-
-**Task:** [#12 — Seed catalog: 6 nhóm, 30 SKU, phí giao, admin, RuleSet v1](https://github.com/NguyenTienMinh2510/dayora/issues/12)  
+# PRJ-P1-BD2-1 — Kiểm tra kiến thức Seed Catalog 
 **Người thực hiện:** BD2 Châu  
 
 ## Checklist kiến thức
