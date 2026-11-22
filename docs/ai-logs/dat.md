@@ -1607,3 +1607,26 @@ Giữ câu trả lời ở mức ngắn, tập trung vào mục đích, rủi ro
 - Có đủ bốn nội dung kiểm tra.
 - Nội dung bám theo kết quả thực hiện PRJ-P2-PD-1.1 đến PRJ-P2-PD-1.3.
 - Nhật ký không ghi nhận reviewer đã nghiệm thu khi chưa có xác nhận.
+
+---
+
+## P3 — Rà soát giao diện chi tiết đơn hàng / DAT-20261122-P3-001
+
+* **Thời gian ghi:** 22/11/2026
+* **Người thực hiện:** Đạt (PD)
+* **Loại mục:** Hoạt động
+
+### Mục đích
+
+Kiểm tra giao diện chi tiết đơn hàng trên desktop và mobile, đồng thời ghi nhận các điểm cần cải thiện.
+
+### Quá trình thực hiện
+
+Đạt trực tiếp chạy dự án, tạo đơn thử nghiệm, kiểm tra giao diện, kiểm tra chuyển hướng thanh toán và chụp ảnh minh chứng. AI được sử dụng để hỗ trợ rà soát cách trình bày báo cáo.
+
+### Kết quả
+
+- Giao diện hiển thị được ở hai kích thước kiểm tra.
+- Chuyển hướng sang môi trường thanh toán thử nghiệm thành công.
+- Có đủ ảnh minh chứng desktop và mobile.
+- Các điểm cần cải thiện đã được ghi trong báo cáo.
