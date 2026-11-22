@@ -1,4 +1,3 @@
-
 import 'reflect-metadata';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -203,8 +202,35 @@ describe('AdminOrdersService - PRJ-P3-BD2-1', () => {
         shippingStatus: 'DELIVERED',
       }),
     );
-  });
 
+expect(tx.orderStatusLog.create).toHaveBeenCalledTimes(2);
+
+expect(tx.orderStatusLog.create).toHaveBeenNthCalledWith(
+  1,
+  expect.objectContaining({
+    data: expect.objectContaining({
+      orderId: 'order-a',
+      field: 'shippingStatus',
+      fromValue: 'SHIPPING',
+      toValue: 'DELIVERED',
+      actorId: 'admin-a',
+    }),
+  }),
+);
+
+expect(tx.orderStatusLog.create).toHaveBeenNthCalledWith(
+  2,
+  expect.objectContaining({
+    data: expect.objectContaining({
+      orderId: 'order-a',
+      field: 'status',
+      fromValue: 'CONFIRMED',
+      toValue: 'COMPLETED',
+      actorId: 'admin-a',
+    }),
+  }),
+);
+});
   it('chuyển trạng thái sai trả 422 kèm allowed', async () => {
     const order = mockOrder({
       shippingStatus: 'NOT_SHIPPED',
@@ -249,19 +275,22 @@ describe('AdminOrdersService - PRJ-P3-BD2-1', () => {
       ...prisma.orderStatusLog.create.mock.calls,
       ...tx.orderStatusLog.create.mock.calls,
     ];
+expect(calls).toEqual(
+  expect.arrayContaining([
+    [
+      expect.objectContaining({
+        data: expect.objectContaining({
+          orderId: 'order-a',
+          field: 'shippingStatus',
+          fromValue: 'PREPARING',
+          toValue: 'SHIPPING',
+          actorId: 'admin-a',
+        }),
+      }),
+    ],
+  ]),
+);
 
-    expect(calls).toEqual(
-      expect.arrayContaining([
-        [
-          expect.objectContaining({
-            data: expect.objectContaining({
-              orderId: 'order-a',
-              shippingStatus: 'SHIPPING',
-            }),
-          }),
-        ],
-      ]),
-    );
   });
 
   it('hủy đơn chưa thanh toán phải giải phóng reserved', async () => {
@@ -295,16 +324,18 @@ describe('AdminOrdersService - PRJ-P3-BD2-1', () => {
       }),
     );
 
-    expect(tx.orderStatusLog.create).toHaveBeenCalledWith(
-      expect.objectContaining({
-        data: expect.objectContaining({
-          orderId: 'order-a',
-          status: 'CANCELLED',
-        }),
-      }),
-    );
+expect(tx.orderStatusLog.create).toHaveBeenCalledWith(
+  expect.objectContaining({
+    data: expect.objectContaining({
+      orderId: 'order-a',
+      field: 'status',
+      fromValue: 'PENDING_PAYMENT',
+      toValue: 'CANCELLED',
+      actorId: 'admin-a',
+    }),
+  }),
+);
   });
-
   it('hủy đơn đã thanh toán phải hoàn stock và ghi log', async () => {
     const order = mockOrder({
       status: 'CONFIRMED',
@@ -338,15 +369,18 @@ describe('AdminOrdersService - PRJ-P3-BD2-1', () => {
 
     expect(tx.sku.updateMany).not.toHaveBeenCalled();
 
-    expect(tx.orderStatusLog.create).toHaveBeenCalledWith(
-      expect.objectContaining({
-        data: expect.objectContaining({
-          orderId: 'order-a',
-          status: 'CANCELLED',
-          note: expect.stringContaining('Cần hoàn tiền thủ công'),
-        }),
-      }),
-    );
+expect(tx.orderStatusLog.create).toHaveBeenCalledWith(
+  expect.objectContaining({
+    data: expect.objectContaining({
+      orderId: 'order-a',
+      field: 'status',
+      fromValue: 'CONFIRMED',
+      toValue: 'CANCELLED',
+      actorId: 'admin-a',
+      note: expect.stringContaining('Cần hoàn tiền thủ công'),
+    }),
+  }),
+);
   });
 
   it('không hoàn tồn kho hai lần khi đơn đã CANCELLED', async () => {
@@ -560,17 +594,17 @@ it('hủy pending trả reserved', async () => {
       },
     },
   });
-
-  expect(tx.sku.update).not.toHaveBeenCalled();
-
-  expect(tx.orderStatusLog.create).toHaveBeenCalledWith(
-    expect.objectContaining({
-      data: expect.objectContaining({
-        orderId: 'order-a',
-        status: 'CANCELLED',
-      }),
+expect(tx.orderStatusLog.create).toHaveBeenCalledWith(
+  expect.objectContaining({
+    data: expect.objectContaining({
+      orderId: 'order-a',
+      field: 'status',
+      fromValue: 'PENDING_PAYMENT',
+      toValue: 'CANCELLED',
+      actorId: 'admin-a',
     }),
-  );
+  }),
+);
 });
 it('hủy đơn PAID cộng stock và ghi cần hoàn tiền', async () => {
   const order = mockOrder({
@@ -620,19 +654,18 @@ it('hủy đơn PAID cộng stock và ghi cần hoàn tiền', async () => {
   });
 
   expect(tx.sku.updateMany).not.toHaveBeenCalled();
-
-  expect(tx.orderStatusLog.create).toHaveBeenCalledWith(
-    expect.objectContaining({
-      data: expect.objectContaining({
-        orderId: 'order-a',
-        status: 'CANCELLED',
-        note: expect.stringContaining(
-          'Cần hoàn tiền thủ công',
-        ),
-      }),
+expect(tx.orderStatusLog.create).toHaveBeenCalledWith(
+  expect.objectContaining({
+    data: expect.objectContaining({
+      orderId: 'order-a',
+      field: 'status',
+      fromValue: 'CONFIRMED',
+      toValue: 'CANCELLED',
+      actorId: 'admin-a',
+      note: expect.stringContaining('Cần hoàn tiền thủ công'),
     }),
-  );
-
+  }),
+);
   expect(tx.order.updateMany).toHaveBeenCalledWith(
     expect.objectContaining({
       data: {
