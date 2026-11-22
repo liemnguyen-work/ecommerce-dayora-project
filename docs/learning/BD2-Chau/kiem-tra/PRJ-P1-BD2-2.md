@@ -1,6 +1,4 @@
 # PRJ-P1-BD2-2 — Kiểm tra kiến thức API Admin tài khoản
-
-**Task:** [#13 — API admin tài khoản](https://github.com/NguyenTienMinh2510/dayora/issues/13)  
 **Người thực hiện:** BD2 Châu  
 
 ## Checklist kiến thức
