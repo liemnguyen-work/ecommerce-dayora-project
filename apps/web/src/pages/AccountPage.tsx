@@ -2,8 +2,8 @@ import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react'
 import { Link, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../lib/auth.tsx';
 import { api } from '../lib/api';
-import ProductCard from '../components/catalog/ProductCard';
-import type { Product } from '../lib/catalog';
+import { formatPrice } from '../lib/catalog';
+import '../catalog.css';
 
 type Tab = 'don-hang' | 'danh-gia' | 'ho-so' | 'da-xem';
 const tabs: [Tab, string][] = [
@@ -244,31 +244,41 @@ function Profile() {
   return data ? <ProfileForms key={data.id} profile={data} /> : null;
 }
 
+type Viewed = {
+  id: string; slug: string; name: string; minPrice: number;
+  imageUrl?: string | null;
+  skus?: { imageUrl?: string | null }[];
+};
+
+function ViewedTile({ product }: { product: Viewed }) {
+  const images = [product.imageUrl, ...(product.skus?.map(sku => sku.imageUrl) ?? [])]
+    .filter((src): src is string => typeof src === 'string' && src.trim().length > 0);
+  const [failedImages, setFailedImages] = useState<string[]>([]);
+  const image = images.find(src => !failedImages.includes(src));
+
+  return <article className="catalog-card">
+    <Link to={`/san-pham/${encodeURIComponent(product.slug)}`} className="product-tile catalog-card__link">
+      <div className="catalog-image">
+        {image ? <img key={image} src={image} alt={product.name} loading="lazy"
+          onError={() => setFailedImages(previous => [...previous, image])} />
+          : <span>Ảnh sản phẩm đang cập nhật</span>}
+      </div>
+      <div className="catalog-card__body">
+        <h3>{product.name}</h3>
+        <p className="catalog-card__price">Từ {formatPrice(product.minPrice)}</p>
+      </div>
+    </Link>
+  </article>;
+}
+
 function ViewedList() {
-  const [viewed, setViewed] = useState<Product[]>([]);
-  const [viewedLoading, setViewedLoading] = useState(true);
-  const [viewedError, setViewedError] = useState('');
-
-  useEffect(() => {
-    let active = true;
-    api<Product[]>('/me/viewed')
-      .then((products) => {
-        if (active) setViewed(products);
-      })
-      .catch((requestError: unknown) => {
-        if (active) setViewedError(requestError instanceof Error ? requestError.message : 'Chưa tải được sản phẩm đã xem.');
-      })
-      .finally(() => {
-        if (active) setViewedLoading(false);
-      });
-    return () => { active = false; };
-  }, []);
-
-  return <div aria-busy={viewedLoading}>
-    {viewedLoading && <p role="status">Đang tải sản phẩm đã xem…</p>}
-    {viewedError && <p role="alert">{viewedError}</p>}
-    {!viewedLoading && !viewedError && viewed.length === 0 && <p>Bạn chưa xem sản phẩm nào.</p>}
-    {!viewedLoading && !viewedError && viewed.length > 0 && <div className="catalog-grid">{viewed.map(product => <ProductCard key={product.id} product={product} />)}</div>}
+  const { data, error, loading, reload } = useAccountLoad<Viewed[] | { items: Viewed[] }>('/me/viewed');
+  const items = Array.isArray(data) ? data : data?.items ?? [];
+  return <div className="space-y-4" aria-busy={loading}>
+    {loading && <p role="status">Đang tải sản phẩm đã xem…</p>}
+    {error && <div><p role="alert">{error}</p><button type="button" className="catalog-button mt-3" onClick={() => { void reload(); }}>Thử lại</button></div>}
+    {!loading && !error && items.length === 0 && <p>Bạn chưa xem sản phẩm nào.</p>}
+    {!loading && !error && items.length > 0 && <div className="product-grid catalog-grid">{items.map(product => <ViewedTile key={product.id} product={product} />)}</div>}
   </div>;
 }
 
