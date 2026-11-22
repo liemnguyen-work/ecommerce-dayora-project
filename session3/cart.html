@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DAYORA — Gói gọn đồ dùng, mở trọn cuộc vui</title>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="images/logo.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="home-page">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html" aria-label="DAYORA - Trang chủ"><img src="images/logo.png" alt=""><span>DAYORA</span></a>
+      <nav aria-label="Điều hướng chính">
+        <a href="index.html">Trang chủ</a>
+        <a href="products.html">Sản phẩm</a>
+        <a href="about.html">Giới thiệu</a>
+        <a href="cart.html" class="nav-cart" aria-current="page">Giỏ hàng <span class="cart-count">0</span></a>
+      </nav>
+      <div class="search-box">
+        <label class="home-search-label" for="search">Tìm kiếm sản phẩm</label>
+        <input id="search" type="search" placeholder="Tìm sản phẩm">
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+  <section class="cart-page" aria-labelledby="cart-title">
+    <h1 id="cart-title">Giỏ hàng của bạn</h1>
+    <p>Kiểm tra sản phẩm và số lượng trước khi tiếp tục.</p>
+
+    <div id="cart-root">
+      <div id="cart-content">
+        <div class="cart-table-wrap">
+          <table class="cart-table">
+            <thead>
+              <tr>
+                <th scope="col">Sản phẩm</th>
+                <th scope="col">Đơn giá</th>
+                <th scope="col">Số lượng</th>
+                <th scope="col">Thành tiền</th>
+                <th scope="col">Xóa</th>
+              </tr>
+            </thead>
+            <tbody id="cart-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="cart-summary" id="cart-summary" aria-live="polite">
+        <div class="summary-box">
+          <p>Tổng số lượng: <strong id="cart-total-items">0 món</strong></p>
+          <p class="summary-total">Tổng tiền: <strong id="cart-total-price">0 ₫</strong></p>
+          <button type="button" class="cart-checkout" disabled aria-describedby="checkout-note">Đặt hàng</button>
+          <p id="checkout-note">Thanh toán chưa khả dụng.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+   </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div><strong>DAYORA</strong><p>Gói gọn đồ dùng, mở trọn cuộc vui.</p><p>Đồ dùng cho picnic, hẹn hò và đi biển trong ngày.</p></div>
+      <nav aria-label="Điều hướng chân trang"><strong>Trang</strong><a href="index.html">Trang chủ</a><a href="products.html">Sản phẩm</a><a href="about.html">Giới thiệu</a></nav>
+      <div><strong>Liên hệ</strong><p>Email: <a href="mailto:dayora.picnic@gmail.com">dayora.picnic@gmail.com</a></p><p>Hotline: <a href="tel:0989544262">0989544262</a></p><p><a href="https://www.facebook.com/lam.g.cang">Facebook</a></p></div>
+    </div>
+  </footer>
+  <script src="js/data/products.js" defer></script>
+<script src="js/modules/cart.js" defer></script>
+<script src="js/modules/cart-page.js" defer></script>
+<script src="js/modules/header-search.js" defer></script>
+</body>
+</html>

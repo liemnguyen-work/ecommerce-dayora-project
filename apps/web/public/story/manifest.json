@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "duration": 12,
+  "fps": 15,
+  "frameCount": 180,
+  "endpointInclusive": true,
+  "desktop": {
+    "width": 1600,
+    "height": 900,
+    "pattern": "/story/desktop/f-{index:03}.webp",
+    "video": "/story/brand-story.mp4",
+    "idle": "/story/hero-idle.mp4",
+    "poster": "/story/poster.webp"
+  },
+  "mobile": {
+    "width": 750,
+    "height": 1333,
+    "pattern": "/story/mobile/f-{index:03}.webp",
+    "video": "/story/brand-story-mobile.mp4",
+    "idle": "/story/hero-idle-mobile.mp4",
+    "poster": "/story/poster-mobile.webp"
+  },
+  "scenes": [
+    {
+      "id": "sky",
+      "start": 0,
+      "end": 2
+    },
+    {
+      "id": "packing",
+      "start": 2,
+      "end": 4.5
+    },
+    {
+      "id": "details",
+      "start": 4.5,
+      "end": 6.5
+    },
+    {
+      "id": "moments",
+      "start": 6.5,
+      "end": 8.5,
+      "cuts": [
+        6.5,
+        7.5
+      ]
+    },
+    {
+      "id": "hero",
+      "start": 8.5,
+      "end": 12
+    }
+  ],
+  "idle": {
+    "duration": 6,
+    "loop": true
+  }
+}

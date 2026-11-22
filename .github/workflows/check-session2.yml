@@ -1,0 +1,22 @@
+# Kiểm bài Buổi 2 trên mỗi PR: chạy tools/check-session2.py, lỗi [LOI] thì check đỏ.
+# Bật Settings → Branches → Require status checks → chọn "check-session2" để PR đỏ không merge được.
+name: check-session2
+
+on:
+  pull_request:
+    paths: ['session2/**', 'tools/check-session2.py']
+  push:
+    branches: [main]
+    paths: ['session2/**', 'tools/check-session2.py']
+
+jobs:
+  check-session2:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Kiểm bài Buổi 2
+        run: python tools/check-session2.py session2
