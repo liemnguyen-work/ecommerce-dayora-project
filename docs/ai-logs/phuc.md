@@ -1234,4 +1234,411 @@ Chờ Phúc tự trả lời và FD1 Thành hoặc người được phân công
 - PR hoàn thành phần chức năng: [#697](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/697), đã merge. Chưa xác minh commit riêng tương ứng bước kiểm tra kiến thức.
 - Cần bổ sung bằng chứng: câu trả lời thực tế; ca tạo voucher hợp lệ và ba ca sai; ảnh lỗi validate; ảnh 1366 px và 390 px; kết quả `npm run lint`, `npm run build` và kiểm thử thủ công; xác nhận của reviewer/QA.
 
+# AI USAGE LOG — P3 — FD2 Phúc
+
+**Dự án:** DAYORA
+
+**Phase:** P3 — Thanh toán VNPay, đơn hàng, đánh giá
+
+**Repository:** `liemnguyen-work/ecommerce-dayora-project`
+
+**Reviewer được phân công:** FD1 Thành
+
+**Phạm vi:** PRJ-P3-FD2-1 và PRJ-P3-FD2-2 (9 sub-issue).
+
+Nhật ký hồi cứu dựa trên yêu cầu người dùng, lộ trình P3 và diff PR thực tế. Các câu ở mục Prompt là nội dung học tập biên soạn theo task, chưa xác minh là prompt đã gửi trong phiên lập trình. Các nhận xét kỹ thuật là phân tích hiện tại, không quy thành phản biện lịch sử của Phúc.
+
 ---
+
+## P3 — Admin Đơn hàng: Hiện danh sách đơn / PHUC-P3-FD2-1-01
+
+* Thời gian ghi: 2026-11-22T18:02:52+07:00
+* Thời gian thực hiện: Chưa xác minh thời gian từng phiên AI; ghi hồi cứu.
+* Mã phiên nhật ký: PHUC-P3-FD2-1 (mã nhật ký tự đặt)
+* Người prompt: Phúc (người yêu cầu lập log hiện tại; prompt lịch sử chưa xác minh)
+* Loại mục: Hoạt động — hồi cứu
+* Liên quan: `PRJ-P3-FD2-1.1`
+
+### Công cụ
+
+ChatGPT — phân tích yêu cầu và đối chiếu diff GitHub trong phiên lập nhật ký này. Công cụ AI dùng khi thực hiện code chưa xác minh.
+
+### Mục đích
+
+Tìm hiểu cách lọc đơn theo trạng thái, từ khóa và phân trang.
+
+### Prompt
+
+> Hãy giải thích cách dùng URLSearchParams để gọi API danh sách đơn theo status, shippingStatus, q và page. Khi đổi bộ lọc thì nên xử lý trang hiện tại và trạng thái tải như thế nào? Không viết code hoàn chỉnh.
+
+### Kết quả đề xuất
+
+Orders dùng useLoad với `/admin/orders?${query}`, các chip lọc, ô tìm theo mã đơn, người nhận hoặc email, phân trang và ba nhóm nhãn trạng thái đơn, thanh toán, giao hàng. Khi đổi lọc hoặc từ khóa, page trở về 1 và đóng chi tiết đang mở.
+
+Phần triển khai có thể đối chiếu trong diff `AdminPage.tsx` tại [PR 715](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/715). Chưa xác định dòng code nào bắt nguồn từ AI.
+
+### Phản biện
+
+Không lọc riêng dữ liệu của trang hiện tại ở client vì sẽ bỏ sót đơn ở trang khác. Không đồng nhất trạng thái thanh toán với trạng thái giao hàng. Đây là điểm review hiện tại; chưa có xác nhận phản biện lịch sử của người thực hiện.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung được xác minh cho mục này. Phạm vi được giao theo issue là `PRJ-P3-FD2-1.1`; người dùng cung cấp trạng thái Closed.
+
+### Người kiểm tra
+
+FD1 Thành là reviewer được phân công. Chưa có bằng chứng xác nhận kết quả review của Thành hoặc QA cho mục này.
+
+### Kiểm tra và minh chứng
+
+- Đã đọc yêu cầu sub-issue và đối chiếu [diff PR 715](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/715).
+- Ca kiểm thử cần thực hiện hoặc đối chiếu minh chứng: Thử từng chip, từ khóa có dấu, kết quả rỗng, lỗi API và đổi trang; đối chiếu total với dữ liệu server.
+- Chưa có kết quả chạy ca kiểm thử này, lint/build hoặc ảnh nghiệm thu được xác minh trong phiên lập log.
+- PR tra được chưa hiện trạng thái merged; cần đối chiếu với thông tin issue cha Closed do người dùng cung cấp.
+
+---
+
+## P3 — Admin Đơn hàng: Mở chi tiết đơn / PHUC-P3-FD2-1-02
+
+* Thời gian ghi: 2026-11-22T18:02:52+07:00
+* Thời gian thực hiện: Chưa xác minh thời gian từng phiên AI; ghi hồi cứu.
+* Mã phiên nhật ký: PHUC-P3-FD2-1 (mã nhật ký tự đặt)
+* Người prompt: Phúc (người yêu cầu lập log hiện tại; prompt lịch sử chưa xác minh)
+* Loại mục: Hoạt động — hồi cứu
+* Liên quan: `PRJ-P3-FD2-1.2`
+
+### Công cụ
+
+ChatGPT — phân tích yêu cầu và đối chiếu diff GitHub trong phiên lập nhật ký này. Công cụ AI dùng khi thực hiện code chưa xác minh.
+
+### Mục đích
+
+Hiểu cách tải chi tiết độc lập và trình bày dữ liệu đơn theo snapshot.
+
+### Prompt
+
+> Trong AdminPage, tôi nên tổ chức panel chi tiết đơn thế nào để khi mở đơn khác không bị hiển thị nhầm dữ liệu? Giải thích cách trình bày món hàng, tổng tiền và lịch sử trạng thái.
+
+### Kết quả đề xuất
+
+OrderDetailPanel gọi `/admin/orders/${encodeURIComponent(id)}` bằng useLoad, được mount theo key là ID đơn. Panel gồm người nhận, món hàng, tạm tính, giảm giá, phí giao, tổng thanh toán và statusLogs; có xử lý tải, lỗi và thử lại.
+
+Phần triển khai có thể đối chiếu trong diff `AdminPage.tsx` tại [PR 715](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/715). Chưa xác định dòng code nào bắt nguồn từ AI.
+
+### Phản biện
+
+Không dùng giá hiện tại của catalog để tính lại đơn cũ; dùng unitPrice, lineTotal và total do server lưu. Cần kiểm tra việc chuyển nhanh giữa hai đơn. Đây là điểm review hiện tại; chưa có xác nhận phản biện lịch sử của người thực hiện.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung được xác minh cho mục này. Phạm vi được giao theo issue là `PRJ-P3-FD2-1.2`; người dùng cung cấp trạng thái Closed.
+
+### Người kiểm tra
+
+FD1 Thành là reviewer được phân công. Chưa có bằng chứng xác nhận kết quả review của Thành hoặc QA cho mục này.
+
+### Kiểm tra và minh chứng
+
+- Đã đọc yêu cầu sub-issue và đối chiếu [diff PR 715](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/715).
+- Ca kiểm thử cần thực hiện hoặc đối chiếu minh chứng: Mở rồi đóng chi tiết, chuyển nhanh giữa hai đơn, kiểm tra SKU, số lượng, tổng tiền và lịch sử; thử lỗi tải chi tiết.
+- Chưa có kết quả chạy ca kiểm thử này, lint/build hoặc ảnh nghiệm thu được xác minh trong phiên lập log.
+- PR tra được chưa hiện trạng thái merged; cần đối chiếu với thông tin issue cha Closed do người dùng cung cấp.
+
+---
+
+## P3 — Admin Đơn hàng: Chuyển trạng thái đơn / PHUC-P3-FD2-1-03
+
+* Thời gian ghi: 2026-11-22T18:02:52+07:00
+* Thời gian thực hiện: Chưa xác minh thời gian từng phiên AI; ghi hồi cứu.
+* Mã phiên nhật ký: PHUC-P3-FD2-1 (mã nhật ký tự đặt)
+* Người prompt: Phúc (người yêu cầu lập log hiện tại; prompt lịch sử chưa xác minh)
+* Loại mục: Hoạt động — hồi cứu
+* Liên quan: `PRJ-P3-FD2-1.3`
+
+### Công cụ
+
+ChatGPT — phân tích yêu cầu và đối chiếu diff GitHub trong phiên lập nhật ký này. Công cụ AI dùng khi thực hiện code chưa xác minh.
+
+### Mục đích
+
+Hiểu các bước hợp lệ theo D08 và cách xử lý xung đột trạng thái.
+
+### Prompt
+
+> Giải thích vì sao nút Xác nhận chỉ nên hiện khi đơn PENDING_PAYMENT và paymentStatus là PAID. Khi gọi PATCH chuyển trạng thái bị 422 kèm allowed hoặc 409 do đơn đã đổi thì UI phải xử lý ra sao?
+
+### Kết quả đề xuất
+
+nextSteps xác định nút theo status, paymentStatus và shippingStatus. move gửi PATCH `/admin/orders/${encodeURIComponent(id)}/status` với field và to; khóa thao tác bằng useRef và sending, tải lại sau lỗi hoặc thành công. Khi hủy đơn PAID, hộp xác nhận cảnh báo cần hoàn tiền thủ công.
+
+Phần triển khai có thể đối chiếu trong diff `AdminPage.tsx` tại [PR 715](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/715). Chưa xác định dòng code nào bắt nguồn từ AI.
+
+### Phản biện
+
+Ẩn nút chỉ hỗ trợ UX, không thay thế ràng buộc server. Diff thể hiện errText và reload sau lỗi, chưa đủ để khẳng định UI hiển thị riêng danh sách allowed. Không coi hủy đơn là tự động hoàn tiền VNPay. Đây là điểm review hiện tại; chưa có xác nhận phản biện lịch sử của người thực hiện.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung được xác minh cho mục này. Phạm vi được giao theo issue là `PRJ-P3-FD2-1.3`; người dùng cung cấp trạng thái Closed.
+
+### Người kiểm tra
+
+FD1 Thành là reviewer được phân công. Chưa có bằng chứng xác nhận kết quả review của Thành hoặc QA cho mục này.
+
+### Kiểm tra và minh chứng
+
+- Đã đọc yêu cầu sub-issue và đối chiếu [diff PR 715](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/715).
+- Ca kiểm thử cần thực hiện hoặc đối chiếu minh chứng: Thử đơn chưa thanh toán, đơn PAID, các bước NOT_SHIPPED → PREPARING → SHIPPING → DELIVERED, nhánh RETURNED, hủy hợp lệ và yêu cầu nhảy bước trên đơn thử; ghi phản hồi 422/allowed thật.
+- Chưa có kết quả chạy ca kiểm thử này, lint/build hoặc ảnh nghiệm thu được xác minh trong phiên lập log.
+- PR tra được chưa hiện trạng thái merged; cần đối chiếu với thông tin issue cha Closed do người dùng cung cấp.
+
+---
+
+## P3 — Trang Tài khoản 4 tab: Tạo khung bốn tab tài khoản / PHUC-P3-FD2-2-01
+
+* Thời gian ghi: 2026-11-22T18:02:52+07:00
+* Thời gian thực hiện: Chưa xác minh thời gian từng phiên AI; ghi hồi cứu.
+* Mã phiên nhật ký: PHUC-P3-FD2-2 (mã nhật ký tự đặt)
+* Người prompt: Phúc (người yêu cầu lập log hiện tại; prompt lịch sử chưa xác minh)
+* Loại mục: Hoạt động — hồi cứu
+* Liên quan: `PRJ-P3-FD2-2.1`
+
+### Công cụ
+
+ChatGPT — phân tích yêu cầu và đối chiếu diff GitHub trong phiên lập nhật ký này. Công cụ AI dùng khi thực hiện code chưa xác minh.
+
+### Mục đích
+
+Tổ chức điều hướng tài khoản và giữ trạng thái tab khi tải lại.
+
+### Prompt
+
+> Hãy hướng dẫn cách chia AccountPage thành Đơn hàng, Chờ đánh giá, Hồ sơ và Sản phẩm đã xem. Nên dùng state hay query tab trên URL? Cần xử lý tab sai và người chưa đăng nhập thế nào?
+
+### Kết quả đề xuất
+
+AccountPage dùng useSearchParams, chọn tab qua danh sách tabs và mặc định don-hang. selectTab giữ các query khác; giao diện có lời chào, role tablist/tab, aria-selected, aria-controls và điều hướng bàn phím. useAuth quản lý trạng thái đăng nhập và đăng xuất.
+
+Phần triển khai có thể đối chiếu trong diff `AccountPage.tsx` tại [PR 727](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/727). Chưa xác định dòng code nào bắt nguồn từ AI.
+
+### Phản biện
+
+Không dùng query tab làm bằng chứng phân quyền. Cần giữ kiểm tra đăng nhập và chỉ tải dữ liệu cá nhân qua API có xác thực; thử tab không hợp lệ và điều hướng bằng bàn phím. Đây là điểm review hiện tại; chưa có xác nhận phản biện lịch sử của người thực hiện.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung được xác minh cho mục này. Phạm vi được giao theo issue là `PRJ-P3-FD2-2.1`; người dùng cung cấp trạng thái Closed.
+
+### Người kiểm tra
+
+FD1 Thành là reviewer được phân công. Chưa có bằng chứng xác nhận kết quả review của Thành hoặc QA cho mục này.
+
+### Kiểm tra và minh chứng
+
+- Đã đọc yêu cầu sub-issue và đối chiếu [diff PR 727](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/727).
+- Ca kiểm thử cần thực hiện hoặc đối chiếu minh chứng: Thử bốn tab, reload URL, Back/Forward, tab không tồn tại, khách chưa đăng nhập và phím ArrowLeft/ArrowRight/Home/End.
+- Chưa có kết quả chạy ca kiểm thử này, lint/build hoặc ảnh nghiệm thu được xác minh trong phiên lập log.
+- PR tra được chưa hiện trạng thái merged; cần đối chiếu với thông tin issue cha Closed do người dùng cung cấp.
+
+---
+
+## P3 — Trang Tài khoản 4 tab: Hiện đơn và đánh giá / PHUC-P3-FD2-2-02
+
+* Thời gian ghi: 2026-11-22T18:02:52+07:00
+* Thời gian thực hiện: Chưa xác minh thời gian từng phiên AI; ghi hồi cứu.
+* Mã phiên nhật ký: PHUC-P3-FD2-2 (mã nhật ký tự đặt)
+* Người prompt: Phúc (người yêu cầu lập log hiện tại; prompt lịch sử chưa xác minh)
+* Loại mục: Hoạt động — hồi cứu
+* Liên quan: `PRJ-P3-FD2-2.2`
+
+### Công cụ
+
+ChatGPT — phân tích yêu cầu và đối chiếu diff GitHub trong phiên lập nhật ký này. Công cụ AI dùng khi thực hiện code chưa xác minh.
+
+### Mục đích
+
+Hiển thị đơn của tài khoản hiện tại, sản phẩm đủ điều kiện đánh giá và form gửi đánh giá.
+
+### Prompt
+
+> Giải thích cách lấy danh sách đơn của tôi và danh sách sản phẩm được phép đánh giá từ backend. Làm sao tránh người dùng đánh giá trùng và tải lại danh sách sau khi gửi thành công?
+
+### Kết quả đề xuất
+
+Orders dùng `/orders`, hiển thị mã, ngày, trạng thái, tổng tiền và link `/don-hang/{id}`. Reviews dùng `/reviews/reviewable`, ReviewForm chọn 1–5 sao, nhận xét tối đa 1000 ký tự và khóa gửi lặp bằng useRef. Sau khi gửi, tải lại danh sách và hiện link sản phẩm. useAccountLoad dùng version để bỏ qua phản hồi cũ.
+
+Phần triển khai có thể đối chiếu trong diff `AccountPage.tsx` tại [PR 727](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/727). Chưa xác định dòng code nào bắt nguồn từ AI.
+
+### Phản biện
+
+Không tự cấp quyền đánh giá dựa vào việc sản phẩm xuất hiện trên giao diện; backend mới xác nhận điều kiện sau mua. Không dùng dữ liệu đơn admin thay cho đơn của khách. Đây là điểm review hiện tại; chưa có xác nhận phản biện lịch sử của người thực hiện.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung được xác minh cho mục này. Phạm vi được giao theo issue là `PRJ-P3-FD2-2.2`; người dùng cung cấp trạng thái Closed.
+
+### Người kiểm tra
+
+FD1 Thành là reviewer được phân công. Chưa có bằng chứng xác nhận kết quả review của Thành hoặc QA cho mục này.
+
+### Kiểm tra và minh chứng
+
+- Đã đọc yêu cầu sub-issue và đối chiếu [diff PR 727](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/727).
+- Ca kiểm thử cần thực hiện hoặc đối chiếu minh chứng: Thử tài khoản không có đơn, đơn đủ/chưa đủ điều kiện đánh giá, lỗi gửi, gửi lặp và danh sách sau đánh giá; xác minh quyền sở hữu đơn trên backend.
+- Chưa có kết quả chạy ca kiểm thử này, lint/build hoặc ảnh nghiệm thu được xác minh trong phiên lập log.
+- PR tra được chưa hiện trạng thái merged; cần đối chiếu với thông tin issue cha Closed do người dùng cung cấp.
+
+---
+
+## P3 — Trang Tài khoản 4 tab: Sửa hồ sơ và đổi mật khẩu / PHUC-P3-FD2-2-03
+
+* Thời gian ghi: 2026-11-22T18:02:52+07:00
+* Thời gian thực hiện: Chưa xác minh thời gian từng phiên AI; ghi hồi cứu.
+* Mã phiên nhật ký: PHUC-P3-FD2-2 (mã nhật ký tự đặt)
+* Người prompt: Phúc (người yêu cầu lập log hiện tại; prompt lịch sử chưa xác minh)
+* Loại mục: Hoạt động — hồi cứu
+* Liên quan: `PRJ-P3-FD2-2.3`
+
+### Công cụ
+
+ChatGPT — phân tích yêu cầu và đối chiếu diff GitHub trong phiên lập nhật ký này. Công cụ AI dùng khi thực hiện code chưa xác minh.
+
+### Mục đích
+
+Hiểu hai form độc lập, đồng bộ hồ sơ với AuthContext và bảo vệ mật khẩu.
+
+### Prompt
+
+> Hãy giải thích cách tải hồ sơ, PATCH họ tên và số điện thoại, POST đổi mật khẩu. Vì sao cần tách loading/error của hai form và gọi refreshUser sau khi lưu?
+
+### Kết quả đề xuất
+
+Profile gọi GET `/me/profile`. ProfileForms gửi PATCH `/me/profile`, validate tên 2–100 ký tự và điện thoại 9–11 chữ số nếu có, email chỉ đọc. Sau khi lưu gọi refreshUser. Đổi mật khẩu dùng POST `/me/password`, currentPassword/newPassword, reset form sau thành công; hai form có khóa và thông báo riêng.
+
+Phần triển khai có thể đối chiếu trong diff `AccountPage.tsx` tại [PR 727](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/727). Chưa xác định dòng code nào bắt nguồn từ AI.
+
+### Phản biện
+
+Không lưu hoặc ghi mật khẩu vào log. Bỏ trống số điện thoại hiện đang giữ nguyên giá trị, không đồng nghĩa xóa số. Nếu refreshUser lỗi sau PATCH thành công, cần phân biệt đã lưu với chưa đồng bộ lời chào. Đây là điểm review hiện tại; chưa có xác nhận phản biện lịch sử của người thực hiện.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung được xác minh cho mục này. Phạm vi được giao theo issue là `PRJ-P3-FD2-2.3`; người dùng cung cấp trạng thái Closed.
+
+### Người kiểm tra
+
+FD1 Thành là reviewer được phân công. Chưa có bằng chứng xác nhận kết quả review của Thành hoặc QA cho mục này.
+
+### Kiểm tra và minh chứng
+
+- Đã đọc yêu cầu sub-issue và đối chiếu [diff PR 727](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/727).
+- Ca kiểm thử cần thực hiện hoặc đối chiếu minh chứng: Thử họ tên sai, số điện thoại sai, lưu hợp lệ và lời chào cập nhật; thử mật khẩu cũ sai, mật khẩu mới ngắn, đổi thành công trên tài khoản thử.
+- Chưa có kết quả chạy ca kiểm thử này, lint/build hoặc ảnh nghiệm thu được xác minh trong phiên lập log.
+- PR tra được chưa hiện trạng thái merged; cần đối chiếu với thông tin issue cha Closed do người dùng cung cấp.
+
+---
+
+## P3 — Trang Tài khoản 4 tab: Hiện sản phẩm đã xem / PHUC-P3-FD2-2-04
+
+* Thời gian ghi: 2026-11-22T18:02:52+07:00
+* Thời gian thực hiện: Chưa xác minh thời gian từng phiên AI; ghi hồi cứu.
+* Mã phiên nhật ký: PHUC-P3-FD2-2 (mã nhật ký tự đặt)
+* Người prompt: Phúc (người yêu cầu lập log hiện tại; prompt lịch sử chưa xác minh)
+* Loại mục: Hoạt động — hồi cứu
+* Liên quan: `PRJ-P3-FD2-2.4`
+
+### Công cụ
+
+ChatGPT — phân tích yêu cầu và đối chiếu diff GitHub trong phiên lập nhật ký này. Công cụ AI dùng khi thực hiện code chưa xác minh.
+
+### Mục đích
+
+Tải lịch sử xem của tài khoản và tái sử dụng phong cách thẻ sản phẩm.
+
+### Prompt
+
+> Hãy hướng dẫn đọc dữ liệu /me/viewed, hiển thị tên, giá từ, ảnh và link chi tiết. Nếu ảnh chính bị lỗi hoặc danh sách rỗng thì nên xử lý thế nào?
+
+### Kết quả đề xuất
+
+ViewedList gọi `/me/viewed`, hỗ trợ response mảng hoặc items, trạng thái tải/lỗi/rỗng. ViewedTile chọn ảnh sản phẩm rồi ảnh SKU, theo dõi failedImages để thử ảnh khác hoặc hiện thông báo; link dùng slug đã encode và ảnh lazy loading.
+
+Phần triển khai có thể đối chiếu trong diff `AccountPage.tsx` tại [PR 727](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/727). Chưa xác định dòng code nào bắt nguồn từ AI.
+
+### Phản biện
+
+Không tạo lịch sử giả bằng dữ liệu catalog hoặc localStorage thay cho API. Cần kiểm tra giá minPrice và ảnh fallback thực tế, không suy ra lịch sử đã lưu chỉ từ UI. Đây là điểm review hiện tại; chưa có xác nhận phản biện lịch sử của người thực hiện.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung được xác minh cho mục này. Phạm vi được giao theo issue là `PRJ-P3-FD2-2.4`; người dùng cung cấp trạng thái Closed.
+
+### Người kiểm tra
+
+FD1 Thành là reviewer được phân công. Chưa có bằng chứng xác nhận kết quả review của Thành hoặc QA cho mục này.
+
+### Kiểm tra và minh chứng
+
+- Đã đọc yêu cầu sub-issue và đối chiếu [diff PR 727](https://github.com/liemnguyen-work/ecommerce-dayora-project/pull/727).
+- Ca kiểm thử cần thực hiện hoặc đối chiếu minh chứng: Mở sản phẩm trên tài khoản thử rồi trở về tab đã xem; kiểm tra thứ tự theo API, link, ảnh lỗi, dữ liệu trống và lỗi mạng.
+- Chưa có kết quả chạy ca kiểm thử này, lint/build hoặc ảnh nghiệm thu được xác minh trong phiên lập log.
+- PR tra được chưa hiện trạng thái merged; cần đối chiếu với thông tin issue cha Closed do người dùng cung cấp.
+
+---
+## Đối chiếu chung trước khi nối nhật ký
+
+- Cả hai task được người dùng cung cấp là Closed, tổng cộng 9/9 sub-issue hoàn thành. PR #715 và #727 tra được có diff chức năng nhưng API trả `merged: false`; chưa kết luận task đã merge vào main của repo Liêm.
+- Trước khi chạy ứng dụng: `git pull`, `npm run db:migrate -w api`; chỉ chạy `npm run db:seed -w api` khi seed thay đổi. Nếu Prisma báo drift hoặc đề nghị reset, dừng và báo Liêm. Chưa xác minh các lệnh đã chạy.
+- Tài liệu: [LP-FD2-Phuc-P3.md](https://github.com/liemnguyen-work/ecommerce-dayora-project/blob/main/docs/learning/FD2-Phuc/LP-FD2-Phuc-P3.md).
+- Bổ sung kết quả thực tế, link commit riêng từng bước, ảnh 1366 px/390 px, phản biện của Phúc và xác nhận người kiểm tra trước khi nộp. Chỉ nối mục mới vào `docs/ai-logs/phuc.md`.
+
+---
+
+## P3 — Đính chính và bổ sung bằng chứng phiên Codex / phuc-20261122-p3-review-01
+
+* Thời gian ghi: 2026-11-22T18:13:17+07:00
+* Thời gian thực hiện: Tổng hợp hồi cứu từ cuộc trao đổi và kết quả công cụ đã quan sát; không xác định lại giờ bắt đầu từng bước.
+* Mã phiên nhật ký: phuc-20261122-p3-review
+* Người prompt: Nguyễn Hồng Phúc
+* Loại mục: Đính chính / Kiểm tra
+* Liên quan: PHUC-P3-FD2-1-01 đến PHUC-P3-FD2-1-03; PHUC-P3-FD2-2-01 đến PHUC-P3-FD2-2-04; phần Đối chiếu chung trước khi nối nhật ký.
+
+### Công cụ
+
+Codex đã trực tiếp hỗ trợ phân tích, viết/sửa mã, chạy kiểm tra, commit và push trong cuộc trao đổi này. Có bằng chứng từ các thao tác công cụ và commit bên dưới. Phần nhật ký hồi cứu phía trên do Phúc cung cấp từ tài liệu đang soạn; không xác minh độc lập các thao tác ChatGPT đọc diff GitHub được mô tả trong tài liệu đó.
+
+### Mục đích
+
+Rà soát log P3 và bổ sung dữ kiện đã xác minh, tránh để các câu chưa xác minh trong bản hồi cứu bị hiểu là kết luận cuối cùng.
+
+### Prompt
+
+Tóm lược yêu cầu thực tế: Phúc lần lượt gửi hướng dẫn từng bước, yêu cầu phân tích và triển khai; sau đó yêu cầu commit/push. Yêu cầu hiện tại là rà soát log và commit/push nếu ổn. Các đoạn trích Prompt trong bảy mục phía trên là câu hỏi học tập biên soạn, không phải bản chép prompt lịch sử và không được dùng làm minh chứng rằng những câu đó đã được gửi.
+
+### Kết quả đề xuất
+
+Đính chính các câu nói chưa xác minh công cụ AI hoặc chưa xác định phần triển khai có AI: Codex thực tế đã hỗ trợ các thay đổi frontend ở bảy bước được liệt kê dưới đây; riêng phần đánh giá đã tích hợp cả code có sẵn từ main. Không quy toàn bộ code trong merge commit cho Phúc hoặc Codex.
+
+Đính chính câu 9/9 sub-issue hoàn thành và hai task Closed: trong cuộc trao đổi này mới có minh chứng triển khai và push bảy bước chức năng. Chưa xác minh hai bước kiểm tra kiến thức, trạng thái đóng issue, kết quả review hoặc merge PR hiện tại. Các câu về API trả merged: false trong tài liệu hồi cứu phía trên chưa được kiểm chứng lại trong lần rà soát này và không phải trạng thái hiện hành được xác nhận.
+
+### Phản biện
+
+Codex đối chiếu nội dung mới với lịch sử công cụ và Git: không được coi prompt biên soạn là prompt thật; không suy ra hoàn thành task từ code đã push. Các ý kiến kỹ thuật ghi ở phần Phản biện phía trên là nhận xét hồi cứu, không tự nhận là phản biện lịch sử của Phúc. Chưa có bằng chứng reviewer Thành hoặc QA duyệt trong phiên này.
+
+### Quyết định của nhóm
+
+Phúc đã yêu cầu triển khai các bước và commit/push sau khi xem kết quả; riêng bước 3 admin, Phúc xác nhận dùng quy tắc backend hiện có: DELIVERED tự hoàn tất, hủy trước giao vận. Đây là xác nhận phạm vi cá nhân, không tự quy thành quyết định mới của cả nhóm. Phúc yêu cầu tự viết AI log cuối task; phần bổ sung này chỉ phục vụ rà soát tài liệu Phúc vừa gửi để commit.
+
+### Người kiểm tra
+
+Codex đã chạy các kiểm tra tự động và truy vấn chỉ đọc được ghi dưới đây. Phúc đã báo kiểm thử trình duyệt ổn cho bước 1 và bước 3 admin, cùng khung tab tài khoản; các phản hồi này không chứng minh mọi ca trong danh sách gợi ý đã được thử. Chưa xác minh ảnh 1366px/390px hoặc nghiệm thu của reviewer/QA. Chờ Phúc duyệt nội dung bổ sung.
+
+### Kiểm tra và minh chứng
+
+- Admin danh sách: fd8bb76; chi tiết: 0f67760; chuyển trạng thái: 74cf327, đã push prj/p3-fd2-1 trong phiên này.
+- Khung tài khoản: dd9b2b2; đơn và đánh giá: 66cc093; hồ sơ/mật khẩu: d50b3fc; đã xem: 0387df6, đã push prj/p3-fd2-2 trong phiên này.
+- Build/lint web của các bước chức năng đã pass sau sửa. Các build gần cuối có cảnh báo bundle JavaScript vượt 500 kB; không khẳng định build hoàn toàn không cảnh báo. Chưa có bằng chứng kiểm tra toàn repo npm run lint và npm run build cuối task trong cuộc trao đổi này.
+- Admin: 15 test backend pass; kiểm tra chín trường hợp chọn nút chuyển trạng thái pass. Danh sách service thật chỉ đọc có 17 đơn, trang đầu 10 đơn; email/lọc/phân trang/tìm email đạt kiểm tra. Chi tiết service thật kiểm tra ba đơn, bốn món, sáu log và trường hợp không có đơn trả 404. Không coi kiểm tra service là kiểm thử HTTP với phiên ADMIN.
+- Tài khoản: tám test backend liên quan danh sách đơn/đánh giá pass; bảy test me pass; ba ca refreshUser pass (cập nhật tên, đăng xuất, đổi tài khoản). Không tự gửi đánh giá hoặc đổi mật khẩu thật trong lần kiểm tra tự động.
+- Migration 20261122063116_prj_p3_bd2_605_order_audit_contract đã deploy theo yêu cầu rõ ràng của Phúc, xác minh finished=true, rolled_back=false, schema mới có address/color/field/fromValue/toValue; Prisma Client đã generate. Không chạy seed.
+- Các commit trên là minh chứng đã tồn tại; không xác nhận PR đã merge hoặc issue đã đóng. Hai bước kiểm tra kiến thức và minh chứng ảnh vẫn cần đối chiếu riêng trước khi tuyên bố hoàn thành toàn task.
