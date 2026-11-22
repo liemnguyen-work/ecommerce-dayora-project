@@ -567,7 +567,7 @@ type AdminOrder = {
   createdAt: string;
   recipientName: string;
   recipientPhone: string;
-  recipientAddress: string;
+  address: string;
   user: { email: string };
   total: number;
   status: string;
@@ -597,6 +597,83 @@ const shippingLabel: Record<string, string> = {
   NOT_SHIPPED: 'Chưa giao', PREPARING: 'Đang chuẩn bị', SHIPPING: 'Đang giao',
   DELIVERED: 'Đã giao', RETURNED: 'Đã hoàn hàng',
 };
+
+type OrderDetail = Omit<AdminOrder, 'user'> & {
+  user?: { email: string; fullName?: string };
+  subtotal: number;
+  discount: number;
+  shippingFee: number;
+  voucherCode: string | null;
+  items: {
+    id: string; productName: string; skuCode: string; color: string;
+    quantity: number; unitPrice: number; lineTotal: number;
+  }[];
+  statusLogs: {
+    id: string; field: string; fromValue: string; toValue: string;
+    note: string | null; createdAt: string;
+  }[];
+};
+
+const historyFields: Record<string, { label: string; values: Record<string, string> }> = {
+  status: { label: 'Đơn hàng', values: orderStatusLabel },
+  paymentStatus: { label: 'Thanh toán', values: paymentLabel },
+  shippingStatus: { label: 'Giao hàng', values: shippingLabel },
+};
+
+function OrderDetailPanel({ id }: { id: string }) {
+  // Mount riêng theo ID: phản hồi của đơn đã đóng không thể ghi đè đơn mới.
+  const { data: detail, error, loading, reload } = useLoad<OrderDetail>(`/admin/orders/${encodeURIComponent(id)}`);
+
+  if (loading) return <p role="status">Đang tải chi tiết…</p>;
+  if (error) return <div><p role="alert" className="mb-3 text-red-700">{error}</p><button type="button" className="admin-button" onClick={() => { void reload(); }}>Thử lại chi tiết</button></div>;
+  if (!detail) return null;
+
+  return (
+    <div className="admin-detail grid w-[min(100%,calc(100vw-5rem))] gap-6 break-words lg:w-full lg:grid-cols-3" aria-label={`Chi tiết đơn ${detail.code}`}>
+      <section className="min-w-0 space-y-2">
+        <h2 className="text-lg font-bold">Giao đến</h2>
+        <p className="font-semibold">{detail.recipientName}</p>
+        <a className="inline-flex min-h-11 items-center underline" href={`tel:${detail.recipientPhone}`}>{detail.recipientPhone}</a>
+        <p className="whitespace-pre-wrap">{detail.address}</p>
+      </section>
+      <section className="min-w-0 space-y-3">
+        <h2 className="text-lg font-bold">Món hàng</h2>
+        {detail.items.length === 0 ? <p>Không có món hàng.</p> : (
+          <ul className="space-y-3">{detail.items.map(item => (
+            <li key={item.id} className="border-b border-leaf pb-3">
+              <p className="font-semibold">{item.productName}</p>
+              <p>Mã SKU: {item.skuCode}</p>
+              <p>Màu: {item.color || 'Không có thông tin màu'}</p>
+              <p>{item.quantity} × {formatPrice(item.unitPrice)}</p>
+              <p>Thành tiền: {formatPrice(item.lineTotal)}</p>
+            </li>
+          ))}</ul>
+        )}
+        <dl className="space-y-2">
+          <div className="flex flex-wrap justify-between gap-2"><dt>Tạm tính</dt><dd>{formatPrice(detail.subtotal)}</dd></div>
+          {detail.discount > 0 && <div className="flex flex-wrap justify-between gap-2"><dt>Giảm giá{detail.voucherCode ? ` (${detail.voucherCode})` : ''}</dt><dd>−{formatPrice(detail.discount)}</dd></div>}
+          <div className="flex flex-wrap justify-between gap-2"><dt>Phí giao hàng</dt><dd>{formatPrice(detail.shippingFee)}</dd></div>
+          <div className="flex flex-wrap justify-between gap-2 font-bold"><dt>Tổng thanh toán</dt><dd>{formatPrice(detail.total)}</dd></div>
+        </dl>
+      </section>
+      <section className="min-w-0 space-y-3">
+        <h2 className="text-lg font-bold">Lịch sử trạng thái</h2>
+        {detail.statusLogs.length === 0 ? <p>Chưa có lịch sử thay đổi trạng thái.</p> : (
+          <ol className="space-y-4">{detail.statusLogs.map(log => {
+            const field = historyFields[log.field];
+            return (
+              <li key={log.id} className="border-b border-leaf pb-3">
+                <p className="font-semibold">{field?.label ?? 'Trạng thái'}: {field?.values[log.fromValue] ?? 'Chưa xác định'} → {field?.values[log.toValue] ?? 'Chưa xác định'}</p>
+                <time className="block text-sm" dateTime={log.createdAt}>{new Date(log.createdAt).toLocaleString('vi-VN')}</time>
+                {log.note && <p className="mt-1 whitespace-pre-wrap">{log.note === 'migrated:legacy' ? 'Lịch sử được chuyển đổi từ dữ liệu cũ.' : log.note}</p>}
+              </li>
+            );
+          })}</ol>
+        )}
+      </section>
+    </div>
+  );
+}
 
 function Orders() {
   const [filter, setFilter] = useState('');
@@ -648,7 +725,7 @@ function Orders() {
                       <td data-label="Giao hàng">{shippingLabel[order.shippingStatus] ?? 'Chưa xác định'}</td>
                       <td data-label="Thao tác"><button type="button" className="admin-button" aria-expanded={openedId === order.id} aria-controls={`order-${order.id}`} aria-label={`${openedId === order.id ? 'Đóng' : 'Xử lý'} đơn ${order.code}`} onClick={() => setOpenedId(openedId === order.id ? null : order.id)}>{openedId === order.id ? 'Đóng' : 'Xử lý'}</button></td>
                     </tr>
-                    {openedId === order.id && <tr id={`order-${order.id}`}><td colSpan={7}><p className="font-semibold">Thông tin nhận hàng</p><p>{order.recipientName} — {order.recipientPhone}</p><p>{order.recipientAddress}</p></td></tr>}
+                    {openedId === order.id && <tr id={`order-${order.id}`} className="admin-detail-row"><td colSpan={7}><OrderDetailPanel key={order.id} id={order.id} /></td></tr>}
                   </Fragment>
                 ))}</tbody>
               </table>
