@@ -5154,3 +5154,85 @@ Thành kiểm tra thủ công ở 1366 × 768 và 390 × 844; Codex đối chi�
 ### Kiểm tra và minh chứng
 
 Bốn ảnh Thành cung cấp thể hiện điểm trung bình, danh sách review và bình luận ngắn/dài ở hai kích thước; không thấy tràn ngang. `npm.cmd run lint -w web` đạt và `git diff --check` không báo lỗi; build gần nhất sau thay đổi thành công với 486 modules.
+
+## P3 / thanh-20261122-p3-605-01
+
+* Thời gian ghi: 2026-11-22T18:44:28+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261122-p3-605
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: Issue #605; PRJ-P3-FD1-1; phản hồi của Nguyễn Tiến Minh và Châu do Thành cung cấp.
+
+### Công cụ
+
+Codex; Git; TypeScript; Prisma; Vitest; ESLint; NestJS; Vite.
+
+### Mục đích
+
+Đồng bộ phần chi tiết đơn của Thành với hợp đồng schema mới sau thay đổi nhật ký trạng thái đơn, đồng thời kiểm tra các lỗi build được báo ở Checkout và Payments.
+
+### Prompt
+
+Thành cung cấp phản hồi về conflict sau Issue #605 và yêu cầu lấy `main` mới, kiểm tra các task liên quan rồi xử lý phần bị ảnh hưởng.
+
+### Kết quả đề xuất
+
+Codex tạo clone và nhánh riêng `fix/prj-p3-bd2-status-log-thanh`, xác nhận `checkout.service.ts`, `payments.service.ts` cùng test đã dùng `field`, `fromValue`, `toValue`, `actorId`. Phần còn lệch hợp đồng thuộc Thành là `OrderPage.tsx` vẫn đọc `colorSnapshot`; Codex đổi interface và giao diện sang trường `color` do API/schema mới trả về.
+
+### Phản biện
+
+Không sửa lại backend vì bản `main` mới đã build và test đạt; sửa tiếp phần Châu/Hoàn có nguy cơ trùng hoặc ghi đè công việc. Migration chưa chạy vì clone mới chưa có `apps/api/.env`; không tự sao chép bí mật hoặc chạm database khi chưa xác nhận cấu hình.
+
+### Quyết định của nhóm
+
+Thành giao xử lý phần bị ảnh hưởng sau khi Châu merge. Chưa có xác nhận commit hoặc push; giữ thay đổi ở nhánh riêng để Thành kiểm tra trước.
+
+### Người kiểm tra
+
+Codex kiểm tra tự động; chờ Thành kiểm tra chi tiết đơn thực tế và xác nhận trước khi commit/push.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd test -w api -- checkout.service payments`: 4 file test, 24 test đạt. `npm.cmd run lint -w web`, `npm.cmd run build -w api` và `npm.cmd run build -w web` đều thành công. Vite còn cảnh báo chunk lớn hơn 500 kB. Tệp thay đổi: `apps/web/src/pages/OrderPage.tsx`, `docs/ai-logs/thanh.md`.
+
+## P3 / thanh-20261122-p3-605-02
+
+* Thời gian ghi: 2026-11-22T18:50:00+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261122-p3-605
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261122-p3-605-01; Issue #605.
+
+### Công cụ
+
+Trình duyệt localhost và ảnh kiểm tra do Thành cung cấp; Codex.
+
+### Mục đích
+
+Xác minh thủ công hợp đồng trường `color` trên trang chi tiết đơn trước khi commit bản fix.
+
+### Prompt
+
+Thành gửi ảnh `/don-hang/:id`, hỏi kết quả hiển thị đã đúng chưa và sau đó cho phép tạo commit fix.
+
+### Kết quả đề xuất
+
+Ảnh thể hiện dòng biến thể `Đỏ đất · Bình · DAY-BL-003`; màu, đơn vị và mã SKU đều xuất hiện, không có `undefined` hoặc mất màu. Codex giữ nguyên bản sửa và chuẩn bị commit đúng hai tệp liên quan.
+
+### Phản biện
+
+Ảnh xác minh giao diện đơn cụ thể và không thay thế toàn bộ test hồi quy; kết quả tự động của mục trước vẫn được dùng làm bằng chứng bổ sung.
+
+### Quyết định của nhóm
+
+Thành xác nhận kết quả hiển thị và yêu cầu commit dưới dạng bản fix. Chưa yêu cầu push.
+
+### Người kiểm tra
+
+Thành kiểm tra thủ công trên localhost; Codex đối chiếu ảnh và diff.
+
+### Kiểm tra và minh chứng
+
+Trang đơn hoàn tất, đã thanh toán hiển thị đúng `Đỏ đất · Bình · DAY-BL-003`. `git diff --check` không báo lỗi trước commit.

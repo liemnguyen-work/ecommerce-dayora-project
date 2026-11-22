@@ -14,7 +14,7 @@ export interface OrderItem {
   id: string;
   productName: string;
   skuCode: string;
-  colorSnapshot?: string | null;
+  color: string;
   unitSnapshot?: string | null;
   unitPrice: number;
   quantity: number;
@@ -248,7 +248,7 @@ function OrderDetails({ id }: { id: string }) {
           <div className="order-item-list">
             {order.items.map((item) => (
               <article className="order-item" key={item.id}>
-                <div><h3>{item.productName}</h3><p>{[item.colorSnapshot, item.unitSnapshot, item.skuCode].filter(Boolean).join(' · ')}</p><small>{formatPrice(item.unitPrice)} × {item.quantity}</small></div>
+                <div><h3>{item.productName}</h3><p>{[item.color, item.unitSnapshot, item.skuCode].filter(Boolean).join(' · ')}</p><small>{formatPrice(item.unitPrice)} × {item.quantity}</small></div>
                 <strong>{formatPrice(item.lineTotal)}</strong>
               </article>
             ))}
