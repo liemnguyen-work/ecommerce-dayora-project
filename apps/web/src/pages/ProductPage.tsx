@@ -9,6 +9,7 @@ import '../catalog.css';
 
 type ProductDetail = {
   id: string;
+  slug: string;
   name: string;
   description: string | null;
   material: string | null;
@@ -21,6 +22,102 @@ type CartNotice = {
   ok: boolean;
   text: string;
 };
+
+interface Reviews {
+  items: {
+    id: string;
+    rating: number;
+    comment: string | null;
+    author?: string;
+    userName?: string;
+    user?: { fullName: string };
+    createdAt: string;
+  }[];
+  average: number;
+  count: number;
+}
+
+function useCatalogApi<T>(path: string) {
+  const [state, setState] = useState<{ data: T | null; loading: boolean; error: boolean }>({
+    data: null,
+    loading: true,
+    error: false,
+  });
+
+  useEffect(() => {
+    let active = true;
+    api<T>(path)
+      .then((data) => {
+        if (active) setState({ data, loading: false, error: false });
+      })
+      .catch(() => {
+        if (active) setState({ data: null, loading: false, error: true });
+      });
+    return () => { active = false; };
+  }, [path]);
+
+  return state;
+}
+
+function ProductReviews({ slug }: { slug: string }) {
+  const { data, loading, error } = useCatalogApi<Reviews>(
+    `/products/${encodeURIComponent(slug)}/reviews`,
+  );
+  const roundedAverage = data ? Math.round(data.average) : 0;
+
+  return (
+    <section aria-labelledby="product-reviews" className="product-reviews">
+      <div className="reviews-title">
+        <div>
+          <p className="font-semibold uppercase tracking-widest text-berry">Trải nghiệm thực tế</p>
+          <h2 id="product-reviews">Đánh giá sản phẩm</h2>
+        </div>
+        {data && data.count > 0 && (
+          <p className="reviews-summary">
+            <span
+              className="review-stars"
+              role="img"
+              aria-label={`${data.average.toFixed(1)} trên 5 sao`}
+            >
+              {'★'.repeat(roundedAverage)}
+            </span>
+            <span>{data.average.toFixed(1)}/5 · {data.count} đánh giá</span>
+          </p>
+        )}
+      </div>
+
+      {loading && <p role="status" aria-busy="true" className="rounded-2xl border border-leaf bg-white p-6 text-ink/70">Đang tải đánh giá…</p>}
+      {error && <p role="alert" className="rounded-2xl border border-red-200 bg-red-50 p-6 text-red-800">Chưa tải được đánh giá. Vui lòng thử lại sau.</p>}
+      {data?.count === 0 && (
+        <p className="rounded-2xl border border-leaf bg-white p-6 text-ink/65">
+          Chưa có đánh giá. Bạn có thể đánh giá sau khi nhận hàng.
+        </p>
+      )}
+      {data && data.count > 0 && (
+        <ul className="review-list" aria-label="Danh sách đánh giá sản phẩm">
+          {data.items.map((review) => (
+            <li key={review.id} className="review-card">
+              <div className="review-card-heading">
+                <div>
+                  <p className="font-bold">
+                    {review.user?.fullName ?? review.author ?? review.userName ?? 'Khách hàng DAYORA'}
+                  </p>
+                  <span className="review-stars" aria-label={`${review.rating} sao`}>
+                    {'★'.repeat(review.rating)}
+                  </span>
+                </div>
+                <time className="review-date" dateTime={review.createdAt}>
+                  {new Date(review.createdAt).toLocaleDateString('vi-VN')}
+                </time>
+              </div>
+              {review.comment && <p className="review-comment">{review.comment}</p>}
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  );
+}
 
 function ProductDetails({ product }: { product: ProductDetail }) {
   const location = useLocation();
@@ -118,6 +215,7 @@ function ProductDetails({ product }: { product: ProductDetail }) {
       </dl>
     </section>
     {product.related?.length > 0 && <section aria-labelledby="related-products" className="mt-16"><h2 id="related-products" className="mb-6 text-2xl font-bold">Cùng bạn ra ngoài</h2><div className="catalog-grid">{product.related.map((item) => <ProductCard key={item.id} product={item} search={search} />)}</div></section>}
+    <ProductReviews slug={product.slug} />
     </>
   );
 }
