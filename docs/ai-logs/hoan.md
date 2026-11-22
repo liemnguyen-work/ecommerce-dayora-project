@@ -6306,43 +6306,43 @@ Codex đối chiếu câu trả lời với test và nhận xét hai câu bổ s
 Không chạy lại test vì thay đổi chỉ gồm tài liệu và AI log.
 ---
 
-## Phase 1 / hoan-20261122-password-fix2-b74-01
+## Phase 1 / hoan-20261122-me-timeout-b75-01
 
-* Thời gian ghi: 2026-11-22T12:20:40+07:00
+* Thời gian ghi: 2026-11-22T13:16:59+07:00
 * Thời gian thực hiện: 22/11/2026.
-* Mã phiên nhật ký: hoan-20261122-password-fix2-b74
+* Mã phiên nhật ký: hoan-20261122-me-timeout-b75
 * Người prompt: Hoàn
 * Loại mục: Hoạt động
-* Liên quan: PRJ-P1-BD1-FIX2
+* Liên quan: issue #716
 
 ### Công cụ
 
-Codex, NestJS, Vitest, Supertest và ESLint.
+Codex, Git, NestJS, Vitest và ESLint.
 
 ### Mục đích
 
-Đồng nhất giới hạn mật khẩu mới với giới hạn đăng nhập mà vẫn cho phép đổi từ mật khẩu cũ dài.
+Điều tra timeout không ổn định trong test quyền của me.spec.ts.
 
 ### Prompt
 
-Tóm lược: Hoàn yêu cầu sửa lỗi đổi mật khẩu 129 ký tự khiến người dùng không đăng nhập lại được, trong phạm vi DTO và test.
+Tóm lược: Hoàn yêu cầu điều tra issue timeout, giữ kiểm tra quyền và so sánh test riêng với toàn bộ.
 
 ### Kết quả đề xuất
 
-Giới hạn newPassword tối đa 128, giữ giới hạn currentPassword 200 và logic xác minh/cập nhật đồng thời. Thêm test HTTP đổi từ mật khẩu cũ 129 ký tự sang 128, đăng nhập lại và từ chối 129 trước khi ghi.
+Trên main 7912ae848b38ba1db0d17f289fb80a8a62fc345c, ca test riêng pass 2332 ms; test toàn bộ 142/142 pass với cấu hình worker mặc định. Tách import, biên dịch và khởi tạo Nest vào beforeAll có timeout riêng 20 giây; đóng app sau test và khi init lỗi, giữ nguyên assertion 401/403.
 
 ### Phản biện
 
-Test dùng Prisma mock; không thao tác dữ liệu người dùng thật. Ca test HTTP cần thời gian chờ 20 giây cho băm mật khẩu; QA và reviewer chưa duyệt.
+Chưa tái hiện được timeout nên chưa kết luận nguyên nhân. Test sau thay đổi pass không chứng minh lỗi không thể lặp; promotions không thay đổi và QA cần xem lại phần tách setup.
 
 ### Quyết định của nhóm
 
-Hoàn yêu cầu sửa theo phạm vi task; chưa có xác nhận QA hoặc reviewer.
+Hoàn yêu cầu xử lý issue; chưa có xác nhận QA hoặc reviewer.
 
 ### Người kiểm tra
 
-Codex chạy test, lint và build; chờ Hoàn, QA và reviewer xem xét.
+Codex chạy test và lint; chờ Hoàn, QA và reviewer xem xét.
 
 ### Kiểm tra và minh chứng
 
-Trước sửa, test xác nhận mật khẩu mới 129 trả 201 thay vì 400. Sau sửa: test me auth 39/39, lint toàn dự án pass, npm test 143/143, build toàn dự án pass. Không đổi schema hay chạy migration.
+Node v26.13.1, npm 11.20.0, Vitest 4.1.12; vitest.config.mts không quy định worker. Sau sửa: ca riêng pass (47 ms phần test, tổng bao gồm setup 2,38 giây); npm test 142/142 với worker mặc định; npm test -w api -- --maxWorkers=1 142/142; lint API pass.

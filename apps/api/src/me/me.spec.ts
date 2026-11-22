@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
-import { describe, expect, it, vi } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
+import type { INestApplication } from '@nestjs/common';
 import type { PrismaService } from '../prisma/prisma.service.js';
 import { hashPassword, verifyPassword } from '../auth/password.js';
 
@@ -13,31 +14,44 @@ function fakeDatabase() {
 }
 
 describe('Me', () => {
-  it('yêu cầu đăng nhập, khách không được vào admin', async () => {
-    const { Test } = await import('@nestjs/testing');
-    const { AuthService } = await import('../auth/auth.service.js');
-    const { AdminUsersModule } = await import('../admin-users/admin-users.module.js');
-    const { PrismaService: Prisma } = await import('../prisma/prisma.service.js');
-    const { MeModule } = await import('./me.module.js');
-    const auth = {
-      verifyToken: vi.fn().mockReturnValue('khach-1'),
-      getUser: vi.fn().mockResolvedValue({ id: 'khach-1', role: 'CUSTOMER', isActive: true }),
-    };
-    const testingModule = await Test.createTestingModule({ imports: [MeModule, AdminUsersModule] })
-      .overrideProvider(Prisma).useValue(fakeDatabase())
-      .overrideProvider(AuthService).useValue(auth)
-      .compile();
-    const app = testingModule.createNestApplication();
-    app.setGlobalPrefix('api');
-    await app.init();
-    const { default: request } = await import('supertest');
-    try {
+  describe('kiểm tra quyền truy cập HTTP', () => {
+    let app: INestApplication | undefined;
+    let request: typeof import('supertest').default;
+
+    beforeAll(async () => {
+      const { Test } = await import('@nestjs/testing');
+      const { AuthService } = await import('../auth/auth.service.js');
+      const { AdminUsersModule } = await import('../admin-users/admin-users.module.js');
+      const { PrismaService: Prisma } = await import('../prisma/prisma.service.js');
+      const { MeModule } = await import('./me.module.js');
+      ({ default: request } = await import('supertest'));
+      const auth = {
+        verifyToken: vi.fn().mockReturnValue('khach-1'),
+        getUser: vi.fn().mockResolvedValue({ id: 'khach-1', role: 'CUSTOMER', isActive: true }),
+      };
+      const testingModule = await Test.createTestingModule({ imports: [MeModule, AdminUsersModule] })
+        .overrideProvider(Prisma).useValue(fakeDatabase())
+        .overrideProvider(AuthService).useValue(auth)
+        .compile();
+      app = testingModule.createNestApplication();
+      try {
+        app.setGlobalPrefix('api');
+        await app.init();
+      } catch (error) {
+        await app.close();
+        app = undefined;
+        throw error;
+      }
+    }, 20000);
+
+    afterAll(async () => { await app?.close(); });
+
+    it('yêu cầu đăng nhập, khách không được vào admin', async () => {
+      if (!app) throw new Error('Ứng dụng test chưa được khởi tạo');
       await request(app.getHttpServer()).get('/api/me/profile').expect(401);
       await request(app.getHttpServer()).get('/api/admin/users')
         .set('Cookie', 'access_token=token-test').expect(403);
-    } finally {
-      await app.close();
-    }
+    });
   });
 
   it('xem và sửa hồ sơ, không chọn passwordHash', async () => {
