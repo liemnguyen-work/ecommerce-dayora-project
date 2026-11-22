@@ -256,34 +256,39 @@ async update(
       });
     }
 
-    const note = [
-      `${dto.field}: ${currentValue} -> ${dto.to}`,
-      `actorId: ${actorId}`,
-      dto.note,
-      isCancel && order.paymentStatus === 'PAID'
-        ? 'Cần hoàn tiền thủ công'
-        : null,
-    ]
-      .filter(Boolean)
-      .join(' | ');
+    const note =
+      [
+        dto.note,
+        isCancel && order.paymentStatus === 'PAID'
+          ? 'Cần hoàn tiền thủ công'
+          : null,
+      ]
+        .filter(Boolean)
+        .join(' | ') || null;
 
     await tx.orderStatusLog.create({
       data: {
         orderId: id,
-        status: isDelivered
-          ? 'COMPLETED'
-          : dto.field === 'status'
-            ? (dto.to as typeof order.status)
-            : order.status,
-        paymentStatus: order.paymentStatus,
-        shippingStatus:
-          dto.field === 'shippingStatus'
-            ? (dto.to as typeof order.shippingStatus)
-            : order.shippingStatus,
+        field: dto.field,
+        fromValue: currentValue,
+        toValue: dto.to,
+        actorId,
         note,
       },
     });
 
+    if (isDelivered) {
+      await tx.orderStatusLog.create({
+        data: {
+          orderId: id,
+          field: 'status',
+          fromValue: order.status,
+          toValue: 'COMPLETED',
+          actorId,
+          note,
+        },
+      });
+    }
     return {
       ...order,
       [dto.field]: dto.to,

@@ -182,16 +182,16 @@ const saleDiscount = 0;
 const shippingFee = pricing.shippingFee;
 const shippingIsEstimate = pricing.shippingEstimated;
 const total = pricing.total;
-
-    return {
-      lines,
-      subtotal,
-      saleDiscount,
-      voucher,
-      shippingFee,
-      shippingIsEstimate,
-      total,
-      warnings,
-    };
+return {
+  lines,
+  subtotal,
+  saleDiscount,
+  voucher,
+  shippingFee,
+  shippingIsEstimate,
+  zone,
+  total,
+  warnings,
+};
   }
 }

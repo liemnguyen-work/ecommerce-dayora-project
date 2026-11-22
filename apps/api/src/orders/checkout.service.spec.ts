@@ -28,6 +28,7 @@ const preview = () => ({
   voucher: null,
   shippingFee: 20_000,
   shippingIsEstimate: false,
+  zone: 'HCM_INNER',
   total: 180_000,
   warnings: [],
 });
@@ -166,9 +167,16 @@ describe('CheckoutService - PRJ-P2-BD1-2', () => {
       where: expect.objectContaining({ id: skuId, reserved: { gte: 2 } }),
       data: expect.objectContaining({ reserved: { decrement: 2 } }),
     }));
-    expect(tx.orderStatusLog.create).toHaveBeenCalledWith(expect.objectContaining({
-      data: expect.objectContaining({ note: 'Khách hủy' }),
-    }));
+    expect(tx.orderStatusLog.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+      field: 'status',
+      fromValue: 'PENDING_PAYMENT',
+      toValue: 'CANCELLED',
+      actorId: userId,
+    }),
+  }),
+);
   });
 
   it('hết hạn trả tồn và đánh dấu payment EXPIRED', async () => {
@@ -187,6 +195,31 @@ describe('CheckoutService - PRJ-P2-BD1-2', () => {
     expect(tx.sku.updateMany).toHaveBeenCalledWith(expect.objectContaining({
       data: expect.objectContaining({ reserved: { decrement: 2 } }),
     }));
+    expect(tx.orderStatusLog.create).toHaveBeenCalledTimes(2);
+
+expect(tx.orderStatusLog.create).toHaveBeenNthCalledWith(
+  1,
+  expect.objectContaining({
+    data: expect.objectContaining({
+      field: 'status',
+      fromValue: 'PENDING_PAYMENT',
+      toValue: 'CANCELLED',
+      actorId: null,
+    }),
+  }),
+);
+
+expect(tx.orderStatusLog.create).toHaveBeenNthCalledWith(
+  2,
+  expect.objectContaining({
+    data: expect.objectContaining({
+      field: 'paymentStatus',
+      fromValue: 'UNPAID',
+      toValue: 'EXPIRED',
+      actorId: null,
+    }),
+  }),
+);
   });
 
   it.each(['hủy', 'hết hạn'] as const)(
@@ -233,8 +266,9 @@ describe('CheckoutService - PRJ-P2-BD1-2', () => {
     prisma.order.findFirst.mockResolvedValue({
       id: 'order-a',
       userId,
-      recipientAddress: '1 Duong DAYORA',
+      address: '1 Duong DAYORA',
       items: [{ id: 'order-item-a' }],
+      voucherCode: 'DAYORA10',
       voucherUsage: { voucher: { code: 'DAYORA10' } },
     });
 
