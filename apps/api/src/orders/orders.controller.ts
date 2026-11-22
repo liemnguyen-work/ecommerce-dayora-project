@@ -1,6 +1,8 @@
 import {
   Body,
   Controller,
+  Get,
+  Param,
   Post,
   Req,
   UseGuards,
@@ -31,6 +33,22 @@ export class OrdersController {
     @Body() dto: CreateOrderDto,
   ) {
     return this.checkout.create(req.user.id, dto);
+  }
+
+  @Get(':id')
+  detail(
+    @Req() req: AuthRequest,
+    @Param('id') id: string,
+  ) {
+    return this.checkout.detail(req.user.id, id);
+  }
+
+  @Post(':id/cancel')
+  cancel(
+    @Req() req: AuthRequest,
+    @Param('id') id: string,
+  ) {
+    return this.checkout.cancel(req.user.id, id);
   }
 
   @Post('preview')

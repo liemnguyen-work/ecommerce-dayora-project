@@ -227,4 +227,25 @@ describe('CheckoutService - PRJ-P2-BD1-2', () => {
     expect(tx.order.updateMany).not.toHaveBeenCalled();
     expect(tx.sku.updateMany).not.toHaveBeenCalled();
   });
+
+  it('returns an owned order with the frontend detail contract', async () => {
+    const { service, prisma } = await makeService();
+    prisma.order.findFirst.mockResolvedValue({
+      id: 'order-a',
+      userId,
+      recipientAddress: '1 Duong DAYORA',
+      items: [{ id: 'order-item-a' }],
+      voucherUsage: { voucher: { code: 'DAYORA10' } },
+    });
+
+    await expect(service.detail(userId, 'order-a')).resolves.toMatchObject({
+      id: 'order-a',
+      address: '1 Duong DAYORA',
+      voucherCode: 'DAYORA10',
+      items: [{ id: 'order-item-a' }],
+    });
+    expect(prisma.order.findFirst).toHaveBeenCalledWith(expect.objectContaining({
+      where: { id: 'order-a', userId },
+    }));
+  });
 });
