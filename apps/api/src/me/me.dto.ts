@@ -20,7 +20,7 @@ export class PasswordDto {
 
   @IsString()
   @MinLength(8)
-  @MaxLength(200)
+  @MaxLength(128)
   newPassword!: string;
 }
 

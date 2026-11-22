@@ -6304,3 +6304,45 @@ Codex đối chiếu câu trả lời với test và nhận xét hai câu bổ s
 ### Kiểm tra và minh chứng
 
 Không chạy lại test vì thay đổi chỉ gồm tài liệu và AI log.
+---
+
+## Phase 1 / hoan-20261122-password-fix2-b74-01
+
+* Thời gian ghi: 2026-11-22T12:20:40+07:00
+* Thời gian thực hiện: 22/11/2026.
+* Mã phiên nhật ký: hoan-20261122-password-fix2-b74
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P1-BD1-FIX2
+
+### Công cụ
+
+Codex, NestJS, Vitest, Supertest và ESLint.
+
+### Mục đích
+
+Đồng nhất giới hạn mật khẩu mới với giới hạn đăng nhập mà vẫn cho phép đổi từ mật khẩu cũ dài.
+
+### Prompt
+
+Tóm lược: Hoàn yêu cầu sửa lỗi đổi mật khẩu 129 ký tự khiến người dùng không đăng nhập lại được, trong phạm vi DTO và test.
+
+### Kết quả đề xuất
+
+Giới hạn newPassword tối đa 128, giữ giới hạn currentPassword 200 và logic xác minh/cập nhật đồng thời. Thêm test HTTP đổi từ mật khẩu cũ 129 ký tự sang 128, đăng nhập lại và từ chối 129 trước khi ghi.
+
+### Phản biện
+
+Test dùng Prisma mock; không thao tác dữ liệu người dùng thật. Ca test HTTP cần thời gian chờ 20 giây cho băm mật khẩu; QA và reviewer chưa duyệt.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu sửa theo phạm vi task; chưa có xác nhận QA hoặc reviewer.
+
+### Người kiểm tra
+
+Codex chạy test, lint và build; chờ Hoàn, QA và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+Trước sửa, test xác nhận mật khẩu mới 129 trả 201 thay vì 400. Sau sửa: test me auth 39/39, lint toàn dự án pass, npm test 143/143, build toàn dự án pass. Không đổi schema hay chạy migration.
