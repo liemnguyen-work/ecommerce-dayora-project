@@ -138,6 +138,112 @@ function Reviews() {
   </div>;
 }
 
+type AccountProfile = { id: string; email: string; fullName: string; phone: string | null };
+
+function ProfileForms({ profile }: { profile: AccountProfile }) {
+  const { refreshUser } = useAuth();
+  const [fullName, setFullName] = useState(profile.fullName);
+  const [phone, setPhone] = useState(profile.phone ?? '');
+  const [saving, setSaving] = useState(false);
+  const [changing, setChanging] = useState(false);
+  const [saveMessage, setSaveMessage] = useState('');
+  const [saveError, setSaveError] = useState('');
+  const [passwordMessage, setPasswordMessage] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const saveLocked = useRef(false);
+  const passwordLocked = useRef(false);
+
+  async function save(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (saveLocked.current) return;
+    setSaveMessage('');
+    setSaveError('');
+    const name = fullName.trim();
+    const number = phone.trim();
+    if (name.length < 2 || name.length > 100 || (number && !/^\d{9,11}$/.test(number))) {
+      setSaveError('Họ tên cần từ 2–100 ký tự; số điện thoại cần 9–11 chữ số.');
+      return;
+    }
+    saveLocked.current = true;
+    setSaving(true);
+    try {
+      const updated = await api<AccountProfile>('/me/profile', {
+        method: 'PATCH', body: JSON.stringify({ fullName: name, ...(number ? { phone: number } : {}) }),
+      });
+      setFullName(updated.fullName);
+      setPhone(updated.phone ?? '');
+      setSaveMessage('Đã lưu hồ sơ.');
+      try { await refreshUser(); }
+      catch { setSaveError('Hồ sơ đã lưu nhưng chưa đồng bộ được lời chào. Hãy tải lại trang.'); }
+    } catch (error: unknown) {
+      setSaveError(error instanceof Error ? error.message : 'Chưa lưu được hồ sơ.');
+    } finally {
+      saveLocked.current = false;
+      setSaving(false);
+    }
+  }
+
+  async function changePassword(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (passwordLocked.current) return;
+    const form = event.currentTarget;
+    const data = new FormData(form);
+    passwordLocked.current = true;
+    setChanging(true);
+    setPasswordMessage('');
+    setPasswordError('');
+    try {
+      await api('/me/password', { method: 'POST', body: JSON.stringify({
+        currentPassword: String(data.get('currentPassword') ?? ''),
+        newPassword: String(data.get('newPassword') ?? ''),
+      }) });
+      form.reset();
+      setPasswordMessage('Đã đổi mật khẩu.');
+    } catch (error: unknown) {
+      setPasswordError(error instanceof Error ? error.message : 'Chưa đổi được mật khẩu.');
+    } finally {
+      passwordLocked.current = false;
+      setChanging(false);
+    }
+  }
+
+  const inputClass = 'mt-2 block min-h-11 w-full rounded-xl border border-ink/30 bg-paper px-3 py-2 font-normal disabled:opacity-60';
+  const buttonClass = 'min-h-11 rounded-full bg-ink px-6 py-3 font-semibold text-paper disabled:cursor-wait disabled:opacity-60';
+  return <div className="profile-grid grid gap-6 md:grid-cols-2">
+    <form className="checkout-form min-w-0 space-y-4" onSubmit={event => { void save(event); }} aria-busy={saving}>
+      <h2 className="text-xl font-bold">Thông tin</h2>
+      <label className="block font-semibold">Email<input type="email" value={profile.email} disabled className={inputClass} /></label>
+      <fieldset disabled={saving} className="space-y-4">
+        <legend className="sr-only">Thông tin có thể chỉnh sửa</legend>
+        <label className="block font-semibold">Họ và tên<input name="fullName" autoComplete="name" required minLength={2} maxLength={100} value={fullName} onChange={event => setFullName(event.target.value)} className={inputClass} /></label>
+        <label className="block font-semibold">Số điện thoại<input type="tel" name="phone" autoComplete="tel" inputMode="numeric" pattern="[0-9]{9,11}" maxLength={11} value={phone} onChange={event => setPhone(event.target.value)} aria-describedby="profile-phone-hint" className={inputClass} /></label>
+        <p id="profile-phone-hint" className="text-sm">Bỏ trống để giữ nguyên số điện thoại hiện tại.</p>
+        <button type="submit" className={buttonClass}>{saving ? 'Đang lưu…' : 'Lưu hồ sơ'}</button>
+      </fieldset>
+      {saveMessage && <p role="status" className="text-green-800">{saveMessage}</p>}
+      {saveError && <p role="alert" className="text-red-700">{saveError}</p>}
+    </form>
+    <form className="checkout-form min-w-0 space-y-4" onSubmit={event => { void changePassword(event); }} aria-busy={changing}>
+      <h2 className="text-xl font-bold">Đổi mật khẩu</h2>
+      <fieldset disabled={changing} className="space-y-4">
+        <legend className="sr-only">Mật khẩu hiện tại và mật khẩu mới</legend>
+        <label className="block font-semibold">Mật khẩu hiện tại<input type="password" name="currentPassword" autoComplete="current-password" required maxLength={200} className={inputClass} /></label>
+        <label className="block font-semibold">Mật khẩu mới<input type="password" name="newPassword" autoComplete="new-password" required minLength={8} maxLength={128} className={inputClass} /></label>
+        <button type="submit" className={buttonClass}>{changing ? 'Đang đổi…' : 'Đổi mật khẩu'}</button>
+      </fieldset>
+      {passwordMessage && <p role="status" className="text-green-800">{passwordMessage}</p>}
+      {passwordError && <p role="alert" className="text-red-700">{passwordError}</p>}
+    </form>
+  </div>;
+}
+
+function Profile() {
+  const { data, loading, error, reload } = useAccountLoad<AccountProfile>('/me/profile');
+  if (loading) return <p role="status">Đang tải hồ sơ…</p>;
+  if (error) return <div><p role="alert">{error}</p><button type="button" className="catalog-button mt-3" onClick={() => { void reload(); }}>Thử lại</button></div>;
+  return data ? <ProfileForms key={data.id} profile={data} /> : null;
+}
+
 function ViewedList() {
   const [viewed, setViewed] = useState<Product[]>([]);
   const [viewedLoading, setViewedLoading] = useState(true);
@@ -227,10 +333,7 @@ export default function AccountPage() {
         {tab === 'don-hang' && <Orders key={user.id} />}
         {tab === 'danh-gia' && <Reviews key={user.id} />}
         {tab === 'ho-so' && <div aria-busy={sending} className="space-y-5">
-          <dl className="space-y-4">
-            <div><dt className="font-semibold">Họ và tên</dt><dd className="break-words">{user.fullName}</dd></div>
-            <div><dt className="font-semibold">Email</dt><dd className="break-all">{user.email}</dd></div>
-          </dl>
+          <Profile key={user.id} />
           {error && <p role="alert" className="rounded-xl border border-berry/30 bg-berry/10 p-3">{error}</p>}
           <button
             type="button"

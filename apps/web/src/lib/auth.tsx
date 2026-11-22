@@ -24,6 +24,7 @@ type AuthContextValue = {
   login: (email: string, password: string) => Promise<void>;
   register: (fullName: string, email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
+  refreshUser: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -85,9 +86,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  const refreshUser = useCallback(async () => {
+    const current = version.current;
+    const value = await api<User>('/auth/me');
+    // Không khôi phục phiên cũ nếu đã đăng xuất hoặc đổi tài khoản khi đang tải.
+    setUser(existing => current === version.current && existing?.id === value.id ? value : existing);
+  }, []);
+
   const value = useMemo(
-    () => ({ user, loading, login, register, logout }),
-    [user, loading, login, register, logout],
+    () => ({ user, loading, login, register, logout, refreshUser }),
+    [user, loading, login, register, logout, refreshUser],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
