@@ -561,6 +561,248 @@ function Promotions() {
   );
 }
 
+type AdminOrder = {
+  id: string;
+  code: string;
+  createdAt: string;
+  recipientName: string;
+  recipientPhone: string;
+  address: string;
+  user: { email: string };
+  total: number;
+  status: string;
+  paymentStatus: string;
+  shippingStatus: string;
+};
+
+const orderFilters: [string, string][] = [
+  ['', 'Tất cả'],
+  ['status=PENDING_PAYMENT', 'Chờ thanh toán'],
+  ['status=CONFIRMED', 'Đã xác nhận'],
+  ['shippingStatus=PREPARING', 'Đang chuẩn bị'],
+  ['shippingStatus=SHIPPING', 'Đang giao'],
+  ['status=COMPLETED', 'Hoàn tất'],
+  ['status=CANCELLED', 'Đã hủy'],
+];
+
+const orderStatusLabel: Record<string, string> = {
+  PENDING_PAYMENT: 'Chờ thanh toán', CONFIRMED: 'Đã xác nhận',
+  COMPLETED: 'Hoàn tất', CANCELLED: 'Đã hủy',
+};
+const paymentLabel: Record<string, string> = {
+  UNPAID: 'Chưa thanh toán', PAID: 'Đã thanh toán',
+  FAILED: 'Thanh toán thất bại', EXPIRED: 'Hết hạn thanh toán',
+};
+const shippingLabel: Record<string, string> = {
+  NOT_SHIPPED: 'Chưa giao', PREPARING: 'Đang chuẩn bị', SHIPPING: 'Đang giao',
+  DELIVERED: 'Đã giao', RETURNED: 'Đã hoàn hàng',
+};
+
+type OrderDetail = Omit<AdminOrder, 'user'> & {
+  user?: { email: string; fullName?: string };
+  subtotal: number;
+  discount: number;
+  shippingFee: number;
+  voucherCode: string | null;
+  items: {
+    id: string; productName: string; skuCode: string; color: string;
+    quantity: number; unitPrice: number; lineTotal: number;
+  }[];
+  statusLogs: {
+    id: string; field: string; fromValue: string; toValue: string;
+    note: string | null; createdAt: string;
+  }[];
+};
+
+const historyFields: Record<string, { label: string; values: Record<string, string> }> = {
+  status: { label: 'Đơn hàng', values: orderStatusLabel },
+  paymentStatus: { label: 'Thanh toán', values: paymentLabel },
+  shippingStatus: { label: 'Giao hàng', values: shippingLabel },
+};
+
+type OrderAction = ['status' | 'shippingStatus', string, string];
+
+function nextSteps(order: Pick<AdminOrder, 'status' | 'paymentStatus' | 'shippingStatus'>): OrderAction[] {
+  const steps: OrderAction[] = [];
+  if (order.status === 'PENDING_PAYMENT' && order.paymentStatus === 'PAID') {
+    steps.push(['status', 'CONFIRMED', 'Xác nhận đơn']);
+  }
+  if (order.status === 'CONFIRMED') {
+    if (order.shippingStatus === 'NOT_SHIPPED') steps.push(['shippingStatus', 'PREPARING', 'Bắt đầu chuẩn bị']);
+    if (order.shippingStatus === 'PREPARING') steps.push(['shippingStatus', 'SHIPPING', 'Giao cho vận chuyển']);
+    if (order.shippingStatus === 'SHIPPING') {
+      steps.push(['shippingStatus', 'DELIVERED', 'Đã giao'], ['shippingStatus', 'RETURNED', 'Hoàn hàng']);
+    }
+  }
+  const canCancel = (order.status === 'PENDING_PAYMENT' && ['UNPAID', 'PAID'].includes(order.paymentStatus))
+    || (order.status === 'CONFIRMED' && order.paymentStatus === 'PAID'
+      && ['NOT_SHIPPED', 'PREPARING'].includes(order.shippingStatus));
+  if (canCancel) steps.push(['status', 'CANCELLED', 'Hủy đơn']);
+  return steps;
+}
+
+function OrderDetailPanel({ id, onChanged }: { id: string; onChanged: () => Promise<void> }) {
+  // Mount riêng theo ID: phản hồi của đơn đã đóng không thể ghi đè đơn mới.
+  const { data: detail, error, loading, reload } = useLoad<OrderDetail>(`/admin/orders/${encodeURIComponent(id)}`);
+  const [sending, setSending] = useState(false);
+  const [actionError, setActionError] = useState('');
+  const locked = useRef(false);
+
+  async function move(field: OrderAction[0], to: string) {
+    if (locked.current || !detail) return;
+    if (to === 'CANCELLED' && !window.confirm(detail.paymentStatus === 'PAID'
+      ? 'Hủy đơn này? Đơn đã thanh toán, cần xử lý hoàn tiền thủ công.' : 'Hủy đơn này?')) return;
+    locked.current = true;
+    setSending(true);
+    setActionError('');
+    try {
+      await api(`/admin/orders/${encodeURIComponent(id)}/status`, {
+        method: 'PATCH', body: JSON.stringify({ field, to }),
+      });
+    } catch (error: unknown) {
+      setActionError(errText(error));
+      // Lấy trạng thái mới nếu đơn đã bị người khác cập nhật (409/422).
+      await reload();
+      locked.current = false;
+      setSending(false);
+      return;
+    }
+    await reload();
+    await onChanged();
+    locked.current = false;
+    setSending(false);
+  }
+
+  if (loading) return <p role="status">Đang tải chi tiết…</p>;
+  if (error) return <div><p role="alert" className="mb-3 text-red-700">{error}</p><button type="button" className="admin-button" onClick={() => { void reload(); }}>Thử lại chi tiết</button></div>;
+  if (!detail) return null;
+
+  return (
+    <div className="admin-detail grid w-[min(100%,calc(100vw-5rem))] gap-6 break-words lg:w-full lg:grid-cols-3" aria-label={`Chi tiết đơn ${detail.code}`}>
+      <section className="min-w-0 space-y-2">
+        <h2 className="text-lg font-bold">Giao đến</h2>
+        <p className="font-semibold">{detail.recipientName}</p>
+        <a className="inline-flex min-h-11 items-center underline" href={`tel:${detail.recipientPhone}`}>{detail.recipientPhone}</a>
+        <p className="whitespace-pre-wrap">{detail.address}</p>
+        <h3 className="pt-3 font-bold">Thao tác</h3>
+        {actionError && <p role="alert" className="text-red-700">{actionError}</p>}
+        <div className="admin-actions flex flex-wrap gap-2" aria-busy={sending}>
+          {nextSteps(detail).map(([field, to, label]) => (
+            <button key={`${field}-${to}`} type="button" className="admin-button" disabled={sending}
+              onClick={() => { void move(field, to); }}>{label}</button>
+          ))}
+        </div>
+        {sending && <p role="status">Đang cập nhật…</p>}
+        {nextSteps(detail).length === 0 && <p>Không có thao tác chuyển trạng thái phù hợp.</p>}
+      </section>
+      <section className="min-w-0 space-y-3">
+        <h2 className="text-lg font-bold">Món hàng</h2>
+        {detail.items.length === 0 ? <p>Không có món hàng.</p> : (
+          <ul className="space-y-3">{detail.items.map(item => (
+            <li key={item.id} className="border-b border-leaf pb-3">
+              <p className="font-semibold">{item.productName}</p>
+              <p>Mã SKU: {item.skuCode}</p>
+              <p>Màu: {item.color || 'Không có thông tin màu'}</p>
+              <p>{item.quantity} × {formatPrice(item.unitPrice)}</p>
+              <p>Thành tiền: {formatPrice(item.lineTotal)}</p>
+            </li>
+          ))}</ul>
+        )}
+        <dl className="space-y-2">
+          <div className="flex flex-wrap justify-between gap-2"><dt>Tạm tính</dt><dd>{formatPrice(detail.subtotal)}</dd></div>
+          {detail.discount > 0 && <div className="flex flex-wrap justify-between gap-2"><dt>Giảm giá{detail.voucherCode ? ` (${detail.voucherCode})` : ''}</dt><dd>−{formatPrice(detail.discount)}</dd></div>}
+          <div className="flex flex-wrap justify-between gap-2"><dt>Phí giao hàng</dt><dd>{formatPrice(detail.shippingFee)}</dd></div>
+          <div className="flex flex-wrap justify-between gap-2 font-bold"><dt>Tổng thanh toán</dt><dd>{formatPrice(detail.total)}</dd></div>
+        </dl>
+      </section>
+      <section className="min-w-0 space-y-3">
+        <h2 className="text-lg font-bold">Lịch sử trạng thái</h2>
+        {detail.statusLogs.length === 0 ? <p>Chưa có lịch sử thay đổi trạng thái.</p> : (
+          <ol className="space-y-4">{detail.statusLogs.map(log => {
+            const field = historyFields[log.field];
+            return (
+              <li key={log.id} className="border-b border-leaf pb-3">
+                <p className="font-semibold">{field?.label ?? 'Trạng thái'}: {field?.values[log.fromValue] ?? 'Chưa xác định'} → {field?.values[log.toValue] ?? 'Chưa xác định'}</p>
+                <time className="block text-sm" dateTime={log.createdAt}>{new Date(log.createdAt).toLocaleString('vi-VN')}</time>
+                {log.note && <p className="mt-1 whitespace-pre-wrap">{log.note === 'migrated:legacy' ? 'Lịch sử được chuyển đổi từ dữ liệu cũ.' : log.note}</p>}
+              </li>
+            );
+          })}</ol>
+        )}
+      </section>
+    </div>
+  );
+}
+
+function Orders() {
+  const [filter, setFilter] = useState('');
+  const [q, setQ] = useState('');
+  const [page, setPage] = useState(1);
+  const [openedId, setOpenedId] = useState<string | null>(null);
+  const [message, setMessage] = useState('');
+  const query = new URLSearchParams(filter);
+  if (q.trim()) query.set('q', q.trim());
+  if (page > 1) query.set('page', String(page));
+  const { data, loading, error, reload } = useLoad<{
+    items: AdminOrder[]; total: number; page: number; pageSize: number; totalPages: number;
+  }>(`/admin/orders?${query}`);
+
+  return (
+    <div className="mt-6 space-y-4" aria-busy={loading}>
+      <div className="chips admin-chips flex flex-wrap gap-2" aria-label="Lọc đơn hàng">
+        {orderFilters.map(([value, label]) => (
+          <button key={value} type="button" aria-pressed={filter === value}
+            className="admin-button"
+            style={filter === value ? { background: 'var(--color-ink)', color: 'var(--color-paper)' } : undefined}
+            onClick={() => { setFilter(value); setPage(1); setOpenedId(null); }}>
+            {label}
+          </button>
+        ))}
+      </div>
+      <label className="block">
+        <span className="mb-2 block font-semibold">Tìm theo mã đơn, tên người nhận hoặc email</span>
+        <input type="search" value={q} className="admin-input" style={{ width: '100%' }} maxLength={200}
+          onChange={event => { setQ(event.target.value); setPage(1); setOpenedId(null); }} />
+      </label>
+      {loading && <p role="status">Đang tải đơn hàng…</p>}
+      {error && <p role="alert" className="text-red-700">{error}</p>}
+      {message && <p role="status">{message}</p>}
+      {!loading && !error && data && (
+        <>
+          <p role="status">Tổng số: {data.total} đơn hàng. Trang {data.page}{data.totalPages > 0 ? ` / ${data.totalPages}` : ''}.</p>
+          {data.items.length === 0 ? <p>Không có đơn hàng phù hợp.</p> : (
+            <div className="admin-table-wrap">
+              <table className="admin-table admin-cards min-w-[900px]">
+                <caption className="sr-only">Danh sách đơn hàng</caption>
+                <thead><tr>{['Mã đơn', 'Khách hàng', 'Tổng tiền', 'Trạng thái đơn', 'Thanh toán', 'Giao hàng', 'Thao tác'].map(label => <th key={label} scope="col">{label}</th>)}</tr></thead>
+                <tbody>{data.items.map(order => (
+                  <Fragment key={order.id}>
+                    <tr>
+                      <th scope="row" data-label="Mã đơn"><span className="block" title={order.code}>#{order.code.slice(0, 8)}</span><time className="block text-sm font-normal" dateTime={order.createdAt}>{new Date(order.createdAt).toLocaleString('vi-VN')}</time></th>
+                      <td data-label="Khách hàng"><span className="block">{order.recipientName}</span><span className="block break-all">{order.user.email}</span></td>
+                      <td data-label="Tổng tiền">{formatPrice(order.total)}</td>
+                      <td data-label="Trạng thái đơn">{orderStatusLabel[order.status] ?? 'Chưa xác định'}</td>
+                      <td data-label="Thanh toán">{paymentLabel[order.paymentStatus] ?? 'Chưa xác định'}</td>
+                      <td data-label="Giao hàng">{shippingLabel[order.shippingStatus] ?? 'Chưa xác định'}</td>
+                      <td data-label="Thao tác"><button type="button" className="admin-button" aria-expanded={openedId === order.id} aria-controls={`order-${order.id}`} aria-label={`${openedId === order.id ? 'Đóng' : 'Xử lý'} đơn ${order.code}`} onClick={() => setOpenedId(openedId === order.id ? null : order.id)}>{openedId === order.id ? 'Đóng' : 'Xử lý'}</button></td>
+                    </tr>
+                    {openedId === order.id && <tr id={`order-${order.id}`} className="admin-detail-row"><td colSpan={7}><OrderDetailPanel key={order.id} id={order.id} onChanged={async () => { setMessage('Đã cập nhật trạng thái đơn hàng.'); await reload(); }} /></td></tr>}
+                  </Fragment>
+                ))}</tbody>
+              </table>
+            </div>
+          )}
+          <nav className="flex flex-wrap items-center gap-3" aria-label="Phân trang đơn hàng">
+            <button type="button" className="admin-button" disabled={data.page <= 1} onClick={() => { setPage(data.page - 1); setOpenedId(null); }}>Trang trước</button>
+            <button type="button" className="admin-button" disabled={data.page >= data.totalPages} onClick={() => { setPage(data.page + 1); setOpenedId(null); }}>Trang sau</button>
+          </nav>
+        </>
+      )}
+      <button type="button" className="admin-button" disabled={loading} onClick={() => { void reload(); }}>{loading ? 'Đang tải…' : error ? 'Thử lại' : 'Tải lại'}</button>
+    </div>
+  );
+}
+
 export default function AdminPage() {
   const { user, loading } = useAuth();
   const [params, setParams] = useSearchParams();
@@ -606,7 +848,9 @@ export default function AdminPage() {
         </nav>
         <section className="admin-main" aria-labelledby="admin-section-title">
           <h1 id="admin-section-title" className="text-3xl font-extrabold">{title}</h1>
-          {section === 'san-pham'
+          {section === 'don-hang'
+            ? <Orders />
+            : section === 'san-pham'
             ? <Products />
             : section === 'tai-khoan'
               ? <Users />
