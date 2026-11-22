@@ -4908,3 +4908,167 @@ Codex chạy kiểm tra tự động; chờ Thành kiểm tra trực quan.
 ### Kiểm tra và minh chứng
 
 `npm.cmd run lint -w web` và `npm.cmd run build -w web` pass; Vite build 485 modules. Thay đổi hiện chưa commit.
+
+## P3 / thanh-20261122-p3-reviews-09
+
+* Thời gian ghi: 2026-11-22T10:19:04+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261122-p3-reviews
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: thanh-20261122-p3-reviews-08; PRJ-P3-FD1-2.3 #405.
+
+### Công cụ
+
+Codex; Git; npm; ESLint; TypeScript; Vite.
+
+### Mục đích
+
+Hoàn thiện luồng khách gửi đánh giá tại trang tài khoản và mở trang sản phẩm để xem đánh giá công khai.
+
+### Prompt
+
+Thành yêu cầu kiểm tra có cần cập nhật `main` không; nếu không cần thì triển khai bước 2.3.
+
+### Kết quả đề xuất
+
+Không merge `main` vì dependency review đã có và thay đổi mới không bổ sung giao diện cần thiết. Codex thêm tab “Chờ đánh giá” trong `AccountPage.tsx`, tải `/reviews/reviewable`, gửi `POST /reviews`, loại món đã đánh giá khỏi danh sách và cung cấp liên kết xem review công khai.
+
+### Phản biện
+
+Issue chỉ liệt kê `ProductPage.tsx`, nhưng tiêu chí nghiệm thu bắt buộc thao tác tại `/tai-khoan`; phần GET công khai trong `ProductPage.tsx` đã tồn tại từ bước trước. Thay đổi ở `AccountPage.tsx` được giới hạn đúng phần còn thiếu của luồng, chưa chỉnh bố cục nâng cao thuộc bước 2.4.
+
+### Quyết định của nhóm
+
+Thành yêu cầu triển khai nếu không cần pull. Chưa có reviewer duyệt; chờ Thành kiểm tra luồng thật trước commit.
+
+### Người kiểm tra
+
+Codex kiểm tra tự động; chờ Thành kiểm tra bằng tài khoản có đơn `PAID` và `DELIVERED`.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web` đạt; `npm.cmd run build -w web` trả mã 0; `git diff --check` không báo lỗi. Chưa xác minh POST bằng dữ liệu thật và chưa commit/push.
+
+## P3 / thanh-20261122-p3-reviews-10
+
+* Thời gian ghi: 2026-11-22T10:37:44+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261122-p3-reviews
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: thanh-20261122-p3-reviews-09; kiểm thử thanh toán local phục vụ PRJ-P3-FD1-2.3.
+
+### Công cụ
+
+Codex; TypeScript; React; npm.
+
+### Mục đích
+
+Loại bỏ việc phải gọi IPN thủ công cho mỗi giao dịch VNPay khi kiểm thử trên localhost.
+
+### Prompt
+
+Thành báo lỗi cũ lặp lại: VNPay Return báo thành công nhưng trang đơn vẫn hiện chưa thanh toán và yêu cầu sửa lại.
+
+### Kết quả đề xuất
+
+Codex cập nhật `PaymentResultPage.tsx`: sau khi backend xác thực Return thành công, chỉ trong chế độ Vite DEV, frontend gửi nguyên query đã ký tới endpoint IPN; chấp nhận mã `00` và trạng thái idempotent `02` trước khi hiện kết quả.
+
+### Phản biện
+
+Production vẫn phải dựa vào IPN do VNPay gọi trực tiếp; không được tin trạng thái tự đặt từ trình duyệt. Cơ chế local vẫn đi qua backend kiểm tra chữ ký, số tiền, đơn và trạng thái nên không tự sửa dữ liệu ở frontend.
+
+### Quyết định của nhóm
+
+Thành yêu cầu sửa lỗi lặp để tiếp tục kiểm thử. Chờ Thành xác nhận giao dịch mới cập nhật đơn thành `PAID` trước khi commit.
+
+### Người kiểm tra
+
+Codex kiểm tra tĩnh; Thành chưa kiểm thử lại giao dịch mới trên trình duyệt.
+
+### Kiểm tra và minh chứng
+
+Lint và build web trả mã 0; `git diff --check` không báo lỗi. Chưa commit/push; chưa xác minh thực tế với VNPay Sandbox.
+
+## P3 / thanh-20261122-p3-reviews-11
+
+* Thời gian ghi: 2026-11-22T11:04:01+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261122-p3-reviews
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261122-p3-reviews-09; thanh-20261122-p3-reviews-10; PRJ-P3-FD1-2.3 #405.
+
+### Công cụ
+
+Codex; trình duyệt do Thành thao tác; REST API DAYORA; PowerShell.
+
+### Mục đích
+
+Xác minh toàn bộ luồng đánh giá thật: đơn đã thanh toán và giao thành công xuất hiện trong tab “Chờ đánh giá”, khách gửi đánh giá, sau đó đánh giá được tải công khai đúng trên trang sản phẩm.
+
+### Prompt
+
+Thành xác nhận biểu mẫu chờ đánh giá đã xuất hiện, thực hiện gửi đánh giá và cung cấp ảnh cho thấy đánh giá mới đã hiển thị công khai trên trang sản phẩm.
+
+### Kết quả đề xuất
+
+Giữ implementation tại `AccountPage.tsx`: tải danh sách có thể đánh giá, gửi `POST /reviews`, loại mục đã gửi khỏi danh sách và dẫn sang trang sản phẩm. Kết quả công khai hiển thị 5.0/5, một đánh giá, tên rút gọn, ngày và bình luận đúng dữ liệu vừa gửi.
+
+### Phản biện
+
+Ảnh trình duyệt xác nhận phần hiển thị; Codex kiểm tra thêm endpoint công khai để tránh chỉ kết luận từ giao diện. Bản sửa IPN local tại `PaymentResultPage.tsx` là thay đổi hỗ trợ kiểm thử riêng, không được trộn vào commit của sub-issue 2.3.
+
+### Quyết định của nhóm
+
+Thành xác nhận luồng đánh giá đã hoạt động. Chưa có reviewer duyệt độc lập và chưa có yêu cầu đóng issue.
+
+### Người kiểm tra
+
+Thành kiểm tra thủ công trên trình duyệt. Codex kiểm tra phản hồi API công khai.
+
+### Kiểm tra và minh chứng
+
+Ảnh Thành cung cấp cho thấy đánh giá “Sản phẩm thật là tuyệt vời” hiển thị với 5 sao, tổng hợp 5.0/5 và 1 đánh giá. `GET /api/products/binh-nuoc-ca-nhan-500-ml/reviews` trả `count: 1`, `average: 5`, đúng bình luận và tên rút gọn. Chờ chạy lại lint/build và tạo commit/push.
+
+## P3 / thanh-20261122-p3-reviews-12
+
+* Thời gian ghi: 2026-11-22T11:04:01+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261122-p3-reviews
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261122-p3-reviews-11; PRJ-P3-FD1-2.3 #405.
+
+### Công cụ
+
+Codex; ESLint; TypeScript; Vite; Git.
+
+### Mục đích
+
+Chạy kiểm tra cuối và chuẩn bị commit riêng cho luồng gửi, tải đánh giá công khai.
+
+### Prompt
+
+Thành xác nhận đánh giá đã xuất hiện đúng trên trang sản phẩm sau khi gửi từ trang tài khoản.
+
+### Kết quả đề xuất
+
+Giữ thay đổi của bước 2.3 tại `AccountPage.tsx` và nhật ký liên quan; không đưa thay đổi `PaymentResultPage.tsx` vào commit sub-issue này.
+
+### Phản biện
+
+Lần build đầu trong sandbox thất bại do TypeScript không được phép ghi `.tsbuildinfo`, không phải lỗi mã nguồn. Build được chạy lại ngoài sandbox với quyền ghi phù hợp và thành công.
+
+### Quyết định của nhóm
+
+Thành đã kiểm tra giao diện và xác nhận đạt; chuyển sang commit/push bước 2.3. Reviewer chưa duyệt độc lập.
+
+### Người kiểm tra
+
+Thành kiểm tra thủ công; Codex chạy kiểm tra tự động.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web` trả mã 0; `npm.cmd run build -w web` thành công với 486 modules; `git diff --check` không báo lỗi. Vite còn cảnh báo chunk lớn hơn 500 kB, là cảnh báo hiện hữu và không làm build thất bại.
