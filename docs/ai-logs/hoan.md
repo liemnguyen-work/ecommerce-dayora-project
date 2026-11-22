@@ -6304,3 +6304,45 @@ Codex đối chiếu câu trả lời với test và nhận xét hai câu bổ s
 ### Kiểm tra và minh chứng
 
 Không chạy lại test vì thay đổi chỉ gồm tài liệu và AI log.
+---
+
+## Phase 1 / hoan-20261122-me-timeout-b75-01
+
+* Thời gian ghi: 2026-11-22T13:16:59+07:00
+* Thời gian thực hiện: 22/11/2026.
+* Mã phiên nhật ký: hoan-20261122-me-timeout-b75
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: issue #716
+
+### Công cụ
+
+Codex, Git, NestJS, Vitest và ESLint.
+
+### Mục đích
+
+Điều tra timeout không ổn định trong test quyền của me.spec.ts.
+
+### Prompt
+
+Tóm lược: Hoàn yêu cầu điều tra issue timeout, giữ kiểm tra quyền và so sánh test riêng với toàn bộ.
+
+### Kết quả đề xuất
+
+Trên main 7912ae848b38ba1db0d17f289fb80a8a62fc345c, ca test riêng pass 2332 ms; test toàn bộ 142/142 pass với cấu hình worker mặc định. Tách import, biên dịch và khởi tạo Nest vào beforeAll có timeout riêng 20 giây; đóng app sau test và khi init lỗi, giữ nguyên assertion 401/403.
+
+### Phản biện
+
+Chưa tái hiện được timeout nên chưa kết luận nguyên nhân. Test sau thay đổi pass không chứng minh lỗi không thể lặp; promotions không thay đổi và QA cần xem lại phần tách setup.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu xử lý issue; chưa có xác nhận QA hoặc reviewer.
+
+### Người kiểm tra
+
+Codex chạy test và lint; chờ Hoàn, QA và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+Node v26.13.1, npm 11.20.0, Vitest 4.1.12; vitest.config.mts không quy định worker. Sau sửa: ca riêng pass (47 ms phần test, tổng bao gồm setup 2,38 giây); npm test 142/142 với worker mặc định; npm test -w api -- --maxWorkers=1 142/142; lint API pass.
