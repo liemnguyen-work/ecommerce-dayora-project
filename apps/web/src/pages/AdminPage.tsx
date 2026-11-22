@@ -620,9 +620,58 @@ const historyFields: Record<string, { label: string; values: Record<string, stri
   shippingStatus: { label: 'Giao hàng', values: shippingLabel },
 };
 
-function OrderDetailPanel({ id }: { id: string }) {
+type OrderAction = ['status' | 'shippingStatus', string, string];
+
+function nextSteps(order: Pick<AdminOrder, 'status' | 'paymentStatus' | 'shippingStatus'>): OrderAction[] {
+  const steps: OrderAction[] = [];
+  if (order.status === 'PENDING_PAYMENT' && order.paymentStatus === 'PAID') {
+    steps.push(['status', 'CONFIRMED', 'Xác nhận đơn']);
+  }
+  if (order.status === 'CONFIRMED') {
+    if (order.shippingStatus === 'NOT_SHIPPED') steps.push(['shippingStatus', 'PREPARING', 'Bắt đầu chuẩn bị']);
+    if (order.shippingStatus === 'PREPARING') steps.push(['shippingStatus', 'SHIPPING', 'Giao cho vận chuyển']);
+    if (order.shippingStatus === 'SHIPPING') {
+      steps.push(['shippingStatus', 'DELIVERED', 'Đã giao'], ['shippingStatus', 'RETURNED', 'Hoàn hàng']);
+    }
+  }
+  const canCancel = (order.status === 'PENDING_PAYMENT' && ['UNPAID', 'PAID'].includes(order.paymentStatus))
+    || (order.status === 'CONFIRMED' && order.paymentStatus === 'PAID'
+      && ['NOT_SHIPPED', 'PREPARING'].includes(order.shippingStatus));
+  if (canCancel) steps.push(['status', 'CANCELLED', 'Hủy đơn']);
+  return steps;
+}
+
+function OrderDetailPanel({ id, onChanged }: { id: string; onChanged: () => Promise<void> }) {
   // Mount riêng theo ID: phản hồi của đơn đã đóng không thể ghi đè đơn mới.
   const { data: detail, error, loading, reload } = useLoad<OrderDetail>(`/admin/orders/${encodeURIComponent(id)}`);
+  const [sending, setSending] = useState(false);
+  const [actionError, setActionError] = useState('');
+  const locked = useRef(false);
+
+  async function move(field: OrderAction[0], to: string) {
+    if (locked.current || !detail) return;
+    if (to === 'CANCELLED' && !window.confirm(detail.paymentStatus === 'PAID'
+      ? 'Hủy đơn này? Đơn đã thanh toán, cần xử lý hoàn tiền thủ công.' : 'Hủy đơn này?')) return;
+    locked.current = true;
+    setSending(true);
+    setActionError('');
+    try {
+      await api(`/admin/orders/${encodeURIComponent(id)}/status`, {
+        method: 'PATCH', body: JSON.stringify({ field, to }),
+      });
+    } catch (error: unknown) {
+      setActionError(errText(error));
+      // Lấy trạng thái mới nếu đơn đã bị người khác cập nhật (409/422).
+      await reload();
+      locked.current = false;
+      setSending(false);
+      return;
+    }
+    await reload();
+    await onChanged();
+    locked.current = false;
+    setSending(false);
+  }
 
   if (loading) return <p role="status">Đang tải chi tiết…</p>;
   if (error) return <div><p role="alert" className="mb-3 text-red-700">{error}</p><button type="button" className="admin-button" onClick={() => { void reload(); }}>Thử lại chi tiết</button></div>;
@@ -635,6 +684,16 @@ function OrderDetailPanel({ id }: { id: string }) {
         <p className="font-semibold">{detail.recipientName}</p>
         <a className="inline-flex min-h-11 items-center underline" href={`tel:${detail.recipientPhone}`}>{detail.recipientPhone}</a>
         <p className="whitespace-pre-wrap">{detail.address}</p>
+        <h3 className="pt-3 font-bold">Thao tác</h3>
+        {actionError && <p role="alert" className="text-red-700">{actionError}</p>}
+        <div className="admin-actions flex flex-wrap gap-2" aria-busy={sending}>
+          {nextSteps(detail).map(([field, to, label]) => (
+            <button key={`${field}-${to}`} type="button" className="admin-button" disabled={sending}
+              onClick={() => { void move(field, to); }}>{label}</button>
+          ))}
+        </div>
+        {sending && <p role="status">Đang cập nhật…</p>}
+        {nextSteps(detail).length === 0 && <p>Không có thao tác chuyển trạng thái phù hợp.</p>}
       </section>
       <section className="min-w-0 space-y-3">
         <h2 className="text-lg font-bold">Món hàng</h2>
@@ -680,6 +739,7 @@ function Orders() {
   const [q, setQ] = useState('');
   const [page, setPage] = useState(1);
   const [openedId, setOpenedId] = useState<string | null>(null);
+  const [message, setMessage] = useState('');
   const query = new URLSearchParams(filter);
   if (q.trim()) query.set('q', q.trim());
   if (page > 1) query.set('page', String(page));
@@ -706,6 +766,7 @@ function Orders() {
       </label>
       {loading && <p role="status">Đang tải đơn hàng…</p>}
       {error && <p role="alert" className="text-red-700">{error}</p>}
+      {message && <p role="status">{message}</p>}
       {!loading && !error && data && (
         <>
           <p role="status">Tổng số: {data.total} đơn hàng. Trang {data.page}{data.totalPages > 0 ? ` / ${data.totalPages}` : ''}.</p>
@@ -725,7 +786,7 @@ function Orders() {
                       <td data-label="Giao hàng">{shippingLabel[order.shippingStatus] ?? 'Chưa xác định'}</td>
                       <td data-label="Thao tác"><button type="button" className="admin-button" aria-expanded={openedId === order.id} aria-controls={`order-${order.id}`} aria-label={`${openedId === order.id ? 'Đóng' : 'Xử lý'} đơn ${order.code}`} onClick={() => setOpenedId(openedId === order.id ? null : order.id)}>{openedId === order.id ? 'Đóng' : 'Xử lý'}</button></td>
                     </tr>
-                    {openedId === order.id && <tr id={`order-${order.id}`} className="admin-detail-row"><td colSpan={7}><OrderDetailPanel key={order.id} id={order.id} /></td></tr>}
+                    {openedId === order.id && <tr id={`order-${order.id}`} className="admin-detail-row"><td colSpan={7}><OrderDetailPanel key={order.id} id={order.id} onChanged={async () => { setMessage('Đã cập nhật trạng thái đơn hàng.'); await reload(); }} /></td></tr>}
                   </Fragment>
                 ))}</tbody>
               </table>
