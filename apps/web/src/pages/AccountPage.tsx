@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../lib/auth.tsx';
 import { api } from '../lib/api';
@@ -10,6 +10,133 @@ const tabs: [Tab, string][] = [
   ['don-hang', 'Đơn hàng'], ['danh-gia', 'Chờ đánh giá'],
   ['ho-so', 'Hồ sơ'], ['da-xem', 'Đã xem'],
 ];
+
+type ReviewableItem = {
+  orderId: string;
+  productId: string;
+  product: { id: string; name: string; slug: string };
+};
+
+function ReviewForm({ item, onSubmitted }: { item: ReviewableItem; onSubmitted: (item: ReviewableItem) => void }) {
+  const [rating, setRating] = useState(5);
+  const [comment, setComment] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
+  const locked = useRef(false);
+
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (locked.current) return;
+    locked.current = true;
+    setSubmitting(true);
+    setError('');
+    try {
+      await api('/reviews', {
+        method: 'POST',
+        body: JSON.stringify({
+          orderId: item.orderId,
+          productId: item.productId,
+          rating,
+          ...(comment.trim() ? { comment: comment.trim() } : {}),
+        }),
+      });
+      onSubmitted(item);
+    } catch (requestError) {
+      setError(requestError instanceof Error ? requestError.message : 'Chưa gửi được đánh giá.');
+    } finally {
+      locked.current = false;
+      setSubmitting(false);
+    }
+  }
+
+  return (
+    <form onSubmit={(event) => void submit(event)} className="space-y-4 rounded-2xl border border-leaf bg-paper p-5">
+      <div>
+        <h2 className="font-bold">{item.product.name}</h2>
+        <Link className="text-sm underline" to={`/san-pham/${item.product.slug}`}>Xem sản phẩm</Link>
+      </div>
+      <fieldset disabled={submitting}>
+        <legend className="font-semibold">Số sao</legend>
+        <div className="mt-2 flex flex-wrap gap-2">{[1, 2, 3, 4, 5].map(value => (
+          <label key={value} className="inline-flex min-h-11 cursor-pointer items-center gap-1 rounded-xl border border-ink/30 px-2">
+            <input type="radio" name="rating" value={value} checked={rating === value} onChange={() => setRating(value)} required />
+            <span aria-hidden="true">★</span><span>{value} sao</span>
+          </label>
+        ))}</div>
+      </fieldset>
+      <label className="block font-semibold">Nhận xét (không bắt buộc)
+        <textarea value={comment} disabled={submitting} maxLength={1000} onChange={(event) => setComment(event.target.value)} rows={3} className="mt-2 block w-full resize-y rounded-xl border border-ink/30 bg-white p-3 font-normal" />
+      </label>
+      {error && <p role="alert" className="rounded-xl bg-berry/10 p-3">{error}</p>}
+      <button disabled={submitting} className="min-h-11 rounded-full bg-berry px-6 py-3 font-semibold text-white disabled:opacity-60" type="submit">
+        {submitting ? 'Đang gửi…' : 'Gửi đánh giá'}
+      </button>
+    </form>
+  );
+}
+
+
+function useAccountLoad<T>(path: string) {
+  const [data, setData] = useState<T | null>(null);
+  const [error, setError] = useState('');
+  const version = useRef(0);
+  const load = useCallback(() => {
+    const current = ++version.current;
+    return api<T>(path).then(result => {
+      if (current === version.current) { setData(result); setError(''); }
+    }).catch((error: unknown) => {
+      if (current === version.current) setError(error instanceof Error ? error.message : 'Chưa tải được dữ liệu.');
+    });
+  }, [path]);
+  useEffect(() => {
+    void load();
+    const invalidate = () => { version.current++; };
+    return invalidate;
+  }, [load]);
+  const reload = () => { setData(null); setError(''); return load(); };
+  return { data, error, loading: data === null && !error, reload };
+}
+
+type AccountOrder = {
+  id: string; code: string; createdAt: string; status: string; paymentStatus: string; total: number;
+};
+const orderLabels: Record<string, string> = {
+  PENDING_PAYMENT: 'Chờ thanh toán', CONFIRMED: 'Đã xác nhận', CANCELLED: 'Đã hủy', COMPLETED: 'Hoàn tất',
+};
+const paymentLabels: Record<string, string> = {
+  UNPAID: 'Chưa thanh toán', PAID: 'Đã thanh toán', FAILED: 'Thanh toán thất bại', EXPIRED: 'Hết hạn thanh toán',
+};
+
+function Orders() {
+  const { data, error, loading, reload } = useAccountLoad<AccountOrder[] | { items: AccountOrder[] }>('/orders');
+  const orders = Array.isArray(data) ? data : data?.items ?? [];
+  if (loading) return <p role="status">Đang tải đơn hàng…</p>;
+  if (error) return <div><p role="alert">{error}</p><button className="catalog-button mt-3" type="button" onClick={() => { void reload(); }}>Thử lại</button></div>;
+  if (orders.length === 0) return <div className="space-y-4"><p>Bạn chưa có đơn nào.</p><Link to="/san-pham" className="inline-flex min-h-11 items-center rounded-full bg-ink px-6 py-3 font-semibold text-paper">Mua sắm ngay</Link></div>;
+  return <ul className="order-list space-y-4">{orders.map(order => (
+    <li key={order.id} className="space-y-3 rounded-2xl border border-leaf p-4">
+      <Link to={`/don-hang/${encodeURIComponent(order.id)}`} className="inline-flex min-h-11 items-center break-all font-bold underline">Đơn #{order.code}</Link>
+      <p>Ngày đặt: <time dateTime={order.createdAt}>{new Date(order.createdAt).toLocaleString('vi-VN')}</time></p>
+      <div className="flex flex-wrap gap-2"><span className="rounded-full bg-leaf px-3 py-1">{orderLabels[order.status] ?? 'Chưa xác định trạng thái'}</span><span className="rounded-full border border-ink/30 px-3 py-1">{paymentLabels[order.paymentStatus] ?? 'Chưa xác định thanh toán'}</span></div>
+      <p className="font-semibold">Tổng tiền: {order.total.toLocaleString('vi-VN')} đ</p>
+    </li>
+  ))}</ul>;
+}
+
+function Reviews() {
+  const { data, error, loading, reload } = useAccountLoad<ReviewableItem[]>('/reviews/reviewable');
+  const [reviewedProduct, setReviewedProduct] = useState<ReviewableItem['product'] | null>(null);
+  return <div className="space-y-4" aria-busy={loading}>
+    {reviewedProduct && <p role="status">Cảm ơn bạn đã đánh giá. <Link className="font-semibold underline" to={`/san-pham/${reviewedProduct.slug}`}>Xem đánh giá công khai →</Link></p>}
+    {loading && <p role="status">Đang tải sản phẩm chờ đánh giá…</p>}
+    {error && <div><p role="alert">{error}</p><button className="catalog-button mt-3" type="button" onClick={() => { void reload(); }}>Thử lại</button></div>}
+    {!loading && !error && data?.length === 0 && <p>Bạn chưa có sản phẩm nào chờ đánh giá.</p>}
+    {!loading && !error && data?.map(item => <ReviewForm key={`${item.orderId}:${item.productId}`} item={item} onSubmitted={submitted => {
+      setReviewedProduct(submitted.product);
+      void reload();
+    }} />)}
+  </div>;
+}
 
 function ViewedList() {
   const [viewed, setViewed] = useState<Product[]>([]);
@@ -97,8 +224,8 @@ export default function AccountPage() {
           ))}
         </div>
         <section id="account-panel" role="tabpanel" aria-labelledby={`account-tab-${tab}`} tabIndex={0} className="account-panel mt-4 space-y-5 rounded-3xl border border-ink/20 bg-paper p-5 sm:p-8">
-        {tab === 'don-hang' && <p>Danh sách đơn hàng đang được xây dựng.</p>}
-        {tab === 'danh-gia' && <p>Danh sách sản phẩm chờ đánh giá đang được xây dựng.</p>}
+        {tab === 'don-hang' && <Orders key={user.id} />}
+        {tab === 'danh-gia' && <Reviews key={user.id} />}
         {tab === 'ho-so' && <div aria-busy={sending} className="space-y-5">
           <dl className="space-y-4">
             <div><dt className="font-semibold">Họ và tên</dt><dd className="break-words">{user.fullName}</dd></div>

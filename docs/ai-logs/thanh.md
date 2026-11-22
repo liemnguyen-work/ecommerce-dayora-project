@@ -3522,6 +3522,333 @@ Thành tự viết và sửa câu trả lời; Codex đối chiếu với code. 
 
 File `docs/learning/FD1-Thanh/kiem-tra/PRJ-P2-FD1-3.md` có đủ bốn bước, trải nghiệm thực tế và hai câu hỏi vặn. Kiểm tra toàn repo được chạy trước commit; kết quả được báo theo output thực tế.
 
+## P3 / thanh-20261122-p3-reviews-01
+
+* Thời gian ghi: 2026-11-22T00:16:34+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261122-p3-reviews
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: PRJ-P3-FD1-2 #55; PRJ-P3-BD1-3; PR #709.
+
+### Công cụ
+
+Codex; Git; GitHub connector; Git worktree.
+
+### Mục đích
+
+Chuẩn bị nhánh và thư mục độc lập cho task đánh giá sản phẩm từ `main` mới nhất, không trộn thay đổi của PRJ-P3-FD1-1 đang chờ review.
+
+### Prompt
+
+Thành yêu cầu kiểm tra có cần pull `main` hay đổi folder cho PRJ-P3-FD1-2, sau đó yêu cầu Codex tạo folder/nhánh mới để Thành tự chuyển sang làm tiếp.
+
+### Kết quả đề xuất
+
+Đã fetch remote, xác nhận backend PRJ-P3-BD1-3 đã được merge qua PR #709 và có module reviews trên `origin/main`. Đã tạo worktree `C:\Users\Admin\Desktop\Dayora_PTUD\dayora-prj-p3-fd1-2` với nhánh `prj/p3-fd1-2` theo dõi `origin/main`, tại commit `1049a24`.
+
+### Phản biện
+
+Không tạo nhánh mới từ `prj/p3-fd1-1` vì PR #710 chưa merge và task mới không phụ thuộc code frontend của task đó. Không tự sao chép `.env` để tránh thao tác với bí mật ngoài yêu cầu.
+
+### Quyết định của nhóm
+
+Thành chọn làm task trong folder mới từ `main` và sẽ tự chuyển VS Code sang folder này trước khi gửi sub-issue đầu tiên.
+
+### Người kiểm tra
+
+Codex kiểm tra branch, HEAD, remote tracking và danh sách worktree. Thành chưa bắt đầu kiểm tra chức năng của task mới.
+
+### Kiểm tra và minh chứng
+
+`git status -sb` tại worktree mới cho thấy `prj/p3-fd1-2...origin/main`; `git log -1` là `1049a24 Merge pull request #709 from liemnguyen-work/prj/p3-bd1-3`. Chưa cài dependency, chưa chạy migration và chưa commit mục log này.
+
+## P3 / thanh-20261122-p3-reviews-02
+
+* Thời gian ghi: 2026-11-22T00:23:27+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261122-p3-reviews
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: thanh-20261122-p3-reviews-01; PRJ-P3-FD1-2.1 #396.
+
+### Công cụ
+
+Codex; React; TypeScript; Tailwind CSS; ESLint; Vite build.
+
+### Mục đích
+
+Nối danh sách đánh giá công khai vào cuối trang chi tiết sản phẩm, xử lý trạng thái tải, lỗi và chưa có đánh giá mà không làm trước phần hiển thị sao/nội dung của bước 2.2.
+
+### Prompt
+
+Thành cung cấp đầy đủ sub-issue #396 và yêu cầu tiếp tục bước đầu tiên của task đánh giá trên trang sản phẩm.
+
+### Kết quả đề xuất
+
+Đã bổ sung `Reviews`, hook tải API cục bộ và component `ProductReviews` trong `apps/web/src/pages/ProductPage.tsx`. Component gọi endpoint với slug đã mã hóa, hiểu đúng contract backend `user.fullName`, hiển thị trạng thái tải/lỗi/rỗng và danh sách cơ bản gồm tên rút gọn cùng ngày đánh giá. Chưa hiển thị số sao và bình luận để giữ đúng phạm vi bước 2.1.
+
+### Phản biện
+
+Issue gợi ý dùng `useCatalogApi` nhưng code hiện tại chưa có hook này; Codex tạo hook nhỏ ngay trong file thay vì mở rộng kiến trúc. Lần lint đầu phát hiện `setState` đồng bộ trong effect; dòng reset thừa được bỏ vì `ProductDetails` remount theo sản phẩm.
+
+### Quyết định của nhóm
+
+Phạm vi thực hiện theo sub-issue #396 do Thành cung cấp. Chưa commit hoặc push; chờ Thành kiểm tra giao diện với sản phẩm có và chưa có đánh giá.
+
+### Người kiểm tra
+
+Codex kiểm tra code và lệnh tự động. Thành chưa kiểm tra thủ công trên trình duyệt.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web`, `npm.cmd run build -w web` và `git diff --check` đều pass sau khi sửa lỗi hook. `npm.cmd install` đã cài dependency; npm báo 17 lỗ hổng phụ thuộc hiện có nhưng không tự chạy audit fix. Worktree chưa có `apps/api/.env`, nên chưa chạy migration hoặc kiểm tra API/database thật.
+
+## P3 / thanh-20261122-p3-reviews-03
+
+* Thời gian ghi: 2026-11-22T00:38:58+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261122-p3-reviews
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261122-p3-reviews-02; PRJ-P3-FD1-2.1 #396.
+
+### Công cụ
+
+Codex; trình duyệt do Thành sử dụng; Git.
+
+### Mục đích
+
+Ghi nhận kiểm tra thủ công trạng thái chưa có đánh giá và quyết định tạo commit bước 2.1.
+
+### Prompt
+
+Thành cung cấp ảnh cuối trang sản phẩm có mục `Đánh giá sản phẩm` và thông báo chưa có đánh giá, xác nhận đạt rồi yêu cầu commit và push để tự mở pull request.
+
+### Kết quả đề xuất
+
+Ảnh cho thấy khu vực đánh giá hiển thị đúng, thông báo rỗng rõ ràng và bố cục không vỡ ở kích thước được cung cấp. Việc chưa có ô nhập là đúng vì bước 2.1 chỉ đọc danh sách; form tạo đánh giá thuộc bước sau.
+
+### Phản biện
+
+Seed hiện không tạo bản ghi Review nên chưa kiểm tra được nhánh danh sách có dữ liệu. Không dùng thao tác API thủ công phức tạp làm điều kiện chặn commit; giới hạn này cần tiếp tục kiểm tra khi có dữ liệu đánh giá thật.
+
+### Quyết định của nhóm
+
+Thành xác nhận trạng thái rỗng đạt và yêu cầu commit, push bước PRJ-P3-FD1-2.1. Chưa đóng sub-issue và chưa có reviewer duyệt.
+
+### Người kiểm tra
+
+Thành kiểm tra giao diện trạng thái rỗng trên trình duyệt; Codex kiểm tra lint, build và diff. Nhánh có dữ liệu đánh giá chưa được kiểm tra thủ công.
+
+### Kiểm tra và minh chứng
+
+Ảnh Thành cung cấp hiển thị câu `Chưa có đánh giá. Bạn có thể đánh giá sau khi nhận hàng.` ở cuối trang sản phẩm. Kiểm tra tự động đã pass theo mục `thanh-20261122-p3-reviews-02`; chuẩn bị commit nhưng chưa push tại thời điểm ghi mục này.
+## P3 / thanh-20261122-p3-reviews-04
+
+* Thời gian ghi: 2026-11-22T00:57:58+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261122-p3-reviews
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: thanh-20261122-p3-reviews-03; PRJ-P3-FD1-2.2 #401.
+
+### Công cụ
+
+Codex; PowerShell; npm; ESLint; TypeScript; Vite.
+
+### Mục đích
+
+Bổ sung điểm trung bình, số sao, tên người đánh giá, ngày và nội dung nhận xét vào danh sách đánh giá công khai trên trang chi tiết sản phẩm.
+
+### Prompt
+
+Thành cung cấp sub-issue PRJ-P3-FD1-2.2 và yêu cầu tiếp tục thực hiện theo quy trình kiểm tra trước khi commit.
+
+### Kết quả đề xuất
+
+Codex cập nhật `apps/web/src/pages/ProductPage.tsx`: hiển thị điểm trung bình một chữ số thập phân, số lượt đánh giá, sao có nhãn trợ năng, tên người đánh giá in đậm, ngày theo `vi-VN` và chỉ render bình luận khi có nội dung. Không thêm form gửi đánh giá và không thay đổi API vì thuộc bước sau.
+
+### Phản biện
+
+Màu sao cần đủ tương phản trên nền trắng; điểm trung bình có thể là số thực nên chỉ làm tròn khi lặp ký tự sao, còn số điểm hiển thị giữ một chữ số thập phân. Cơ sở dữ liệu local hiện chưa có đánh giá công khai nên chưa thể quan sát trạng thái có dữ liệu trên trình duyệt.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung mới. Phạm vi giữ đúng sub-issue 2.2; Thành sẽ kiểm tra giao diện thủ công trước khi cho phép commit.
+
+### Người kiểm tra
+
+Codex kiểm tra tĩnh và build; chờ Thành kiểm tra giao diện có dữ liệu đánh giá trên localhost.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web` thành công. `npm.cmd run build -w web` thành công sau khi cho phép ghi cache TypeScript trong worktree. `git diff --check` không báo lỗi. API local trả danh mục sản phẩm nhưng chưa tìm thấy sản phẩm có `reviews.count > 0`; trạng thái danh sách có dữ liệu và responsive chưa được Thành xác nhận. Chưa commit hoặc push tại thời điểm ghi mục này.
+
+## P3 / thanh-20261122-p3-reviews-05
+
+* Thời gian ghi: 2026-11-22T01:06:01+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261122-p3-reviews
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261122-p3-reviews-04; PRJ-P3-FD1-2.2 #401.
+
+### Công cụ
+
+Codex; trình duyệt local do Thành kiểm tra; npm; Git.
+
+### Mục đích
+
+Xác minh trực quan trạng thái có dữ liệu của danh sách đánh giá ở kích thước mobile trước khi commit bước 2.2.
+
+### Prompt
+
+Thành cung cấp ảnh giao diện 390px, xác nhận nếu đạt thì xóa dữ liệu demo và commit.
+
+### Kết quả đề xuất
+
+Ảnh cho thấy điểm trung bình, số lượt đánh giá, sao, tên, ngày và nội dung nhận xét hiển thị rõ; các thẻ xếp dọc và không tràn ngang. Đánh giá không có bình luận không tạo dòng nội dung trống. Codex đã xóa hoàn toàn nhánh dữ liệu demo khỏi mã nguồn trước khi chuẩn bị commit.
+
+### Phản biện
+
+Dữ liệu trong ảnh là fixture tạm dùng để kiểm tra giao diện, không phải review đã ghi vào Supabase. Vì vậy kết quả này xác minh phần render và responsive, không chứng minh luồng tạo review thật; luồng gửi đánh giá thuộc sub-issue sau.
+
+### Quyết định của nhóm
+
+Thành xác nhận giao diện đạt và yêu cầu xóa dữ liệu demo, commit rồi push bước PRJ-P3-FD1-2.2. Chưa có reviewer duyệt.
+
+### Người kiểm tra
+
+Thành kiểm tra giao diện mobile 390px qua ảnh đã cung cấp; Codex kiểm tra dữ liệu demo đã được loại bỏ và chạy kiểm tra tự động trước commit.
+
+### Kiểm tra và minh chứng
+
+Ảnh Thành cung cấp hiển thị hai thẻ đánh giá tại 390px, gồm trường hợp có và không có bình luận. Chuỗi `review-demo`, `demoData` và `displayData` không còn trong `ProductPage.tsx`. Commit và push chưa được tạo tại thời điểm ghi mục này.
+
+## P3 / thanh-20261122-p3-reviews-06
+
+* Thời gian ghi: 2026-11-22T01:10:22+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261122-p3-reviews
+* Người prompt: Thành
+* Loại mục: Phản biện
+* Liên quan: thanh-20261122-p3-reviews-05; PRJ-P3-FD1-2.3 #405.
+
+### Công cụ
+
+Codex; Git; ripgrep; PowerShell.
+
+### Mục đích
+
+Đối chiếu điều kiện và phụ thuộc thực tế trước khi triển khai luồng tải đánh giá công khai từ trang tài khoản sang trang sản phẩm.
+
+### Prompt
+
+Thành cung cấp sub-issue PRJ-P3-FD1-2.3 và yêu cầu tiếp tục task.
+
+### Kết quả đề xuất
+
+Codex xác nhận `ProductReviews` đã gọi `GET /products/:slug/reviews` theo `slug` từ bước 2.1 và backend public đã có trên `main`. Tuy nhiên `AccountPage.tsx` hiện chỉ có tab hồ sơ và sản phẩm đã xem; chưa có tab “Chờ đánh giá”, chưa gọi `GET /reviews/reviewable` hay `POST /reviews`.
+
+### Phản biện
+
+Tiêu chí nghiệm thu yêu cầu gửi đánh giá tại `/tai-khoan`, nhưng danh sách file của issue chỉ nêu `ProductPage.tsx`. Tự thêm form vào `AccountPage.tsx` khi chưa xác nhận sẽ mở rộng phạm vi và có nguy cơ trùng công việc khác. Không nên tạo một commit rỗng hoặc ghi nhận luồng end-to-end đạt khi chưa thể thực hiện.
+
+### Quyết định của nhóm
+
+Chưa có quyết định chung về việc mở rộng phạm vi sang `AccountPage.tsx`. Chờ Thành xác nhận với người giao task/reviewer hoặc cung cấp issue phụ trách giao diện “Chờ đánh giá”.
+
+### Người kiểm tra
+
+Codex kiểm tra `origin/main` mới nhất và các remote branch đã fetch; chưa có thành viên/reviewer xác nhận hướng xử lý.
+
+### Kiểm tra và minh chứng
+
+`origin/main` tại `8f8549b`; tìm kiếm `reviews/reviewable` và “Chờ đánh giá” trong `AccountPage.tsx` của main và các remote branch không có kết quả. Nhánh hiện tại vẫn có endpoint public trong `ProductPage.tsx`. Chưa sửa code, chưa chạy nghiệm thu end-to-end và chưa commit bước 2.3.
+
+## P3 / thanh-20261122-p3-reviews-07
+
+* Thời gian ghi: 2026-11-22T01:18:54+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261122-p3-reviews
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261122-p3-reviews-06; PRJ-P3-FD1-2.5 #415.
+
+### Công cụ
+
+Codex; trao đổi kiểm tra kiến thức.
+
+### Mục đích
+
+Luyện giải thích các bước của task đánh giá sản phẩm và kiểm tra Thành có phân biệt được dữ liệu API, cách vẽ sao, tải lại theo sản phẩm và yêu cầu responsive hay không.
+
+### Prompt
+
+Thành tự trả lời năm câu kiểm tra kiến thức, sửa lại câu về tải đánh giá công khai và trả lời hai câu hỏi vặn về `String.repeat` với điểm lẻ và việc tải lại khi đổi sản phẩm.
+
+### Kết quả đề xuất
+
+Codex chấm các câu 1, 2 và 5 đúng; câu 3 được Thành sửa để nói rõ dữ liệu mới xuất hiện khi tải lại, mở lại hoặc đổi sản phẩm; câu 4 thể hiện đúng kiến thức nhưng chưa được triển khai. Thành giải thích đúng việc dùng `Math.round(data.average)` để vẽ sao và giữ giá trị gốc để hiển thị điểm.
+
+### Phản biện
+
+Trong code hiện tại, dependency trực tiếp của `useEffect` là `path`, không phải `slug`; `path` được tạo từ `slug`, nên đổi `slug` làm `path` đổi và request chạy lại. Không được đánh dấu hoàn thành hoặc commit kiểm tra kiến thức trước khi bước 2.3 và 2.4 thực sự đạt.
+
+### Quyết định của nhóm
+
+Thành chọn luyện kiến thức trước; chưa yêu cầu bỏ qua tiêu chí hoàn thành của các bước còn thiếu. File kiểm tra kiến thức chưa được tạo và sub-issue 2.5 chưa được commit.
+
+### Người kiểm tra
+
+Codex chấm nội dung trả lời; chưa có reviewer hoặc trưởng nhóm hỏi kiểm tra ngẫu nhiên.
+
+### Kiểm tra và minh chứng
+
+Trao đổi hiện tại chứa năm câu trả lời, câu 3 đã sửa và hai câu hỏi vặn đã được Thành trả lời. Không có thay đổi code ứng dụng trong lượt này; chỉ nối thêm log trung thực về hoạt động luyện tập.
+
+## P3 / thanh-20261122-p3-reviews-08
+
+* Thời gian ghi: 2026-11-22T01:20:59+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261122-p3-reviews
+* Người prompt: Thành
+* Loại mục: Quyết định
+* Liên quan: thanh-20261122-p3-reviews-07; PRJ-P3-FD1-2.5 #415.
+
+### Công cụ
+
+Codex; Markdown; Git.
+
+### Mục đích
+
+Ghi lại câu trả lời kiểm tra kiến thức do Thành tự viết và chuẩn bị commit tài liệu theo yêu cầu của Thành dù bước 2.3 và 2.4 chưa hoàn tất.
+
+### Prompt
+
+Sau khi được cảnh báo về thứ tự sub-issue, Thành vẫn yêu cầu commit phần kiểm tra kiến thức trước và làm các bước còn lại sau.
+
+### Kết quả đề xuất
+
+Codex tạo `docs/learning/FD1-Thanh/kiem-tra/PRJ-P3-FD1-2.md`, định dạng lại chính các câu trả lời của Thành, bổ sung hai câu hỏi vặn đã trả lời và ghi chú rõ đây là phần kiến thức được chuẩn bị trước khi hoàn tất triển khai 2.3/2.4.
+
+### Phản biện
+
+Commit trước thứ tự có thể bị reviewer yêu cầu sửa vì issue quy định bước 2.5 thực hiện sau bước 2.4. Việc có file kiểm tra kiến thức không chứng minh hai bước chức năng còn thiếu đã đạt nghiệm thu và không được dùng để đóng task cha.
+
+### Quyết định của nhóm
+
+Thành quyết định commit bước kiểm tra kiến thức trước. Chưa có quyết định chung hoặc xác nhận của reviewer cho việc thay đổi thứ tự; bước 2.3/2.4 vẫn phải tiếp tục sau.
+
+### Người kiểm tra
+
+Thành là người tự trả lời; Codex chỉ chấm, chỉ ra điểm cần sửa và định dạng Markdown. Chưa có reviewer/trưởng nhóm kiểm tra ngẫu nhiên.
+
+### Kiểm tra và minh chứng
+
+File có năm mục trả lời và hai câu hỏi bổ sung. Nội dung ghi rõ trạng thái chưa hoàn tất của bước 2.3 và 2.4; chưa có kiểm thử ứng dụng mới vì lượt này chỉ thay đổi tài liệu.
+
 ## P3 / thanh-20261121-p3-orders-01
 
 * Thời gian ghi: 2026-11-21T12:37:31+07:00
@@ -4581,3 +4908,249 @@ Codex chạy kiểm tra tự động; chờ Thành kiểm tra trực quan.
 ### Kiểm tra và minh chứng
 
 `npm.cmd run lint -w web` và `npm.cmd run build -w web` pass; Vite build 485 modules. Thay đổi hiện chưa commit.
+
+## P3 / thanh-20261122-p3-reviews-09
+
+* Thời gian ghi: 2026-11-22T10:19:04+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261122-p3-reviews
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: thanh-20261122-p3-reviews-08; PRJ-P3-FD1-2.3 #405.
+
+### Công cụ
+
+Codex; Git; npm; ESLint; TypeScript; Vite.
+
+### Mục đích
+
+Hoàn thiện luồng khách gửi đánh giá tại trang tài khoản và mở trang sản phẩm để xem đánh giá công khai.
+
+### Prompt
+
+Thành yêu cầu kiểm tra có cần cập nhật `main` không; nếu không cần thì triển khai bước 2.3.
+
+### Kết quả đề xuất
+
+Không merge `main` vì dependency review đã có và thay đổi mới không bổ sung giao diện cần thiết. Codex thêm tab “Chờ đánh giá” trong `AccountPage.tsx`, tải `/reviews/reviewable`, gửi `POST /reviews`, loại món đã đánh giá khỏi danh sách và cung cấp liên kết xem review công khai.
+
+### Phản biện
+
+Issue chỉ liệt kê `ProductPage.tsx`, nhưng tiêu chí nghiệm thu bắt buộc thao tác tại `/tai-khoan`; phần GET công khai trong `ProductPage.tsx` đã tồn tại từ bước trước. Thay đổi ở `AccountPage.tsx` được giới hạn đúng phần còn thiếu của luồng, chưa chỉnh bố cục nâng cao thuộc bước 2.4.
+
+### Quyết định của nhóm
+
+Thành yêu cầu triển khai nếu không cần pull. Chưa có reviewer duyệt; chờ Thành kiểm tra luồng thật trước commit.
+
+### Người kiểm tra
+
+Codex kiểm tra tự động; chờ Thành kiểm tra bằng tài khoản có đơn `PAID` và `DELIVERED`.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web` đạt; `npm.cmd run build -w web` trả mã 0; `git diff --check` không báo lỗi. Chưa xác minh POST bằng dữ liệu thật và chưa commit/push.
+
+## P3 / thanh-20261122-p3-reviews-10
+
+* Thời gian ghi: 2026-11-22T10:37:44+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261122-p3-reviews
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: thanh-20261122-p3-reviews-09; kiểm thử thanh toán local phục vụ PRJ-P3-FD1-2.3.
+
+### Công cụ
+
+Codex; TypeScript; React; npm.
+
+### Mục đích
+
+Loại bỏ việc phải gọi IPN thủ công cho mỗi giao dịch VNPay khi kiểm thử trên localhost.
+
+### Prompt
+
+Thành báo lỗi cũ lặp lại: VNPay Return báo thành công nhưng trang đơn vẫn hiện chưa thanh toán và yêu cầu sửa lại.
+
+### Kết quả đề xuất
+
+Codex cập nhật `PaymentResultPage.tsx`: sau khi backend xác thực Return thành công, chỉ trong chế độ Vite DEV, frontend gửi nguyên query đã ký tới endpoint IPN; chấp nhận mã `00` và trạng thái idempotent `02` trước khi hiện kết quả.
+
+### Phản biện
+
+Production vẫn phải dựa vào IPN do VNPay gọi trực tiếp; không được tin trạng thái tự đặt từ trình duyệt. Cơ chế local vẫn đi qua backend kiểm tra chữ ký, số tiền, đơn và trạng thái nên không tự sửa dữ liệu ở frontend.
+
+### Quyết định của nhóm
+
+Thành yêu cầu sửa lỗi lặp để tiếp tục kiểm thử. Chờ Thành xác nhận giao dịch mới cập nhật đơn thành `PAID` trước khi commit.
+
+### Người kiểm tra
+
+Codex kiểm tra tĩnh; Thành chưa kiểm thử lại giao dịch mới trên trình duyệt.
+
+### Kiểm tra và minh chứng
+
+Lint và build web trả mã 0; `git diff --check` không báo lỗi. Chưa commit/push; chưa xác minh thực tế với VNPay Sandbox.
+
+## P3 / thanh-20261122-p3-reviews-11
+
+* Thời gian ghi: 2026-11-22T11:04:01+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261122-p3-reviews
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261122-p3-reviews-09; thanh-20261122-p3-reviews-10; PRJ-P3-FD1-2.3 #405.
+
+### Công cụ
+
+Codex; trình duyệt do Thành thao tác; REST API DAYORA; PowerShell.
+
+### Mục đích
+
+Xác minh toàn bộ luồng đánh giá thật: đơn đã thanh toán và giao thành công xuất hiện trong tab “Chờ đánh giá”, khách gửi đánh giá, sau đó đánh giá được tải công khai đúng trên trang sản phẩm.
+
+### Prompt
+
+Thành xác nhận biểu mẫu chờ đánh giá đã xuất hiện, thực hiện gửi đánh giá và cung cấp ảnh cho thấy đánh giá mới đã hiển thị công khai trên trang sản phẩm.
+
+### Kết quả đề xuất
+
+Giữ implementation tại `AccountPage.tsx`: tải danh sách có thể đánh giá, gửi `POST /reviews`, loại mục đã gửi khỏi danh sách và dẫn sang trang sản phẩm. Kết quả công khai hiển thị 5.0/5, một đánh giá, tên rút gọn, ngày và bình luận đúng dữ liệu vừa gửi.
+
+### Phản biện
+
+Ảnh trình duyệt xác nhận phần hiển thị; Codex kiểm tra thêm endpoint công khai để tránh chỉ kết luận từ giao diện. Bản sửa IPN local tại `PaymentResultPage.tsx` là thay đổi hỗ trợ kiểm thử riêng, không được trộn vào commit của sub-issue 2.3.
+
+### Quyết định của nhóm
+
+Thành xác nhận luồng đánh giá đã hoạt động. Chưa có reviewer duyệt độc lập và chưa có yêu cầu đóng issue.
+
+### Người kiểm tra
+
+Thành kiểm tra thủ công trên trình duyệt. Codex kiểm tra phản hồi API công khai.
+
+### Kiểm tra và minh chứng
+
+Ảnh Thành cung cấp cho thấy đánh giá “Sản phẩm thật là tuyệt vời” hiển thị với 5 sao, tổng hợp 5.0/5 và 1 đánh giá. `GET /api/products/binh-nuoc-ca-nhan-500-ml/reviews` trả `count: 1`, `average: 5`, đúng bình luận và tên rút gọn. Chờ chạy lại lint/build và tạo commit/push.
+
+## P3 / thanh-20261122-p3-reviews-12
+
+* Thời gian ghi: 2026-11-22T11:04:01+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261122-p3-reviews
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261122-p3-reviews-11; PRJ-P3-FD1-2.3 #405.
+
+### Công cụ
+
+Codex; ESLint; TypeScript; Vite; Git.
+
+### Mục đích
+
+Chạy kiểm tra cuối và chuẩn bị commit riêng cho luồng gửi, tải đánh giá công khai.
+
+### Prompt
+
+Thành xác nhận đánh giá đã xuất hiện đúng trên trang sản phẩm sau khi gửi từ trang tài khoản.
+
+### Kết quả đề xuất
+
+Giữ thay đổi của bước 2.3 tại `AccountPage.tsx` và nhật ký liên quan; không đưa thay đổi `PaymentResultPage.tsx` vào commit sub-issue này.
+
+### Phản biện
+
+Lần build đầu trong sandbox thất bại do TypeScript không được phép ghi `.tsbuildinfo`, không phải lỗi mã nguồn. Build được chạy lại ngoài sandbox với quyền ghi phù hợp và thành công.
+
+### Quyết định của nhóm
+
+Thành đã kiểm tra giao diện và xác nhận đạt; chuyển sang commit/push bước 2.3. Reviewer chưa duyệt độc lập.
+
+### Người kiểm tra
+
+Thành kiểm tra thủ công; Codex chạy kiểm tra tự động.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web` trả mã 0; `npm.cmd run build -w web` thành công với 486 modules; `git diff --check` không báo lỗi. Vite còn cảnh báo chunk lớn hơn 500 kB, là cảnh báo hiện hữu và không làm build thất bại.
+
+## P3 / thanh-20261122-p3-reviews-13
+
+* Thời gian ghi: 2026-11-22T11:11:51+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261122-p3-reviews
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: thanh-20261122-p3-reviews-12; PRJ-P3-FD1-2.4 #410.
+
+### Công cụ
+
+Codex; React; CSS; ESLint; TypeScript; Vite.
+
+### Mục đích
+
+Hoàn thiện bố cục phần đánh giá sản phẩm trên desktop và màn hình 390 px, giữ khả năng đọc và không tràn ngang.
+
+### Prompt
+
+Thành cung cấp sub-issue PRJ-P3-FD1-2.4 và yêu cầu tiếp tục thực hiện.
+
+### Kết quả đề xuất
+
+Codex gắn các class phạm vi `product-reviews`, `reviews-title`, `review-list`, `review-stars` và bổ sung CSS cho phần tổng hợp, thẻ đánh giá, ngày, bình luận, khoảng cách, màu sao và ngắt chữ dài. Media query dưới 480 px xếp tiêu đề và đầu thẻ theo một cột.
+
+### Phản biện
+
+Thay đổi chỉ nằm trong `ProductPage.tsx` và `catalog.css`; không sửa dữ liệu hoặc API. `PaymentResultPage.tsx` vẫn là thay đổi riêng chưa commit và không thuộc bước này. Giao diện thực tế ở 1366 px và 390 px còn chờ Thành quan sát trước khi commit.
+
+### Quyết định của nhóm
+
+Thành giao thực hiện đúng phạm vi sub-issue. Chưa có xác nhận giao diện cuối hoặc reviewer duyệt.
+
+### Người kiểm tra
+
+Codex chạy kiểm tra tự động; chờ Thành kiểm tra trực quan trên trình duyệt.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web` đạt; `npm.cmd run build -w web` thành công với 486 modules; `git diff --check` không báo lỗi. Vite còn cảnh báo chunk lớn hơn 500 kB. Chưa commit/push và chưa có ảnh 1366 px, 390 px.
+
+## P3 / thanh-20261122-p3-reviews-14
+
+* Thời gian ghi: 2026-11-22T11:25:31+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261122-p3-reviews
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261122-p3-reviews-13; PRJ-P3-FD1-2.4 #410.
+
+### Công cụ
+
+Codex; ảnh chụp Chrome Responsive Mode do Thành cung cấp; ESLint; Git.
+
+### Mục đích
+
+Đối chiếu bố cục đánh giá ở 1366 px và 390 px, gồm trường hợp bình luận ngắn và bình luận dài, trước khi tạo commit.
+
+### Prompt
+
+Thành gửi bốn ảnh kiểm thử và yêu cầu nếu bố cục ổn thì commit bước 2.4.
+
+### Kết quả đề xuất
+
+Giữ bố cục hiện tại: tiêu đề và tổng điểm cân đối trên desktop, xếp dọc trên mobile; thẻ đánh giá có khoảng cách rõ, ngày và bình luận dài tự xuống dòng, sao đủ tương phản.
+
+### Phản biện
+
+Ảnh 1366 px có tỷ lệ thu nhỏ nên chữ nhìn nhỏ trong ảnh, nhưng không thể hiện chồng lấn hoặc tràn ngang. Ảnh 390 px cho thấy rõ bình luận dài xuống dòng trong khung. Ảnh cần được Thành đính kèm PR; Codex không tự tải ảnh kiểm thử vào repo.
+
+### Quyết định của nhóm
+
+Thành xác nhận giao diện ổn và cho phép commit bước 2.4. Reviewer chưa duyệt độc lập.
+
+### Người kiểm tra
+
+Thành kiểm tra thủ công ở 1366 × 768 và 390 × 844; Codex đối chiếu ảnh và chạy kiểm tra mã nguồn.
+
+### Kiểm tra và minh chứng
+
+Bốn ảnh Thành cung cấp thể hiện điểm trung bình, danh sách review và bình luận ngắn/dài ở hai kích thước; không thấy tràn ngang. `npm.cmd run lint -w web` đạt và `git diff --check` không báo lỗi; build gần nhất sau thay đổi thành công với 486 modules.
