@@ -35,6 +35,11 @@ export class OrdersController {
     return this.checkout.create(req.user.id, dto);
   }
 
+  @Get()
+  list(@Req() req: AuthRequest) {
+    return this.orders.list(req.user.id);
+  }
+
   @Get(':id')
   detail(
     @Req() req: AuthRequest,

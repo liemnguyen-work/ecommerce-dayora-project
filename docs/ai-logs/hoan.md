@@ -6346,3 +6346,46 @@ Codex chạy test và lint; chờ Hoàn, QA và reviewer xem xét.
 ### Kiểm tra và minh chứng
 
 Node v26.13.1, npm 11.20.0, Vitest 4.1.12; vitest.config.mts không quy định worker. Sau sửa: ca riêng pass (47 ms phần test, tổng bao gồm setup 2,38 giây); npm test 142/142 với worker mặc định; npm test -w api -- --maxWorkers=1 142/142; lint API pass.
+
+---
+
+## Phase 3 / hoan-20261122-order-list-b76-01
+
+* Thời gian ghi: 2026-11-22T17:17:05+07:00
+* Thời gian thực hiện: 22/11/2026.
+* Mã phiên nhật ký: hoan-20261122-order-list-b76
+* Người prompt: Hoàn
+* Loại mục: Hoạt động
+* Liên quan: Yêu cầu frontend về GET /orders
+
+### Công cụ
+
+Codex, NestJS, Prisma, Vitest, Supertest và ESLint.
+
+### Mục đích
+
+Cung cấp danh sách đơn của người đang đăng nhập cho frontend.
+
+### Prompt
+
+Tóm lược: Hoàn cung cấp yêu cầu của Phúc về GET /orders với sáu trường đơn hàng và đề nghị thực hiện.
+
+### Kết quả đề xuất
+
+Thêm GET /api/orders có guard hiện hữu, lọc theo ID phiên, chọn sáu trường yêu cầu và sắp xếp mới trước; thêm test HTTP riêng cho xác thực, cách ly dữ liệu và danh sách rỗng.
+
+### Phản biện
+
+Trả mảng chưa phân trang theo yêu cầu hiện có; cần xác nhận hợp đồng với frontend. Test dùng xác thực và Prisma giả lập, chưa kiểm tra database thật.
+
+### Quyết định của nhóm
+
+Hoàn yêu cầu thực hiện; chưa ghi nhận xác nhận reviewer hoặc QA.
+
+### Người kiểm tra
+
+Codex chạy test, lint và build API; chờ Hoàn, Phúc và reviewer xem xét.
+
+### Kiểm tra và minh chứng
+
+Test orders-list và orders-validation: 7/7 pass; lint và build API pass. Không thay schema hoặc dữ liệu.

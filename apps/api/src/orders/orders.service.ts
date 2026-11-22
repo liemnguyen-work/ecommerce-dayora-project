@@ -26,6 +26,14 @@ export class OrdersService {
     private readonly cart: CartService,
   ) {}
 
+  async list(userId: string) {
+    return this.prisma.order.findMany({
+      where: { userId },
+      select: { id: true, code: true, createdAt: true, status: true, paymentStatus: true, total: true },
+      orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+    });
+  }
+
   async preview(userId: string, dto: PreviewDto) {
     // Đọc giỏ hàng thuộc đúng người dùng.
     const cart = await this.cart.get(userId);
