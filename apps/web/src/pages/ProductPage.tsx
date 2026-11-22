@@ -66,16 +66,16 @@ function ProductReviews({ slug }: { slug: string }) {
   const roundedAverage = data ? Math.round(data.average) : 0;
 
   return (
-    <section aria-labelledby="product-reviews" className="mt-16">
-      <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+    <section aria-labelledby="product-reviews" className="product-reviews">
+      <div className="reviews-title">
         <div>
           <p className="font-semibold uppercase tracking-widest text-berry">Trải nghiệm thực tế</p>
-          <h2 id="product-reviews" className="text-2xl font-bold">Đánh giá sản phẩm</h2>
+          <h2 id="product-reviews">Đánh giá sản phẩm</h2>
         </div>
         {data && data.count > 0 && (
-          <p className="flex flex-wrap items-center gap-2 text-sm text-ink/70">
+          <p className="reviews-summary">
             <span
-              className="text-lg font-extrabold tracking-widest text-[#a85d00]"
+              className="review-stars"
               role="img"
               aria-label={`${data.average.toFixed(1)} trên 5 sao`}
             >
@@ -94,23 +94,23 @@ function ProductReviews({ slug }: { slug: string }) {
         </p>
       )}
       {data && data.count > 0 && (
-        <ul className="grid gap-4" aria-label="Danh sách đánh giá sản phẩm">
+        <ul className="review-list" aria-label="Danh sách đánh giá sản phẩm">
           {data.items.map((review) => (
-            <li key={review.id} className="rounded-2xl border border-leaf bg-white p-5">
-              <div className="flex flex-wrap items-start justify-between gap-2">
+            <li key={review.id} className="review-card">
+              <div className="review-card-heading">
                 <div>
                   <p className="font-bold">
                     {review.user?.fullName ?? review.author ?? review.userName ?? 'Khách hàng DAYORA'}
                   </p>
-                  <span className="font-extrabold tracking-widest text-[#a85d00]" aria-label={`${review.rating} sao`}>
+                  <span className="review-stars" aria-label={`${review.rating} sao`}>
                     {'★'.repeat(review.rating)}
                   </span>
                 </div>
-                <time className="text-sm text-ink/60" dateTime={review.createdAt}>
+                <time className="review-date" dateTime={review.createdAt}>
                   {new Date(review.createdAt).toLocaleDateString('vi-VN')}
                 </time>
               </div>
-              {review.comment && <p className="mt-4 whitespace-pre-wrap break-words text-ink/80">{review.comment}</p>}
+              {review.comment && <p className="review-comment">{review.comment}</p>}
             </li>
           ))}
         </ul>

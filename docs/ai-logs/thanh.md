@@ -5072,3 +5072,85 @@ Thành kiểm tra thủ công; Codex chạy kiểm tra tự động.
 ### Kiểm tra và minh chứng
 
 `npm.cmd run lint -w web` trả mã 0; `npm.cmd run build -w web` thành công với 486 modules; `git diff --check` không báo lỗi. Vite còn cảnh báo chunk lớn hơn 500 kB, là cảnh báo hiện hữu và không làm build thất bại.
+
+## P3 / thanh-20261122-p3-reviews-13
+
+* Thời gian ghi: 2026-11-22T11:11:51+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261122-p3-reviews
+* Người prompt: Thành
+* Loại mục: Hoạt động
+* Liên quan: thanh-20261122-p3-reviews-12; PRJ-P3-FD1-2.4 #410.
+
+### Công cụ
+
+Codex; React; CSS; ESLint; TypeScript; Vite.
+
+### Mục đích
+
+Hoàn thiện bố cục phần đánh giá sản phẩm trên desktop và màn hình 390 px, giữ khả năng đọc và không tràn ngang.
+
+### Prompt
+
+Thành cung cấp sub-issue PRJ-P3-FD1-2.4 và yêu cầu tiếp tục thực hiện.
+
+### Kết quả đề xuất
+
+Codex gắn các class phạm vi `product-reviews`, `reviews-title`, `review-list`, `review-stars` và bổ sung CSS cho phần tổng hợp, thẻ đánh giá, ngày, bình luận, khoảng cách, màu sao và ngắt chữ dài. Media query dưới 480 px xếp tiêu đề và đầu thẻ theo một cột.
+
+### Phản biện
+
+Thay đổi chỉ nằm trong `ProductPage.tsx` và `catalog.css`; không sửa dữ liệu hoặc API. `PaymentResultPage.tsx` vẫn là thay đổi riêng chưa commit và không thuộc bước này. Giao diện thực tế ở 1366 px và 390 px còn chờ Thành quan sát trước khi commit.
+
+### Quyết định của nhóm
+
+Thành giao thực hiện đúng phạm vi sub-issue. Chưa có xác nhận giao diện cuối hoặc reviewer duyệt.
+
+### Người kiểm tra
+
+Codex chạy kiểm tra tự động; chờ Thành kiểm tra trực quan trên trình duyệt.
+
+### Kiểm tra và minh chứng
+
+`npm.cmd run lint -w web` đạt; `npm.cmd run build -w web` thành công với 486 modules; `git diff --check` không báo lỗi. Vite còn cảnh báo chunk lớn hơn 500 kB. Chưa commit/push và chưa có ảnh 1366 px, 390 px.
+
+## P3 / thanh-20261122-p3-reviews-14
+
+* Thời gian ghi: 2026-11-22T11:25:31+07:00
+* Thời gian thực hiện: trong phiên hiện tại.
+* Mã phiên nhật ký: thanh-20261122-p3-reviews
+* Người prompt: Thành
+* Loại mục: Kiểm tra
+* Liên quan: thanh-20261122-p3-reviews-13; PRJ-P3-FD1-2.4 #410.
+
+### Công cụ
+
+Codex; ảnh chụp Chrome Responsive Mode do Thành cung cấp; ESLint; Git.
+
+### Mục đích
+
+Đối chiếu bố cục đánh giá ở 1366 px và 390 px, gồm trường hợp bình luận ngắn và bình luận dài, trước khi tạo commit.
+
+### Prompt
+
+Thành gửi bốn ảnh kiểm thử và yêu cầu nếu bố cục ổn thì commit bước 2.4.
+
+### Kết quả đề xuất
+
+Giữ bố cục hiện tại: tiêu đề và tổng điểm cân đối trên desktop, xếp dọc trên mobile; thẻ đánh giá có khoảng cách rõ, ngày và bình luận dài tự xuống dòng, sao đủ tương phản.
+
+### Phản biện
+
+Ảnh 1366 px có tỷ lệ thu nhỏ nên chữ nhìn nhỏ trong ảnh, nhưng không thể hiện chồng lấn hoặc tràn ngang. Ảnh 390 px cho thấy rõ bình luận dài xuống dòng trong khung. Ảnh cần được Thành đính kèm PR; Codex không tự tải ảnh kiểm thử vào repo.
+
+### Quyết định của nhóm
+
+Thành xác nhận giao diện ổn và cho phép commit bước 2.4. Reviewer chưa duyệt độc lập.
+
+### Người kiểm tra
+
+Thành kiểm tra thủ công ở 1366 × 768 và 390 × 844; Codex đối chiếu ảnh và chạy kiểm tra mã nguồn.
+
+### Kiểm tra và minh chứng
+
+Bốn ảnh Thành cung cấp thể hiện điểm trung bình, danh sách review và bình luận ngắn/dài ở hai kích thước; không thấy tràn ngang. `npm.cmd run lint -w web` đạt và `git diff --check` không báo lỗi; build gần nhất sau thay đổi thành công với 486 modules.
