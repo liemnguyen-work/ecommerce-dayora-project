@@ -101,4 +101,31 @@ Các ví dụ giả sử mã còn hiệu lực, khách còn lượt, đơn thỏ
 
 ## 3. Bảo mật định giá và tranh chấp tồn kho
 
-Sẽ bổ sung ở bước tiếp theo của task.
+### 3.1. Không tin cậy giá do trình duyệt gửi
+
+Theo NFR03 và R07 trong [REQUIREMENTS.md](../../REQUIREMENTS.md), máy chủ phải kiểm tra đầu vào và tính lại thông tin quan trọng thay vì tin vào giá, mức giảm, phí giao hoặc tổng tiền từ trình duyệt.
+
+- Số lượng và các dòng hàng được lấy từ giỏ hàng lưu trên máy chủ. Dữ liệu `expected` gồm SKU và đơn giá khách đã thấy; `expectedTotal` là tổng tiền dự kiến được dùng để **đối chiếu**, không phải giá do máy chủ mặc nhiên chấp nhận.
+- Khi xem trước hoặc tạo đơn, backend đọc thông tin SKU, giá hiện hành, voucher và phí giao, sau đó tính lại. Cấu hình kiểm tra đầu vào chỉ giữ các trường được khai báo; các trường giá khác gửi thêm không trở thành căn cứ chốt giá.
+- Nếu dữ liệu hiển thị trước đó không còn khớp hoặc cần khách xác nhận lại, bước **tạo đơn** có thể trả HTTP `409 Conflict` với mã `CONFIRM_REQUIRED` và thông tin preview. Ở bước preview, hệ thống có thể trả cảnh báo để trình duyệt hiển thị; không mặc định mọi trường hợp preview đều trả 409.
+- Sau khi đơn được tạo, thông tin như tên sản phẩm, SKU, đơn giá và số lượng được lưu làm bản chụp của đơn. Bản chụp này phục vụ đối chiếu thông tin tại thời điểm đặt hàng.
+
+Ví dụ: nếu giá khách gửi để đối chiếu là 1.000đ nhưng giá hiện hành là 500.000đ, máy chủ tính theo dữ liệu của mình và yêu cầu xác nhận khi thông tin không khớp, thay vì tạo đơn với giá 1.000đ do trình duyệt gửi.
+
+### 3.2. Hai khách cùng mua sản phẩm cuối
+
+Giả sử một SKU còn một sản phẩm khả dụng (`stock - reserved = 1`) và hai khách cùng đặt mua một sản phẩm:
+
+1. Backend xử lý tạo đơn trong **Prisma transaction**. Với mỗi SKU, câu lệnh cập nhật tăng `reserved` chỉ thành công khi SKU còn hoạt động, giá và điều kiện liên quan vẫn khớp, đồng thời `stock - reserved >= quantity`.
+2. Nếu một giao dịch giữ được sản phẩm cuối và hoàn tất, số lượng khả dụng không còn đủ cho giao dịch còn lại. Lượt cập nhật không thỏa điều kiện không giữ được hàng và giao dịch bị từ chối.
+3. Khi câu lệnh cập nhật có điều kiện không cập nhật được SKU, code trả HTTP `409 Conflict` với mã `OUT_OF_STOCK`. Cần lưu ý câu lệnh còn kiểm tra trạng thái và giá, nên mã này không tự chứng minh nguyên nhân duy nhất là hết tồn.
+
+Cách kiểm tra và cập nhật có điều kiện ở cơ sở dữ liệu giúp tránh việc cả hai yêu cầu cùng dựa trên một số tồn cũ. Không thể kết luận hệ thống đã vượt qua kiểm thử đồng thời với cơ sở dữ liệu thật chỉ từ việc đọc code hoặc chạy test giả lập.
+
+### 3.3. Minh chứng kiểm thử
+
+- File: [checkout.service.spec.ts](../../apps/api/src/orders/checkout.service.spec.ts); ca **“hai yêu cầu tranh tồn cuối chỉ một cập nhật thành công”** giả lập hai kết quả cập nhật khác nhau và kiểm tra một yêu cầu thành công, một yêu cầu bị từ chối.
+- Lệnh đã chạy: `npm.cmd test -w api -- checkout.service`. Kết quả: **1 file, 11/11 ca đạt** trong lượt kiểm tra ngày 25/11/2026.
+- Giới hạn: ca tranh tồn dùng mock cho Prisma/transaction; kết quả trên kiểm tra logic service trong môi trường giả lập, **chưa chứng minh** hai giao dịch đồng thời trên PostgreSQL thật. Cần QA/nhóm đối chiếu thêm bằng chứng chạy thực tế nếu yêu cầu nghiệm thu.
+
+Mã liên quan: [checkout.service.ts](../../apps/api/src/orders/checkout.service.ts), [orders.service.ts](../../apps/api/src/orders/orders.service.ts), [orders.dto.ts](../../apps/api/src/orders/orders.dto.ts) và [main.ts](../../apps/api/src/main.ts).
