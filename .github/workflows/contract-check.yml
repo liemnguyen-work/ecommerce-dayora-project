@@ -1,0 +1,38 @@
+name: Contract check
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  contract-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24.16.0'
+
+      - name: Compare schema and routes
+        id: contract
+        continue-on-error: true
+        shell: bash
+        run: |
+          set +e
+          node tools/contract-check.mjs apps/api --models Order,OrderItem,OrderStatusLog,Payment,Voucher,VoucherUsage,Review --routes /admin/orders,/orders,/payments,/reviews,/me
+          result=$?
+          echo "exit_code=$result" >> "$GITHUB_OUTPUT"
+          exit "$result"
+
+      - name: Fail on checker execution error
+        if: ${{ always() && steps.contract.outputs.exit_code != '' && steps.contract.outputs.exit_code != '0' && steps.contract.outputs.exit_code != '1' }}
+        shell: bash
+        run: |
+          echo "Contract checker could not run successfully."
+          exit 1
